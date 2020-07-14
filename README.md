@@ -2,6 +2,8 @@
 
 > set of web components for audio interfaces
 
+components created using the [lit-element](https://lit-element.polymer-project.org/) framework.
+
 ## Documentation
 
 [http://ircam-ismm.github.io/simple-components/](http://ircam-ismm.github.io/simple-components/)
@@ -14,9 +16,11 @@ npm install @ircam/simple-components --save
 
 ## Usage
 
+@todo
+
 ## Design Consideration
   
-These design decisions aim at simplifying later wrapping of the components in a edition library.
+These design aspects aim at simplifying future wrapping of the components in an editing tool.
 
 ### Attributes
 
@@ -24,15 +28,15 @@ All components must expose a `width` and `height` attribute, for squared compone
 
 ### Events
 
-- rationalize events: all components should have at least an `@input` or `@change` event. 
-- components can expose additional events, e.g. button `@press` and `@release`
-- payload should always be `e.details.value`
+- all components should at least expose an `@input` or a `@change` event. 
+- they can expose additional events, e.g. button `@press` and `@release`
+- payload should always have `e.details.value`
 
 ## Notes
 
 ## Existing components
 
-see. documentation
+see. documentation ([http://ircam-ismm.github.io/simple-components/](http://ircam-ismm.github.io/simple-components/))
 
 ## @todos
 
