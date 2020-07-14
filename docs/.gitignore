@@ -1,0 +1,7 @@
+public/js
+public/vendors
+node_modules/
+
+# trash files
+.DS_Store
+Thumbs.db

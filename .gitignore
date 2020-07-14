@@ -1,0 +1,8 @@
+# junk files
+.DS_Store
+Thumbs.db
+
+vendors
+node_modules
+
+.bak

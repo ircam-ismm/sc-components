@@ -1,0 +1,17 @@
+{
+  "name": "@ircam/simple-components",
+  "version": "1.0.0",
+  "description": "simple web components for audio interfaces",
+  "main": "src/index.js",
+  "scripts": {
+    "clean": "rm -Rf vendors",
+    "postinstall": "node bin/prepare-codemirror.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "codemirror": "^5.55.0",
+    "lit-element": "^2.3.1",
+    "number-precision": "^1.5.0"
+  }
+}

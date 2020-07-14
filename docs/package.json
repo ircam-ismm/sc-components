@@ -1,0 +1,39 @@
+{
+  "name": "docs",
+  "version": "1.0.0",
+  "description": "",
+  "author": "Benjamin Matuszewski",
+  "license": "BSD-3-Clause",
+  "scripts": {
+    "postinstall": "mkdir -p ./vendors && cp -R node_modules/@webcomponents/webcomponentsjs ./vendors/ && cp -R node_modules/livereload ./vendors/",
+    "serve": "npm run build && node bin/server.js",
+    "build": "rollup -c",
+    "dev": "npm link @ircam/simple-components && (rollup -c --watch.chokidar & node bin/server.js)"
+  },
+  "dependencies": {
+    "@babel/polyfill": "^7.4.4",
+    "@webcomponents/webcomponentsjs": "^2.2.10",
+    "connect": "^3.7.0",
+    "lit-element": "^2.3.1",
+    "livereload": "^0.8.0",
+    "portfinder": "^1.0.20",
+    "rollup-plugin-node-builtins": "^2.1.2",
+    "serve-static": "^1.14.1",
+    "showdown": "^1.9.1",
+    "source-map-support": "^0.5.12"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.5",
+    "@babel/plugin-proposal-class-properties": "^7.4.4",
+    "@babel/plugin-proposal-decorators": "^7.4.4",
+    "@babel/preset-env": "^7.4.5",
+    "@rollup/plugin-babel": "^5.0.4",
+    "@rollup/plugin-commonjs": "^13.0.0",
+    "@rollup/plugin-node-resolve": "^8.1.0",
+    "builtin-modules": "^3.1.0",
+    "chokidar": "^3.0.0",
+    "chokidar-cli-infanticide": "^1.3.1",
+    "rollup": "^1.12.3",
+    "terser": "^4.0.0"
+  }
+}
