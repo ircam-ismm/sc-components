@@ -1,8 +1,6 @@
 # `simple-components`
 
-> set of web components for audio interfaces
-
-components created using the [lit-element](https://lit-element.polymer-project.org/) framework.
+> set of web components for audio interfaces, created using the [lit-element](https://lit-element.polymer-project.org/) framework.
 
 ## Documentation
 
