@@ -1,7 +1,7 @@
 {
   "name": "@ircam/simple-components",
   "version": "1.0.0",
-  "description": "simple web components for audio interfaces",
+  "description": "set of web components for audio interfaces and rapid prototyping",
   "main": "src/index.js",
   "scripts": {
     "clean": "rm -Rf vendors",
