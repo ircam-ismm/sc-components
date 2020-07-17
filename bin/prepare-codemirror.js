@@ -14,7 +14,7 @@ const post = `
 \`;
 `;
 
-const distDirectory = path.join(cwd, 'vendors');
+const distDirectory = path.join(process.cwd(), 'vendors');
 
 if (!fs.existsSync(distDirectory)) {
   fs.mkdirSync(distDirectory);
