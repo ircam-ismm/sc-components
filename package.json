@@ -2,13 +2,29 @@
   "name": "@ircam/simple-components",
   "version": "1.0.0",
   "description": "set of web components for audio interfaces and rapid prototyping",
+  "authors": [
+    "Benjamin Matuszewski"
+  ],
   "main": "src/index.js",
+  "license": "BSD-3-Clause",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ircam-ismm/simple-components"
+  },
+  "bugs": {
+    "url": "https://github.com/ircam-ismm/simple-components/issues"
+  },
+  "homepage": "https://ircam-ismm.github.io/simple-components/",
+  "keywords": [
+    "web components",
+    "gui",
+    "interfaces",
+    "web audio"
+  ],
   "scripts": {
     "clean": "rm -Rf vendors",
     "postinstall": "node bin/prepare-codemirror.js"
   },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "codemirror": "^5.55.0",
     "lit-element": "^2.3.1",

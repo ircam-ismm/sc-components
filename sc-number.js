@@ -200,7 +200,7 @@ class ScNumber extends ScElement {
                   width: ${characterWidth}px;
                 "
               >
-                ${parts[1][0] || emptySpace}
+                ${parts[1][0] || emptySpace}
                 <sc-speed-surface
                   width="${characterWidth}"
                   height="${this.height}"
@@ -214,7 +214,7 @@ class ScNumber extends ScElement {
                   width: ${characterWidth}px;
                 "
               >
-                ${parts[1][1] || emptySpace}
+                ${parts[1][1] || emptySpace}
                 <sc-speed-surface
                   width="${characterWidth}"
                   height="${this.height}"
@@ -228,7 +228,7 @@ class ScNumber extends ScElement {
                   width: ${characterWidth}px;
                 "
               >
-                ${parts[1][2] || emptySpace}
+                ${parts[1][2] || emptySpace}
                 <sc-speed-surface
                   width="${characterWidth}"
                   height="${this.height}"
@@ -242,7 +242,7 @@ class ScNumber extends ScElement {
                   width: ${characterWidth}px;
                 "
               >
-                ${parts[1][3] || emptySpace}
+                ${parts[1][3] || emptySpace}
                 <sc-speed-surface
                   width="${characterWidth}"
                   height="${this.height}"
@@ -256,7 +256,7 @@ class ScNumber extends ScElement {
                   width: ${characterWidth}px;
                 "
               >
-                ${parts[1][4] || emptySpace}
+                ${parts[1][4] || emptySpace}
                 <sc-speed-surface
                   width="${characterWidth}"
                   height="${this.height}"
@@ -270,7 +270,7 @@ class ScNumber extends ScElement {
                   width: ${characterWidth}px;
                 "
               >
-                ${parts[1][5] || emptySpace}
+                ${parts[1][5] || emptySpace}
                 <sc-speed-surface
                   width="${characterWidth}"
                   height="${this.height}"
@@ -336,7 +336,7 @@ class ScNumber extends ScElement {
     }
 
     // Tab has the same effect as it triggers blur
-    if (e.key === 'Enter' || e.which === 13) {
+    if (e.key === 'Enter' || e.which === 13) {
       this.updateValueFromDisplayValue();
     }
   }
@@ -348,7 +348,7 @@ class ScNumber extends ScElement {
         : parseFloat(this._displayValue);
 
       // modify displayValue only if needed
-      if (this._value < this.min || this._value > this.max) {
+      if (this._value < this.min || this._value > this.max) {
         this._value = Math.max(this.min, Math.min(this.max, this._value));
         this._displayValue = this._value.toString();
       }
