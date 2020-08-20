@@ -80,6 +80,10 @@ render(html`
   <section class="content">
     <h1>sc-components</h1>
 
+    <pre><code>
+npm install @ircam/simple-components --save
+    </code></pre>
+
     ${Object.keys(docs).map(name => {
       return html`
         <div class="component">
