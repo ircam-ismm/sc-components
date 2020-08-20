@@ -93,13 +93,14 @@ class ScEditor extends LitElement {
   }
 
   set value(value) {
-    this._value = value !== null ? value : '';
+    this._value = value !== null ? value : '';
 
     if (this.codeMirror) {
       const pos = this.codeMirror.getCursor();
       this.codeMirror.setValue(this._value);
       this.codeMirror.setCursor(pos);
       this.cleanDoc();
+      setTimeout(() => this.codeMirror.refresh(), 1);
     }
   }
 
@@ -169,7 +170,7 @@ class ScEditor extends LitElement {
       if (e.key === '/') {
         this.codeMirror.toggleComment();
       }
-      // can't do anything for zoom
+      // can't do anything for zoom, too deep in the system
     }
   }
 
