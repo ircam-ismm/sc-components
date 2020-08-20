@@ -46,6 +46,8 @@ const docs = {
   'sc-text': text,
   'sc-toggle': toggle,
   'sc-signal': signal,
+
+  // ti finish
   // 'sc-dot-map': dotMap,
 };
 

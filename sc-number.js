@@ -377,55 +377,55 @@ class ScNumber extends ScElement {
     return e => {
       e.stopPropagation();
 
-
-      // ignore very small movements
-      if (Math.abs(e.detail.dy) < 0.02 && !(e.detail.pointerId === null)) {
-        return;
-      }
-
-
-      const sign = e.detail.dy < 0 ? -1 : 1;
-      // heuristically adjust sensiblity
-      const scale = 8;
-      const exponent = 1.2;
-      // apply scale and exponent factors
-      let dy = Math.pow(Math.abs(e.detail.dy * scale), exponent);
-      // clamp at 1
-      dy = Math.max(1, dy);
-      // reapply sign
-      dy = dy * sign;
-
-      this._value += step * dy;
-      // crop at step (use precision arythmetics)
-      this._value = NP.times(Math.round(this._value / step), step);
-      this._value = Math.max(this.min, Math.min(this.max, this._value));
-
-      // format display value to show trailing zeros...)
-      const displayValue = this._value.toString();
-      const valueParts = displayValue.toString().split('.');
-      const stepDecimals = step.toString().split('.')[1];
-
-      if (stepDecimals) {
-        if (!valueParts[1]) {
-          valueParts[1] = [];
+      // do all computation if not mouseup or touchend,
+      // else only propagate the `change event`
+      if (e.detail.pointerId !== null) {
+        // ignore very small movements
+        if (Math.abs(e.detail.dy) < 0.02) {
+          return;
         }
 
-        while (valueParts[1].length < stepDecimals.length) {
-          valueParts[1] += '0';
+        const sign = e.detail.dy < 0 ? -1 : 1;
+        // heuristically adjust sensiblity
+        const scale = 8;
+        const exponent = 1.2;
+        // apply scale and exponent factors
+        let dy = Math.pow(Math.abs(e.detail.dy * scale), exponent);
+        // clamp at 1
+        dy = Math.max(1, dy);
+        // reapply sign
+        dy = dy * sign;
+
+        this._value += step * dy;
+        // crop at step (use precision arythmetics)
+        this._value = NP.times(Math.round(this._value / step), step);
+        this._value = Math.max(this.min, Math.min(this.max, this._value));
+
+        // format display value to show trailing zeros...)
+        const displayValue = this._value.toString();
+        const valueParts = displayValue.toString().split('.');
+        const stepDecimals = step.toString().split('.')[1];
+
+        if (stepDecimals) {
+          if (!valueParts[1]) {
+            valueParts[1] = [];
+          }
+
+          while (valueParts[1].length < stepDecimals.length) {
+            valueParts[1] += '0';
+          }
         }
-      }
 
-      this._displayValue = valueParts.join('.');
+        this._displayValue = valueParts.join('.');
 
-      const event = new CustomEvent('input', {
-        bubbles: true,
-        composed: true,
-        detail: { value: this._value },
-      });
+        const event = new CustomEvent('input', {
+          bubbles: true,
+          composed: true,
+          detail: { value: this._value },
+        });
 
-      this.dispatchEvent(event);
-
-      if (e.detail.pointerId === null) {
+        this.dispatchEvent(event);
+      } else {
         const event = new CustomEvent('change', {
           bubbles: true,
           composed: true,
