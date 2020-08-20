@@ -66,17 +66,14 @@ setTheme('light');
 
 render(html`
   <section class="menu">
+    <a href="https://github.com/ircam-ismm/simple-components">
+      <sc-button text="Github"></sc-button>
+    </a>
     <sc-button text="dark background" @press="${e => setTheme('dark')}"></sc-button>
     <sc-button text="light background" @press="${e => setTheme('light')}"></sc-button>
 
-    <!-- <h3>Control</h3> -->
     ${Object.keys(docs).map(name => html`<a href="#${name}">&lt;${name}&gt;</a>`)}
 
-    <!-- <h3>Monitoring</h3> -->
-    <!-- <p>> sc-signal, etc.</p> -->
-    <!-- <h3>Surfaces</h3> -->
-    <!-- <h3>Misc</h3> -->
-    <!-- <p>> test multitouch, etc.</p> -->
   </section>
   <section class="content">
     <h1>sc-components</h1>
