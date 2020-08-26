@@ -26,7 +26,8 @@ class ScDotMap extends LitElement {
         hasChanged(newVal, oldVal) { return true },
       },
       maxSize: {
-        type: Number
+        type: Number,
+        attribute: 'max-size',
       },
       color: {
         type: String,
