@@ -8,6 +8,7 @@ export default function () {
     const dots = [];
 
     setInterval(() => {
+      console.log('interval')
       if (dots.length > 20) {
         const removeIndex = Math.floor(Math.random() * dots.length);
         dots.splice(removeIndex, 1);
@@ -16,11 +17,11 @@ export default function () {
       const xRange = $dotMap.xRange;
       const yRange = $dotMap.yRange;
 
-      const x = (Math.random() * Math.abs(xRange[1] - xRange[0])) - xRange[0];
-      const y = (Math.random() * Math.abs(yRange[1] - yRange[0])) - yRange[0];
+      const x = Math.random() * (xRange[1] - xRange[0]) + xRange[0];
+      const y = Math.random() * (yRange[1] - yRange[0]) + yRange[0];
       dots.push({ x, y });
 
-      $dotMap.dots = dots;
+      $dotMap.value = dots;
       $dotMapDots.value = JSON.stringify(dots, null, 2);
     }, 500);
   }, 150);
@@ -65,7 +66,7 @@ ${`<sc-dot-map></sc-dot-map>`}
       ></sc-number>
     </p>
     <p>
-      <sc-text readonly value="[xRange=[0, 1]]"></sc-text>
+      <sc-text readonly value="[x-range=[0, 1]] (l -> r)"></sc-text>
       <sc-text
         value="[0, 1]"
         @change="${e => {
@@ -75,7 +76,7 @@ ${`<sc-dot-map></sc-dot-map>`}
       ></sc-text>
     </p>
     <p>
-      <sc-text readonly value="[yRange=[0, 1]]"></sc-text>
+      <sc-text readonly value="[y-range=[0, 1]] (t -> b)"></sc-text>
       <sc-text
         value="[0, 1]"
         @change="${e => {
@@ -86,33 +87,40 @@ ${`<sc-dot-map></sc-dot-map>`}
     </p>
     <p>
       <sc-text readonly value="[dots=[]]"></sc-text>
-      <sc-text id="dot-map-dots" width="300" height="300" readonly></sc-text>
+      <sc-text id="dot-map-dots" width="300" height="150" readonly></sc-text>
     </p>
+
+    <h4>As input</h4>
     <p>
-      <sc-text readonly value="[line-width=1]"></sc-text>
-      <sc-number
-        min="1"
-        max="10"
-        value="1"
-        integer
-        @input="${e => {
-          const $component = document.querySelector('#test-dot-map');
-          $component.lineWidth = e.detail.value;
+      <sc-text readonly value="[capture-event=false]"></sc-text>
+      <sc-toggle
+        active
+        @change="${e => {
+          const $component = document.querySelector('#test-dot-map-2');
+          $component.captureEvents = e.detail.value;
         }}"
-      ></sc-number>
+      ></sc-toggle>
+      <sc-dot-map
+        id="test-dot-map-2"
+        capture-events
+        @input="${e => {
+          const $component = document.querySelector('#dot-map-change');
+          $component.value = JSON.stringify(e.detail.value, null, 2);
+        }}"
+      ></sc-dot-map>
     </p>
     <p>
-      <sc-text readonly value="[display-min-max=false]"></sc-text>
+      <sc-text readonly value="[persist-event=false]"></sc-text>
       <sc-toggle
         @change="${e => {
-          const $component = document.querySelector('#test-dot-map');
-          $component.displayMinMax = e.detail.value;
+          const $component = document.querySelector('#test-dot-map-2');
+          $component.persistEvents = e.detail.value;
         }}"
       ></sc-toggle>
     </p>
-
     <p>
-      <sc-text readonly width="350" value="value={ time<Number>(seconds), data<Array> }"></sc-text>
-    <p>
+      <sc-text readonly value="@change"></sc-text>
+      <sc-text id="dot-map-change" width="300" height="120" readonly></sc-text>
+    </p>
   `;
 }

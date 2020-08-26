@@ -15,27 +15,21 @@ class ScSlider extends ScElement {
       // },
       width: {
         type: Number,
-        reflect: true,
       },
       height: {
         type: Number,
-        reflect: true,
       },
       min: {
         type: Number,
-        reflect: true,
       },
       max: {
         type: Number,
-        reflect: true,
       },
       step: {
         type: Number,
-        reflect: true,
       },
       orientation: {
         type: String,
-        reflect: true,
       },
       displayNumber: {
         type: Boolean,
@@ -242,12 +236,12 @@ class ScSlider extends ScElement {
   updateValue(e) {
     e.stopPropagation(); // override event from sc-position-surface
 
-    // consider first pointer in list
+    // consider only first pointer in list, we don't want a multitouch slider...
     if (
-      e.detail[0] &&
-      (this._pointerId === null || e.detail[0].pointerId === this._pointerId)
+      e.detail.value[0] &&
+      (this._pointerId === null || e.detail.value[0].pointerId === this._pointerId)
     ) {
-      const { x, y, pointerId } = e.detail[0];
+      const { x, y, pointerId } = e.detail.value[0];
       const value = this.orientation === 'horizontal' ? x : y;
       this._pointerId = pointerId;
       this.value = this.clipper(value);

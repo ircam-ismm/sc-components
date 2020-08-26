@@ -35,11 +35,9 @@ class ScEditor extends LitElement {
     return {
       height: {
         type: Number,
-        reflect: true,
       },
       width: {
         type: Number,
-        reflect: true,
       },
       fontSize: {
         type: Number,

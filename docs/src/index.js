@@ -32,23 +32,21 @@ import number from './sc-number-example.js';
 import slider from './sc-slider-example.js';
 import text from './sc-text-example.js';
 import toggle from './sc-toggle-example.js';
-// import dotMap from './sc-dot-map-example.js';
+import dotMap from './sc-dot-map-example.js';
 
 // monitoring
 import signal from './sc-signal-example.js';
 
 const docs = {
-  'sc-bang': bang,
-  'sc-button': button,
-  'sc-editor': editor,
-  'sc-number': number,
-  'sc-slider': slider,
-  'sc-text': text,
-  'sc-toggle': toggle,
-  'sc-signal': signal,
-
-  // ti finish
-  // 'sc-dot-map': dotMap,
+  'sc-dot-map': dotMap,
+  // 'sc-bang': bang,
+  // 'sc-button': button,
+  // 'sc-editor': editor,
+  // 'sc-number': number,
+  // 'sc-slider': slider,
+  // 'sc-text': text,
+  // 'sc-toggle': toggle,
+  // 'sc-signal': signal,
 };
 
 function setTheme(name) {

@@ -11,19 +11,15 @@ class ScNumber extends ScElement {
     return {
       width: {
         type: Number,
-        reflect: true,
       },
       height: {
         type: Number,
-        reflect: true,
       },
       min: {
         type: Number,
-        reflect: true,
       },
       max: {
         type: Number,
-        reflect: true,
       },
       value: {
         type: Number,

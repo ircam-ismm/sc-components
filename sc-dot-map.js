@@ -9,44 +9,40 @@ class ScDotMap extends LitElement {
     return {
       width: {
         type: Number,
-        reflect: true,
       },
       height: {
         type: Number,
-        reflect: true,
       },
       xRange: {
         type: Array,
         attribute: 'x-range',
-        reflect: true,
       },
       yRange: {
         type: Array,
         attribute: 'y-range',
-        reflect: true,
       },
-      // invert: {
-      //   type: Boolean,
-      // },
-      dots: {
+      value: {
         type: Array,
         hasChanged(newVal, oldVal) { return true },
       },
-      dotsColor: {
+      maxSize: {
+        type: Number
+      },
+      color: {
         type: String,
-        attribute: 'dots-color'
+        attribute: 'color'
       },
-      dotsRadiusAbs: {
+      radius: { // in pixels (precedence over radiusRel)
         type: Number,
-        attribute: 'dots-radius-abs'
+        attribute: 'radius'
       },
-      dotsRadiusRel: {
+      radiusRel: { // according to ranges
         type: Number,
-        attribute: 'dots-radius-rel'
+        attribute: 'radius-rel'
       },
-      dotsOpacity: {
+      opacity: {
         type: Number,
-        attribute: 'dots-opacity'
+        attribute: 'opacity'
       },
 
       backgroundColor: {
@@ -66,6 +62,10 @@ class ScDotMap extends LitElement {
         type: Boolean,
         attribute: 'capture-events',
       },
+      persistEvents: {
+        type: Boolean,
+        attribute: 'persist-events',
+      },
     }
   }
 
@@ -74,6 +74,8 @@ class ScDotMap extends LitElement {
       :host {
         display: inline-block;
         box-sizing: border-box;
+        line-height: 0;
+        vertical-align: top;
       }
 
       :host > div {
@@ -96,17 +98,22 @@ class ScDotMap extends LitElement {
   constructor() {
     super();
 
-    this.dots = [];
-    this.dotsColor = theme['--color-secondary-2'];
-    this.dotsRadiusDefault = 5;
-    this.dotsRadiusAbs = null;
-    this.dotsRadiusRel = null;
-    this.dotsOpacity = 1;
+    this.value = [];
+    this.color = theme['--color-secondary-2'];
+    this.defaultRadius = 5;
+    this.radius = null;
+    this.radiusRel = null;
+    this.opacity = 1;
+
+    this.maxSize = +Infinity;
 
     this.xRange = [0, 1];
     this.yRange = [0, 1];
     this.width = 300;
     this.height = 300;
+
+    this.captureEvents = false;
+    this.persistEvents = false;
 
     this.backgroundColor = theme['--color-primary-1'];
     this.backgroundOpacity = 1;
@@ -126,25 +133,38 @@ class ScDotMap extends LitElement {
 
   render() {
     if (this._dirty) {
-      const orientation = this.width > this.height ? 'landscape' : 'portrait';
-      const containerSize = orientation === 'portrait' ? this.width : this.height;
-      const xDelta = this.xRange[1] - this.xRange[0];
-      const yDelta = this.yRange[1] - this.yRange[0];
-      const deltaRange = yDelta > xDelta ? yDelta : xDelta;
+      const xDelta = Math.abs(this.xRange[1] - this.xRange[0]);
+      const yDelta = Math.abs(this.yRange[1] - this.yRange[0]);
 
-      this.svgWidth = containerSize / deltaRange * xDelta;
-      this.svgHeight = containerSize / deltaRange * yDelta;
-      this.containerSize = containerSize;
-      this.deltaRange = deltaRange;
+      // define which side is th limiting one
+      const deltaRatio = xDelta / yDelta;
+      const pxRatio = this.width / this.height;
 
-      const valToPxRatio = containerSize / deltaRange;
+      let limitingSize;
+      let limitingDelta;
+
+      if (deltaRatio > pxRatio) {
+        limitingSize = this.width;
+        limitingDelta = xDelta;
+      } else {
+        limitingSize = this.height;
+        limitingDelta = yDelta;
+      }
+
+      // define svg size
+      this.svgWidth = limitingSize / limitingDelta * xDelta;
+      this.svgHeight = limitingSize / limitingDelta * yDelta;
 
       this.x2px = (val) => {
-        return valToPxRatio * (val - this.xRange[0]);
+        const a = this.svgWidth / (this.xRange[1] - this.xRange[0]);
+        const b = - (this.xRange[0] * a);
+        return a * val + b;
       }
 
       this.y2px = (val) => {
-        return valToPxRatio * (val - this.yRange[0]);
+        const a = this.svgHeight / (this.yRange[1] - this.yRange[0]);
+        const b = - (this.yRange[0] * a);
+        return a * val + b;
       }
 
       this.radius2px = (val) => {
@@ -152,12 +172,12 @@ class ScDotMap extends LitElement {
       }
     }
 
-    let dotsRadius = this.dotsRadiusDefault;
+    let dotsRadius = this.defaultRadius;
 
-    if (this.dotsRadiusAbs) {
-      dotsRadius = this.dotsRadiusAbs
-    } else if (this.dotsRadiusRel) {
-      dotsRadius = this.radius2px(this.dotsRadiusRel);
+    if (this.radius) {
+      dotsRadius = this.radius
+    } else if (this.radiusRel) {
+      dotsRadius = this.radius2px(this.radiusRel);
     }
 
     return html`
@@ -196,22 +216,54 @@ class ScDotMap extends LitElement {
           ></rect>
 
           <!-- dost -->
-          ${repeat(this.dots, (d) => `${d.x}-${d.y}`, (d => {
+          ${repeat(this.value, d => `${d.x}-${d.y}`, d => {
             return svg`<circle
               r="${dotsRadius}"
-              fill="${d.color || this.dotsColor}"
+              fill="${d.color || this.color}"
               cx="${this.x2px(d.x)}"
               cy="${this.y2px(d.y)}"
-              style="pointer-event: none; fill-opacity: ${this.dotsOpacity}"
+              style="pointer-event: none; fill-opacity: ${this.opacity}"
             ></circle>`
-          }))}
+          })}
         </svg>
       </div>
     `;
   }
 
   updatePositions(e) {
-    this.dots = e.detail;
+    e.stopPropagation();
+
+    // ignore mouseup and touchend events
+    if (this.persistEvents && e.detail.value.length === 0) {
+        return;
+    }
+
+    // remove the pointerId from origin event
+    const value = e.detail.value.map(pointer => {
+      // keep in boundaries
+      const minX = Math.min(this.xRange[0], this.xRange[1]);
+      const maxX = Math.max(this.xRange[0], this.xRange[1]);
+      const minY = Math.min(this.yRange[0], this.yRange[1]);
+      const maxY = Math.max(this.yRange[0], this.yRange[1]);
+      const x = Math.min(maxX, Math.max(minX, pointer.x));
+      const y = Math.min(maxY, Math.max(minY, pointer.y));
+
+      return { x, y };
+    });
+
+    if (value > this.maxSize) {
+      value.splice(this.maxSize);
+    }
+
+    this.value = value;
+
+    const event = new CustomEvent('input', {
+      bubbles: true,
+      composed: true,
+      detail: { value: this.value },
+    });
+
+    this.dispatchEvent(event);
     this.requestUpdate();
   }
 }

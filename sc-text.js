@@ -10,15 +10,12 @@ class ScText extends ScElement {
     return {
       width: {
         type: Number,
-        reflect: true,
       },
       height: {
         type: Number,
-        reflect: true,
       },
       value: {
         type: String,
-        reflect: true,
       },
       readonly: {
         type: Boolean,

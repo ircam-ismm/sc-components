@@ -7,19 +7,15 @@ class ScButton extends ScElement {
     return {
       width: {
         type: Number,
-        reflect: true,
       },
       height: {
         type: Number,
-        reflect: true,
       },
       text: {
         type: String,
-        reflect: true,
       },
       value: {
         type: String,
-        reflect: true,
       },
     };
   }

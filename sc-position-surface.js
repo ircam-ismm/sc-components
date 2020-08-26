@@ -231,7 +231,7 @@ class ScPositionSurface extends ScElement {
     const event = new CustomEvent('input', {
       bubbles: true,
       composed: true,
-      detail: values,
+      detail: { value: values },
     });
 
     this.dispatchEvent(event);

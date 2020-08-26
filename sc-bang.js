@@ -8,11 +8,9 @@ class ScBang extends ScElement {
     return {
       width: {
         type: Number,
-        reflect: true,
       },
       height: {
         type: Number,
-        reflect: true,
       },
       active: {
         type: Boolean,
