@@ -117,6 +117,7 @@ class ScDotMap extends LitElement {
 
     this.backgroundColor = theme['--color-primary-1'];
     this.backgroundOpacity = 1;
+    this.backgroundImage = null;
 
     this._dirty = false;
   }
@@ -199,21 +200,19 @@ class ScDotMap extends LitElement {
           : ''
         }
         <svg
-          viewBox="0 0 ${this.svgWidth} ${this.svgHeight}"
-          style="width: ${this.svgWidth}px;
+          style="
+            width: ${this.svgWidth}px;
             height: ${this.svgHeight}px;
             left: ${(this.width - this.svgWidth) / 2}px;
-            top: ${(this.height - this.svgHeight) / 2}px;"
+            top: ${(this.height - this.svgHeight) / 2}px;
+            background-color: ${this.backgroundColor !== null ? this.backgroundColor : 'none'};
+            background-image: ${this.backgroundImage !== null ? `url(${this.backgroundImage})`: 'none'};
+            background-size: contain;
+            background-position: 50% 50%;
+            background-repeat: no-repeat;
+          "
+          viewBox="0 0 ${this.svgWidth} ${this.svgHeight}"
         >
-          <!-- background -->
-          <rect
-            x="0"
-            y="0"
-            width="${this.svgWidth}"
-            height="${this.svgHeight}"
-            fill="${this.backgroundColor}"
-            fill-opacity="${this.backgroundOpacity}"
-          ></rect>
 
           <!-- dost -->
           ${repeat(this.value, d => `${d.x}-${d.y}`, d => {
@@ -226,6 +225,7 @@ class ScDotMap extends LitElement {
             ></circle>`
           })}
         </svg>
+
       </div>
     `;
   }

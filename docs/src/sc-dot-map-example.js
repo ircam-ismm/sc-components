@@ -8,7 +8,6 @@ export default function () {
     const dots = [];
 
     setInterval(() => {
-      console.log('interval')
       if (dots.length > 20) {
         const removeIndex = Math.floor(Math.random() * dots.length);
         dots.splice(removeIndex, 1);
@@ -86,7 +85,7 @@ ${`<sc-dot-map></sc-dot-map>`}
       ></sc-text>
     </p>
     <p>
-      <sc-text readonly value="[dots=[]]"></sc-text>
+      <sc-text readonly height="42" value="[dots=[]] \n(dot={ x, y[, color, ...])"></sc-text>
       <sc-text id="dot-map-dots" width="300" height="150" readonly></sc-text>
     </p>
 
@@ -115,6 +114,19 @@ ${`<sc-dot-map></sc-dot-map>`}
         @change="${e => {
           const $component = document.querySelector('#test-dot-map-2');
           $component.persistEvents = e.detail.value;
+        }}"
+      ></sc-toggle>
+    </p>
+    <p>
+      <sc-text readonly value="[background-image=null]"></sc-text>
+      <sc-toggle
+        @change="${e => {
+          const $component = document.querySelector('#test-dot-map-2');
+          if (e.detail.value === true) {
+            $component.backgroundImage = 'images/seating-map.png';
+          } else {
+            $component.backgroundImage = null;
+          }
         }}"
       ></sc-toggle>
     </p>

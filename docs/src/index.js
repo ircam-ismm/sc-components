@@ -38,15 +38,15 @@ import dotMap from './sc-dot-map-example.js';
 import signal from './sc-signal-example.js';
 
 const docs = {
+  'sc-bang': bang,
+  'sc-button': button,
+  'sc-editor': editor,
+  'sc-number': number,
+  'sc-slider': slider,
+  'sc-text': text,
+  'sc-toggle': toggle,
+  'sc-signal': signal,
   'sc-dot-map': dotMap,
-  // 'sc-bang': bang,
-  // 'sc-button': button,
-  // 'sc-editor': editor,
-  // 'sc-number': number,
-  // 'sc-slider': slider,
-  // 'sc-text': text,
-  // 'sc-toggle': toggle,
-  // 'sc-signal': signal,
 };
 
 function setTheme(name) {

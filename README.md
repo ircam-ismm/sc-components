@@ -17,7 +17,7 @@ npm install @ircam/simple-components --save
 @todo
 
 ## Design Consideration
-  
+
 These design aspects aim at simplifying future wrapping of the components in an editing tool.
 
 ### Attributes
@@ -26,7 +26,7 @@ All components must expose a `width` and `height` attribute, for squared compone
 
 ### Events
 
-- all components should at least expose an `@input` or a `@change` event. 
+- all components should at least expose an `@input` or a `@change` event.
 - they can expose additional events, e.g. button `@press` and `@release`
 - payload should always have `e.details.value`
 
