@@ -107,45 +107,42 @@ class ScSlider extends ScElement {
     super.connectedCallback();
   }
 
-  attributeChangedCallback(name, oldval, newval) {
+  update(changedProperties) {
     this._dirty = true;
-    super.attributeChangedCallback(name, oldval, newval);
-  }
-
-  _computeSizesAndScales() {
-    if (this.orientation === 'horizontal') {
-      this._sliderWidth = this.displayNumber
-        ? this.width - this._numberWidth - this._marginSliderNumber
-        : this.width;
-    } else {
-      this._sliderWidth = this.width;
-    }
-
-    this._sliderWidth -= 2; // take borders into account
-    this._sliderHeight = this.height - 2; // take borders into account
-
-    if (this.max < this.min) {
-      const tmp = this.max;
-      this.max = this.min;
-      this.min = tmp;
-    }
-
-    // define transfert functions and scales
-    this.scale = getScale(
-      [this.min, this.max],
-      [0, this.orientation === 'horizontal' ? this._sliderWidth : this._sliderHeight]
-    );
-
-    this.clipper = getClipper(this.min, this.max, this.step);
-
-    // clean default value
-    this.value = this.clipper(this.value);
-
+    super.update(changedProperties);
   }
 
   render() {
     if (this._dirty) {
-      this._computeSizesAndScales();
+      if (this.orientation === 'horizontal') {
+        this._sliderWidth = this.displayNumber
+          ? this.width - this._numberWidth - this._marginSliderNumber
+          : this.width;
+      } else {
+        // @todo - clean vertical w/ number box
+        this._sliderWidth = this.width;
+      }
+
+      this._sliderWidth -= 2; // take borders into account
+      this._sliderHeight = this.height - 2; // take borders into account
+
+      if (this.max < this.min) {
+        const tmp = this.max;
+        this.max = this.min;
+        this.min = tmp;
+      }
+
+      // define transfert functions and scales
+      this.scale = getScale(
+        [this.min, this.max],
+        [0, this.orientation === 'horizontal' ? this._sliderWidth : this._sliderHeight]
+      );
+
+      this.clipper = getClipper(this.min, this.max, this.step);
+
+      // clean default value
+      this.value = this.clipper(this.value);
+
       this._dirty = false;
     }
 

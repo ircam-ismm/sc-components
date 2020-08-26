@@ -95,7 +95,7 @@ class ScText extends ScElement {
     `;
   }
 
-  onKeyDown(e) {
+  onKeyDown(e) {
     // manually do comment because opens Help menu otherwise...
     if (e.metaKey && e.key === 's') {
       e.preventDefault();

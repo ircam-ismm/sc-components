@@ -128,9 +128,9 @@ class ScDotMap extends LitElement {
     super.connectedCallback();
   }
 
-  attributeChangedCallback(name, oldval, newval) {
+  update(changedProperties) {
     this._dirty = true;
-    super.attributeChangedCallback(name, oldval, newval);
+    super.update(changedProperties);
   }
 
   render() {
@@ -172,6 +172,8 @@ class ScDotMap extends LitElement {
       this.radius2px = (val) => {
         return valToPxRatio * val;
       }
+
+      this._dirty = false;
     }
 
     let dotsRadius = this.defaultRadius;
