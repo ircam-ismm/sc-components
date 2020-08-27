@@ -196,7 +196,6 @@ class ScDotMap extends LitElement {
       dotsRadius = this.radius2px(this.radiusRel);
     }
 
-    console.log(this.backgroundImage, typeof this.backgroundImage, this.backgroundImage !== null ? `url(${this.backgroundImage})`: 'none');
 
     return html`
       <div
