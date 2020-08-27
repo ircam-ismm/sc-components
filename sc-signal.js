@@ -176,9 +176,9 @@ class ScSignal extends ScElement {
     this.rAFId = window.requestAnimationFrame(this._renderSignal);
   }
 
-  attributeChangedCallback(name, newValue, oldValue) {
+  update(changedProperties) {
     this._dirty = true;
-    super.attributeChangedCallback(name, newValue, oldValue);
+    super.update(changedProperties);
   }
 
   disconnectedCallback() {
