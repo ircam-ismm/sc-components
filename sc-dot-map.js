@@ -116,6 +116,7 @@ class ScDotMap extends LitElement {
     this.captureEvents = false;
     this.persistEvents = false;
 
+    // can be overriden to 'none'
     this.backgroundColor = theme['--color-primary-1'];
     this.backgroundOpacity = 1;
     this.backgroundImage = null;
@@ -129,7 +130,15 @@ class ScDotMap extends LitElement {
   }
 
   update(changedProperties) {
-    this._dirty = true;
+    if (
+      changedProperties.has('width')  ||
+      changedProperties.has('height') ||
+      changedProperties.has('xRange') ||
+      changedProperties.has('yRange')
+    ) {
+      this._dirty = true;
+    }
+
     super.update(changedProperties);
   }
 
@@ -157,20 +166,23 @@ class ScDotMap extends LitElement {
       this.svgWidth = limitingSize / limitingDelta * xDelta;
       this.svgHeight = limitingSize / limitingDelta * yDelta;
 
-      this.x2px = (val) => {
+      // x2px and y2px should share the same slope (a), only offset (b) should differ
+      {
         const a = this.svgWidth / (this.xRange[1] - this.xRange[0]);
         const b = - (this.xRange[0] * a);
-        return a * val + b;
+        this.x2px = x => a * x + b;
       }
 
-      this.y2px = (val) => {
+      {
         const a = this.svgHeight / (this.yRange[1] - this.yRange[0]);
         const b = - (this.yRange[0] * a);
-        return a * val + b;
+        this.y2px = y => a * y + b;
       }
 
-      this.radius2px = (val) => {
-        return valToPxRatio * val;
+      // for radius as we don't want any offset, we just pick the slope of one of the others
+      {
+        const a = Math.abs(this.svgHeight / (this.yRange[1] - this.yRange[0]));
+        this.radius2px = r => a * r;
       }
 
       this._dirty = false;
@@ -183,6 +195,8 @@ class ScDotMap extends LitElement {
     } else if (this.radiusRel) {
       dotsRadius = this.radius2px(this.radiusRel);
     }
+
+    console.log(this.backgroundImage, typeof this.backgroundImage, this.backgroundImage !== null ? `url(${this.backgroundImage})`: 'none');
 
     return html`
       <div
@@ -202,17 +216,27 @@ class ScDotMap extends LitElement {
           `
           : ''
         }
+        <div
+          style="
+            width: ${this.svgWidth}px;
+            height: ${this.svgHeight}px;
+            position: absolute;
+            left: ${(this.width - this.svgWidth) / 2}px;
+            top: ${(this.height - this.svgHeight) / 2}px;
+            background-color: ${this.backgroundColor};
+            background-image: ${this.backgroundImage !== '' ? `url(${this.backgroundImage})`: 'none'};
+            background-size: contain;
+            background-position: 50% 50%;
+            background-repeat: no-repeat;
+            opacity: ${this.backgroundOpacity};
+          "
+        ></div>
         <svg
           style="
             width: ${this.svgWidth}px;
             height: ${this.svgHeight}px;
             left: ${(this.width - this.svgWidth) / 2}px;
             top: ${(this.height - this.svgHeight) / 2}px;
-            background-color: ${this.backgroundColor !== null ? this.backgroundColor : 'none'};
-            background-image: ${this.backgroundImage !== null ? `url(${this.backgroundImage})`: 'none'};
-            background-size: contain;
-            background-position: 50% 50%;
-            background-repeat: no-repeat;
           "
           viewBox="0 0 ${this.svgWidth} ${this.svgHeight}"
         >
