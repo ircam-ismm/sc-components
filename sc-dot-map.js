@@ -196,7 +196,6 @@ class ScDotMap extends LitElement {
       dotsRadius = this.radius2px(this.radiusRel);
     }
 
-
     return html`
       <div
         style="width: ${this.width}px; height: ${this.height}px;">
