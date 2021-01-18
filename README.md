@@ -47,6 +47,10 @@ see. documentation ([http://ircam-ismm.github.io/simple-components/](http://irca
 - `<sc-radio>`
 - `<sc-dial>` (maybe we just have to accept some people like that sort of thing...)
 
+## @fixme
+
+- `<sc-number>` allows (display) values such as "0000."
+
 ### theming
   + https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties
   + https://lit-element.polymer-project.org/guide/styles#example-theme

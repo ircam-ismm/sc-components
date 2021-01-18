@@ -119,7 +119,7 @@ class ScDotMap extends LitElement {
     // can be overriden to 'none'
     this.backgroundColor = theme['--color-primary-1'];
     this.backgroundOpacity = 1;
-    this.backgroundImage = null;
+    this.backgroundImage = '';
 
     this._dirty = false;
   }
