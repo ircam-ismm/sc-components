@@ -93,7 +93,7 @@ class ScPositionSurface extends ScElement {
         @touchstart="${{
           handleEvent: this.touchStart,
           passive: false,
-        }}}"
+        }}"
 
         @contextmenu="${this._preventContextMenu}"
       ></div>

@@ -40,9 +40,17 @@ class ScToggle extends ScElement {
     this.requestUpdate();
   }
 
+  get width() {
+    return this._size;
+  }
+
   set height(value) {
     this._size = value - 2;
     this.requestUpdate();
+  }
+
+  get height() {
+    return this._size;
   }
 
   constructor() {
