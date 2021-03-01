@@ -105,6 +105,10 @@ class ScNumber extends ScElement {
     }
   }
 
+  get value() {
+    return this._value;
+  }
+
   constructor() {
     super();
 
@@ -437,3 +441,5 @@ class ScNumber extends ScElement {
 }
 
 customElements.define('sc-number', ScNumber);
+
+export default ScNumber;

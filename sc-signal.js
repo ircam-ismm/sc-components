@@ -322,3 +322,5 @@ class ScSignal extends ScElement {
 }
 
 customElements.define('sc-signal', ScSignal);
+
+export default ScSignal;

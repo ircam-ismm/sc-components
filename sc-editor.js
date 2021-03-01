@@ -20,14 +20,16 @@ import addonDialog from './vendors/addon-dialog-css.js';
 // globalThis.JSHINT = JSHINT;
 
 CodeMirror.commands.save = function(cm) {
+  cm._scComponent.value = cm.getValue();
+
   const event = new CustomEvent('change', {
     bubbles: true,
     composed: true,
-    detail: { value: cm.getValue() },
+    detail: { value: cm._scComponent.value },
   });
 
-  cm.cleanDoc();
-  cm.dispatchEvent(event);
+  cm._scComponent.cleanDoc();
+  cm._scComponent.dispatchEvent(event);
 };
 
 class ScEditor extends LitElement {
@@ -59,6 +61,7 @@ class ScEditor extends LitElement {
       }
 
       :host > div {
+        box-sizing: border-box;
         border: 1px solid ${theme['--color-primary-2']};
         border-left: 2px solid ${theme['--color-primary-2']};
         position: relative;
@@ -87,7 +90,7 @@ class ScEditor extends LitElement {
   }
 
   get value() {
-    return this.codeMirror.getValue();
+    return this._value;
   }
 
   set value(value) {
@@ -102,21 +105,31 @@ class ScEditor extends LitElement {
     }
   }
 
+  get width() {
+    return this._width;
+  }
+
   set width(value) {
-    this._width = value - 3;
+    this._width = value;
+    this._editorWidth = this._width - 3;
 
     if (this.codeMirror) {
       this.requestUpdate();
-      this.codeMirror.setSize(this._width, this._height);
+      this.codeMirror.setSize(this._editorWidth, this._editorHeight);
     }
   }
 
+  get height() {
+    return this._height;
+  }
+
   set height(value) {
-    this._height = value - 2;
+    this._height = value;
+    this._editorHeight = this._height - 2;
 
     if (this.codeMirror) {
       this.requestUpdate();
-      this.codeMirror.setSize(this._width, this._height);
+      this.codeMirror.setSize(this._editorWidth, this._editorHeight);
     }
   }
 
@@ -146,14 +159,15 @@ class ScEditor extends LitElement {
         <div
           class="codemirror"
           style="
-            width: ${this._width}px;
-            height: ${this._height}px;
+            width: ${this._editorWidth}px;
+            height: ${this._editorHeight}px;
             font-size: ${this.fontSize}px;
           "
         ></div>
         <sc-button
           text="save"
           width="120"
+          @input="${e => e.stopPropagation()}"
           @release="${this.save}"
         ></sc-button>
       </div>
@@ -173,15 +187,17 @@ class ScEditor extends LitElement {
   }
 
   // need to copy same logic as for cmd + s / ctrl + s
-  save() {
+  save(e) {
+    this._value = this.codeMirror.getValue();
+
     const event = new CustomEvent('change', {
       bubbles: true,
       composed: true,
-      detail: { value: this.codeMirror.getValue() },
+      detail: { value: this._value },
     });
 
     this.codeMirror.cleanDoc();
-    this.codeMirror.dispatchEvent(event);
+    this.dispatchEvent(event);
   }
 
   firstUpdated() {
@@ -198,11 +214,10 @@ class ScEditor extends LitElement {
     });
 
     // shared the dispatchEvent method to propagate save from keyboard
-    this.codeMirror.dispatchEvent = this.dispatchEvent.bind(this);
-    this.codeMirror.cleanDoc = this.cleanDoc.bind(this);
+    this.codeMirror._scComponent = this;
 
     // set the size of the editor to match container
-    this.codeMirror.setSize(this._width, this._height);
+    this.codeMirror.setSize(this._editorWidth, this._editorHeight);
 
     // replace tabs with 2 spaces
     this.codeMirror.setOption('extraKeys', {
@@ -231,3 +246,5 @@ class ScEditor extends LitElement {
 }
 
 customElements.define('sc-editor', ScEditor);
+
+export default ScEditor;

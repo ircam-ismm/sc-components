@@ -14,7 +14,10 @@ class ScToggle extends ScElement {
       active: {
         type: Boolean,
         reflect: true,
-      }
+      },
+      value: {
+        type: Boolean,
+      },
     };
   }
 
@@ -25,18 +28,18 @@ class ScToggle extends ScElement {
         display: inline-block;
         box-sizing: border-box;
         user-select: none;
-        border: 1px solid ${theme['--color-primary-2']};
         font-size: 0 !important;
       }
 
       svg {
-        /*border-radius: 2px;*/
+        box-sizing: border-box;
+        border: 1px solid ${theme['--color-primary-2']};
       }
     `;
   }
 
   set width(value) {
-    this._size = value - 2;
+    this._size = value;
     this.requestUpdate();
   }
 
@@ -45,12 +48,21 @@ class ScToggle extends ScElement {
   }
 
   set height(value) {
-    this._size = value - 2;
+    this._size = value;
     this.requestUpdate();
   }
 
   get height() {
     return this._size;
+  }
+
+  // alias active for consistency and genericity with other components
+  get value() {
+    return this.active;
+  }
+
+  set value(active) {
+    this.active = active;
   }
 
   constructor() {
@@ -137,3 +149,5 @@ class ScToggle extends ScElement {
 }
 
 customElements.define('sc-toggle', ScToggle);
+
+export default ScToggle;

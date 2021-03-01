@@ -4,6 +4,9 @@ userSelect, ids, etc.
 */
 import { LitElement } from 'lit-element';
 
+// extending lit-element examples :
+// https://github.com/Polymer/lit-element/issues/450
+
 let id = 0;
 
 const userSelectNoneOnBodyRegister = new Set();

@@ -256,3 +256,5 @@ class ScSlider extends ScElement {
 }
 
 customElements.define('sc-slider', ScSlider);
+
+export default ScSlider;

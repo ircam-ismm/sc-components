@@ -294,3 +294,5 @@ class ScDotMap extends LitElement {
 }
 
 customElements.define('sc-dot-map', ScDotMap);
+
+export default ScDotMap;

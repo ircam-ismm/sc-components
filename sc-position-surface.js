@@ -94,7 +94,6 @@ class ScPositionSurface extends ScElement {
           handleEvent: this.touchStart,
           passive: false,
         }}"
-
         @contextmenu="${this._preventContextMenu}"
       ></div>
     `
@@ -239,3 +238,5 @@ class ScPositionSurface extends ScElement {
 }
 
 customElements.define('sc-position-surface', ScPositionSurface);
+
+export default ScPositionSurface;

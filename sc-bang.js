@@ -15,6 +15,7 @@ class ScBang extends ScElement {
       active: {
         type: Boolean,
       },
+      value: {},
     };
   }
 
@@ -24,22 +25,33 @@ class ScBang extends ScElement {
         vertical-align: top;
         display: inline-block;
         box-sizing: border-box;
-        border: 1px solid ${theme['--color-primary-2']};
         background-color: ${theme['--color-primary-1']};
         font-size: 0 !important;
       }
 
+      svg {
+        box-sizing: border-box;
+        border: 1px solid ${theme['--color-primary-2']};
+      }
     `;
   }
 
   set width(value) {
-    this._size = value - 2; // for borders
+    this._size = value;
     this.requestUpdate();
   }
 
+  get width() {
+    return this._size;
+  }
+
   set height(value) {
-    this._size = value - 2; // for borders
+    this._size = value;
     this.requestUpdate();
+  }
+
+  get height() {
+    return this._size;
   }
 
   set active(value) {
@@ -63,7 +75,10 @@ class ScBang extends ScElement {
   constructor() {
     super();
 
-    this._size = 28;
+    this.width = 30;
+    this.height = 30;
+    this.value = true,
+
     this._active = false;
     this._timeoutId = null;
   }
@@ -73,7 +88,10 @@ class ScBang extends ScElement {
 
     return html`
       <svg
-        style="width: ${this._size}px; height: ${this._size}px;"
+        style="
+          width: ${this._size}px;
+          height: ${this._size}px;
+        "
         viewbox="0 0 100 100"
         @mousedown="${this._triggerEvent}"
         @touchstart="${this._triggerEvent}"
@@ -108,7 +126,7 @@ class ScBang extends ScElement {
     const inputEvent = new CustomEvent('input', {
       bubbles: true,
       composed: true,
-      detail: { value: null },
+      detail: { value: this.value },
     });
 
     this.active = true;
@@ -117,4 +135,6 @@ class ScBang extends ScElement {
 }
 
 customElements.define('sc-bang', ScBang);
+
+export default ScBang;
 

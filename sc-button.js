@@ -134,3 +134,5 @@ class ScButton extends ScElement {
 }
 
 customElements.define('sc-button', ScButton);
+
+export default ScButton;

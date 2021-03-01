@@ -95,6 +95,14 @@ class ScText extends ScElement {
     `;
   }
 
+  focus() {
+    const $textarea = this.shadowRoot.querySelector('textarea');
+
+    if ($textarea) {
+      $textarea.focus();
+    }
+  }
+
   onKeyDown(e) {
     // manually do comment because opens Help menu otherwise...
     if (e.metaKey && e.key === 's') {
@@ -135,3 +143,5 @@ class ScText extends ScElement {
 }
 
 customElements.define('sc-text', ScText);
+
+export default ScText;
