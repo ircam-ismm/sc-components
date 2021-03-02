@@ -34,6 +34,7 @@ class ScDragNDrop extends ScElement {
         vertical-align: middle;
         background-color: ${theme['--color-primary-1']};
         border: 1px solid ${theme['--color-primary-2']};
+        box-sizing: border-box;
         border-radius: 2px;
         color: white;
         font-family: ${fontFamily};
@@ -191,3 +192,5 @@ class ScDragNDrop extends ScElement {
 }
 
 customElements.define('sc-dragndrop', ScDragNDrop);
+
+export default ScDragNDrop;

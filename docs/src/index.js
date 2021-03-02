@@ -24,8 +24,10 @@ import '@ircam/simple-components/sc-bang.js';
 import '@ircam/simple-components/sc-signal.js';
 import '@ircam/simple-components/sc-dot-map.js';
 import '@ircam/simple-components/sc-dragndrop.js';
+import '@ircam/simple-components/sc-matrix.js';
 
 // controls
+import matrix from './sc-matrix-example.js';
 import dragndrop from './sc-dragndrop-example.js';
 import bang from './sc-bang-example.js';
 import button from './sc-button-example.js';
@@ -40,6 +42,7 @@ import dotMap from './sc-dot-map-example.js';
 import signal from './sc-signal-example.js';
 
 const docs = {
+  'sc-matrix': matrix,
   'sc-dragndrop': dragndrop,
   'sc-bang': bang,
   'sc-button': button,
