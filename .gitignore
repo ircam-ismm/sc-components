@@ -6,3 +6,4 @@ vendors
 node_modules
 
 .bak
+docs/_test-files
