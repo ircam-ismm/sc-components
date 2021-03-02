@@ -10,9 +10,9 @@ theme['--color-primary-1'] = css`#272822ff`;
 theme['--color-primary-2'] = css`#3d3e39ff`;
 theme['--color-primary-3'] = css`#6a6a69ff`;
 theme['--color-primary-4'] = css`#dededeff`;
-theme['--color-secondary-1'] = css`#f0db4fff`;
-theme['--color-secondary-2'] = css`#1c78c0ff`;
-theme['--color-secondary-3'] = css`#d9534fff`;
+theme['--color-secondary-1'] = css`#f0db4fff`; // yellow
+theme['--color-secondary-2'] = css`#1c78c0ff`; // blue
+theme['--color-secondary-3'] = css`#d9534fff`; // red
 
 // export const userSelectNone = css`
 //   -webkit-touch-callout: none; /* iOS Safari */

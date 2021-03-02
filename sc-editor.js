@@ -1,5 +1,5 @@
 import { LitElement, html, css } from 'lit-element';
-import { theme, fontSize } from './styles.js'
+import { theme, fontSize } from './styles.js';
 import './sc-button.js';
 
 import CodeMirror from 'codemirror';
