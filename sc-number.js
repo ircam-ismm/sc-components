@@ -97,7 +97,35 @@ class ScNumber extends ScElement {
     `;
   }
 
+  set min(value) {
+    this._min = Math.min(value, this._max);
+
+    if (this._value < this._min) {
+      this.value = this._min;
+      this._emitChange();
+    }
+  }
+
+  get min() {
+    return this._min;
+  }
+
+  set max(value) {
+    this._max = Math.max(value, this._min);
+
+    if (this._value > this._max) {
+      this.value = this._max;
+      this._emitChange();
+    }
+  }
+
+  get max() {
+    return this._max;
+  }
+
   set value(val) {
+    val = Math.min(this._max, Math.max(this._min, val));
+
     if (val !== this._value) {
       this._value = val;
       this._displayValue = val.toString();
@@ -115,21 +143,26 @@ class ScNumber extends ScElement {
     this.width = 100;
     this.height = 30;
     this.integer = false;
-    this.value = 0;
+    this._min = -Infinity;
+    this._max = +Infinity;
+    this._value = 0;
+    this._displayValue = '0';
 
-    this.min = -Infinity;
-    this.max = +Infinity;
+    // init through setters
+    // this.min = -Infinity;
+    // this.max = +Infinity;
+    // this.value = 0;
+
+    this._valueChanged = false;
 
     this._updateValue1 = this.updateValueFromPointer(1);
+    this._updateValue01 = this.updateValueFromPointer(0.1);
+    this._updateValue001 = this.updateValueFromPointer(0.01);
+    this._updateValue0001 = this.updateValueFromPointer(0.001);
+    this._updateValue00001 = this.updateValueFromPointer(0.0001);
+    this._updateValue000001 = this.updateValueFromPointer(0.00001);
+    this._updateValue0000001 = this.updateValueFromPointer(0.000001);
 
-    if (!this.integer) {
-      this._updateValue01 = this.updateValueFromPointer(0.1);
-      this._updateValue001 = this.updateValueFromPointer(0.01);
-      this._updateValue0001 = this.updateValueFromPointer(0.001);
-      this._updateValue00001 = this.updateValueFromPointer(0.0001);
-      this._updateValue000001 = this.updateValueFromPointer(0.00001);
-      this._updateValue0000001 = this.updateValueFromPointer(0.000001);
-    }
 
     this._numKeyPressed = 0;
     this.onKeyDown = this.onKeyDown.bind(this);
@@ -348,28 +381,16 @@ class ScNumber extends ScElement {
         : parseFloat(this._displayValue);
 
       // modify displayValue only if needed
-      if (this._value < this.min || this._value > this.max) {
-        this._value = Math.max(this.min, Math.min(this.max, this._value));
+      if (this._value < this._min || this._value > this._max) {
+        this._value = Math.max(this._min, Math.min(this._max, this._value));
         this._displayValue = this._value.toString();
       }
 
-      const inputEvent = new CustomEvent('input', {
-        bubbles: true,
-        composed: true,
-        detail: { value: this._value },
-      });
-
-      const changeEvent = new CustomEvent('change', {
-        bubbles: true,
-        composed: true,
-        detail: { value: this._value },
-      });
-
       this._numKeyPressed = 0;
 
+      this._emitInput();
+      this._emitChange();
       this.requestUpdate();
-      this.dispatchEvent(inputEvent);
-      this.dispatchEvent(changeEvent);
     }
   }
 
@@ -385,6 +406,8 @@ class ScNumber extends ScElement {
           return;
         }
 
+        const lastValue = this._value;
+
         const sign = e.detail.dy < 0 ? -1 : 1;
         // heuristically adjust sensiblity
         const scale = 8;
@@ -399,7 +422,7 @@ class ScNumber extends ScElement {
         this._value += step * dy;
         // crop at step (use precision arythmetics)
         this._value = NP.times(Math.round(this._value / step), step);
-        this._value = Math.max(this.min, Math.min(this.max, this._value));
+        this._value = Math.max(this._min, Math.min(this._max, this._value));
 
         // format display value to show trailing zeros...)
         const displayValue = this._value.toString();
@@ -418,25 +441,40 @@ class ScNumber extends ScElement {
 
         this._displayValue = valueParts.join('.');
 
-        const event = new CustomEvent('input', {
-          bubbles: true,
-          composed: true,
-          detail: { value: this._value },
-        });
-
-        this.dispatchEvent(event);
+        if (this._value !== lastValue) {
+          this._valueChanged = true;
+          this._emitInput();
+        }
       } else {
-        const event = new CustomEvent('change', {
-          bubbles: true,
-          composed: true,
-          detail: { value: this._value },
-        });
-
-        this.dispatchEvent(event);
+        // this triggers a change when we select the box without changing the value
+        if (this._valueChanged === true) {
+          this._valueChanged = false;
+          this._emitChange();
+        }
       }
 
       this.requestUpdate();
     }
+  }
+
+  _emitInput() {
+    const event = new CustomEvent('input', {
+      bubbles: true,
+      composed: true,
+      detail: { value: this._value },
+    });
+
+    this.dispatchEvent(event);
+  }
+
+  _emitChange() {
+    const event = new CustomEvent('change', {
+      bubbles: true,
+      composed: true,
+      detail: { value: this._value },
+    });
+
+    this.dispatchEvent(event);
   }
 }
 

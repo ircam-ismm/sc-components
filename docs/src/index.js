@@ -43,16 +43,16 @@ import signal from './sc-signal-example.js';
 
 const docs = {
   'sc-bang': bang,
-  'sc-button': button,
-  'sc-editor': editor,
+  'sc-toggle': toggle,
   'sc-number': number,
   'sc-slider': slider,
+  'sc-button': button,
   'sc-text': text,
-  'sc-toggle': toggle,
-  'sc-signal': signal,
-  'sc-dot-map': dotMap,
+  'sc-editor': editor,
   'sc-matrix': matrix,
+  'sc-dot-map': dotMap,
   'sc-dragndrop': dragndrop,
+  'sc-signal': signal,
 };
 
 function setTheme(name) {
