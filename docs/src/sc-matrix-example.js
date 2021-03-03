@@ -26,8 +26,6 @@ ${`<sc-matrix></sc-matrix>`}
 
     <sc-matrix
       id="test-matrix"
-      rows="10"
-      columns="18"
       @change="${e => {
         const $change = document.querySelector('#matrix-change');
         $change.value = e.detail.value.map(row => row.join(', ')).join('\n');
@@ -41,7 +39,7 @@ ${`<sc-matrix></sc-matrix>`}
       <sc-text
         id="matrix-change"
         width="400"
-        height="200"
+        height="150"
         readonly
       ></sc-text>
     </p>
@@ -98,6 +96,27 @@ ${`<sc-matrix></sc-matrix>`}
           $component.columns = e.detail.value;
         }}"
       ></sc-number>
+    </p>
+    <p>
+      <sc-text readonly value="[cellValues=[0, 1]]"></sc-text>
+      <sc-text
+        value="[0, 1]"
+        @change="${e => {
+          const $component = document.querySelector('#test-matrix');
+          console.log(e.detail.value);
+          $component.cellValues = JSON.parse(e.detail.value);
+        }}"
+      ></sc-text>
+    </p>
+    <p>
+      <sc-text readonly value="[reset]"></sc-text>
+      <sc-bang
+        value="[0, 1]"
+        @input="${e => {
+          const $component = document.querySelector('#test-matrix');
+          $component.reset = true;
+        }}"
+      ></sc-bang>
     </p>
   `;
 }

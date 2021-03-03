@@ -42,8 +42,6 @@ import dotMap from './sc-dot-map-example.js';
 import signal from './sc-signal-example.js';
 
 const docs = {
-  'sc-matrix': matrix,
-  'sc-dragndrop': dragndrop,
   'sc-bang': bang,
   'sc-button': button,
   'sc-editor': editor,
@@ -53,6 +51,8 @@ const docs = {
   'sc-toggle': toggle,
   'sc-signal': signal,
   'sc-dot-map': dotMap,
+  'sc-matrix': matrix,
+  'sc-dragndrop': dragndrop,
 };
 
 function setTheme(name) {

@@ -12,6 +12,7 @@ class ScMatrix extends ScElement {
       // @note: bad name...
       cellValues: { type: Array },
       value: { type: Array },
+      reset: { type: Boolean },
     };
   }
 
@@ -53,11 +54,81 @@ class ScMatrix extends ScElement {
 
   set value(value) {
     this._value = value;
+    // we `requestUpdate` because in many cases
+    // `value` might the same Array instance.
     this.requestUpdate();
   }
 
   get value() {
     return this._value;
+  }
+
+  set reset(value) {
+    // we actually don't care of the value
+    this._value.forEach(row => {
+      for (let i = 0; i < row.length; i++) {
+        row[i] = this.cellValues[0];
+      }
+    });
+
+    this._emitChange();
+    this.requestUpdate();
+  }
+
+  get reset() {
+    return undefined;
+  }
+
+  constructor() {
+    super();
+
+    this.width = 300;
+    this.height = 150;
+    this._value = [];
+
+    this.cellValues = [0, 1];
+
+    this.columns = 8;
+    this.rows = 4;
+  }
+
+  render() {
+    const cellWidth = this.width / this.columns;
+    const cellHeight = this.height / this.rows;
+
+    const minValue = this.cellValues[0];
+    const maxValue = this.cellValues[this.cellValues.length - 1];
+
+    return html`
+      <svg
+        style="width: ${this.width}px; height: ${this.height}px;"
+        @contextmenu="${this._preventContextMenu}"
+      >
+        ${this.value.map((row, rowIndex) => {
+          const y = cellHeight * rowIndex;
+
+          return row.map((value, columnIndex) => {
+            const x = cellWidth * columnIndex;
+            const opacity = (value - minValue) / (maxValue - minValue);
+
+            return svg`
+              <rect
+                stroke="#787878"
+                fill="#ffffff"
+                fill-opacity="${opacity}"
+                width="${cellWidth}"
+                height="${cellHeight}"
+                x="${x}"
+                y="${y}"
+                data-rowIndex="${rowIndex}"
+                data-columnIndex="${columnIndex}"
+                @mousedown="${this._updateCell}"
+              ></rect>
+            `;
+          });
+        })}
+      </svg>
+    `;
   }
 
   _resizeMatrix() {
@@ -97,62 +168,20 @@ class ScMatrix extends ScElement {
     this.requestUpdate();
   }
 
-  constructor() {
-    super();
-
-    this.width = 300;
-    this.height = 200;
-    this._value = [];
-
-    this.cellValues = [0, 0.5, 1];
-
-    this.columns = 8;
-    this.rows = 4;
-  }
-
-  render() {
-    const cellWidth = this.width / this.columns;
-    const cellHeight = this.height / this.rows;
-
-    return html`
-      <svg
-        style="width: ${this.width}px; height: ${this.height}px;"
-        @contextmenu="${this._preventContextMenu}"
-      >
-        ${this.value.map((row, rowIndex) => {
-          const y = cellHeight * rowIndex;
-
-          return row.map((value, columnIndex) => {
-            const x = cellWidth * columnIndex;
-
-            return svg`
-              <rect
-                stroke="#787878"
-                fill="#ffffff"
-                fill-opacity="${value}"
-                width="${cellWidth}"
-                height="${cellHeight}"
-                x="${x}"
-                y="${y}"
-                data-rowIndex="${rowIndex}"
-                data-columnIndex="${columnIndex}"
-                @mousedown="${this._updateCell}"
-              ></rect>
-            `;
-          });
-        })}
-      </svg>
-    `;
-  }
-
   _updateCell(e) {
     const { rowIndex, columnIndex } = e.target.dataset;
 
     const currentIndex = this.cellValues.indexOf(this.value[rowIndex][columnIndex]);
-    const nextIndex = (currentIndex + 1) % this.cellValues.length;
+    // handle situations where cellValues as changed in between two interactions
+    const nextIndex = currentIndex === -1 ? 0 : (currentIndex + 1) % this.cellValues.length;
 
     this.value[rowIndex][columnIndex] = this.cellValues[nextIndex];
 
+    this._emitChange();
+    this.requestUpdate();
+  }
+
+  _emitChange() {
     const event = new CustomEvent('change', {
       bubbles: true,
       composed: true,
@@ -160,7 +189,6 @@ class ScMatrix extends ScElement {
     });
 
     this.dispatchEvent(event);
-    this.requestUpdate();
   }
 }
 
