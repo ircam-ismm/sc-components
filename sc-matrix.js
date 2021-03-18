@@ -9,8 +9,9 @@ class ScMatrix extends ScElement {
       height: { type: Number },
       columns: { type: Number },
       rows: { type: Number },
-      // @note: bad name...
-      cellValues: { type: Array },
+      // @note - `cellValues` is bad name..., `entries` better ?
+      // @todo - updates values when updated
+      _entries: { type: Array },
       value: { type: Array },
       reset: { type: Boolean },
     };
@@ -54,8 +55,12 @@ class ScMatrix extends ScElement {
 
   set value(value) {
     this._value = value;
-    // we `requestUpdate` because in many cases
-    // `value` might the same Array instance.
+
+    // if we replace the internal data matrix with an external one, we want
+    // to keep the matrix description consistent
+    this._rows = this._value.length;
+    this._columns = this._value[0].length;
+    // `requestUpdate` because in many cases `value` might be the same instance
     this.requestUpdate();
   }
 
@@ -67,7 +72,7 @@ class ScMatrix extends ScElement {
     // we actually don't care of the value
     this._value.forEach(row => {
       for (let i = 0; i < row.length; i++) {
-        row[i] = this.cellValues[0];
+        row[i] = this._entries[0];
       }
     });
 
@@ -79,6 +84,36 @@ class ScMatrix extends ScElement {
     return undefined;
   }
 
+  set entries(entries) {
+    this._entries = entries;
+
+    // check existing values against new entries
+    for (let y = 0; y < this._value.length; y++) {
+      const row = this._value[y];
+
+      for (let x = 0; x < row.length; x++) {
+        const currentValue = row[x];
+        // find closest entry
+        if (this._entries.indexOf(currentValue) === -1) {
+          // @note on`reduce` - by default accumulator (here `a`) is the first
+          // element of the array
+          const closest = this.entries.reduce((a, b) => {
+            return Math.abs(b - currentValue) < Math.abs(a - currentValue) ? b : a;
+          });
+
+          this._value[y][x] = closest;
+        }
+      }
+    }
+
+    this._emitChange();
+    this.requestUpdate();
+  }
+
+  get entries() {
+    return this._entries;
+  }
+
   constructor() {
     super();
 
@@ -86,7 +121,7 @@ class ScMatrix extends ScElement {
     this.height = 150;
     this._value = [];
 
-    this.cellValues = [0, 1];
+    this._entries = [0, 1];
 
     this.columns = 8;
     this.rows = 4;
@@ -96,8 +131,8 @@ class ScMatrix extends ScElement {
     const cellWidth = this.width / this.columns;
     const cellHeight = this.height / this.rows;
 
-    const minValue = this.cellValues[0];
-    const maxValue = this.cellValues[this.cellValues.length - 1];
+    const minValue = this._entries[0];
+    const maxValue = this._entries[this._entries.length - 1];
 
     return html`
       <svg
@@ -155,12 +190,12 @@ class ScMatrix extends ScElement {
         // check _rows
         value.forEach(row => {
           for (let x = row.length; x < this.columns; x++) {
-            row[x] = this.cellValues[0];
+            row[x] = this._entries[0];
           }
         });
       } else {
         // new row
-        const row = new Array(this.columns).fill(this.cellValues[0]);
+        const row = new Array(this.columns).fill(this._entries[0]);
         value[y] = row;
       }
     }
@@ -171,11 +206,11 @@ class ScMatrix extends ScElement {
   _updateCell(e) {
     const { rowIndex, columnIndex } = e.target.dataset;
 
-    const currentIndex = this.cellValues.indexOf(this.value[rowIndex][columnIndex]);
-    // handle situations where cellValues as changed in between two interactions
-    const nextIndex = currentIndex === -1 ? 0 : (currentIndex + 1) % this.cellValues.length;
+    const currentIndex = this._entries.indexOf(this.value[rowIndex][columnIndex]);
+    // handle situations where _entries as changed in between two interactions
+    const nextIndex = currentIndex === -1 ? 0 : (currentIndex + 1) % this._entries.length;
 
-    this.value[rowIndex][columnIndex] = this.cellValues[nextIndex];
+    this.value[rowIndex][columnIndex] = this._entries[nextIndex];
 
     this._emitChange();
     this.requestUpdate();

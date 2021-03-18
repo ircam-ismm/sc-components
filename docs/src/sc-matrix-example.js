@@ -9,7 +9,7 @@ export default function() {
   //   for (let i = 0; i < 20; i++) {
   //     const rowIndex = Math.floor(Math.random() * value.length);
   //     const colIndex = Math.floor(Math.random() * value[rowIndex].length);
-  //     const cellValue = $matrix.cellValues[Math.floor(Math.random() * $matrix.cellValues.length)];
+  //     const cellValue = $matrix.entries[Math.floor(Math.random() * $matrix.entries.length)];
 
   //     value[rowIndex][colIndex] = cellValue;
   //     $matrix.value = value;
@@ -98,13 +98,13 @@ ${`<sc-matrix></sc-matrix>`}
       ></sc-number>
     </p>
     <p>
-      <sc-text readonly value="[cellValues=[0, 1]]"></sc-text>
+      <sc-text readonly value="[entries=[0, 1]]"></sc-text>
       <sc-text
         value="[0, 1]"
         @change="${e => {
           const $component = document.querySelector('#test-matrix');
           console.log(e.detail.value);
-          $component.cellValues = JSON.parse(e.detail.value);
+          $component.entries = JSON.parse(e.detail.value);
         }}"
       ></sc-text>
     </p>
