@@ -115,7 +115,6 @@ class ScEditor extends LitElement {
 
     if (this.codeMirror) {
       this.requestUpdate();
-      this.codeMirror.setSize(this._editorWidth, this._editorHeight);
     }
   }
 
@@ -129,7 +128,6 @@ class ScEditor extends LitElement {
 
     if (this.codeMirror) {
       this.requestUpdate();
-      this.codeMirror.setSize(this._editorWidth, this._editorHeight);
     }
   }
 
@@ -148,6 +146,12 @@ class ScEditor extends LitElement {
   }
 
   render() {
+    if (this.codeMirror) {
+      // @note - a bit hardcore but more efficient than in setters
+      // @todo - debounce
+      this.codeMirror.setSize(this._editorWidth, this._editorHeight);
+    }
+
     return html`
       <div
         style="
