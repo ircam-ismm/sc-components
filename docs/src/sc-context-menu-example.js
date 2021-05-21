@@ -30,7 +30,7 @@ export default function () {
         $component.show(e);
       }}"
     >
-      right-click to see context menu
+      right-click to open the context menu
     </div>
 
     <h3>Events</h3>

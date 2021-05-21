@@ -11,7 +11,7 @@ class ScMatrix extends ScElement {
       rows: { type: Number },
       // @note - `cellValues` is bad name..., `entries` better ?
       // @todo - updates values when updated
-      _entries: { type: Array },
+      entries: { type: Array },
       value: { type: Array },
       reset: { type: Boolean },
     };

@@ -117,5 +117,16 @@ ${`<sc-slider></sc-slider>`}
         }}"
       ></sc-toggle>
     </p>
+    <p>
+      <sc-text readonly value="[color=#dededeff]"></sc-text>
+      <sc-text
+        value="#dededeff"
+        @change="${e => {
+          const $component = document.querySelector('#test-slider');
+          $component.color = e.detail.value;
+        }}"
+      ></sc-text>
+    </p>
+
   `;
 }

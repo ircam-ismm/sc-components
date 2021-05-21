@@ -39,6 +39,9 @@ class ScSlider extends ScElement {
       value: {
         type: Number,
       },
+      color: {
+        type: String,
+      }
     }
   }
 
@@ -68,9 +71,7 @@ class ScSlider extends ScElement {
         z-index: 1;
       }
 
-      rect.foreground {
-        fill: ${theme['--color-primary-4']};
-      }
+      rect.foreground {}
 
       rect.background {
         fill: ${theme['--color-primary-1']};
@@ -94,6 +95,7 @@ class ScSlider extends ScElement {
     this.value = 0.5;
     this.orientation = 'horizontal';
     this.displayNumber = false;
+    this.color = theme['--color-primary-4'];
 
     this._marginSliderNumber = 3;
     this._numberWidth = 80;
@@ -158,11 +160,11 @@ class ScSlider extends ScElement {
           ${this.orientation === 'horizontal' ?
             svg`
               <rect class="background" width="${this._sliderWidth}" height="${this._sliderHeight}"></rect>
-              <rect class="foreground" width="${Math.max(0, this.scale(this.value))}" height="${this._sliderHeight}"></rect>
+              <rect class="foreground" width="${Math.max(0, this.scale(this.value))}" height="${this._sliderHeight}" fill="${this.color}"></rect>
             ` :
             svg`
               <rect class="foreground" width="${this._sliderWidth}" height="${this._sliderHeight}"></rect>
-              <rect class="background" width="${this._sliderWidth}" height="${Math.max(0, this._sliderHeight - this.scale(this.value))}"></rect>
+              <rect class="background" width="${this._sliderWidth}" height="${Math.max(0, this._sliderHeight - this.scale(this.value))}" fill="${this.color}"></rect>
             `
           }
         </svg>

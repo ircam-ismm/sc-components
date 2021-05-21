@@ -25,6 +25,8 @@ import '@ircam/simple-components/sc-signal.js';
 import '@ircam/simple-components/sc-dot-map.js';
 import '@ircam/simple-components/sc-dragndrop.js';
 import '@ircam/simple-components/sc-matrix.js';
+import '@ircam/simple-components/sc-context-menu.js';
+import '@ircam/simple-components/sc-file-tree.js';
 
 // controls
 import matrix from './sc-matrix-example.js';
@@ -37,11 +39,14 @@ import slider from './sc-slider-example.js';
 import text from './sc-text-example.js';
 import toggle from './sc-toggle-example.js';
 import dotMap from './sc-dot-map-example.js';
+import contextMenu from './sc-context-menu-example.js';
+import fileTree from './sc-file-tree-example.js';
 
 // monitoring
 import signal from './sc-signal-example.js';
 
 const docs = {
+  'sc-file-tree': fileTree,
   'sc-bang': bang,
   'sc-toggle': toggle,
   'sc-number': number,
@@ -52,6 +57,7 @@ const docs = {
   'sc-matrix': matrix,
   'sc-dot-map': dotMap,
   'sc-dragndrop': dragndrop,
+  'sc-context-menu': contextMenu,
   'sc-signal': signal,
 };
 
