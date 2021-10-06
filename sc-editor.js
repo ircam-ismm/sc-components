@@ -200,7 +200,7 @@ class ScEditor extends LitElement {
       detail: { value: this._value },
     });
 
-    this.codeMirror.cleanDoc();
+    this.cleanDoc();
     this.dispatchEvent(event);
   }
 
@@ -217,7 +217,7 @@ class ScEditor extends LitElement {
       keyMap: 'sublime',
     });
 
-    // shared the dispatchEvent method to propagate save from keyboard
+    // monkey patch component in codeMirror to propagate save from keyboard
     this.codeMirror._scComponent = this;
 
     // set the size of the editor to match container

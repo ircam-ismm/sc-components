@@ -2,6 +2,16 @@ import { html, svg, css } from 'lit-element';
 import { theme } from './styles.js';
 import ScElement from './ScElement.js';
 
+/**
+ * Dsiplay matrix, the data should follow a row-first convention with the 0 index
+ * deing displayed at the bottom of the matrix
+ * ```
+ * [
+ *    [0, 0, 0, 1],`
+ *    [0, 1, 0, 0],`
+ *    // ...
+ * ]
+ */
 class ScMatrix extends ScElement {
   static get properties() {
     return {
