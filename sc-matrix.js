@@ -165,8 +165,8 @@ class ScMatrix extends ScElement {
                 height="${cellHeight}"
                 x="${x}"
                 y="${y}"
-                data-rowIndex="${rowIndex}"
-                data-columnIndex="${columnIndex}"
+                data-row-index="${rowIndex}"
+                data-column-index="${columnIndex}"
                 @mousedown="${this._updateCell}"
               ></rect>
             `;
@@ -215,7 +215,6 @@ class ScMatrix extends ScElement {
 
   _updateCell(e) {
     const { rowIndex, columnIndex } = e.target.dataset;
-
     const currentIndex = this._entries.indexOf(this.value[rowIndex][columnIndex]);
     // handle situations where _entries as changed in between two interactions
     const nextIndex = currentIndex === -1 ? 0 : (currentIndex + 1) % this._entries.length;
