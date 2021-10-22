@@ -163,8 +163,8 @@ class ScSlider extends ScElement {
               <rect class="foreground" width="${Math.max(0, this.scale(this.value))}" height="${this._sliderHeight}" fill="${this.color}"></rect>
             ` :
             svg`
-              <rect class="foreground" width="${this._sliderWidth}" height="${this._sliderHeight}"></rect>
-              <rect class="background" width="${this._sliderWidth}" height="${Math.max(0, this._sliderHeight - this.scale(this.value))}" fill="${this.color}"></rect>
+              <rect class="foreground" width="${this._sliderWidth}" height="${this._sliderHeight}" fill="${this.color}"></rect>
+              <rect class="background" width="${this._sliderWidth}" height="${Math.max(0, this._sliderHeight - this.scale(this.value))}"></rect>
             `
           }
         </svg>
