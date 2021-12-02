@@ -1,6 +1,6 @@
 import { LitElement, html, svg, css } from 'lit-element';
-import { ifDefined } from 'lit-html/directives/if-defined';
-import { repeat } from 'lit-html/directives/repeat';
+import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { repeat } from 'lit-html/directives/repeat.js';
 import { theme } from './styles.js';
 import './sc-position-surface';
 
