@@ -239,7 +239,7 @@ class ScDotMap extends LitElement {
           viewBox="0 0 ${this.svgWidth} ${this.svgHeight}"
         >
 
-          <!-- dost -->
+          <!-- dots -->
           ${repeat(this.value, d => `${d.x}-${d.y}`, d => {
             return svg`<circle
               r="${dotsRadius}"

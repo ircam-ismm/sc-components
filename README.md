@@ -2,6 +2,12 @@
 
 > set of web components for audio interfaces and rapid prototyping, created using the [lit-element](https://lit-element.polymer-project.org/) library.
 
+## Warning
+
+Some components are broken with `lit-html 2`, please use version `lit-html#v1.4.1`
+
+cf. [https://github.com/ircam-ismm/simple-components/issues/7](https://github.com/ircam-ismm/simple-components/issues/7)
+
 ## Documentation
 
 [http://ircam-ismm.github.io/simple-components/](http://ircam-ismm.github.io/simple-components/)
