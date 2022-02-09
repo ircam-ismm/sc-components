@@ -46,7 +46,6 @@ import fileTree from './sc-file-tree-example.js';
 import signal from './sc-signal-example.js';
 
 const docs = {
-  'sc-file-tree': fileTree,
   'sc-bang': bang,
   'sc-toggle': toggle,
   'sc-number': number,
@@ -59,6 +58,7 @@ const docs = {
   'sc-dragndrop': dragndrop,
   'sc-context-menu': contextMenu,
   'sc-signal': signal,
+  'sc-file-tree': fileTree,
 };
 
 function setTheme(name) {

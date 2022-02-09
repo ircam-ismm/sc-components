@@ -17,6 +17,9 @@ class ScButton extends ScElement {
       value: {
         type: String,
       },
+      selected: {
+        type: Boolean,
+      },
     };
   }
 
@@ -36,6 +39,7 @@ class ScButton extends ScElement {
         color: #ffffff;
         background-color: ${theme['--color-primary-1']};
         border: 1px solid ${theme['--color-primary-2']};
+        border-radius:  1px;
         font-size: 13px;
         padding: 0;
       }
@@ -47,6 +51,12 @@ class ScButton extends ScElement {
 
       button:active {
         background-color: ${theme['--color-primary-3']};
+      }
+
+
+      button.selected {
+        background-color: ${theme['--color-secondary-3']};
+        border: 1px solid ${theme['--color-secondary-3']};
       }
 
       // not really visible
@@ -63,6 +73,7 @@ class ScButton extends ScElement {
     this.height = 30;
     this.text = '';
     this.value = null;
+    this.selected = false;
 
     this._pressed = false;
     this.onEvent = this.onEvent.bind(this);
@@ -81,7 +92,7 @@ class ScButton extends ScElement {
           height: ${this.height}px;
           line-height: ${this.height}px;
         "
-
+        class="${this.selected ? 'selected' : ''}"
         @mousedown="${this.onEvent}"
         @mouseup="${this.onEvent}"
 
@@ -90,7 +101,6 @@ class ScButton extends ScElement {
           passive: false,
         }}"
         @touchend="${this.onEvent}"
-
         @contextmenu="${this._preventContextMenu}"
       >${text}</button>
     `;

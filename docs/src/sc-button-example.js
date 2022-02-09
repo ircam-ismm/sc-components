@@ -110,5 +110,14 @@ ${`<sc-button></sc-button>`}
         }}"
       ></sc-text>
     </p>
+    <p>
+      <sc-text readonly value="[selected=false]"></sc-text>
+      <sc-toggle
+        @change="${e => {
+          const $component = document.querySelector('#test-button');
+          $component.selected = e.detail.value;
+        }}"
+      ></sc-toggle>
+    </p>
   `;
 }
