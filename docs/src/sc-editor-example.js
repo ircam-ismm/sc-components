@@ -1,4 +1,4 @@
-import { html } from 'lit-html';
+import { html } from 'lit';
 
 function js() {}
 const exampleCode = `function add(a, b) {

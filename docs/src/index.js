@@ -1,15 +1,7 @@
 import '@babel/polyfill';
-// import 'pepjs';
-import { html, render } from 'lit-html';
-import { until } from 'lit-html/directives/until.js';
-import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
-
-import showdown from 'showdown';
-
-const converter = new showdown.Converter();
-// const text      = '# hello, markdown!';
-// const htmlContent      = converter.makeHtml(text);
-// console.log(htmlContent);
+import { html, render } from 'lit';
+import { until } from 'lit/directives/until.js';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 
 import '@ircam/simple-components/sc-position-surface.js';
 import '@ircam/simple-components/sc-speed-surface.js';

@@ -5,7 +5,7 @@
   "author": "Benjamin Matuszewski",
   "license": "BSD-3-Clause",
   "scripts": {
-    "postinstall": "mkdir -p ./vendors && cp -R node_modules/@webcomponents/webcomponentsjs ./vendors/ && cp -R node_modules/livereload ./vendors/",
+    "postinstall": "mkdir -p ./vendors && cp -R node_modules/@webcomponents/webcomponentsjs ./vendors/ && cp -R node_modules/lit ./vendors/ && cp -R node_modules/livereload ./vendors/",
     "serve": "npm run build && node bin/server.js",
     "build": "rollup -c",
     "dev": "npm link @ircam/simple-components && (rollup -c --watch.chokidar & node bin/server.js)"
@@ -15,7 +15,7 @@
     "@ircam/simple-components": "^1.1.4",
     "@webcomponents/webcomponentsjs": "^2.2.10",
     "connect": "^3.7.0",
-    "lit-element": "^2.3.1",
+    "lit": "^2.2.2",
     "livereload": "^0.8.0",
     "portfinder": "^1.0.20",
     "rollup-plugin-node-builtins": "^2.1.2",

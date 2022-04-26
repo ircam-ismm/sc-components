@@ -1,4 +1,4 @@
-import { html } from 'lit-html';
+import { html } from 'lit';
 
 export default function () {
   // dirty hack to make sure the element is in the DOM

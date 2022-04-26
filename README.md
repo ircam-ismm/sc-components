@@ -2,12 +2,6 @@
 
 > set of web components for audio interfaces and rapid prototyping, created using the [lit-element](https://lit-element.polymer-project.org/) library.
 
-## Warning
-
-Some components are broken with `lit-html 2`, please use version `lit-html#v1.4.1`
-
-cf. [https://github.com/ircam-ismm/simple-components/issues/7](https://github.com/ircam-ismm/simple-components/issues/7)
-
 ## Documentation
 
 [http://ircam-ismm.github.io/simple-components/](http://ircam-ismm.github.io/simple-components/)
@@ -18,11 +12,48 @@ cf. [https://github.com/ircam-ismm/simple-components/issues/7](https://github.co
 npm install @ircam/simple-components --save
 ```
 
+To support older browser, you should import `webcomponentsjs/webcomponents-bundle.js` and `./vendors/lit/polyfill-support.js`
+
+A possible solution is to copy the file from your `node_modules` folder into a directory
+exposed by your server using postinstall scripts
+
+```json
+# package.json
+"scripts": {
+  "postinstall": "mkdir -p ./vendors && cp -R node_modules/@webcomponents/webcomponentsjs ./vendors/ && cp -R node_modules/lit ./vendors/",
+  // ...
+}
+```
+
+```html
+<script defer src="./vendors/webcomponentsjs/webcomponents-bundle.js"></script>
+<script defer src="./vendors/lit/polyfill-support.js"></script> 
+```
+
+Such strategy as been implemented in the `docs` directory.
+
 ## Usage
 
-@todo
+All components live in their own file and should be imported separately, e.g.
 
-## Design Consideration
+```js 
+import '@babel/polyfill';
+import { html, render } from 'lit/html.js';
+import '@ircam/simple-components/sc-toggle.js'
+
+render(html`
+  <sc-toggle
+    @change="${e => console.log(e)}"
+  ></sc-toggle>
+`, document.body);
+```
+
+## Existing components
+
+see. documentation ([http://ircam-ismm.github.io/simple-components/](http://ircam-ismm.github.io/simple-components/))
+
+
+## Design Considerations
 
 These design aspects aim at simplifying future wrapping of the components in an editing tool.
 
@@ -36,26 +67,17 @@ All components must expose a `width` and `height` attribute, for squared compone
 - they can expose additional events, e.g. button `@press` and `@release`
 - payload should always have `e.details.value`
 
-## Notes
-
-## Existing components
-
-see. documentation ([http://ircam-ismm.github.io/simple-components/](http://ircam-ismm.github.io/simple-components/))
-
 ## @todos
+
+### new elements
 
 - `<sc-range>`
 - `<sc-multislider>`
-- `<sc-matrix>`
 - `<sc-volume>` (slider and number w/ db and lin output)
 - `<sc-pan>`
 - `<sc-select>`
 - `<sc-radio>`
 - `<sc-dial>` (maybe we just have to accept some people like that sort of thing...)
-
-## @fixme
-
-- `<sc-number>` allows (display) values such as "0000."
 
 ### theming
   + https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties

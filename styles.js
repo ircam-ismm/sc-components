@@ -1,4 +1,4 @@
-import { css } from 'lit-element';
+import { css } from 'lit';
 
 // @todo - review that... not clean
 export const fontFamily = css`Consolas, monaco, monospace`;

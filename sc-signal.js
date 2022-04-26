@@ -1,5 +1,4 @@
-import { LitElement, html, css } from 'lit-element';
-import { nothing } from 'lit-html';
+import { html, css, nothing } from 'lit';
 import ScElement from './ScElement.js';
 import { theme, fontFamily } from './styles.js';
 

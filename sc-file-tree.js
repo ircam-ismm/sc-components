@@ -1,6 +1,5 @@
-import { html, css, svg } from 'lit-element';
-import { nothing } from 'lit-html';
-import { classMap } from 'lit-html/directives/class-map.js';
+import { html, css, svg, nothing } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
 import ScElement from './ScElement.js';
 import { theme, fontSize, arrowRight, arrowDown } from './styles.js';
 

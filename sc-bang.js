@@ -1,5 +1,4 @@
-import { html, css, svg } from 'lit-element';
-import { nothing } from 'lit-html';
+import { html, css, svg, nothing } from 'lit';
 import ScElement from './ScElement.js';
 import { theme } from './styles.js';
 

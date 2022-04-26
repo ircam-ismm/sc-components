@@ -1,5 +1,4 @@
-import { html, css } from 'lit-element';
-import { nothing } from 'lit-html';
+import { html, css, nothing } from 'lit';
 import { classMap } from 'lit-html/directives/class-map.js';
 import ScElement from './ScElement.js';
 import { fontFamily, fontSize, theme } from './styles.js';
