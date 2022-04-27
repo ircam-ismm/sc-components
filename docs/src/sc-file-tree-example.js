@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { html } from 'lit/html.js';
 
 export default function () {
   const tree = {
