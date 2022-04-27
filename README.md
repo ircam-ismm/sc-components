@@ -9,32 +9,14 @@
 ## Installation
 
 ```sh
-npm install @ircam/simple-components --save
+npm install lit @ircam/simple-components --save
 ```
 
-To support older browser, you should import `webcomponentsjs/webcomponents-bundle.js` and `./vendors/lit/polyfill-support.js`
-
-A possible solution is to copy the file from your `node_modules` folder into a directory
-exposed by your server using postinstall scripts
-
-```json
-# package.json
-"scripts": {
-  "postinstall": "mkdir -p ./vendors && cp -R node_modules/@webcomponents/webcomponentsjs ./vendors/ && cp -R node_modules/lit ./vendors/",
-  // ...
-}
-```
-
-```html
-<script defer src="./vendors/webcomponentsjs/webcomponents-bundle.js"></script>
-<script defer src="./vendors/lit/polyfill-support.js"></script> 
-```
-
-Such strategy as been implemented in the `docs` directory.
+Note: this library has never been tested with other framework than [`lit`](https://lit.dev/docs/releases/upgrade/), any feedback is welcome.
 
 ## Usage
 
-All components live in their own file and should be imported separately, e.g.
+Each components lives in its own file and should be imported separately, e.g.
 
 ```js 
 import '@babel/polyfill';
@@ -48,10 +30,31 @@ render(html`
 `, document.body);
 ```
 
-## Existing components
+## Documentation - List of existing components
 
 see. documentation ([http://ircam-ismm.github.io/simple-components/](http://ircam-ismm.github.io/simple-components/))
 
+## Support older browsers
+
+To support older browser, you should import `webcomponentsjs/webcomponents-bundle.js` and `./vendors/lit/polyfill-support.js`
+
+A possible solution is to copy the file from your `node_modules` folder into a directory
+exposed by your server using postinstall scripts
+
+In `package.json`
+
+```json
+"scripts": {
+  "postinstall": "mkdir -p ./vendors && cp -R node_modules/@webcomponents/webcomponentsjs ./vendors/ && cp -R node_modules/lit ./vendors/",
+}
+```
+
+```html
+<script defer src="./vendors/webcomponentsjs/webcomponents-bundle.js"></script>
+<script defer src="./vendors/lit/polyfill-support.js"></script> 
+```
+
+Such strategy as been implemented in the `docs` directory.
 
 ## Design Considerations
 
