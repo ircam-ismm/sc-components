@@ -1,7 +1,5 @@
-console.log(process.cwd());
-
 console.warn(`
-# @ircam/simple-components
+# @ircam/simple-components@2
 
 > Since v2, this package has moved to lit@2, which might cause issues if your
 > application is using lit-html@1.x.x and/or lit-element@1.x.x
