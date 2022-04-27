@@ -1,4 +1,4 @@
-# `simple-components`
+# `@ircam/simple-components`
 
 > set of web components for audio interfaces and rapid prototyping, created using the [lit](https://lit.dev/) library.
 
