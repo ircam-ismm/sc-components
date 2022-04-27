@@ -1,6 +1,6 @@
 # `simple-components`
 
-> set of web components for audio interfaces and rapid prototyping, created using the [lit-element](https://lit-element.polymer-project.org/) library.
+> set of web components for audio interfaces and rapid prototyping, created using the [lit](https://lit.dev/) library.
 
 ## Documentation
 
