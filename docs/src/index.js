@@ -20,6 +20,7 @@ import '@ircam/simple-components/sc-matrix.js';
 import '@ircam/simple-components/sc-context-menu.js';
 import '@ircam/simple-components/sc-file-tree.js';
 import '@ircam/simple-components/sc-transport.js';
+import '@ircam/simple-components/sc-record.js';
 
 // controls
 import matrix from './sc-matrix-example.js';
@@ -35,6 +36,7 @@ import dotMap from './sc-dot-map-example.js';
 import contextMenu from './sc-context-menu-example.js';
 import fileTree from './sc-file-tree-example.js';
 import transport from './sc-transport-example.js';
+import record from './sc-record-example.js';
 
 // monitoring
 import signal from './sc-signal-example.js';
@@ -46,6 +48,8 @@ const docs = {
   'sc-slider': slider,
   'sc-button': button,
   'sc-text': text,
+  'sc-transport': transport,
+  'sc-record': record,
   'sc-editor': editor,
   'sc-matrix': matrix,
   'sc-dot-map': dotMap,
