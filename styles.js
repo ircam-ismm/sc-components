@@ -13,6 +13,7 @@ theme['--color-primary-4'] = css`#dededeff`;
 theme['--color-secondary-1'] = css`#f0db4fff`; // yellow
 theme['--color-secondary-2'] = css`#1c78c0ff`; // blue
 theme['--color-secondary-3'] = css`#d9534fff`; // red
+theme['--color-secondary-4'] = css`#5ec451ff`; // green
 
 // export const userSelectNone = css`
 //   -webkit-touch-callout: none; /* iOS Safari */
