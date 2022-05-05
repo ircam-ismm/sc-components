@@ -42,26 +42,21 @@ class ScButton extends ScElement {
         border-radius:  1px;
         font-size: 13px;
         padding: 0;
+        cursor: pointer;
       }
 
       button:hover {
         background-color: ${theme['--color-primary-2']};
-        cursor: pointer;
       }
 
+      // does not work in Firefox because of e.preventDefault();
       button:active {
         background-color: ${theme['--color-primary-3']};
       }
 
-
       button.selected {
         background-color: ${theme['--color-secondary-3']};
         border: 1px solid ${theme['--color-secondary-3']};
-      }
-
-      // not really visible
-      button:focus {
-        outline: none;
       }
     `;
   }
@@ -110,7 +105,7 @@ class ScButton extends ScElement {
     e.preventDefault();
     let eventName;
 
-    if (e.type === 'touchend' || e.type === 'mouseup') {
+    if (e.type === 'touchend' || e.type === 'mouseup') {
       eventName = 'release';
     } else {
       eventName = 'press'
