@@ -12,15 +12,15 @@ ${`<sc-transport></sc-transport>`}
       id="test-transport"
       buttons="[play, pause, stop]"
       @change="${e => {
-        const $event = document.querySelector('#transport-input');
-        $event.active = true;
+        const $event = document.querySelector('#transport-change');
+        $event.value = e.detail.value;
       }}"
     ></sc-transport>
 
     <h3>Events</h3>
     <p>
       <sc-text readonly value="@change"></sc-text>
-      <sc-bang id="transport-input"></sc-bang>
+      <sc-text id="transport-change" readonly value="undefined"></sc-text>
     </p>
 
     <h3>Attributes</h3>
