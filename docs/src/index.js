@@ -19,6 +19,7 @@ import '@ircam/simple-components/sc-dragndrop.js';
 import '@ircam/simple-components/sc-matrix.js';
 import '@ircam/simple-components/sc-context-menu.js';
 import '@ircam/simple-components/sc-file-tree.js';
+import '@ircam/simple-components/sc-transport.js';
 
 // controls
 import matrix from './sc-matrix-example.js';
@@ -33,6 +34,7 @@ import toggle from './sc-toggle-example.js';
 import dotMap from './sc-dot-map-example.js';
 import contextMenu from './sc-context-menu-example.js';
 import fileTree from './sc-file-tree-example.js';
+import transport from './sc-transport-example.js';
 
 // monitoring
 import signal from './sc-signal-example.js';
@@ -51,6 +53,7 @@ const docs = {
   'sc-context-menu': contextMenu,
   'sc-signal': signal,
   'sc-file-tree': fileTree,
+  'sc-transport': transport,
 };
 
 function setTheme(name) {
