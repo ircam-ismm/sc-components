@@ -151,48 +151,6 @@ class ScTransport extends ScElement {
     `
   }
 
-  // renderRecord(context) {
-  //   const size = context._size - 2;
-
-  //   return html`
-  //     <div>
-  //       <svg 
-  //         style="
-  //           width: ${size}px;
-  //           height: ${size}px;
-  //         "
-  //         viewbox="0 0 20 20"
-  //         @mousedown="${context._triggerEvent}"
-  //         @touchstart="${context._triggerEvent}"
-  //         @contextmenu="${context._preventContextMenu}"
-  //       >
-  //         ${context.state === 'play'
-  //           ? svg`
-  //               <circle 
-  //                 style="fill: ${theme['--color-secondary-3']}"
-  //                 class="record-shape" 
-  //                 cx="10" 
-  //                 cy="10" 
-  //                 r="5"
-  //               ></circle>
-  //             `
-  //           : svg`
-  //               <circle 
-  //                 style="fill: 
-  //                 class="record-shape" 
-  //                 cx="10" 
-  //                 cy="10" 
-  //                 r="5"
-  //               ></circle>
-  //             `
-  //         }
-          
-  //       </svg>
-  //     </div>
-  //   `
-  // }
-
-
   render() {
     const size = this._size - 2;
 
