@@ -21,6 +21,7 @@ import '@ircam/simple-components/sc-context-menu.js';
 import '@ircam/simple-components/sc-file-tree.js';
 import '@ircam/simple-components/sc-transport.js';
 import '@ircam/simple-components/sc-record.js';
+import '@ircam/simple-components/sc-loop.js';
 
 // controls
 import matrix from './sc-matrix-example.js';
@@ -37,6 +38,7 @@ import contextMenu from './sc-context-menu-example.js';
 import fileTree from './sc-file-tree-example.js';
 import transport from './sc-transport-example.js';
 import record from './sc-record-example.js';
+import loop from './sc-loop-example.js';
 
 // monitoring
 import signal from './sc-signal-example.js';
@@ -50,6 +52,7 @@ const docs = {
   'sc-text': text,
   'sc-transport': transport,
   'sc-record': record,
+  'sc-loop': loop,
   'sc-editor': editor,
   'sc-matrix': matrix,
   'sc-dot-map': dotMap,

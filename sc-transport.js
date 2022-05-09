@@ -47,7 +47,7 @@ class ScTransport extends ScElement {
       }
 
       svg.pause.active {
-        fill: ${theme['--color-secondary-2']};
+        fill: ${theme['--color-secondary-5']};
       }
 
       svg.stop.active {
