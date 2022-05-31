@@ -109,7 +109,9 @@ class ScDragNDrop extends ScElement {
         let type;
         const reader = new FileReader();
 
-        if (/^audio/.test(file.type)) {
+        if (file.type === 'audio/midi') {
+          type = 'midi';
+        } else if (/^audio/.test(file.type)) {
           type = 'audio';
         } else if (/json$/.test(file.type)) {
           type = 'json';
@@ -141,6 +143,10 @@ class ScDragNDrop extends ScElement {
               const $img = new Image();
               $img.src = reader.result;
               results[file.name] = $img;
+              break;
+            }
+            case 'midi':{
+              results[file.name] = reader.result;
               break;
             }
             case 'text': {
@@ -177,6 +183,9 @@ class ScDragNDrop extends ScElement {
             reader.readAsText(file);
             break;
           case 'image':
+            reader.readAsDataURL(file);
+            break;
+          case 'midi':
             reader.readAsDataURL(file);
             break;
           case 'text':
