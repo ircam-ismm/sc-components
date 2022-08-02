@@ -10,6 +10,7 @@ ${`<sc-dragndrop></sc-dragndrop>`}
 
     <sc-dragndrop
       id="test-dragndrop"
+      format="raw"
       width="300"
       height="200"
       @change="${e => {
@@ -74,6 +75,23 @@ ${`<sc-dragndrop></sc-dragndrop>`}
           $component.label = e.detail.value;
         }}"
       ></sc-number>
+    </p>
+    <p>
+      <sc-text width="250" readonly value="[format='load']"></sc-text>
+      <sc-button
+        value="load"
+        @change="${e => {
+          const $component = document.querySelector('#test-dragndrop');
+          $component.format = e.detail.value;
+        }}"
+      ></sc-button>
+      <sc-button
+        value="raw"
+        @change="${e => {
+          const $component = document.querySelector('#test-dragndrop');
+          $component.format = e.detail.value;
+        }}"
+      ></sc-button>
     </p>
   `;
 }

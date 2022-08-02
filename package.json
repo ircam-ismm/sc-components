@@ -23,7 +23,7 @@
   ],
   "scripts": {
     "clean": "rm -Rf vendors",
-    "postinstall": "node bin/prepare-codemirror.js && node bin/warning-v2.js"
+    "postinstall": "node bin/prepare-codemirror.js"
   },
   "dependencies": {
     "codemirror": "^5.55.0",

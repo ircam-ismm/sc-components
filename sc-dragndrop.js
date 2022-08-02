@@ -3,12 +3,8 @@ import { classMap } from 'lit/directives/class-map.js';
 import ScElement from './ScElement.js';
 import { fontFamily, fontSize, theme } from './styles.js';
 
-const AudioContext = (window.AudioContext || window.webkitAudioContext);
 const audioContext = new AudioContext();
 
-/**
- * @todo - enable integration inside an upload system
- */
 class ScDragNDrop extends ScElement {
   static get properties() {
     return {
@@ -16,6 +12,7 @@ class ScDragNDrop extends ScElement {
       height: { type: Number },
       label: { type: String },
       status: { type: String },
+      format: { type: String }, // "load" || "raw"
     };
   }
 
@@ -196,6 +193,19 @@ class ScDragNDrop extends ScElement {
             break;
         }
       });
+    } else if (this.format == 'raw') {
+      this.value = Array.from(e.dataTransfer.files);
+
+      const changeEvent = new CustomEvent('change', {
+        bubbles: true,
+        composed: true,
+        detail: { value: this.value },
+      });
+
+      this.dispatchEvent(changeEvent);
+      this.status = 'idle';
+    } else {
+      console.log(`Unknow format: "${this.format}"`)
     }
   }
 }
