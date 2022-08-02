@@ -1,6 +1,6 @@
 {
   "name": "@ircam/simple-components",
-  "version": "2.1.1",
+  "version": "2.2.0",
   "description": "set of web components for audio interfaces and rapid prototyping",
   "authors": [
     "Benjamin Matuszewski"
