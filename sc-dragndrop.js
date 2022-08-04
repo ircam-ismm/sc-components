@@ -194,7 +194,10 @@ class ScDragNDrop extends ScElement {
         }
       });
     } else if (this.format == 'raw') {
-      this.value = Array.from(e.dataTransfer.files);
+      const arr = Array.from(e.dataTransfer.files);
+      this.value = {};
+
+      arr.forEach(v => this.value[v.name] = v);
 
       const changeEvent = new CustomEvent('change', {
         bubbles: true,
