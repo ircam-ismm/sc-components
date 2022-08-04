@@ -1,4 +1,5 @@
 import '@babel/polyfill';
+import '@webcomponents/webcomponentsjs';
 import { html, render } from 'lit/html.js';
 import { until } from 'lit/directives/until.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';

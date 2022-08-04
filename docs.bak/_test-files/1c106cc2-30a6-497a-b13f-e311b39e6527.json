@@ -1,0 +1,69 @@
+{
+  "uuid": "1c106cc2-30a6-497a-b13f-e311b39e6527",
+  "params": {
+    "name": "K_aigu_01",
+    "preset": "synced-play-06",
+    "clientDefaults": {
+      "audioRendering": {
+        "mute": true,
+        "volume": 0
+      },
+      "mappings": {
+        "kick": true,
+        "gain1": false,
+        "gain2": false,
+        "bandpass1": false,
+        "bandpass2": false
+      },
+      "record": {
+        "label": "00_k_aigu_01"
+      }
+    },
+    "learning": {
+      "config": {
+        "docType": "rapid-mix:ml-configuration",
+        "docVersion": "1.0.0",
+        "target": {
+          "name": "xmm",
+          "version": "1.0.0"
+        },
+        "payload": {
+          "gaussians": 1,
+          "absoluteRegularization": 0.1,
+          "relativeRegularization": 0.1,
+          "covarianceMode": "full",
+          "hierarchical": true,
+          "states": 4,
+          "transitionMode": "leftright",
+          "regressionEstimator": "full",
+          "modelType": "hhmm"
+        }
+      },
+      "trainingSet": {
+        "docType": "rapid-mix:ml-training-set",
+        "docVersion": "1.0.0",
+        "payload": {
+          "inputDimension": null,
+          "outputDimension": null,
+          "data": []
+        }
+      },
+      "inputs": {
+        "intensity": true,
+        "bandpass": true,
+        "orientation": true,
+        "gyroscope": false
+      }
+    },
+    "recording": {
+      "type": "AutoTrigger",
+      "options": {
+        "threshold": 0.02,
+        "offDelay": 0.3,
+        "preRollCount": 2,
+        "preRollInterval": 1
+      }
+    },
+    "sensorsPreprocessing": {}
+  }
+}

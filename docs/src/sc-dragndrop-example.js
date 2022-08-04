@@ -10,7 +10,6 @@ ${`<sc-dragndrop></sc-dragndrop>`}
 
     <sc-dragndrop
       id="test-dragndrop"
-      format="raw"
       width="300"
       height="200"
       @change="${e => {
