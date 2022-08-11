@@ -5,9 +5,9 @@ const path = require('path');
 const pathToCodeMirror = path.dirname(require.resolve('codemirror/package.json'));
 
 const pre = `
-import { unsafeCSS } from 'lit';
+import { css } from 'lit';
 
-export default unsafeCSS\`
+export default css\`
 `;
 
 const post = `

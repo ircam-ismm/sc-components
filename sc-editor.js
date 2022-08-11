@@ -1,4 +1,4 @@
-import { LitElement, html, unsafeCSS } from 'lit';
+import { LitElement, html, css } from 'lit';
 import { theme, fontSize } from './styles.js';
 import './sc-button.js';
 
@@ -54,7 +54,7 @@ class ScEditor extends LitElement {
   static get styles() {
     // this is very ugly
     // @todo - find a better solution to impor code mirror's css...
-    return unsafeCSS`
+    return css`
       :host {
         vertical-align: top;
         display: inline-block;
