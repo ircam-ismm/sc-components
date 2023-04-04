@@ -15,6 +15,7 @@ theme['--color-secondary-2'] = css`#1c78c0ff`; // blue
 theme['--color-secondary-3'] = css`#d9534fff`; // red
 theme['--color-secondary-4'] = css`#5ec451ff`; // green
 theme['--color-secondary-5'] = css`#cd7afaff`; // lilac
+theme['--color-secondary-6'] = css`#f4b43eff`; // orange
 
 // export const userSelectNone = css`
 //   -webkit-touch-callout: none; /* iOS Safari */

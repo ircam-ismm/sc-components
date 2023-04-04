@@ -23,6 +23,7 @@ import '@ircam/simple-components/sc-file-tree.js';
 import '@ircam/simple-components/sc-transport.js';
 import '@ircam/simple-components/sc-record.js';
 import '@ircam/simple-components/sc-loop.js';
+import '../../sc-tap-tempo.js' // CHANGE THIS !
 
 // controls
 import matrix from './sc-matrix-example.js';
@@ -40,6 +41,7 @@ import fileTree from './sc-file-tree-example.js';
 import transport from './sc-transport-example.js';
 import record from './sc-record-example.js';
 import loop from './sc-loop-example.js';
+import tapTempo from './sc-tap-tempo-example.js';
 
 // monitoring
 import signal from './sc-signal-example.js';
@@ -62,6 +64,7 @@ const docs = {
   'sc-signal': signal,
   'sc-file-tree': fileTree,
   'sc-transport': transport,
+  'sc-tap-tempo': tapTempo,
 };
 
 function setTheme(name) {
