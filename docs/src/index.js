@@ -4,25 +4,26 @@ import { html, render } from 'lit/html.js';
 import { until } from 'lit/directives/until.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 
-import '@ircam/simple-components/sc-position-surface.js';
-import '@ircam/simple-components/sc-speed-surface.js';
+import '../../sc-position-surface.js';
+import '../../sc-speed-surface.js';
 
-import '@ircam/simple-components/sc-button.js';
-import '@ircam/simple-components/sc-toggle.js';
-import '@ircam/simple-components/sc-slider.js';
-import '@ircam/simple-components/sc-number.js';
-import '@ircam/simple-components/sc-editor.js';
-import '@ircam/simple-components/sc-text.js';
-import '@ircam/simple-components/sc-bang.js';
-import '@ircam/simple-components/sc-signal.js';
-import '@ircam/simple-components/sc-dot-map.js';
-import '@ircam/simple-components/sc-dragndrop.js';
-import '@ircam/simple-components/sc-matrix.js';
-import '@ircam/simple-components/sc-context-menu.js';
-import '@ircam/simple-components/sc-file-tree.js';
-import '@ircam/simple-components/sc-transport.js';
-import '@ircam/simple-components/sc-record.js';
-import '@ircam/simple-components/sc-loop.js';
+import '../../sc-button.js';
+import '../../sc-toggle.js';
+import '../../sc-slider.js';
+import '../../sc-number.js';
+import '../../sc-editor.js';
+import '../../sc-text.js';
+import '../../sc-bang.js';
+import '../../sc-signal.js';
+import '../../sc-dot-map.js';
+import '../../sc-dragndrop.js';
+import '../../sc-matrix.js';
+import '../../sc-context-menu.js';
+import '../../sc-file-tree.js';
+import '../../sc-transport.js';
+import '../../sc-record.js';
+import '../../sc-loop.js';
+import '../../sc-tap-tempo.js' // CHANGE THIS !
 
 // controls
 import matrix from './sc-matrix-example.js';
@@ -40,6 +41,7 @@ import fileTree from './sc-file-tree-example.js';
 import transport from './sc-transport-example.js';
 import record from './sc-record-example.js';
 import loop from './sc-loop-example.js';
+import tapTempo from './sc-tap-tempo-example.js';
 
 // monitoring
 import signal from './sc-signal-example.js';
@@ -62,6 +64,7 @@ const docs = {
   'sc-signal': signal,
   'sc-file-tree': fileTree,
   'sc-transport': transport,
+  'sc-tap-tempo': tapTempo,
 };
 
 function setTheme(name) {
