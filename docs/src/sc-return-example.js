@@ -10,16 +10,16 @@ ${`<sc-return></sc-return>`}
 
     <sc-return
       id="test-return"
-      @change="${e => {
-        const $event = document.querySelector('#return-change');
-        $event.active = e.detail.value;
+      @input="${e => {
+        const $event = document.querySelector('#return-input');
+        $event.active = true;
       }}"
     ></sc-return>
 
     <h3>Events</h3>
     <p>
-      <sc-text readonly value="@change"></sc-text>
-      <sc-toggle id="return-change"></sc-toggle>
+      <sc-text readonly value="@input"></sc-text>
+      <sc-bang id="return-input"></sc-bang>
     </p>
 
     <h3>Attributes</h3>
@@ -48,15 +48,6 @@ ${`<sc-return></sc-return>`}
           $component.height = e.detail.value;
         }}"
       ></sc-number>
-    </p>
-    <p>
-      <sc-text readonly value="[active=false]"></sc-text>
-      <sc-toggle
-        @change="${e => {
-          const $component = document.querySelector('#test-return');
-          $component.active = e.detail.value;
-        }}"
-      ></sc-toggle>
     </p>
   `;
 }

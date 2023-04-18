@@ -11,12 +11,8 @@ class ScReturn extends ScElement {
       height: {
         type: Number,
       },
-      active: {
-        type: Boolean,
-        reflect: true,
-      },
       value: {
-        type: Boolean,
+        type: Number,
       },
     };
   }
@@ -73,63 +69,62 @@ class ScReturn extends ScElement {
     return this._size;
   }
 
-  // alias active for consistency and genericity with other components
-  get value() {
-    return this.active;
-  }
-
-  set value(active) {
-    this.active = active;
-  }
-
   constructor() {
     super();
 
     this.width = 30;
-    this.active = false;
 
+    this._active = false;
   }
 
   render() {
     const size = this._size - 2;
 
     return html`
-      <div>
-        <svg
-          class="${this.active ? 'active' : ''}"
-          style="
-            width: ${size}px;
-            height: ${size}px;
+      <svg
+        class="${this._active ? 'active' : ''}"
+        style="
+          width: ${size}px;
+          height: ${size}px;
+        "
+        viewbox="-10 -8 120 120"
+        @mousedown="${this._onInput}"
+        @touchstart="${this._onInput}"
+        @mouseup="${this._toggleOff}"
+        @touchend="${this._toggleOff}"
+        @contextmenu="${this._preventContextMenu}"
+      >
+        <path
+          d="M 20,20
+            L 20,80
           "
-          viewbox="-10 -8 120 120"
-          @mousedown="${this._onChange}"
-          @touchstart="${this._onChange}"
-          @contextmenu="${this._preventContextMenu}"
-        >
-          <path
-            d="M 20,20
-              L 20,80
-            "
-          ></path>
-          <polygon points="30,50 80,20 80,80"></polygon>
-        </svg>
-      </div>
+        ></path>
+        <polygon points="30,50 80,20 80,80"></polygon>
+      </svg>
     `
   }
 
-  _onChange(e) {
+  _onInput(e) {
     e.preventDefault();
     e.stopPropagation();
 
-    this.active = !this.active;
+    this._active = true;
 
-    const changeEvent = new CustomEvent('change', {
+    const changeEvent = new CustomEvent('input', {
       bubbles: true,
       composed: true,
-      detail: { value: this.active },
+      detail: { value: this.value },
     });
 
     this.dispatchEvent(changeEvent);
+    this.requestUpdate();
+  }
+
+  _toggleOff(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    this._active = false;
     this.requestUpdate();
   }
 }
