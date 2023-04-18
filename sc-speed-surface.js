@@ -177,6 +177,8 @@ class ScSpeedSurface extends ScElement {
   }
 }
 
-customElements.define('sc-speed-surface', ScSpeedSurface);
+if (customElements.get('sc-speed-surface') === undefined) {
+  customElements.define('sc-speed-surface', ScSpeedSurface);
+}
 
 export default ScSpeedSurface;

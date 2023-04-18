@@ -213,6 +213,8 @@ class ScDragNDrop extends ScElement {
   }
 }
 
-customElements.define('sc-dragndrop', ScDragNDrop);
+if (customElements.get('sc-dragndrop') === undefined) {
+  customElements.define('sc-dragndrop', ScDragNDrop);
+}
 
 export default ScDragNDrop;

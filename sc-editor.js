@@ -249,6 +249,8 @@ class ScEditor extends LitElement {
   }
 }
 
-customElements.define('sc-editor', ScEditor);
+if (customElements.get('sc-editor') === undefined) {
+  customElements.define('sc-editor', ScEditor);
+}
 
 export default ScEditor;

@@ -148,6 +148,8 @@ class ScToggle extends ScElement {
   }
 }
 
-customElements.define('sc-toggle', ScToggle);
+if (customElements.get('sc-toggle') === undefined) {
+  customElements.define('sc-toggle', ScToggle);
+}
 
 export default ScToggle;

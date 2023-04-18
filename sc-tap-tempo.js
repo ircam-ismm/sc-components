@@ -145,7 +145,9 @@ class ScTapTempo extends ScElement {
   }
 }
 
-customElements.define('sc-tap-tempo', ScTapTempo);
+if (customElements.get('sc-tap-tempo') === undefined) {
+  customElements.define('sc-tap-tempo', ScTapTempo);
+}
 
 export default ScTapTempo;
 

@@ -237,6 +237,8 @@ class ScPositionSurface extends ScElement {
   }
 }
 
-customElements.define('sc-position-surface', ScPositionSurface);
+if (customElements.get('sc-position-surface') === undefined) {
+  customElements.define('sc-position-surface', ScPositionSurface);
+}
 
 export default ScPositionSurface;

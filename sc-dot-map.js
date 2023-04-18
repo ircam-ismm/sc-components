@@ -293,6 +293,8 @@ class ScDotMap extends LitElement {
   }
 }
 
-customElements.define('sc-dot-map', ScDotMap);
+if (customElements.get('sc-dot-map') === undefined) {
+  customElements.define('sc-dot-map', ScDotMap);
+}
 
 export default ScDotMap;

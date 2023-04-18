@@ -121,6 +121,8 @@ class ScContextMenu extends ScElement {
   }
 }
 
-customElements.define('sc-context-menu', ScContextMenu);
+if (customElements.get('sc-context-menu') === undefined) {
+  customElements.define('sc-context-menu', ScContextMenu);
+}
 
 export default ScContextMenu;

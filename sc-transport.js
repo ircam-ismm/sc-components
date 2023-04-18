@@ -158,7 +158,7 @@ class ScTransport extends ScElement {
       ${this._buttons.map(type => {
         return this.renderFunctions[type](size);
       })}
-    `
+    `;
   }
 
   _onChange(e, value) {
@@ -181,7 +181,9 @@ class ScTransport extends ScElement {
 
 }
 
-customElements.define('sc-transport', ScTransport);
+if (customElements.get('sc-transport') === undefined) {
+  customElements.define('sc-transport', ScTransport);
+}
 
 export default ScTransport;
 

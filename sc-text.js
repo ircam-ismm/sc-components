@@ -1,5 +1,5 @@
 import { html, css, nothing } from 'lit';
-import { classMap } from 'lit-html/directives/class-map.js';
+import { classMap } from 'lit/directives/class-map.js';
 import ScElement from './ScElement.js';
 import { fontFamily, fontSize, theme } from './styles.js';
 
@@ -140,6 +140,8 @@ class ScText extends ScElement {
   }
 }
 
-customElements.define('sc-text', ScText);
+if (customElements.get('sc-text') === undefined) {
+  customElements.define('sc-text', ScText);
+}
 
 export default ScText;

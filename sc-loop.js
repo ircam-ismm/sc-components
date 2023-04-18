@@ -143,6 +143,8 @@ class ScLoop extends ScElement {
   }
 }
 
-customElements.define('sc-loop', ScLoop);
+if (customElements.get('sc-loop') === undefined) {
+  customElements.define('sc-loop', ScLoop);
+}
 
 export default ScLoop;

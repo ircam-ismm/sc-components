@@ -204,6 +204,8 @@ class ScFileTree extends ScElement {
   }
 }
 
-customElements.define('sc-file-tree', ScFileTree);
+if (customElements.get('sc-file-tree') === undefined) {
+  customElements.define('sc-file-tree', ScFileTree);
+}
 
 export default ScFileTree;

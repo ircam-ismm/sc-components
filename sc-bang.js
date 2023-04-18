@@ -12,9 +12,9 @@ class ScBang extends ScElement {
         type: Number,
       },
       active: {
-        type: Boolean,
+        type: Number,
+        reflect: true,
       },
-      value: {},
     };
   }
 
@@ -56,13 +56,13 @@ class ScBang extends ScElement {
   set active(value) {
     clearTimeout(this._timeoutId);
 
+    // use falsy values to be backward compatible
     if (value === true) {
-
       this._active = true;
       this.requestUpdate();
 
       this._timeoutId = setTimeout(() => {
-        this._active = false;
+        this.active = false;
         this.requestUpdate();
       }, 50);
     } else {
@@ -71,12 +71,20 @@ class ScBang extends ScElement {
     }
   }
 
+  get active() {
+    return false;
+  }
+
+  // attributeChangedCallback(name, old, value) {
+  //   console.log(name, old, value);
+  //   super.attributeChangedCallback(name, old, value);
+  // }
+
   constructor() {
     super();
 
     this.width = 30;
     this.height = 30;
-    this.value = true,
 
     this._active = false;
     this._timeoutId = null;
@@ -125,7 +133,7 @@ class ScBang extends ScElement {
     const inputEvent = new CustomEvent('input', {
       bubbles: true,
       composed: true,
-      detail: { value: this.value },
+      detail: { value: true },
     });
 
     this.active = true;
@@ -133,7 +141,9 @@ class ScBang extends ScElement {
   }
 }
 
-customElements.define('sc-bang', ScBang);
+if (customElements.get('sc-bang') === undefined) {
+  customElements.define('sc-bang', ScBang);
+}
 
 export default ScBang;
 
