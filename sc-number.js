@@ -477,6 +477,8 @@ class ScNumber extends ScElement {
   }
 }
 
-customElements.define('sc-number', ScNumber);
+if (customElements.get('sc-number') === undefined) {
+  customElements.define('sc-number', ScNumber);
+}
 
 export default ScNumber;

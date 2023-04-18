@@ -320,6 +320,8 @@ class ScSignal extends ScElement {
   }
 }
 
-customElements.define('sc-signal', ScSignal);
+if (customElements.get('sc-signal') === undefined) {
+  customElements.define('sc-signal', ScSignal);
+}
 
 export default ScSignal;

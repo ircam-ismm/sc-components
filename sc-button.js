@@ -138,6 +138,8 @@ class ScButton extends ScElement {
   }
 }
 
-customElements.define('sc-button', ScButton);
+if (customElements.get('sc-button') === undefined) {
+  customElements.define('sc-button', ScButton);
+}
 
 export default ScButton;

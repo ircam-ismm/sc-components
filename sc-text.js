@@ -140,6 +140,8 @@ class ScText extends ScElement {
   }
 }
 
-customElements.define('sc-text', ScText);
+if (customElements.get('sc-text') === undefined) {
+  customElements.define('sc-text', ScText);
+}
 
 export default ScText;

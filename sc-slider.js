@@ -256,6 +256,8 @@ class ScSlider extends ScElement {
   }
 }
 
-customElements.define('sc-slider', ScSlider);
+if (customElements.get('sc-slider') === undefined) {
+  customElements.define('sc-slider', ScSlider);
+}
 
 export default ScSlider;

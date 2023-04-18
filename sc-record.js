@@ -121,6 +121,8 @@ class ScRecord extends ScElement {
   }
 }
 
-customElements.define('sc-record', ScRecord);
+if (customElements.get('sc-record') === undefined) {
+  customElements.define('sc-record', ScRecord);
+}
 
 export default ScRecord;

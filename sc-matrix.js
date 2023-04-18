@@ -236,6 +236,8 @@ class ScMatrix extends ScElement {
   }
 }
 
-customElements.define('sc-matrix', ScMatrix);
+if (customElements.get('sc-matrix') === undefined) {
+  customElements.define('sc-matrix', ScMatrix);
+}
 
 export default ScMatrix;
