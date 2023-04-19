@@ -338,6 +338,9 @@ class ScNumber extends ScElement {
       : ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '-', '.', ','];
 
     if (validSymbols.indexOf(e.key) !== -1) {
+      e.preventDefault();
+      e.stopPropagation();
+
       if (this._numKeyPressed === 0) {
         this._displayValue = '';
       }
@@ -356,6 +359,8 @@ class ScNumber extends ScElement {
 
     // handle backspace
     if (e.key === 'Backspace' || e.which === 8) {
+      e.preventDefault();
+      e.stopPropagation();
       // if last character is '.' remove it automatically
       if (this._displayValue[this._displayValue.length -1] === '.') {
         this._displayValue = this._displayValue.substring(0, this._displayValue.length - 1);
@@ -369,6 +374,8 @@ class ScNumber extends ScElement {
 
     // Tab has the same effect as it triggers blur
     if (e.key === 'Enter' || e.which === 13) {
+      e.preventDefault();
+      e.stopPropagation();
       this.updateValueFromDisplayValue();
     }
   }

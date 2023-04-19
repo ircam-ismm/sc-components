@@ -1,4 +1,4 @@
-import { css, html, svg, nothing } from 'lit-element';
+import { css, html, svg, nothing } from 'lit';
 import ScElement from './ScElement.js';
 
 function padLeft(value, char, length) {
@@ -158,5 +158,3 @@ class ScClock extends ScElement {
 if (customElements.get('sc-clock') === undefined) {
   customElements.define('sc-clock', ScClock);
 }
-
-

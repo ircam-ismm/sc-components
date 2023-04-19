@@ -15,6 +15,7 @@
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
     "@ircam/resume-audio-context": "^1.0.2",
+    "@ircam/sc-gettime": "^1.0.1",
     "@ircam/simple-components": "^2.2.0",
     "@webcomponents/webcomponentsjs": "^2.6.0",
     "core-js": "^3.8.3",

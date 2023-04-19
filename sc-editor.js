@@ -179,6 +179,8 @@ class ScEditor extends LitElement {
   }
 
   onKeydown(e) {
+    e.stopPropagation();
+
     // manually do comment because opens Help menu otherwise...
     if (e.metaKey && e.shiftKey) {
       e.preventDefault();

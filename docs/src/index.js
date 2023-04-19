@@ -25,6 +25,7 @@ import '../../sc-record.js';
 import '../../sc-loop.js';
 import '../../sc-tap-tempo.js';
 import '../../sc-return.js';
+import '../../sc-clock.js';
 
 // controls
 import matrix from './sc-matrix-example.js';
@@ -44,6 +45,7 @@ import record from './sc-record-example.js';
 import loop from './sc-loop-example.js';
 import returnButton from './sc-return-example.js';
 import tapTempo from './sc-tap-tempo-example.js';
+import clock from './sc-clock-example.js';
 
 // monitoring
 import signal from './sc-signal-example.js';
@@ -68,6 +70,7 @@ const docs = {
   'sc-transport': transport,
   'sc-tap-tempo': tapTempo,
   'sc-return': returnButton,
+  'sc-clock': clock,
 };
 
 function setTheme(name) {
