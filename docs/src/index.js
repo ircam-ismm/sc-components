@@ -26,6 +26,7 @@ import '../../sc-loop.js';
 import '../../sc-tap-tempo.js';
 import '../../sc-return.js';
 import '../../sc-clock.js';
+import '../../sc-progress-bar.js';
 
 // controls
 import matrix from './sc-matrix-example.js';
@@ -46,6 +47,7 @@ import loop from './sc-loop-example.js';
 import returnButton from './sc-return-example.js';
 import tapTempo from './sc-tap-tempo-example.js';
 import clock from './sc-clock-example.js';
+import progressBar from './sc-progress-bar-example.js';
 
 // monitoring
 import signal from './sc-signal-example.js';
@@ -71,6 +73,7 @@ const docs = {
   'sc-tap-tempo': tapTempo,
   'sc-return': returnButton,
   'sc-clock': clock,
+  'sc-progress-bar': progressBar,
 };
 
 function setTheme(name) {
