@@ -24,17 +24,12 @@ class ScProgressBar extends ScElement {
         font-size: 0;
       }
 
-      div {
-        vertical-align: middle;
-        text-align: center;
+      :host > div {
         box-sizing: border-box;
         background-color: rgb(106, 106, 105);
         border: 1px solid rgb(106, 106, 105);
-        color: white;
-        font-family: Consolas, monaco, monospace;
         border-radius: 2px;
-        line-height: 16px;
-        resize: none;
+        position: relative
       }
 
       rect.foreground {
@@ -46,8 +41,9 @@ class ScProgressBar extends ScElement {
       }
 
       sc-number {
-        position: relative;
-        top: -3px;
+        position: absolute;
+        bottom: 0;
+        left: 0
       }
     `;
   }
@@ -68,7 +64,7 @@ class ScProgressBar extends ScElement {
 
   render() {
     const numberHeight = 20;
-    const height = this.displayNumber ? this.height - numberHeight - 2 : this.height - 2;
+    const height = this.height - 2;
     const width = this.width - 2;
     const progressWidth = Math.round(this._norm * width);
 
