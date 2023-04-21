@@ -16,7 +16,7 @@ ${`<sc-clock></sc-clock>`}
 
     <h3>Attributes</h3>
     <p>
-      <sc-text readonly value="[.getTimeFunction]"></sc-text>
+      <sc-text readonly value=".getTimeFunction"></sc-text>
     </p>
     <p>
       <sc-text readonly value="[width=400]"></sc-text>

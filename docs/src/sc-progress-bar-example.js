@@ -13,14 +13,14 @@ ${`<sc-progress-bar></sc-progress-bar>`}
 
     <sc-progress-bar
       id="test-progress-bar"
-      .getTimeFunction="${() => getTime() - startTime}"
+      .getProgressFunction="${() => getTime() - startTime}"
       min="0"
       max="1"
     ></sc-progress-bar>
 
     <h3>Attributes</h3>
     <p>
-      <sc-text readonly value="[.getTimeFunction]"></sc-text>
+      <sc-text readonly value=".getProgressFunction"></sc-text>
     </p>
     <p>
       <sc-text readonly value="[width=400]"></sc-text>
@@ -38,7 +38,7 @@ ${`<sc-progress-bar></sc-progress-bar>`}
     <p>
       <sc-text readonly value="[height=50]"></sc-text>
       <sc-number
-        min="30"
+        min="4"
         max="300"
         value="50"
         integer
@@ -79,8 +79,9 @@ ${`<sc-progress-bar></sc-progress-bar>`}
         }}"
       ></sc-toggle>
     </p>
+    <h3>Test</h3>
     <p>
-      <sc-text readonly value="reset clock start time"></sc-text>
+      <sc-text readonly value="Reset progress bar"></sc-text>
       <sc-bang
         @input=${e => { startTime = getTime() }}
       ></sc-bang>
