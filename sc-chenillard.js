@@ -6,10 +6,9 @@ import { getTime } from '@ircam/sc-gettime';
 class ScChenillard extends ScElement {
   static get properties() {
     return {
-      getProgressFunction: {},
       width: { type: Number },
       height: { type: Number },
-      size: { type: Number },
+      size: { type: Number }, // handler size
     }
   }
   static get styles() {
@@ -51,34 +50,33 @@ class ScChenillard extends ScElement {
 
     this.getProgressFunction = getTime;
     this.width = 400;
-    this.height = 50;
-    this.size = 0.2;
+    this.height = 30;
+    this.size = 0.1; // size of the moving part
 
-    this._progress = 0;
+    this._progress;
   }
 
   render() {
     const size = this.size;
     const amplitude = 1 - size;
+    const handlerWidth = this.width * this.size;
 
-    const numberHeight = 20;
     const height = this.height - 2;
     const width = this.width - 2;
 
-    const chenillardWidth = size * width;
+    // progress 0 is on the left
+    // progress 1 is on the right
+    const posX = this._progress * (width - handlerWidth);
 
+    // const pos = (this._progress % 2) * amplitude; // [0-2]
+    // let progressWidth;
+    // if (pos < amplitude) {
+    //   progressWidth = Math.round(pos * width); // [0-2]*width
+    // } else {
+    //   progressWidth = Math.round(Math.abs((2 * amplitude) - pos) * width); //[0-2]*width
+    // }
 
-    const pos = (this._progress % 2) * amplitude; // [0-2]
-
-    let progressWidth;
-
-    if (pos < amplitude) {
-      progressWidth = Math.round(pos * width); // [0-2]*width
-    } else {
-      progressWidth = Math.round(Math.abs((2 * amplitude) - pos) * width); //[0-2]*width
-    }
-
-    const progressWidthStart = (progressWidth - chenillardWidth) - (1 - chenillardWidth); //[0-2]W - 0.2W
+    // const progressWidthStart = (progressWidth - chenillardWidth) - (1 - chenillardWidth); //[0-2]W - 0.2W
     // console.log(progressWidthStart);
 
     return html`
@@ -88,7 +86,7 @@ class ScChenillard extends ScElement {
           viewport="0 0 ${width} ${height}"
         >
           <rect class="background" width="${width}" height="${height}"></rect>
-          <rect class="foreground" x="${progressWidthStart}" width="${chenillardWidth}" height="${height}"></rect>
+          <rect class="foreground" x="${posX}" width="${handlerWidth}" height="${height}"></rect>
         </svg>
       </div>
     `;
@@ -98,7 +96,6 @@ class ScChenillard extends ScElement {
     const progress = this.getProgressFunction();
 
     if (Number.isFinite(progress)) {
-
       if (progress !== this._progress) {
         this._progress = progress;
         this.requestUpdate();

@@ -53,7 +53,7 @@ class ScProgressBar extends ScElement {
 
     this.getProgressFunction = getTime;
     this.width = 400;
-    this.height = 50;
+    this.height = 30;
     this.min = 0;
     this.max = 1;
     this.displayNumber = false;
