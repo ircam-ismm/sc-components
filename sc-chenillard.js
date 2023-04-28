@@ -66,7 +66,7 @@ class ScChenillard extends ScElement {
 
     // progress 0 is on the left
     // progress 1 is on the right
-    const posX = this._progress * (width - handlerWidth);
+    const posX = Math.round(this._progress * (width - handlerWidth));
 
     // const pos = (this._progress % 2) * amplitude; // [0-2]
     // let progressWidth;

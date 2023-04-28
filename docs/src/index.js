@@ -28,6 +28,7 @@ import '../../sc-return.js';
 import '../../sc-clock.js';
 import '../../sc-progress-bar.js';
 import '../../sc-chenillard.js';
+import '../../sc-gh-link.js';
 
 // controls
 import matrix from './sc-matrix-example.js';
@@ -50,6 +51,7 @@ import tapTempo from './sc-tap-tempo-example.js';
 import clock from './sc-clock-example.js';
 import progressBar from './sc-progress-bar-example.js';
 import chenillard from './sc-chenillard-example.js';
+import ghLink from './sc-gh-link-example.js';
 
 // monitoring
 import signal from './sc-signal-example.js';
@@ -76,7 +78,7 @@ const docs = {
   'sc-return': returnButton,
   'sc-clock': clock,
   'sc-progress-bar': progressBar,
-  'sc-chenillard': chenillard,
+  'sc-gh-link': ghLink,
 };
 
 function setTheme(name) {
