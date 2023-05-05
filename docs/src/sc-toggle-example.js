@@ -50,11 +50,20 @@ ${`<sc-toggle></sc-toggle>`}
       ></sc-number>
     </p>
     <p>
-      <sc-text readonly value="[active=false]"></sc-text>
+      <sc-text readonly value="[?active=false]"></sc-text>
       <sc-toggle
         @change="${e => {
           const $component = document.querySelector('#test-toggle');
           $component.active = e.detail.value;
+        }}"
+      ></sc-toggle>
+    </p>
+    <p>
+      <sc-text readonly value="[?disabled=false]"></sc-text>
+      <sc-toggle
+        @change="${e => {
+          const $component = document.querySelector('#test-toggle');
+          $component.disabled = e.detail.value;
         }}"
       ></sc-toggle>
     </p>
