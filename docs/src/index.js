@@ -29,7 +29,8 @@ import '../../sc-clock.js';
 import '../../sc-progress-bar.js';
 import '../../sc-chenillard.js';
 import '../../sc-gh-link.js';
-import '@ircam/simple-components/sc-icon-button.js';
+import '../../sc-icon-button.js';
+import '../../sc-flash.js';
 
 // controls
 import matrix from './sc-matrix-example.js';
@@ -54,6 +55,7 @@ import progressBar from './sc-progress-bar-example.js';
 import chenillard from './sc-chenillard-example.js';
 import ghLink from './sc-gh-link-example.js';
 import iconButton from './sc-icon-button-example.js';
+import flash from './sc-flash-example.js';
 
 // monitoring
 import signal from './sc-signal-example.js';
@@ -82,6 +84,7 @@ const docs = {
   'sc-progress-bar': progressBar,
   'sc-gh-link': ghLink,
   'sc-icon-button': iconButton,
+  'sc-flash': flash,
 };
 
 function setTheme(name) {
