@@ -20,7 +20,10 @@ class ScToggle extends ScElement {
       },
       midiValue: {
         type: Number,
-      }
+      },
+      disabled: {
+        type: Boolean,
+      },
     };
   }
 
@@ -92,6 +95,7 @@ class ScToggle extends ScElement {
 
     this.width = 30;
     this.active = false;
+    this.disabled = false;
 
     this.updateValue = this.updateValue.bind(this);
   }
@@ -99,17 +103,17 @@ class ScToggle extends ScElement {
   render() {
     const padding = 25;
     const strokeWidth = 10;
+    const opacity = this.disabled ? 0.7 : 1;
 
     return html`
       <svg
-        style="width: ${this._size}px; height: ${this._size}px;"
+        style="width: ${this._size}px; height: ${this._size}px; opacity: ${opacity}"
         viewbox="0 0 100 100"
         @mousedown="${this.updateValue}"
         @touchstart="${{
           handleEvent: this.updateValue,
           passive: false,
         }}"
-
         @contextmenu="${this._preventContextMenu}"
       >
         <rect
@@ -156,6 +160,10 @@ class ScToggle extends ScElement {
   updateValue(e) {
     e.preventDefault();
     e.stopPropagation();
+
+    if (this.disabled) {
+      return;
+    }
 
     this.active = !this.active;
 

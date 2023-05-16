@@ -30,7 +30,7 @@ function getFormattedTimeInfos(time) {   // [-][hh:]mm:ss
 
     return {
       sign,
-      hours: padLeft(hours, '0', 2),
+      hours: padLeft(hours % 24, '0', 2),
       minutes: padLeft(minutes, '0', 2),
       seconds: padLeft(seconds, '0', 2),
       milliseconds: padLeft(milliseconds, '0', 3),
@@ -75,7 +75,17 @@ class ScClock extends ScElement {
   constructor() {
     super();
 
-    this.getTimeFunction = () => Date.now() / 1000;
+    // by default the component displays a raw clock (horloge)
+    this._defaultGetTimeFunction = () => {
+      const date = new Date();
+      const hours = date.getHours();
+      const minutes = date.getMinutes();
+      return { hours, minutes };
+    }
+    this._currentTime = { hours: null, minutes: null };
+
+
+    this.getTimeFunction = this._defaultGetTimeFunction;
     this.width = 400;
     this.height = 50;
     this.fontSize = 13;
@@ -83,11 +93,36 @@ class ScClock extends ScElement {
   }
 
   render() {
+    // default simple clock with current hours and minutes from local date
+    if (this.getTimeFunction === this._defaultGetTimeFunction) {
+      const hours = this._currentTime.hours < 10 ?
+        `0${this._currentTime.hours}` : `${this._currentTime.hours}`;
+      const minutes = this._currentTime.minutes < 10 ?
+        `0${this._currentTime.minutes}` : `${this._currentTime.minutes}`;
+
+      return html`
+        <div style="
+          width: ${this.width}px;
+          height: ${this.height}px;
+          line-height: ${this.height}px;
+          font-size: ${this.fontSize}px;
+          opacity: 0.6;
+        ">
+             <span>${hours}</span><!--
+          --><span style="visibility: ${visibility};">:</span><!--
+          --><span>${minutes}</span>
+        </div>
+      `;
+    }
+
+    // user defined clock, format hh:mm:ss:msec
+    // @todo - allow to change the format
     const now = this.getTimeFunction();
     const time = Number.isFinite(now) ? now : 0;
     const { sign, hours, minutes, seconds, milliseconds } = getFormattedTimeInfos(time);
 
     const millis = parseInt(milliseconds) / 1000;
+
     let visibility = 'visible';
     if (this.twinkle && millis >= this.twinkle[0] && millis < this.twinkle[1]) {
       visibility = 'hidden';
@@ -100,9 +135,8 @@ class ScClock extends ScElement {
 
     const opacity = time === 0 ? 0.3 : 1;
 
-    // the html comments are weird, but prevent the browser to display spaces
-    // between the <span>
-      if (true) { // full clock hh:mm:ss:msec
+    // the HTML comments are weird, but prevent browsers to add
+    // spaces between the <span> elements
     return html`
       <div style="
         width: ${this.width}px;
@@ -120,25 +154,22 @@ class ScClock extends ScElement {
         --><span style="visibility: ${visibility};">:</span><!--
         --><span>${milliseconds}</span>
       </div>
-    ` } else { // hh:mm
-     return html`
-      <div style="
-        width: ${this.width}px;
-        height: ${this.height}px;
-        line-height: ${this.height}px;
-        font-size: ${this.fontSize}px;
-        opacity: ${opacity};
-      ">
-           ${sign ? html`<span>${sign}</span>` : nothing}<!--
-        --><span>${minutes}</span><!--
-        --><span style="visibility: ${visibility};">:</span><!--
-        --><span>${seconds}</span>
-      </div>
-    `
-      }
+    `;
   }
 
   _render() {
+    if (this.getTimeFunction === this._defaultGetTimeFunction) {
+      const now = this.getTimeFunction();
+
+      if (now.hours !== this._currentTime.hours || now.minutes !== this._currentTime.minutes) {
+        this._currentTime = now;
+        this.requestUpdate();
+      }
+    } else {
+      // user defined clock
+      this.requestUpdate();
+    }
+
     this.requestUpdate();
     this._rafId = requestAnimationFrame(() => this._render());
   }
