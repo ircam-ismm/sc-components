@@ -17,6 +17,9 @@ class ScButton extends ScElement {
       value: {
         type: String,
       },
+      midiValue: {
+        type: Number,
+      },
       selected: {
         type: Boolean,
       },
@@ -59,6 +62,41 @@ class ScButton extends ScElement {
         border: 1px solid ${theme['--color-secondary-3']};
       }
     `;
+  }
+
+  set midiValue(value) {
+    let eventName;
+
+    if (value === 0) {
+      eventName = 'release';
+    } else {
+      eventName = 'press'
+    }
+
+    // we don't want to trigger a release if no pressed has been recorded
+    if (eventName === 'release' && this._pressed === false) {
+      return;
+    }
+
+    this._pressed = (eventName === 'press');
+
+    const event = new CustomEvent(eventName, {
+      bubbles: true,
+      composed: true,
+      detail: { value: this.value },
+    });
+
+    this.dispatchEvent(event);
+
+    if (eventName === 'press') {
+      const inputEvent = new CustomEvent('input', {
+        bubbles: true,
+        composed: true,
+        detail: { value: this.value },
+      });
+
+      this.dispatchEvent(inputEvent);
+    }
   }
 
   constructor() {

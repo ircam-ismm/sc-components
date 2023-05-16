@@ -38,6 +38,9 @@ class ScSlider extends ScElement {
       value: {
         type: Number,
       },
+      midiValue: {
+        type: Number,
+      },
       color: {
         type: String,
       }
@@ -82,6 +85,34 @@ class ScSlider extends ScElement {
     `;
   }
 
+  set midiValue(value) {
+    const newValue = (this.max - this.min) * value / 127. + this.min;
+    
+    this.value = this.clipper(newValue);
+
+    const inputEvent = new CustomEvent('input', {
+      bubbles: true,
+      composed: true,
+      detail: { value: this.value },
+    });
+
+    this.dispatchEvent(inputEvent);
+
+    const changeEvent = new CustomEvent('change', {
+      bubbles: true,
+      composed: true,
+      detail: { value: this.value },
+    });
+
+    this.dispatchEvent(changeEvent);
+
+    this.requestUpdate();
+  }
+
+  get midiValue() {
+    return Math.round((this.value - this.min) / (this.max - this.min) * 127.);
+  }
+
   constructor() {
     super();
 
@@ -102,6 +133,7 @@ class ScSlider extends ScElement {
     this._pointerId = null;
     this._dirty = true;
   }
+
 
   connectedCallback() {
     this._dirty = true;
