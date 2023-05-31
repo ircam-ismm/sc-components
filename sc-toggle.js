@@ -18,6 +18,9 @@ class ScToggle extends ScElement {
       value: {
         type: Boolean,
       },
+      midiValue: {
+        type: Number,
+      },
       disabled: {
         type: Boolean,
       },
@@ -66,6 +69,25 @@ class ScToggle extends ScElement {
 
   set value(active) {
     this.active = active;
+  }
+
+  set midiValue(value) {
+    this.value = value === 0 ? false : true;
+
+    this.active = this.value;
+
+    const changeEvent = new CustomEvent('change', {
+      bubbles: true,
+      composed: true,
+      detail: { value: this.active },
+    });
+
+    this.dispatchEvent(changeEvent);
+    this.requestUpdate();
+  }
+
+  get midiValue() {
+    return this.value ? 127 : 0;
   }
 
   constructor() {
