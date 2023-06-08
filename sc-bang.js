@@ -12,7 +12,7 @@ class ScBang extends ScElement {
         type: Number,
       },
       active: {
-        type: Number,
+        type: Boolean,
         reflect: true,
       },
     };
@@ -53,33 +53,6 @@ class ScBang extends ScElement {
     return this._size;
   }
 
-  set active(value) {
-    clearTimeout(this._timeoutId);
-
-    // use falsy values to be backward compatible
-    if (value === true) {
-      this._active = true;
-      this.requestUpdate();
-
-      this._timeoutId = setTimeout(() => {
-        this.active = false;
-        this.requestUpdate();
-      }, 50);
-    } else {
-      this._active = false;
-      this.requestUpdate();
-    }
-  }
-
-  get active() {
-    return false;
-  }
-
-  // attributeChangedCallback(name, old, value) {
-  //   console.log(name, old, value);
-  //   super.attributeChangedCallback(name, old, value);
-  // }
-
   constructor() {
     super();
 
@@ -91,7 +64,16 @@ class ScBang extends ScElement {
   }
 
   render() {
+
     const size = this._size - 2;
+
+    if (this.active) {
+      clearTimeout(this._timeoutId);
+
+      setTimeout(() => {
+        this.active = false;
+      }, 50);
+    }
 
     return html`
       <svg
@@ -112,7 +94,7 @@ class ScBang extends ScElement {
           stroke="${theme['--color-primary-3']}"
           fill="${theme['--color-primary-1']}"
         ></circle>
-        ${this._active
+        ${this.active
           ? svg`
             <circle
               cx="50"
