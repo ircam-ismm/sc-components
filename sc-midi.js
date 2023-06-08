@@ -6,11 +6,7 @@ import { fontFamily, fontSize, theme } from './styles.js';
 /*
 TODO: 
 
--!! save/load from JSON (using element ID)
-
-- use $el.id and fallback to $el._scId
 - review styling
-- select MIDI device
 - ability to export configuration
 */ 
 
@@ -89,6 +85,7 @@ class ScMidi extends ScElement {
         position: absolute;
         bottom: 0;
         left: 0;
+        width: 270px;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -97,6 +94,16 @@ class ScMidi extends ScElement {
 
       #bindings-panel > h3 {
         padding: 0 20px;
+      }
+
+      #device-menu {
+        position: absolute;
+        bottom: 0;
+        left: 270px;
+        width: 300px;
+        padding-bottom: 10px;
+        background-color: transparent;
+        border: none;
       }
     `;
   }
@@ -114,18 +121,27 @@ class ScMidi extends ScElement {
     this.active = false;
     this.selectableTags = 'sc-slider, sc-bang, sc-toggle, sc-button';
     this.selection = null;
+    this.devices = [];
+    this.activeDevice = null;
     this.midiBindings = {};
+    this.midiBindingsJson = {};
     this.hasBindings = new Set;
 
     this.midiAccess = navigator.requestMIDIAccess().then(access => {
       for (let device of access.inputs.values()) {
-        device.addEventListener('midimessage', this.processMidiMessage);
+        this.devices.push(device);
+        // device.addEventListener('midimessage', this.processMidiMessage);
       }
+      this.activeDevice = this.devices[0]
+      this.activeDevice.addEventListener('midimessage', this.processMidiMessage);
     });
 
     this._pressed = false;
     this.processMidiMessage = this.processMidiMessage.bind(this);
     this.selectElement = this.selectElement.bind(this);
+
+  
+    setTimeout(() => this.loadJson(), 50); // must wait for all elements to load
   }
 
   createChannelTag(channel) {
@@ -152,17 +168,59 @@ class ScMidi extends ScElement {
     return $layer;
   }
 
+  saveJson() {
+    const jsonCopy = {...this.midiBindingsJson};
+    Object.entries(jsonCopy).forEach(([channel, idSet]) => {
+      jsonCopy[channel] = Array.from(idSet);
+    });
+    const json = JSON.stringify(jsonCopy, null, 2);
+    localStorage.setItem('sc-midi-bindings', json);
+  }
+
+  loadJson() {
+    const data = localStorage.getItem('sc-midi-bindings');
+    if (data) {
+      const parsedJson = JSON.parse(data);
+      Object.entries(parsedJson).forEach(([channel, idList]) => {
+        parsedJson[channel] = new Set(idList);
+      });
+      this.midiBindingsJson = parsedJson;
+  
+      const midiSelectable = document.querySelectorAll(this.selectableTags);
+  
+      const midiBindings = {};
+      const hasBindings = new Set;
+      Object.entries(this.midiBindingsJson).forEach(([channel, idSet]) => {
+        const elSet = new Set;
+        idSet.forEach(id => {
+          midiSelectable.forEach(el => {
+            if (el.id === id || el._scId === id) {
+              elSet.add(el);
+              hasBindings.add(el);
+            }
+          });
+        });
+        midiBindings[channel] = elSet;
+      });
+      this.midiBindings = midiBindings;
+      this.hasBindings = hasBindings;
+  
+      this.requestUpdate();
+    }
+  }
 
   processMidiMessage(message) {
-    const [deviceId, channel, value] = message.data;
+    const [messageType, channel, value] = message.data;
 
     if (this.active) {
       if (this.selection) {
         // bind element to channel 
         if (!this.midiBindings[channel]) {
           this.midiBindings[channel] = new Set;
+          this.midiBindingsJson[channel] = new Set;
         }
         this.midiBindings[channel].add(this.selection);
+        this.midiBindingsJson[channel].add(this.selection.id || this.selection._scId);
         this.hasBindings.add(this.selection);
 
         // add small text on element to indicate channel number
@@ -173,11 +231,13 @@ class ScMidi extends ScElement {
           this.selection.shadowRoot.removeChild($oldChannelTag);
           if (oldChannel !== channel) {
             this.midiBindings[oldChannel].delete(this.selection);
+            this.midiBindingsJson[oldChannel].delete(this.selection.id || this.selection._scId);
           }
         }
-
         const $channelTag = this.createChannelTag(channel);
         this.selection.shadowRoot.appendChild($channelTag);
+
+        this.saveJson();
       }
     } else {
       const assignedToChannel = this.midiBindings[channel];
@@ -240,6 +300,7 @@ class ScMidi extends ScElement {
 
   removeBinding(channel, el) {
     this.midiBindings[channel].delete(el);
+    this.midiBindingsJson[channel].delete(el.id || el._scId);
     this.hasBindings.delete(el);
     if (this.active) {
       const $layer = el.shadowRoot.querySelector('.midilayer');
@@ -250,29 +311,41 @@ class ScMidi extends ScElement {
       const $layer = el.shadowRoot.querySelector('.midilayer');
       el.shadowRoot.removeChild($layer);
     }
+
+    this.saveJson();
     this.requestUpdate();
   }
+
+  selectDevice(deviceName) {
+    this.activeDevice.removeEventListener('midimessage', this.processMidiMessage);
+    this.devices.forEach(device => {
+      if (device.name === deviceName) {
+        this.activeDevice = device;
+      }
+    });
+    this.activeDevice.addEventListener('midimessage', this.processMidiMessage);
+  }  
 
   renderBindingsPanel() {
     return html`
       <div id="bindings-panel">
         <h3>midi bindings</h3>
         ${Object.entries(this.midiBindings).map(([channel, elSet]) => {
-      return Array.from(elSet).map(el => {
-        return html`
-              <div 
-                class="panelLine"
-                @mouseover="${() => this.mouseOverBindingLine(el)}"
-                @mouseout="${() => this.mouseOutBindingLine(el)}"
-              >
-                <p style="width: 6ch">cc ${channel}</p>
-                <p>${el._scId}</p>
-                <button
-                  @mousedown="${() => this.removeBinding(channel, el)}"
-                  @touchstart="${{
-            handleEvent: () => this.removeBinding(channel, el),
-            passive: false,
-          }}"
+            return Array.from(elSet).map(el => {
+              return html`
+                    <div 
+                      class="panelLine"
+                      @mouseover="${() => this.mouseOverBindingLine(el)}"
+                      @mouseout="${() => this.mouseOutBindingLine(el)}"
+                    >
+                      <p style="width: 6ch">cc ${channel}</p>
+                      <p>${el.id || el._scId}</p>
+                      <button
+                        @mousedown="${() => this.removeBinding(channel, el)}"
+                        @touchstart="${{
+                  handleEvent: () => this.removeBinding(channel, el),
+                  passive: false,
+                }}"
                 >x
                 </button>
               </div>
@@ -283,17 +356,41 @@ class ScMidi extends ScElement {
     `
   }
 
+  renderDeviceMenu() {
+    return html`
+      <div id="device-menu">
+        <h3>select device</h3>
+        <select 
+          @change="${e => this.selectDevice(e.target.value)}"
+        >
+        ${this.devices.map(device => {
+          if (device === this.activeDevice) {
+            return html`
+              <option value="${device.name}" selected>${device.name}</option>
+            `
+          } else {
+            return html`
+              <option value="${device.name}">${device.name}</option>
+            `
+          }
+        })}
+        </select>
+
+      </div>
+    `
+  }
+
   onEvent() {
     this.active = !this.active;
+    const midiSelectable = document.querySelectorAll(this.selectableTags);
 
     if (this.active) {
-      this.midiSelectable = [];
-      document.querySelectorAll(this.selectableTags).forEach(el => {
-        this.midiSelectable.push(el);
-      });
+      // document.querySelectorAll(this.selectableTags).forEach(el => {
+      //   midiSelectable.push(el);
+      // });
 
       // add semi-transparent layer on top of every selectable element
-      this.midiSelectable.forEach(el => {
+      midiSelectable.forEach(el => {
         const color = this.hasBindings.has(el)
           ? this.colorLayerBound
           : this.colorLayerBase;
@@ -312,12 +409,12 @@ class ScMidi extends ScElement {
       });
     } else {
       this.selection = null;
-      this.midiSelectable = [];
-      document.querySelectorAll(this.selectableTags).forEach(el => {
-        this.midiSelectable.push(el);
-      });
+      // const midiSelectable = [];
+      // document.querySelectorAll(this.selectableTags).forEach(el => {
+      //   midiSelectable.push(el);
+      // });
 
-      this.midiSelectable.forEach(el => {
+      midiSelectable.forEach(el => {
         const layer = el.shadowRoot.querySelector('.midilayer');
         el.shadowRoot.removeChild(layer);
         el.removeEventListener('click', this.selectElement);
@@ -356,6 +453,7 @@ class ScMidi extends ScElement {
       >MIDI</button>
 
       ${this.active ? this.renderBindingsPanel() : ''}
+      ${this.active ? this.renderDeviceMenu() : ''}
     `;
   }
 }
