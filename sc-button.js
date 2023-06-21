@@ -102,6 +102,7 @@ class ScButton extends ScElement {
   render() {
     return html`
       <button
+        tabindex="-1"
         class="${this.selected ? 'selected' : ''}"
         @mousedown="${this._onEvent}"
         @mouseup="${this._onEvent}"
@@ -116,6 +117,14 @@ class ScButton extends ScElement {
         <slot>${this.value}</slot>
       </button>
     `;
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+
+    if (!this.hasAttribute('tabindex')) {
+      this.setAttribute('tabindex', 0);
+    }
   }
 
   _onEvent(e) {

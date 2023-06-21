@@ -7,9 +7,9 @@ export const template = html`
 <pre><code class="language-javascript">\
 ${`\
 import { html } from 'lit';
-import '@ircam/sc-components/sc-toggle.js';
+import '@ircam/sc-components/sc-bang.js';
 
-const template = html\`<sc-toggle></sc-toggle>\`;`}
+const template = html\`<sc-bang></sc-bang>\`;`}
 </code></pre>
 
 <sc-bang
@@ -27,9 +27,9 @@ const template = html\`<sc-toggle></sc-toggle>\`;`}
 </p>
 <pre><code class="language-html">\
 ${`\
-<sc-toggle
+<sc-bang
   @input=\${e => console.log(e.detail.value)}
-></sc-toggle>`}
+></sc-bang>`}
 <code></pre>
 
 <h3>Attributes</h3>
@@ -49,9 +49,9 @@ import { html } from 'lit';
 import { live } from 'lit/directives/live.js';
 
 html\`
-  <sc-toggle
+  <sc-bang
     ?active=\${live(myFlag)}
-  ></sc-toggle>
+  ></sc-bang>
 \`;`}
 </code></pre>
 <p>

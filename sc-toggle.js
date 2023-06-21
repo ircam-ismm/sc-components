@@ -3,64 +3,62 @@ import { theme } from './styles.js';
 import ScElement from './ScElement.js';
 
 class ScToggle extends ScElement {
-  static get properties() {
-    return {
-      width: {
-        type: Number,
-      },
-      height: {
-        type: Number,
-      },
-      active: {
-        type: Boolean,
-        reflect: true,
-      },
-      value: {
-        type: Boolean,
-      },
-      midiValue: {
-        type: Number,
-      },
-      disabled: {
-        type: Boolean,
-      },
-    };
-  }
+  static properties = {
+    active: {
+      type: Boolean,
+      reflect: true,
+    },
+    // just an alias for the `active` attribute
+    value: {
+      type: Boolean,
+    },
+    disabled: {
+      type: Boolean,
+      reflect: true,
+    },
+  };
 
-  static get styles() {
-    return css`
-      :host {
-        vertical-align: top;
-        display: inline-block;
-        box-sizing: border-box;
-        user-select: none;
-        font-size: 0 !important;
-      }
+  static styles = css`
+    :host {
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+      vertical-align: top;
+      box-sizing: border-box;
+      background-color: var(--sc-color-primary-1);
+      font-size: 0;
+      line-height: 0;
+    }
 
-      svg {
-        box-sizing: border-box;
-        border: 1px solid ${theme['--color-primary-2']};
-      }
-    `;
-  }
+    :host([disabled]) {
+      opacity: 0.7;
+    }
 
-  set width(value) {
-    this._size = value;
-    this.requestUpdate();
-  }
+    :host([hidden]) {
+      display: none
+    }
 
-  get width() {
-    return this._size;
-  }
+    :host(:focus), :host(:focus-visible) {
+      outline: none;
+      box-shadow: 0 0 2px var(--sc-color-primary-4);
+    }
 
-  set height(value) {
-    this._size = value;
-    this.requestUpdate();
-  }
+    svg {
+      width: 100%;
+      height: 100%;
+      box-sizing: border-box;
+      border: 1px solid ${theme['--color-primary-2']};
+    }
 
-  get height() {
-    return this._size;
-  }
+    svg line {
+      stroke-width: 10px;
+      stroke: var(--sc-color-primary-3);
+    }
+
+    svg.active line {
+      stroke: #ffffff;
+    }
+  `;
 
   // alias active for consistency and genericity with other components
   get value() {
@@ -71,19 +69,16 @@ class ScToggle extends ScElement {
     this.active = active;
   }
 
+  // sc-midi controller interface
   set midiValue(value) {
     this.value = value === 0 ? false : true;
 
+    if (this.disabled) {
+      return;
+    }
+
     this.active = this.value;
-
-    const changeEvent = new CustomEvent('change', {
-      bubbles: true,
-      composed: true,
-      detail: { value: this.active },
-    });
-
-    this.dispatchEvent(changeEvent);
-    this.requestUpdate();
+    this._dispatchEvent();
   }
 
   get midiValue() {
@@ -93,71 +88,39 @@ class ScToggle extends ScElement {
   constructor() {
     super();
 
-    this.width = 30;
     this.active = false;
     this.disabled = false;
-
-    this.updateValue = this.updateValue.bind(this);
   }
 
   render() {
     const padding = 25;
-    const strokeWidth = 10;
-    const opacity = this.disabled ? 0.7 : 1;
 
     return html`
       <svg
-        style="width: ${this._size}px; height: ${this._size}px; opacity: ${opacity}"
+        class="${this.active ? 'active' : ''}"
         viewbox="0 0 100 100"
-        @mousedown="${this.updateValue}"
+        @mousedown="${this._updateValue}"
         @touchstart="${{
-          handleEvent: this.updateValue,
+          handleEvent: this._updateValue,
           passive: false,
         }}"
         @contextmenu="${this._preventContextMenu}"
       >
-        <rect
-          x="0"
-          y="0"
-          width="100"
-          height="100"
-          fill="${theme['--color-primary-1']}"
-        ></rect>
-        ${this.active
-          ? svg`
-              <line
-                x1="${padding}"
-                y1="${padding}"
-                x2="${100 - padding}"
-                y2="${100 - padding}"
-                style="stroke-width:${strokeWidth}; stroke:#ffffff;" />
-              <line
-                x1="${padding}"
-                y1="${100 - padding}"
-                x2="${100 - padding}"
-                y2="${padding}"
-                style="stroke-width:${strokeWidth}; stroke:#ffffff;" />
-            `
-          : svg`
-              <line
-                x1="${padding}"
-                y1="${padding}"
-                x2="${100 - padding}"
-                y2="${100 - padding}"
-                style="stroke-width:${strokeWidth}; stroke:${theme['--color-primary-3']};" />
-              <line
-                x1="${padding}"
-                y1="${100 - padding}"
-                x2="${100 - padding}"
-                y2="${padding}"
-                style="stroke-width:${strokeWidth}; stroke:${theme['--color-primary-3']};" />
-            `
-        }
+        <line x1="${padding}" y1="${padding}" x2="${100 - padding}" y2="${100 - padding}" />
+        <line x1="${padding}" y1="${100 - padding}" x2="${100 - padding}" y2="${padding}" />
       </svg>
     `;
   }
 
-  updateValue(e) {
+  connectedCallback() {
+    super.connectedCallback();
+
+    if (!this.hasAttribute('tabindex')) {
+      this.setAttribute('tabindex', 0);
+    }
+  }
+
+  _updateValue(e) {
     e.preventDefault();
     e.stopPropagation();
 
@@ -166,7 +129,10 @@ class ScToggle extends ScElement {
     }
 
     this.active = !this.active;
+    this._dispatchEvent();
+  }
 
+  _dispatchEvent() {
     const changeEvent = new CustomEvent('change', {
       bubbles: true,
       composed: true,
@@ -174,7 +140,6 @@ class ScToggle extends ScElement {
     });
 
     this.dispatchEvent(changeEvent);
-    this.requestUpdate();
   }
 }
 
