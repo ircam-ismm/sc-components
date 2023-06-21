@@ -6,18 +6,20 @@ import { fontFamily, fontSize, theme } from './styles.js';
 class ScText extends ScElement {
   static get properties() {
     return {
-      width: {
-        type: Number,
-      },
-      height: {
-        type: Number,
+      readonly: {
+        type: Boolean,
+        reflect: true,
       },
       value: {
         type: String,
       },
-      readonly: {
+      disabled: {
         type: Boolean,
         reflect: true,
+      },
+      _dirty: {
+        type: Boolean,
+        state: true,
       },
     };
   }
@@ -30,28 +32,45 @@ class ScText extends ScElement {
         box-sizing: border-box;
         vertical-align: top;
         font-size: 0;
+        width: 200px;
+        height: 30px;
+        font-size: var(--sc-font-size);
+        font-family: var(--sc-font-family);
+      }
+
+      :host([disabled]) {
+        opacity: 0.7;
+      }
+
+      :host([hidden]) {
+        display: none
+      }
+
+      :host(:focus), :host(:focus-visible) {
+        outline: none;
       }
 
       textarea {
+        width: 100%;
+        height: 100%;
         vertical-align: top;
         box-sizing: border-box;
         background-color: ${theme['--color-primary-2']};
         border: 1px dotted ${theme['--color-primary-4']};
         color: white;
-        font-family: ${fontFamily};
         padding: 6px 2px 6px 6px;
         border-radius: 2px;
-        font-size: ${fontSize};
-        line-height: ${16}px;
+        font-size: inherit;
+        font-family: inherit;
         resize: none;
       }
 
-      textarea:focus {
+      :host(:focus) textarea, :host(:focus-visible) textarea {
         outline: none;
         border: 1px solid ${theme['--color-primary-4']};
       }
 
-      textarea.dirty {
+      :host(:focus) textarea.dirty, :host(:focus-visible) textarea.dirty {
         border: 1px solid ${theme['--color-secondary-3']};
       }
 
@@ -65,67 +84,82 @@ class ScText extends ScElement {
   constructor() {
     super();
 
-    this.width = 200;
-    this.height = 30;
-    this.value = '';
     this.readonly = false;
+    this.value = '';
+    this.disabled = false;
 
     this._dirty = false;
+
+    this._propagateFocus = this._propagateFocus.bind(this);
   }
 
   render() {
-    const classes = { dirty: this._dirty };
+    if (this.readonly === true) {
+      this.removeAttribute('tabindex');
+    } else {
+      this.setAttribute('tabindex', 0);
+    }
+
+    this.textContent = this.value;
 
     return html`
       <textarea
-        class=${classMap(classes)}
-        style="
-          width: ${this.width}px;
-          height: ${this.height}px;
-        "
+        tabindex="-1"
+        class="${this._dirty ? 'dirty' : ''}"
+        ?readonly="${this.readonly}"
+        ?disabled="${this.disabled}"
         .value="${this.value}"
-        ?readonly=${this.readonly}
-        @blur=${this.updateValue}
-        @keydown=${this.onKeyDown}
-        @keyup=${this.onKeyUp}
-        @contextmenu="${this._preventContextMenu}"
+        @blur=${this._updateValue}
+        @keydown=${this._onKeyDown}
+        @keyup=${this._onKeyUp}
+        @contextmenu=${this._preventContextMenu}
       ></textarea>
     `;
   }
 
-  focus() {
-    const $textarea = this.shadowRoot.querySelector('textarea');
+  connectedCallback() {
+    super.connectedCallback();
 
-    if ($textarea) {
-      $textarea.focus();
+    if (!this.hasAttribute('tabindex')) {
+      this.setAttribute('tabindex', 0);
     }
+
+    this.addEventListener('focus', this._propagateFocus);
+
+    this.value = this.textContent;
   }
 
-  onKeyDown(e) {
-    // manually do comment because opens Help menu otherwise...
+  disconnectedCallback() {
+    super.disconnectedCallback();
+
+    this.removeEventListener('focus', this._propagateFocus);
+  }
+
+  _propagateFocus() {
+    this.shadowRoot.querySelector('textarea').focus()
+  }
+
+  _onKeyDown(e) {
     if (e.metaKey && e.key === 's') {
       e.preventDefault();
-
-      this.updateValue(e, true);
+      this._updateValue(e, true);
     }
   }
 
-  onKeyUp(e) {
+  _onKeyUp(e) {
     if (e.target.value !== this.value && this._dirty === false) {
       this._dirty = true;
-      this.requestUpdate();
     } else if (e.target.value === this.value && this._dirty === true) {
       this._dirty = false;
-      this.requestUpdate();
     }
   }
 
-  updateValue(e, forceUpdate = false) {
+  _updateValue(e, forceUpdate = false) {
     e.preventDefault();
     e.stopPropagation();
 
-    if (this._dirty || forceUpdate) {
-      this.value = e.target.value;
+    if (this._dirty || forceUpdate) {
+      this.value = this.shadowRoot.querySelector('textarea').value;
       this._dirty = false;
 
       const event = new CustomEvent('change', {
@@ -135,7 +169,6 @@ class ScText extends ScElement {
       });
 
       this.dispatchEvent(event);
-      this.requestUpdate();
     }
   }
 }

@@ -51,17 +51,17 @@ const template = html\`<sc-button>My text</sc-button>\`;`}
 
 <h3>Events</h3>
 <p>
-  <sc-text readonly value="@input"></sc-text>
+  <sc-text readonly>@input</sc-text>
   <sc-bang id="button-input"></sc-bang>
   <sc-text readonly id="button-value-input"></sc-text>
 </p>
 <p>
-  <sc-text readonly value="@press"></sc-text>
+  <sc-text readonly>@press</sc-text>
   <sc-bang id="button-press"></sc-bang>
   <sc-text readonly id="button-value-press"></sc-text>
 </p>
 <p>
-  <sc-text readonly value="@release"></sc-text>
+  <sc-text readonly>@release</sc-text>
   <sc-bang id="button-release"></sc-bang>
   <sc-text readonly id="button-value-release"></sc-text>
 </p>
@@ -74,7 +74,7 @@ ${`\
 
 <h3>Attributes</h3>
 <p>
-  <sc-text readonly value="[value=null]"></sc-text>
+  <sc-text readonly>[value=null]</sc-text>
   <sc-text
     value="my-value"
     @change="${e => {
@@ -84,7 +84,7 @@ ${`\
   ></sc-text>
 </p>
 <p>
-  <sc-text readonly value="[selected=false]"></sc-text>
+  <sc-text readonly>[selected=false]</sc-text>
   <sc-toggle
     @change="${e => {
       const $component = document.querySelector('#test-button');
@@ -93,7 +93,7 @@ ${`\
   ></sc-toggle>
 </p>
 <p>
-  <sc-text readonly value="[disabled=false]"></sc-text>
+  <sc-text readonly>[disabled=false]</sc-text>
   <sc-toggle
     @change="${e => {
       const $component = document.querySelector('#test-button');

@@ -25,7 +25,7 @@
 - [ ] sc-speed-surface
 - [ ] sc-tap-tempo
 - [ ] sc-text
-- [ ] sc-toggle
+- [x] sc-toggle
 - [ ] sc-transport
 
 ## Notes

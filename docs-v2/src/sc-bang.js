@@ -22,7 +22,7 @@ const template = html\`<sc-bang></sc-bang>\`;`}
 
 <h3>Events</h3>
 <p>
-  <sc-text readonly value="@input"></sc-text>
+  <sc-text readonly>@input</sc-text>
   <sc-bang id="bang-input"></sc-bang>
 </p>
 <pre><code class="language-html">\
@@ -34,7 +34,7 @@ ${`\
 
 <h3>Attributes</h3>
 <p>
-  <sc-text readonly value="[active=false]"></sc-text>
+  <sc-text readonly>[active=false]</sc-text>
   <sc-bang
     @input="${e => {
       const $component = document.querySelector('#test-bang');
@@ -55,7 +55,7 @@ html\`
 \`;`}
 </code></pre>
 <p>
-  <sc-text readonly value="[disabled=false]"></sc-text>
+  <sc-text readonly>[disabled=false]</sc-text>
   <sc-toggle
     @change="${e => {
       const $component = document.querySelector('#test-bang');

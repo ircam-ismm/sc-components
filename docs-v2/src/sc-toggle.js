@@ -22,7 +22,7 @@ const template = html\`<sc-toggle></sc-toggle>\`;`}
 
 <h3>Events</h3>
 <p>
-  <sc-text readonly value="@change"></sc-text>
+  <sc-text readonly>@change</sc-text>
   <sc-toggle id="toggle-change"></sc-toggle>
 </p>
 <pre><code class="language-html">\
@@ -34,7 +34,7 @@ ${`\
 
 <h3>Attributes</h3>
 <p>
-  <sc-text readonly value="[?active=false]"></sc-text>
+  <sc-text readonly>[?active=false]</sc-text>
   <sc-toggle
     @change="${e => {
       const $component = document.querySelector('#test-toggle');
@@ -43,7 +43,7 @@ ${`\
   ></sc-toggle>
 </p>
 <p>
-  <sc-text readonly value="[?disabled=false]"></sc-text>
+  <sc-text readonly>[?disabled=false]</sc-text>
   <sc-toggle
     @change="${e => {
       const $component = document.querySelector('#test-toggle');
