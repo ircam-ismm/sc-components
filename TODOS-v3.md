@@ -1,7 +1,7 @@
 ## components updated
 
 - [x] sc-bang
-- [ ] sc-button
+- [x] sc-button
 - [ ] sc-chenillard
 - [ ] sc-clock
 - [ ] sc-context-menu
