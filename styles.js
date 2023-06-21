@@ -10,12 +10,54 @@ theme['--color-primary-1'] = css`#272822ff`;
 theme['--color-primary-2'] = css`#3d3e39ff`;
 theme['--color-primary-3'] = css`#6a6a69ff`;
 theme['--color-primary-4'] = css`#dededeff`;
-theme['--color-secondary-1'] = css`#f0db4fff`; // yellow
-theme['--color-secondary-2'] = css`#1c78c0ff`; // blue
-theme['--color-secondary-3'] = css`#d9534fff`; // red
-theme['--color-secondary-4'] = css`#5ec451ff`; // green
-theme['--color-secondary-5'] = css`#cd7afaff`; // lilac
-theme['--color-secondary-6'] = css`#f4b43eff`; // orange
+theme['--color-secondary-1'] = css`#f0db4fff`;
+theme['--color-secondary-2'] = css`#1c78c0ff`;
+theme['--color-secondary-3'] = css`#d9534fff`;
+theme['--color-secondary-4'] = css`#5ec451ff`;
+theme['--color-secondary-5'] = css`#cd7afaff`;
+theme['--color-secondary-6'] = css`#f4b43eff`;
+
+const cssVars = `
+:root {
+  --sc-font-family: Consolas, monaco, monospace;
+  --sc-font-size: 11px;
+  --sc-color-primary-0: #121212ff;
+  --sc-color-primary-1: #272822ff;
+  --sc-color-primary-2: #3d3e39ff;
+  --sc-color-primary-3: #6a6a69ff;
+  --sc-color-primary-4: #dededeff;
+  --sc-color-secondary-1: #f0db4fff; /* yellow */
+  --sc-color-secondary-2: #1c78c0ff; /* blue */
+  --sc-color-secondary-3: #d9534fff; /* red */
+  --sc-color-secondary-4: #5ec451ff; /* green */
+  --sc-color-secondary-5: #cd7afaff; /* lila */
+  --sc-color-secondary-6: #f4b43eff; /* orange */
+}
+`;
+
+// adapted from https://davidwalsh.name/add-rules-stylesheets
+const $style = document.createElement('style');
+$style.type = 'text/css';
+$style.appendChild(document.createTextNode(''));
+
+const $firstStylesheet = document.querySelector('style');
+// insert before first stylesheet, so that values can be overriden by user
+if ($firstStylesheet) {
+  $firstStylesheet.parentNode.insertBefore($style, $firstStylesheet);
+} else {
+  document.head.appendChild($style);
+}
+
+// insert rule seem to be available when element is in the DOM
+$style.sheet.insertRule(cssVars);
+
+// const $head = document.head || document.getElementsByTagName('head')[0];
+// const $style = document.createElement('style');
+// $style.type = 'text/css';
+
+// $style.appendChild(document.createTextNode(cssVars));
+// $head.appendChild($style);
+
 
 // export const userSelectNone = css`
 //   -webkit-touch-callout: none; /* iOS Safari */

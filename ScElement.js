@@ -2,7 +2,8 @@
 all element should extend this class to handle global things such as
 userSelect, ids, etc.
 */
-import { LitElement } from 'lit';
+import { LitElement, css } from 'lit';
+import './styles.js';
 
 // extending lit-element examples :
 // https://github.com/Polymer/lit-element/issues/450
