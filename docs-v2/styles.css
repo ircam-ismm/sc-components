@@ -54,6 +54,10 @@ header > div > p {
   display: inline-block;
 }
 
+header > div > sc-button {
+  height: var(--header-height);
+}
+
 #main {
   display: flex;
   min-height: calc(100vh - var(--header-height));

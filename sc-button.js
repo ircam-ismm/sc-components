@@ -3,153 +3,142 @@ import ScElement from './ScElement.js';
 import { fontFamily, fontSize, theme } from './styles.js';
 
 class ScButton extends ScElement {
-  static get properties() {
-    return {
-      width: {
-        type: Number,
-      },
-      height: {
-        type: Number,
-      },
-      text: {
-        type: String,
-      },
-      value: {
-        type: String,
-      },
-      midiValue: {
-        type: Number,
-      },
-      selected: {
-        type: Boolean,
-      },
-    };
-  }
+  static properties = {
+    value: {
+      type: String,
+      reflect: true,
+    },
+    midiValue: {
+      type: Number,
+    },
+    selected: {
+      type: Boolean,
+      reflect: true,
+    },
+    disabled: {
+      type: Boolean,
+      reflect: true,
+    },
+  };
 
-  static get styles() {
-    return css`
-      :host {
-        vertical-align: top;
-        display: inline-block;
-        box-sizing: border-box;
-        overflow: hidden;
-      }
-
-      button {
-        box-sizing: border-box;
-        font-family: ${fontFamily};
-        font-size: ${fontSize};
-        color: #ffffff;
-        background-color: ${theme['--color-primary-1']};
-        border: 1px solid ${theme['--color-primary-2']};
-        border-radius:  1px;
-        font-size: 13px;
-        padding: 0;
-        cursor: pointer;
-      }
-
-      button:hover {
-        background-color: ${theme['--color-primary-2']};
-      }
-
-      // does not work in Firefox because of e.preventDefault();
-      button:active {
-        background-color: ${theme['--color-primary-3']};
-      }
-
-      button.selected {
-        background-color: ${theme['--color-secondary-3']};
-        border: 1px solid ${theme['--color-secondary-3']};
-      }
-    `;
-  }
-
-  set midiValue(value) {
-    let eventName;
-
-    if (value === 0) {
-      eventName = 'release';
-    } else {
-      eventName = 'press'
+  static styles = css`
+    :host {
+      vertical-align: top;
+      display: inline-block;
+      box-sizing: border-box;
+      overflow: hidden;
+      width: 200px;
+      height: 30px;
+      font-size: var(--sc-font-size);
+      color: #ffffff;
     }
 
-    // we don't want to trigger a release if no pressed has been recorded
-    if (eventName === 'release' && this._pressed === false) {
+    :host([disabled]) {
+      opacity: 0.7;
+    }
+
+    :host([hidden]) {
+      display: none
+    }
+
+    :host(:focus), :host(:focus-visible) {
+      outline: none;
+      box-shadow: 0 0 2px var(--sc-color-primary-4);
+    }
+
+    button {
+      width: 100%;
+      height: 100%;
+      box-sizing: border-box;
+      font-family: var(--sc-font-family);
+      background-color: var(--sc-color-primary-1);
+      border: 1px solid var(--sc-color-primary-2);
+      border-radius:  1px;
+      font-size: inherit;
+      cursor: pointer;
+      color: inherit;
+    }
+
+    /* remove default button focus */
+    button:focus, button:focus-visible {
+      outline: none;
+    }
+
+    button:hover {
+      background-color: var(--sc-color-primary-2);
+    }
+
+    /* use class because :active does not work in Firefox because of e.preventDefault(); */
+    button.active {
+      background-color: var(--sc-color-primary-3);
+    }
+
+    button.selected {
+      background-color: var(--sc-color-secondary-3);
+      border: 1px solid var(--sc-color-secondary-3);
+    }
+  `;
+
+  // sc-midi controller interface
+  set midiValue(value) {
+    if (this.disabled) {
       return;
     }
 
-    this._pressed = (eventName === 'press');
-
-    const event = new CustomEvent(eventName, {
-      bubbles: true,
-      composed: true,
-      detail: { value: this.value },
-    });
-
-    this.dispatchEvent(event);
-
-    if (eventName === 'press') {
-      const inputEvent = new CustomEvent('input', {
-        bubbles: true,
-        composed: true,
-        detail: { value: this.value },
-      });
-
-      this.dispatchEvent(inputEvent);
-    }
+    const eventName = value === 0 ? 'release' : 'press';
+    this._dispatchEvent(eventName);
   }
 
   constructor() {
     super();
 
-    this.width = 200;
-    this.height = 30;
-    this.text = '';
     this.value = null;
     this.selected = false;
+    this.disabled = false;
 
     this._pressed = false;
-    this.onEvent = this.onEvent.bind(this);
   }
 
-  /**
-   * @todo - add `down` and `up` events
-   */
   render() {
-    const text = this.text ? this.text : this.value;
-
     return html`
       <button
-        style="
-          width: ${this.width}px;
-          height: ${this.height}px;
-          line-height: ${this.height}px;
-        "
         class="${this.selected ? 'selected' : ''}"
-        @mousedown="${this.onEvent}"
-        @mouseup="${this.onEvent}"
+        @mousedown="${this._onEvent}"
+        @mouseup="${this._onEvent}"
 
         @touchstart="${{
-          handleEvent:this.onEvent,
+          handleEvent: this._onEvent,
           passive: false,
         }}"
-        @touchend="${this.onEvent}"
+        @touchend="${this._onEvent}"
         @contextmenu="${this._preventContextMenu}"
-      >${text}</button>
+      >
+        <slot>${this.value}</slot>
+      </button>
     `;
   }
 
-  onEvent(e) {
+  _onEvent(e) {
     e.preventDefault();
-    let eventName;
 
-    if (e.type === 'touchend' || e.type === 'mouseup') {
-      eventName = 'release';
-    } else {
-      eventName = 'press'
+    if (this.disabled) {
+      return;
     }
 
-    // we don't want to trigger a release if no pressed has been recorded
+    const eventName = (e.type === 'touchend' || e.type === 'mouseup') ? 'release' : 'press';
+
+    // add class for visual feedback
+    if (eventName === 'release') {
+      this.shadowRoot.querySelector('button').classList.remove('active');
+    } else {
+      this.shadowRoot.querySelector('button').classList.add('active');
+    }
+
+    this._dispatchEvent(eventName);
+  }
+
+  _dispatchEvent(eventName) {
+        // we don't want to trigger a release if no pressed has been recorded
     if (eventName === 'release' && this._pressed === false) {
       return;
     }

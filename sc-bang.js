@@ -21,7 +21,6 @@ class ScBang extends ScElement {
       vertical-align: top;
       box-sizing: border-box;
       background-color: var(--sc-color-primary-1);
-/*      background-color: red;*/
       font-size: 0;
       line-height: 0;
     }

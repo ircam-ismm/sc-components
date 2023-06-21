@@ -65,7 +65,6 @@ html\`
 </p>
 
 <h3>Styling</h3>
-
 <sc-editor
   value="\
 #test-bang {
@@ -75,4 +74,4 @@ html\`
   "
   @change=${e => applyStyle(e.detail.value)}
 ></sc-editor>
-`
+`;

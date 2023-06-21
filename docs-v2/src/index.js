@@ -53,6 +53,7 @@ function setContent(pages) {
   const pages = {
     'home': await import('./home.js'),
     'sc-bang': await import('./sc-bang.js'),
+    'sc-button': await import('./sc-button.js'),
   };
 
   window.addEventListener('hashchange', (e) => setContent(pages));

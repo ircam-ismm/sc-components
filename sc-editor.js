@@ -168,12 +168,6 @@ class ScEditor extends LitElement {
             font-size: ${this.fontSize}px;
           "
         ></div>
-        <sc-button
-          text="save"
-          width="120"
-          @input="${e => e.stopPropagation()}"
-          @release="${this.save}"
-        ></sc-button>
       </div>
     `;
   }
