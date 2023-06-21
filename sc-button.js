@@ -68,6 +68,11 @@ class ScButton extends ScElement {
       background-color: var(--sc-color-primary-2);
     }
 
+    :host([disabled]) button:hover {
+      background-color: var(--sc-color-primary-1);
+      cursor: default;
+    }
+
     /* use class because :active does not work in Firefox because of e.preventDefault(); */
     button.active {
       background-color: var(--sc-color-primary-3);
@@ -76,6 +81,11 @@ class ScButton extends ScElement {
     button.selected {
       background-color: var(--sc-color-secondary-3);
       border: 1px solid var(--sc-color-secondary-3);
+    }
+
+    :host([disabled]) button.selected:hover {
+      background-color: var(--sc-color-secondary-3);
+      cursor: default;
     }
   `;
 
