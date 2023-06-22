@@ -60,6 +60,7 @@ function setContent(pages) {
     'sc-toggle': await import('./sc-toggle.js'),
     'sc-text': await import('./sc-text.js'),
     'sc-radio': await import('./sc-radio.js'),
+    'sc-icon': await import('./sc-icon.js'),
   };
 
   window.addEventListener('hashchange', (e) => setContent(pages));

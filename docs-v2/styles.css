@@ -33,7 +33,7 @@ header {
   background-color: #121212;
   display: block;
   color: #ffffff;
-
+  font-size: 0; /* avoid space between inline block elements */
 }
 
 header h1 {
@@ -56,6 +56,11 @@ header > div > p {
 
 header > div > sc-button {
   height: var(--header-height);
+}
+
+header > div > sc-icon {
+  height: var(--header-height);
+  width: var(--header-height);
 }
 
 #main {

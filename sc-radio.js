@@ -111,7 +111,6 @@ class ScRadio extends ScElement {
   render() {
     // note: `?disabled=${this.disabled && !(value == this.value)}`
     // is meant to keep a selected option displayed even when disabled
-
     return html`
       ${repeat(this.options, item => elementId++, (value, key) => {
         return html`
@@ -133,12 +132,12 @@ class ScRadio extends ScElement {
 
   _dispatchEvent(e) {
     if (this.disabled) {
-      e.preventDefault();
       return;
     }
 
     // we don't want to trigger the render, as we loose the focus when
-    // interacting with the keyboard
+    // interacting with the keyboard, so we update the internal property, not
+    // the reactive one.
     this._value = e.target.value;
 
     const changeEvent = new CustomEvent('change', {

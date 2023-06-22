@@ -64,7 +64,6 @@ ${`\
 <p>
   <sc-text readonly>[orientation="vertical"]</sc-text>
   <sc-radio
-    id="radio-change"
     options="${JSON.stringify(['vertical', 'horizontal'])}"
     value="vertical"
     @change=${e => document.querySelector('#test-radio').orientation = e.detail.value}
