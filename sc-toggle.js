@@ -1,5 +1,4 @@
 import { html, svg, css } from 'lit';
-import { theme } from './styles.js';
 import ScElement from './ScElement.js';
 
 class ScToggle extends ScElement {
@@ -8,7 +7,7 @@ class ScToggle extends ScElement {
       type: Boolean,
       reflect: true,
     },
-    // just an alias for the `active` attribute
+    // do not reflect just an alias for the `active` attribute
     value: {
       type: Boolean,
     },
@@ -47,7 +46,7 @@ class ScToggle extends ScElement {
       width: 100%;
       height: 100%;
       box-sizing: border-box;
-      border: 1px solid ${theme['--color-primary-2']};
+      border: 1px solid var(--sc-color-primary-2);
     }
 
     svg line {
@@ -71,13 +70,11 @@ class ScToggle extends ScElement {
 
   // sc-midi controller interface
   set midiValue(value) {
-    this.value = value === 0 ? false : true;
-
     if (this.disabled) {
       return;
     }
 
-    this.active = this.value;
+    this.active = value === 0 ? false : true;
     this._dispatchEvent();
   }
 

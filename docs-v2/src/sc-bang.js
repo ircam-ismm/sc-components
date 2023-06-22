@@ -14,10 +14,7 @@ const template = html\`<sc-bang></sc-bang>\`;`}
 
 <sc-bang
   id="test-bang"
-  @input="${e => {
-    const $event = document.querySelector('#bang-input');
-    $event.active = true;
-  }}"
+  @input=${e => document.querySelector('#bang-input').active = true}
 ></sc-bang>
 
 <h3>Events</h3>
@@ -36,10 +33,7 @@ ${`\
 <p>
   <sc-text readonly>[active=false]</sc-text>
   <sc-bang
-    @input="${e => {
-      const $component = document.querySelector('#test-bang');
-      $component.active = true;
-    }}"
+    @input=${e => document.querySelector('#test-bang').active = true}
   ></sc-bang>
 </p>
 <pre><code class="language-javascript">\
@@ -57,10 +51,7 @@ html\`
 <p>
   <sc-text readonly>[disabled=false]</sc-text>
   <sc-toggle
-    @change="${e => {
-      const $component = document.querySelector('#test-bang');
-      $component.disabled = e.detail.value;
-    }}"
+    @change=${e => document.querySelector('#test-bang').disabled = e.detail.value}
   ></sc-toggle>
 </p>
 

@@ -18,13 +18,14 @@
 - [ ] sc-number
 - [ ] sc-position-surface
 - [ ] sc-progress-bar
+- [x] sc-radio
 - [ ] sc-record
 - [ ] sc-return
 - [ ] sc-signal
 - [ ] sc-slider
 - [ ] sc-speed-surface
 - [ ] sc-tap-tempo
-- [ ] sc-text
+- [x] sc-text
 - [x] sc-toggle
 - [ ] sc-transport
 
@@ -35,6 +36,7 @@
 - [ ] sc-knob / sc-dial
 - [ ] sc-select (drop down list, radio or buttons)
 - [ ] sc-switch
+- [ ] sc-qrcode
 - [ ] multislider
 
 audio components

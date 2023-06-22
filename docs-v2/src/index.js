@@ -9,6 +9,9 @@ import applyStyle from './utils/applyStyle.js';
 // import lib
 import '../../index.js';
 
+// ignore unescape html warnings
+hljs.configure({ ignoreUnescapedHTML: true });
+
 function setTheme(name) {
   switch (name) {
     case 'light':
@@ -56,6 +59,7 @@ function setContent(pages) {
     'sc-button': await import('./sc-button.js'),
     'sc-toggle': await import('./sc-toggle.js'),
     'sc-text': await import('./sc-text.js'),
+    'sc-radio': await import('./sc-radio.js'),
   };
 
   window.addEventListener('hashchange', (e) => setContent(pages));

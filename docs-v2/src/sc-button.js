@@ -20,33 +20,33 @@ const template = html\`<sc-button>My text</sc-button>\`;`}
 <sc-button
   id="test-button"
   value="my-value"
-  @input="${e => {
-    const $event = document.querySelector('#button-input');
-    $event.active = true;
+  @input=${e => {
+    document.querySelector('#button-input').active = true;
+
+    const $value = document.querySelector('#button-value-input')
+    $value.value = e.detail.value;
 
     clearTimeout(timeoutIdInput);
-    const $value = document.querySelector('#button-value-input');
-    $value.value = e.detail.value;
     timeoutIdInput = setTimeout(() => $value.value = '', 500);
-  }}"
-  @press="${e => {
-    const $event = document.querySelector('#button-press');
-    $event.active = true;
+  }}
+  @press=${e => {
+    document.querySelector('#button-press').active = true;
 
-    clearTimeout(timeoutIdPress);
     const $value = document.querySelector('#button-value-press');
     $value.value = e.detail.value;
-    timeoutIdPress = setTimeout(() => $value.value = '', 500);
-  }}"
-  @release="${e => {
-    const $event = document.querySelector('#button-release');
-    $event.active = true;
 
-    clearTimeout(timeoutIdRelease);
+    clearTimeout(timeoutIdPress);
+    timeoutIdPress = setTimeout(() => $value.value = '', 500);
+  }}
+  @release=${e => {
+    document.querySelector('#button-release').active = true;
+
     const $value = document.querySelector('#button-value-release');
     $value.value = e.detail.value;
+
+    clearTimeout(timeoutIdRelease);
     timeoutIdRelease = setTimeout(() => $value.value = '', 500);
-  }}"
+  }}
 >My text</sc-button>
 
 <h3>Events</h3>
@@ -76,29 +76,19 @@ ${`\
 <p>
   <sc-text readonly>[value=null]</sc-text>
   <sc-text
-    value="my-value"
-    @change="${e => {
-      const $component = document.querySelector('#test-button');
-      $component.value = e.detail.value;
-    }}"
+    @change=${e => document.querySelector('#test-button').value = e.detail.value}
   ></sc-text>
 </p>
 <p>
   <sc-text readonly>[selected=false]</sc-text>
   <sc-toggle
-    @change="${e => {
-      const $component = document.querySelector('#test-button');
-      $component.selected = e.detail.value;
-    }}"
+    @change=${e => document.querySelector('#test-button').selected = e.detail.value}
   ></sc-toggle>
 </p>
 <p>
   <sc-text readonly>[disabled=false]</sc-text>
   <sc-toggle
-    @change="${e => {
-      const $component = document.querySelector('#test-button');
-      $component.disabled = e.detail.value;
-    }}"
+    @change=${e => document.querySelector('#test-button').disabled = e.detail.value}
   ></sc-toggle>
 </p>
 

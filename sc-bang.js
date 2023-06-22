@@ -78,7 +78,10 @@ class ScBang extends ScElement {
       <svg
         viewbox="0 0 100 100"
         @mousedown="${this._triggerEvent}"
-        @touchstart="${this._triggerEvent}"
+        @touchstart="${{
+          handleEvent: this._triggerEvent,
+          passive: false,
+        }}"
         @contextmenu="${this._preventContextMenu}"
       >
         <circle cx="50" cy="50" r="34" ></circle>

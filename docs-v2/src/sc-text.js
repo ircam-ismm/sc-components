@@ -4,18 +4,17 @@ import applyStyle from './utils/applyStyle.js';
 export const template = html`
 <h2>sc-text</h2>
 
-<pre><code>
-import '@ircam/simple-components/sc-text.js';
+<pre><code class="language-javascript">\
+${`\
+import { html } from 'lit';
+import '@ircam/sc-components/sc-text.js';
 
-${`<sc-text></sc-text>`}
+const template = html\`<sc-text>My Text</sc-text>\`;`}
 </code></pre>
 
 <sc-text
   id="test-text"
-  @change="${e => {
-    const $event = document.querySelector('#text-change');
-    $event.value = e.detail.value;
-  }}"
+  @change=${e => document.querySelector('#text-change').value = e.detail.value}
 >Hello!</sc-text>
 
 <h3>Events</h3>
@@ -35,28 +34,19 @@ ${`\
 <p>
   <sc-text readonly>[value='']</sc-text>
   <sc-text
-    @change="${e => {
-      const $component = document.querySelector('#test-text');
-      $component.value = e.detail.value;
-    }}"
+    @change=${e => document.querySelector('#test-text').value = e.detail.value}
   ></sc-text>
 </p>
 <p>
   <sc-text readonly>[readonly=false]</sc-text>
   <sc-toggle
-    @change="${e => {
-      const $component = document.querySelector('#test-text');
-      $component.readonly = e.detail.value;
-    }}"
+    @change=${e => document.querySelector('#test-text').readonly = e.detail.value}
   ></sc-toggle>
 </p>
 <p>
   <sc-text readonly>[?disabled=false]</sc-text>
   <sc-toggle
-    @change="${e => {
-      const $component = document.querySelector('#test-text');
-      $component.disabled = e.detail.value;
-    }}"
+    @change=${e => document.querySelector('#test-text').disabled = e.detail.value}
   ></sc-toggle>
 </p>
 

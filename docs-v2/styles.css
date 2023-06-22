@@ -101,7 +101,13 @@ header > div > sc-button {
 #main section h3 {
   margin-top: 0;
   font-size: 1.6rem;
-  margin-top: 34px;
+  margin-top: 50px;
+}
+
+#main section p {
+  margin: 4px 0;
+  font-weight: light;
+  font-size: 1.2rem;
 }
 
 #main section p {
@@ -116,6 +122,10 @@ header > div > sc-button {
 #main #content.dark {
   color: #fff;
   background-color: #000;
+}
+
+#main section #home p {
+  margin-top: 24px;
 }
 
 .test {

@@ -1,6 +1,5 @@
 import { html, css } from 'lit';
 import ScElement from './ScElement.js';
-import { fontFamily, fontSize, theme } from './styles.js';
 
 class ScButton extends ScElement {
   static properties = {
