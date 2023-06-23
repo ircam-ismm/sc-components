@@ -6,6 +6,7 @@ import './sc-button.js';
 import './sc-chenillard.js';
 import './sc-clock.js';
 import './sc-context-menu.js';
+import './sc-dial.js';
 import './sc-dot-map.js';
 import './sc-dragndrop.js';
 import './sc-editor.js';

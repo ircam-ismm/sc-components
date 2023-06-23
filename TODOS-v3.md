@@ -2,16 +2,20 @@
 
 - [x] sc-bang
 - [x] sc-button
+  + [ ] remove selected option
+  + [ ] add `behavior` attribute "switch" or "trigger"
 - [ ] sc-chenillard
 - [ ] sc-clock
 - [ ] sc-context-menu
+- [ ] sc-dial
+  + [ ] support keyboard arrows
+  + [ ] add label
 - [ ] sc-dot-map
 - [ ] sc-dragndrop
 - [ ] sc-editor
 - [ ] sc-file-tree
 - [ ] sc-flash
-- [ ] sc-gh-link
-- [ ] sc-icon-button
+- [x] sc-icon
 - [ ] sc-loop
 - [ ] sc-matrix
 - [ ] sc-midi
@@ -20,7 +24,7 @@
 - [ ] sc-progress-bar
 - [x] sc-radio
 - [ ] sc-record
-- [ ] sc-return
+- [ ] sc-return -> sc-backward
 - [ ] sc-signal
 - [ ] sc-slider
 - [ ] sc-speed-surface
@@ -39,16 +43,19 @@
 - [ ] sc-qrcode
 - [ ] multislider
 
-audio components
+### audio components
+- [ ] sc-resume-context
+- [ ] sc-record -> return audio buffer or .wav file
+- [ ] sc-waveform
+- [ ] sc-preview
+- [ ] sc-meter
 
 ### sc-number
 
 - open keyboard on phone
 - use @touchstart to create an `<input type="number" />` and focus on it?
 
-### merge sc-gh-link && sc-icon-button
-
-- add more icons
+### keyboard controls
 
 ### file-tree
 

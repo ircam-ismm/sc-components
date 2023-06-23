@@ -26,7 +26,7 @@
     "postinstall": "node bin/prepare-codemirror.js"
   },
   "dependencies": {
-    "@ircam/sc-gettime": "^1.0.0",
+    "@ircam/sc-gettime": "^1.0.1",
     "codemirror": "^5.55.0",
     "lit": "^2.2.2",
     "number-precision": "^1.5.0"

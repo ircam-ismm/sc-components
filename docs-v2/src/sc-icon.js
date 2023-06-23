@@ -15,7 +15,7 @@ const template = html\`<sc-icon icon="question"></sc-icon>\`;`}
 <sc-icon
   id="test-icon"
   value="my-icon"
-  icon="save"
+  icon="question"
   @input=${e => document.querySelector('#icon-input').value = e.detail.value}
 ></sc-icon>
 
@@ -43,11 +43,25 @@ ${`\
   ></sc-radio>
 </p>
 <p>
-  <sc-text readonly>[href=""]</sc-text>
+  <sc-text readonly>[value=null]</sc-text>
+  <sc-text
+    @change=${e => document.querySelector('#test-icon').value = e.detail.value}
+  ></sc-text>
+</p>
+<p>
+  <sc-text readonly>[href=null]</sc-text>
   <sc-text
     @change=${e => document.querySelector('#test-icon').href = e.detail.value}
   >https://soundworks.dev</sc-text>
 </p>
+<p>
+  <sc-text readonly>[?disabled=false]</sc-text>
+  <sc-toggle
+    @change=${e => document.querySelector('#test-icon').disabled = e.detail.value}
+  ></sc-toggle>
+</p>
+
+
 
 <h3>Styling</h3>
 <sc-editor

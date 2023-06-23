@@ -1,66 +1,48 @@
 import { html, css } from 'lit';
+import { getTime } from '@ircam/sc-gettime';
 import ScElement from './ScElement.js';
 
-function getTime() {
-  if (window.performance) {
-    return window.performance.now();
-  } else {
-    return Date.now();
-  }
-}
-
+/**
+ * Propagate mouse speed in px / ms
+ */
 class ScSpeedSurface extends ScElement {
-  static get properties() {
-    return {
-      width: {
-        type: Number,
-      },
-      height: {
-        type: Number,
-      },
+  static styles = css`
+    :host {
+      display: inline-block;
+      width: 100%;
+      height: 100%;
     }
-  }
 
-  static get styles() {
-    return css`
-      :host {
-        display: inline-block;
-        box-sizing: border-box;
-      };
-    `;
-  }
+    div {
+      width: 100%;
+      height: 100%;
+    }
+  `;
 
   constructor() {
     super();
 
-    this.width = 200;
-    this.height = 200;
+    this._pointerId = null;
+    this._lastPointer = null;
+    this._lastTime = null;
 
-    this.pointerId = null;
-    this.lastPointer = null;
-    this.lastTime = null;
+    this._mouseMove = this._mouseMove.bind(this);
+    this._mouseUp = this._mouseUp.bind(this);
 
-    this.mouseMove = this.mouseMove.bind(this);
-    this.mouseUp = this.mouseUp.bind(this);
+    this._touchStart = this._touchStart.bind(this);
+    this._touchMove = this._touchMove.bind(this);
+    this._touchEnd = this._touchEnd.bind(this);
 
-    this.touchStart = this.touchStart.bind(this);
-    this.touchMove = this.touchMove.bind(this);
-    this.touchEnd = this.touchEnd.bind(this);
-
-    this.propagateValues = this.propagateValues.bind(this);
-    this.rafId = null;
+    this._propagateValues = this._propagateValues.bind(this);
+    this._rafId = null;
   }
 
   render() {
     return html`
       <div
-        style="
-          width: ${this.width}px;
-          height: ${this.height}px;
-        "
-        @mousedown="${this.mouseDown}"
+        @mousedown="${this._mouseDown}"
         @touchstart="${{
-          handleEvent: this.touchStart,
+          handleEvent: this._touchStart,
           passive: false,
         }}"
         @contextmenu="${this._preventContextMenu}"
@@ -68,109 +50,107 @@ class ScSpeedSurface extends ScElement {
     `;
   }
 
-  mouseDown(e) {
-    window.addEventListener('mousemove', this.mouseMove);
-    window.addEventListener('mouseup', this.mouseUp);
+  _mouseDown(e) {
+    window.addEventListener('mousemove', this._mouseMove);
+    window.addEventListener('mouseup', this._mouseUp);
 
     this._requestUserSelectNoneOnBody();
-    this.pointerId = 'mouse';
+    this._pointerId = 'mouse';
 
-    this.lastTime = getTime();
-    this.lastPointer = e;
+    this._lastTime = getTime();
+    this._lastPointer = e;
   }
 
-  mouseMove(e) {
-    this.requestPropagateValues(e);
+  _mouseMove(e) {
+    this._requestPropagateValues(e);
   }
 
-  mouseUp(e) {
-    window.removeEventListener('mousemove', this.mouseMove);
-    window.removeEventListener('mouseup', this.mouseUp);
+  _mouseUp(e) {
+    window.removeEventListener('mousemove', this._mouseMove);
+    window.removeEventListener('mouseup', this._mouseUp);
 
     this._cancelUserSelectNoneOnBody();
-    this.requestPropagateValues(e);
+    this._requestPropagateValues(e);
     // we want to have { dx: 0, dy: 0 } on mouse up,
     // with 20ms, we should be in the next requestAnimationFrame
     setTimeout(() => {
-      this.pointerId = null;
-      this.requestPropagateValues(e);
+      this._pointerId = null;
+      this._requestPropagateValues(e);
     }, 20);
   }
 
-  // @eventOptions({ passive: false })
-  touchStart(e) {
+  _touchStart(e) {
     e.preventDefault(); // prevent scrolling
 
-    if (this.pointerId === null) {
+    if (this._pointerId === null) {
       const touch = e.changedTouches[0];
-      this.pointerId = touch.identifier;
+      this._pointerId = touch.identifier;
 
-      window.addEventListener('touchmove', this.touchMove, { passive: false });
-      window.addEventListener('touchend', this.touchEnd);
-      window.addEventListener('touchcancel', this.touchEnd);
+      window.addEventListener('touchmove', this._touchMove, { passive: false });
+      window.addEventListener('touchend', this._touchEnd);
+      window.addEventListener('touchcancel', this._touchEnd);
 
       this._requestUserSelectNoneOnBody();
 
-      this.lastTime = getTime();
-      this.lastPointer = touch;
+      this._lastTime = getTime();
+      this._lastPointer = touch;
     }
   }
 
-  touchMove(e) {
+  _touchMove(e) {
     e.preventDefault(); // prevent scrolling
 
     for (let touch of e.changedTouches) {
-      if (touch.identifier === this.pointerId) {
-        this.requestPropagateValues(touch);
+      if (touch.identifier === this._pointerId) {
+        this._requestPropagateValues(touch);
       }
     }
   }
 
-  touchEnd(e) {
+  _touchEnd(e) {
     for (let touch of e.changedTouches) {
-      if (touch.identifier === this.pointerId) {
-        window.removeEventListener('touchmove', this.touchMove);
-        window.removeEventListener('touchend', this.touchEnd);
-        window.removeEventListener('touchcancel', this.touchEnd);
+      if (touch.identifier === this._pointerId) {
+        window.removeEventListener('touchmove', this._touchMove);
+        window.removeEventListener('touchend', this._touchEnd);
+        window.removeEventListener('touchcancel', this._touchEnd);
 
         this._cancelUserSelectNoneOnBody();
-        this.requestPropagateValues(touch);
+        this._requestPropagateValues(touch);
         // we want to have { dx: 0, dy: 0 } on mouse up,
         // with 20ms, we should be in the next requestAnimationFrame
         setTimeout(() => {
-          this.pointerId = null;
-          this.requestPropagateValues(touch);
+          this._pointerId = null;
+          this._requestPropagateValues(touch);
         }, 20);
       }
     }
   }
 
-  requestPropagateValues(e) {
-    window.cancelAnimationFrame(this.rafId);
-    this.rafId = window.requestAnimationFrame(() => this.propagateValues(e));
+  _requestPropagateValues(e) {
+    window.cancelAnimationFrame(this._rafId);
+    this._rafId = window.requestAnimationFrame(() => this._propagateValues(e));
   }
 
-  // return speed in px / ms
-  propagateValues(e) {
-    const lastX = this.lastPointer.screenX;
-    const lastY = this.lastPointer.screenY;
+  _propagateValues(e) {
+    const lastX = this._lastPointer.screenX;
+    const lastY = this._lastPointer.screenY;
     const x = e.screenX;
     const y = e.screenY;
 
     const now = getTime();
-    const dt = (this.lastTime - now);
+    const dt = (this._lastTime - now) * 1000; // ms
 
     const dx = (x - lastX) / dt;
     const dy = (y - lastY) / dt;
 
-    this.lastTime = now;
-    this.lastPointer = e;
-    // propagate outside the shadow dom boudaries
+    this._lastTime = now;
+    this._lastPointer = e;
+    // propagate outside the shadow DOM boundaries
     // cf. https://lit-element.polymer-project.org/guide/events#custom-events
     const event = new CustomEvent('input', {
       bubbles: true,
       composed: true,
-      detail: { dx, dy, pointerId: this.pointerId },
+      detail: { dx, dy, pointerId: this._pointerId },
     });
 
     this.dispatchEvent(event);

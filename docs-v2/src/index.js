@@ -61,10 +61,18 @@ function setContent(pages) {
     'sc-text': await import('./sc-text.js'),
     'sc-radio': await import('./sc-radio.js'),
     'sc-icon': await import('./sc-icon.js'),
+    'sc-dial': await import('./sc-dial.js'),
   };
 
-  window.addEventListener('hashchange', (e) => setContent(pages));
-  setContent(pages);
+  const sortedKeys = Array.from(Object.keys(pages)).sort();
+  const sortedPages = sortedKeys.reduce((acc, key) => {
+    acc[key] = pages[key];
+    return acc;
+  }, {});
+  console.log(sortedKeys, sortedPages);
+
+  window.addEventListener('hashchange', (e) => setContent(sortedPages));
+  setContent(sortedPages);
 
   document.querySelector('#switch-mode').addEventListener('input', () => {
     const $content = document.querySelector('#content');
