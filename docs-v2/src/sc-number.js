@@ -60,4 +60,16 @@ const template = html\`<sc-number></sc-number>\`;`}
     @change=${e => document.querySelector('#test-number').disabled = e.detail.value}
   ></sc-toggle>
 </p>
+
+<h3>Styling</h3>
+<sc-editor
+  value="\
+#test-number {
+  width: 100px;
+  height: 30px;
+  font-size: 11px;
+}
+  "
+  @change=${e => applyStyle(e.detail.value)}
+></sc-editor>
 `;

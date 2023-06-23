@@ -86,6 +86,7 @@ class ScNumber extends ScElement {
 
     .content {
       display: flex;
+      flex-wrap: wrap;
       box-sizing: border-box;
       position: absolute;
       top: 0;
@@ -100,7 +101,7 @@ class ScNumber extends ScElement {
       vertical-align: top;
       text-align: center;
       position: relative;
-      width: 7px;
+/*      width: 7px;*/
       height: 100%;
       display: inline-flex;
       align-items: center;
@@ -192,10 +193,6 @@ class ScNumber extends ScElement {
     this._onKeyDown = this._onKeyDown.bind(this);
   }
 
-  /**
-   * @note: do not remove spaces between <span> to avoid white space
-   * https://stackoverflow.com/questions/5078239/how-do-i-remove-the-space-between-inline-inline-block-elements
-   */
   render() {
     const parts = this._displayValue.split('.');
 
@@ -203,7 +200,7 @@ class ScNumber extends ScElement {
       parts[1] = [];
     }
 
-    const emptySpace = ' ';
+    const emptySpace = ' ';
     const characterWidth = 7; // in pixels
     const isEdited = { edited: (this._numKeyPressed !== 0) };
 
@@ -219,7 +216,6 @@ class ScNumber extends ScElement {
         <div class="info ${classMap(isEdited)}"></div>
 
         <div class="content">
-
           <span class="z">
             ${parts[0]}
             <sc-speed-surface @input="${this._updateValue1}"></sc-speed-surface>

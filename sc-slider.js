@@ -9,86 +9,125 @@ import './sc-number.js';
 class ScSlider extends ScElement {
   static get properties() {
     return {
-      // mode: {
-      //   type: String
-      // },
-      width: {
-        type: Number,
-      },
-      height: {
-        type: Number,
-      },
       min: {
         type: Number,
+        reflect: true,
       },
       max: {
         type: Number,
+        reflect: true,
       },
       step: {
         type: Number,
-      },
-      orientation: {
-        type: String,
-      },
-      displayNumber: {
-        type: Boolean,
-        attribute: 'display-number',
         reflect: true,
       },
       value: {
         type: Number,
       },
-      midiValue: {
-        type: Number,
-      },
-      color: {
+      orientation: {
         type: String,
-      }
+        reflect: true,
+      },
+      displayNumber: {
+        type: Boolean,
+        reflect: true,
+        attribute: 'display-number',
+      },
     }
   }
 
   static get styles() {
     return css`
       :host {
-        vertical-align: top;
         display: inline-block;
         box-sizing: border-box;
-        font-size: 0 !important;
+        width: 200px;
+        height: 30px;
         vertical-align: top;
-        position: relative;
       }
 
-      :host > div {
+      div {
+        box-sizing: border-box;
+        width: 100%;
+        height: 100%;
         position: relative;
         display: inline-block;
-        font-size: 0;
-        border: 1px solid ${theme['--color-primary-2']};
-        vertical-align: top;
+        border: 1px solid var(--sc-color-primary-2);
+      }
+
+      :host([display-number][orientation="horizontal"]) div {
+        width: calc(100% - 86px);
+      }
+
+      :host([display-number][orientation="vertical"]) div {
+        height: calc(100% - 36px);
+      }
+
+      svg {
+        box-sizing: border-box;
+        width: 100%;
+        height: 100%;
+      }
+
+      rect.background {
+        fill: var(--sc-color-primary-1);
+      }
+
+      rect.foreground {
+        fill: var(--sc-color-primary-4);
       }
 
       sc-position-surface {
         position: absolute;
         top: 0;
         left: 0;
+        width: 100%;
+        height: 100%;
         z-index: 1;
-      }
-
-      rect.foreground {}
-
-      rect.background {
-        fill: ${theme['--color-primary-1']};
       }
 
       sc-number {
         display: inline-block;
+        width: 80px;
+      }
+
+      :host([display-number][orientation="vertical"]) sc-number {
+        display: block;
       }
     `;
   }
 
+  get min() {
+    return this._min;
+  }
+
+  set min(value) {
+    this._min = value;
+    this._updateScales();
+  }
+
+  get max() {
+    return this._max;
+  }
+
+  set max(value) {
+    this._max = value;
+    this._updateScales();
+  }
+
+  get step() {
+    return this._step;
+  }
+
+  set step(value) {
+    this._step = value;
+    this._updateScales();
+  }
+
   set midiValue(value) {
     const newValue = (this.max - this.min) * value / 127. + this.min;
-    
-    this.value = this.clipper(newValue);
+
+    this.value = this._clipper(newValue);
 
     const inputEvent = new CustomEvent('input', {
       bubbles: true,
@@ -105,8 +144,6 @@ class ScSlider extends ScElement {
     });
 
     this.dispatchEvent(changeEvent);
-
-    this.requestUpdate();
   }
 
   get midiValue() {
@@ -116,108 +153,56 @@ class ScSlider extends ScElement {
   constructor() {
     super();
 
-    this.mode = 'jump'; // @todo: relative
-    this.width = 200;
-    this.height = 30;
+    this._scale = null;
+    this._clipper = null;
+
+    this._min = 0;
+    this._max = 1;
+    this._step = 1e-3;
+
+    // this.mode = 'jump'; // @todo: relative
     this.min = 0;
     this.max = 1;
-    this.step = 0.001;
+    this.step = 1e-3;
     this.value = 0.5;
     this.orientation = 'horizontal';
     this.displayNumber = false;
-    this.color = theme['--color-primary-4'];
-
-    this._marginSliderNumber = 3;
-    this._numberWidth = 80;
 
     this._pointerId = null;
-    this._dirty = true;
-  }
-
-
-  connectedCallback() {
-    this._dirty = true;
-    super.connectedCallback();
-  }
-
-  update(changedProperties) {
-    this._dirty = true;
-    super.update(changedProperties);
   }
 
   render() {
-    if (this._dirty) {
-      if (this.orientation === 'horizontal') {
-        this._sliderWidth = this.displayNumber
-          ? this.width - this._numberWidth - this._marginSliderNumber
-          : this.width;
-      } else {
-        // @todo - clean vertical w/ number box
-        this._sliderWidth = this.width;
-      }
-
-      this._sliderWidth -= 2; // take borders into account
-      this._sliderHeight = this.height - 2; // take borders into account
-
-      if (this.max < this.min) {
-        const tmp = this.max;
-        this.max = this.min;
-        this.min = tmp;
-      }
-
-      // define transfert functions and scales
-      this.scale = getScale(
-        [this.min, this.max],
-        [0, this.orientation === 'horizontal' ? this._sliderWidth : this._sliderHeight]
-      );
-
-      this.clipper = getClipper(this.min, this.max, this.step);
-
-      // clean default value
-      this.value = this.clipper(this.value);
-
-      this._dirty = false;
-    }
+    const size = Math.max(0, this._scale(this.value));
 
     return html`
-      <div
-        @contextmenu="${this._preventContextMenu}"
-        style="width: ${this._sliderWidth}px; height: ${this._sliderHeight}px"
-      >
-        <svg
-          style="width: ${this._sliderWidth}px; height: ${this._sliderHeight}px"
-          viewport="0 0 ${this._sliderWidth} ${this._sliderHeight}"
-        >
-          ${this.orientation === 'horizontal' ?
-            svg`
-              <rect class="background" width="${this._sliderWidth}" height="${this._sliderHeight}"></rect>
-              <rect class="foreground" width="${Math.max(0, this.scale(this.value))}" height="${this._sliderHeight}" fill="${this.color}"></rect>
-            ` :
-            svg`
-              <rect class="foreground" width="${this._sliderWidth}" height="${this._sliderHeight}" fill="${this.color}"></rect>
-              <rect class="background" width="${this._sliderWidth}" height="${Math.max(0, this._sliderHeight - this.scale(this.value))}"></rect>
-            `
+      <div @contextmenu=${this._preventContextMenu}>
+        <svg viewbox="0 0 1000 1000" preserveAspectRatio="none">
+          ${this.orientation === 'horizontal'
+            ? svg`
+                <rect class="background" width="1000" height="1000"></rect>
+                <rect class="foreground" width="${size}" height="1000"></rect>
+              `
+            : svg`
+                <rect class="foreground" width="1000" height="1000"></rect>
+                <rect class="background" width="1000" height="${1000 - size}"></rect>
+              `
           }
         </svg>
         <sc-position-surface
-          width="${this._sliderWidth}"
-          height="${this._sliderHeight}"
+          x-range=${JSON.stringify([this.min, this.max])}
+          y-range=${JSON.stringify([this.max, this.min])}
           clamp
-          x-range="${JSON.stringify([this.min, this.max])}"
-          y-range="${JSON.stringify([this.max, this.min])}"
-          @input="${this.updateValue}"
-          @pointerend="${this.changeValue}"
+          @input=${this._onInput}
+          @pointerend=${this._onChange}
         ></sc-position-surface>
       </div>
       ${this.displayNumber
         ? html`
           <sc-number
-            style="margin-left: ${this._marginSliderNumber}px"
-            width="${this._numberWidth}"
-            min="${this.min}"
-            max="${this.max}"
-            value="${this.value}"
-            @input="${this.updateValueFromNumber}"
+            min=${this.min}
+            max=${this.max}
+            value=${this.value}
+            @input=${this._onNumberBoxChange}
           ></sc-number>
         `
         : nothing
@@ -225,10 +210,24 @@ class ScSlider extends ScElement {
     `;
   }
 
-  updateValueFromNumber(e) {
+  _updateScales() {
+    if (this._max < this._min) {
+      const tmp = this._max;
+      this._max = this._min;
+      this._min = tmp;
+    }
+
+    // define transfert functions and scales
+    this._scale = getScale([this._min, this._max], [0, 1000]); // 0 1000 is the svg viewport
+    this._clipper = getClipper(this._min, this._max, this._step);
+    // clean current value
+    this.value = this._clipper(this.value);
+  }
+
+  _onNumberBoxChange(e) {
     e.stopPropagation();
 
-    this.value = this.clipper(e.detail.value);
+    this.value = this._clipper(e.detail.value);
 
     const inputEvent = new CustomEvent('input', {
       bubbles: true,
@@ -245,11 +244,9 @@ class ScSlider extends ScElement {
     });
 
     this.dispatchEvent(changeEvent);
-
-    this.requestUpdate();
   }
 
-  changeValue(e) {
+  _onChange(e) {
     if (e.detail.pointerId === this._pointerId) {
       this._pointerId = null;
 
@@ -263,9 +260,9 @@ class ScSlider extends ScElement {
     }
   }
 
-  updateValue(e) {
-    e.stopPropagation(); // override event from sc-position-surface
-
+  _onInput(e) {
+    // stop propagation of event from sc-position-surface
+    e.stopPropagation();
     // consider only first pointer in list, we don't want a multitouch slider...
     if (
       e.detail.value[0] &&
@@ -273,8 +270,9 @@ class ScSlider extends ScElement {
     ) {
       const { x, y, pointerId } = e.detail.value[0];
       const value = this.orientation === 'horizontal' ? x : y;
+
       this._pointerId = pointerId;
-      this.value = this.clipper(value);
+      this.value = this._clipper(value);
 
       const event = new CustomEvent('input', {
         bubbles: true,

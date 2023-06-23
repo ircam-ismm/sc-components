@@ -2,96 +2,57 @@ import { html, css } from 'lit';
 import ScElement from './ScElement.js';
 
 class ScPositionSurface extends ScElement {
-  static get properties() {
-    return {
-      xRange: {
-        type: Array,
-        attribute: 'x-range',
-      },
-      yRange: {
-        type: Array,
-        attribute: 'y-range',
-      },
-      width: {
-        type: Number
-      },
-      height: {
-        type: Number
-      },
-      clamp: {
-        type: Boolean,
-        attribute: 'clamp',
-      },
-    }
-  }
+  static properties = {
+    xRange: {
+      type: Array,
+      attribute: 'x-range',
+    },
+    yRange: {
+      type: Array,
+      attribute: 'y-range',
+    },
+  };
 
-  static get styles() {
-    return css`
-      :host {
-        display: inline-block;
-        box-sizing: border-box;
-      };
-    `;
-  }
+  static styles = css`
+    :host {
+      display: inline-block;
+      box-sizing: border-box;
+      width: 100%;
+      height: 100%;
+    }
+
+    div {
+      width: 100%;
+      height: 100%;
+    }
+  `;
 
   constructor() {
     super();
 
     this.xRange = [0, 1];
     this.yRange = [0, 1];
-    this.clampPositions = false;
 
-    this.activePointers = new Map();
-    this.pointerIds = []; // we want to keep the order of appearance consistant
+    this._activePointers = new Map();
+    this._pointerIds = []; // we want to keep the order of appearance consistant
 
-    this.mouseMove = this.mouseMove.bind(this);
-    this.mouseUp = this.mouseUp.bind(this);
-    this.touchStart = this.touchStart.bind(this);
-    this.touchMove = this.touchMove.bind(this);
-    this.touchEnd = this.touchEnd.bind(this);
+    this._mouseMove = this._mouseMove.bind(this);
+    this._mouseUp = this._mouseUp.bind(this);
+    this._touchStart = this._touchStart.bind(this);
+    this._touchMove = this._touchMove.bind(this);
+    this._touchEnd = this._touchEnd.bind(this);
 
-    this.propagateValues = this.propagateValues.bind(this);
-    this.rafId = null;
-  }
-
-  /**
-   * this is ok as the surface is not rendered often
-   */
-  performUpdate() {
-    const xDelta = this.xRange[1] - this.xRange[0];
-    const yDelta = this.yRange[1] - this.yRange[0];
-
-    this.px2x = (px) => {
-      let val = px / this.width * xDelta + this.xRange[0];
-
-      if (this.clampPositions) {
-        val = Math.min(this.xRange[1], Math.max(this.xRange[0], val));
-      }
-
-      return val;
-    }
-
-    this.px2y = (px) => {
-      let val = px / this.height * yDelta + this.yRange[0];
-
-      if (this.clampPositions) {
-        val = Math.min(this.yRange[1], Math.max(this.yRange[0], val));
-      }
-
-      return val;
-    }
-
-    super.performUpdate();
+    this._propagateValues = this._propagateValues.bind(this);
+    this._resizeObserver = null;
+    this._rafId = null;
   }
 
   render() {
     return html`
       <div
-        style="width: ${this.width}px; height: ${this.height}px;"
-
-        @mousedown="${this.mouseDown}"
+        @mousedown="${this._mouseDown}"
         @touchstart="${{
-          handleEvent: this.touchStart,
+          handleEvent: this._touchStart,
           passive: false,
         }}"
         @contextmenu="${this._preventContextMenu}"
@@ -99,29 +60,50 @@ class ScPositionSurface extends ScElement {
     `
   }
 
-  mouseDown(e) {
-    window.addEventListener('mousemove', this.mouseMove, { passive: false });
-    window.addEventListener('mouseup', this.mouseUp);
+  connectedCallback() {
+    super.connectedCallback();
 
-    this.pointerIds.push('mouse');
-    this.activePointers.set('mouse', e);
+    this._resizeObserver = new ResizeObserver(entries => {
+      const entry = entries[0];
+      const { width, height } = entry.contentRect;
+      const xDelta = this.xRange[1] - this.xRange[0];
+      const yDelta = this.yRange[1] - this.yRange[0];
+
+      this._px2x = px => px / width * xDelta + this.xRange[0];
+      this._px2y = px => px / height * yDelta + this.yRange[0];
+    });
+
+    this._resizeObserver.observe(this);
+  }
+
+  disconnectedCallback() {
+    this._resizeObserver.disconnect();
+    super.disconnectedCallback();
+  }
+
+  _mouseDown(e) {
+    window.addEventListener('mousemove', this._mouseMove, { passive: false });
+    window.addEventListener('mouseup', this._mouseUp);
+
+    this._pointerIds.push('mouse');
+    this._activePointers.set('mouse', e);
 
     this._requestUserSelectNoneOnBody();
 
-    this.requestPropagateValues(e);
+    this._requestPropagateValues(e);
   }
 
-  mouseMove(e) {
-    this.activePointers.set('mouse', e);
-    this.requestPropagateValues(e);
+  _mouseMove(e) {
+    this._activePointers.set('mouse', e);
+    this._requestPropagateValues(e);
   }
 
-  mouseUp(e) {
-    window.removeEventListener('mousemove', this.mouseMove);
-    window.removeEventListener('mouseup', this.mouseUp);
+  _mouseUp(e) {
+    window.removeEventListener('mousemove', this._mouseMove);
+    window.removeEventListener('mouseup', this._mouseUp);
 
-    this.pointerIds.splice(this.pointerIds.indexOf('mouse'));
-    this.activePointers.delete('mouse');
+    this._pointerIds.splice(this._pointerIds.indexOf('mouse'));
+    this._activePointers.delete('mouse');
 
     this._cancelUserSelectNoneOnBody();
 
@@ -135,51 +117,51 @@ class ScPositionSurface extends ScElement {
 
     this.dispatchEvent(event);
 
-    this.requestPropagateValues(e);
+    this._requestPropagateValues(e);
   }
 
-  touchStart(e) {
+  _touchStart(e) {
     e.preventDefault(); // iOS needs that to prevent scrolling
 
-    if (this.pointerIds.length === 0) {
-      window.addEventListener('touchmove', this.touchMove, { passive: false });
-      window.addEventListener('touchend', this.touchEnd);
-      window.addEventListener('touchcancel', this.touchEnd);
+    if (this._pointerIds.length === 0) {
+      window.addEventListener('touchmove', this._touchMove, { passive: false });
+      window.addEventListener('touchend', this._touchEnd);
+      window.addEventListener('touchcancel', this._touchEnd);
 
       this._requestUserSelectNoneOnBody();
     }
 
     for (let touch of e.changedTouches) {
       const id = touch.identifier;
-      this.pointerIds.push(id);
-      this.activePointers.set(id, touch);
+      this._pointerIds.push(id);
+      this._activePointers.set(id, touch);
     }
 
-    this.requestPropagateValues(e);
+    this._requestPropagateValues(e);
   }
 
-  touchMove(e) {
+  _touchMove(e) {
     e.preventDefault(); // prevent scrolling
 
     for (let touch of e.changedTouches) {
       const id = touch.identifier;
       // only consider touches that started in the area
-      if (this.pointerIds.indexOf(id) !== -1) {
-        this.activePointers.set(id, touch);
+      if (this._pointerIds.indexOf(id) !== -1) {
+        this._activePointers.set(id, touch);
       }
     }
 
-    this.requestPropagateValues(e);
+    this._requestPropagateValues(e);
   }
 
-  touchEnd(e) {
+  _touchEnd(e) {
     for (let touch of e.changedTouches) {
       const pointerId = touch.identifier;
-      const index = this.pointerIds.indexOf(pointerId);
+      const index = this._pointerIds.indexOf(pointerId);
       // only consider tracked touches
       if (index !== -1) {
-        this.pointerIds.splice(index, 1);
-        this.activePointers.delete(pointerId);
+        this._pointerIds.splice(index, 1);
+        this._activePointers.delete(pointerId);
 
         // propagate outside the shadow dom boudaries
         // cf. https://lit-element.polymer-project.org/guide/events#custom-events
@@ -194,38 +176,38 @@ class ScPositionSurface extends ScElement {
     }
 
     // if that's the last tracked event remove listeners
-    if (this.pointerIds.length === 0) {
-      window.removeEventListener('touchmove', this.touchMove);
-      window.removeEventListener('touchend', this.touchEnd);
-      window.removeEventListener('touchcancel', this.touchEnd);
+    if (this._pointerIds.length === 0) {
+      window.removeEventListener('touchmove', this._touchMove);
+      window.removeEventListener('touchend', this._touchEnd);
+      window.removeEventListener('touchcancel', this._touchEnd);
 
       this._cancelUserSelectNoneOnBody(e);
     }
 
-    this.requestPropagateValues(e);
+    this._requestPropagateValues(e);
   }
 
-  requestPropagateValues(e) {
-    window.cancelAnimationFrame(this.rafId);
-    this.rafId = window.requestAnimationFrame(() => this.propagateValues(e));
+  _requestPropagateValues(e) {
+    window.cancelAnimationFrame(this._rafId);
+    this._rafId = window.requestAnimationFrame(() => this._propagateValues(e));
   }
 
-  propagateValues(e) {
+  _propagateValues(e) {
     const rect = this.getBoundingClientRect();
 
-    const values = this.pointerIds.map(pointerId => {
-      const event = this.activePointers.get(pointerId);
+    const values = this._pointerIds.map(pointerId => {
+      const event = this._activePointers.get(pointerId);
       // this seems quite robust
       // https://stackoverflow.com/questions/55677/how-do-i-get-the-coordinates-of-a-mouse-click-on-a-canvas-element/18053642#18053642
       const x = event.clientX - rect.left;
-      const scaledX = this.px2x(x);
+      const scaledX = this._px2x(x);
       const y = event.clientY - rect.top;
-      const scaledY = this.px2y(y);
+      const scaledY = this._px2y(y);
 
       return { x: scaledX, y: scaledY, pointerId };
     });
 
-    // propagate outside the shadow dom boudaries
+    // propagate outside the shadow DOM boundaries
     // cf. https://lit-element.polymer-project.org/guide/events#custom-events
     const event = new CustomEvent('input', {
       bubbles: true,
