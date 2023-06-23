@@ -36,6 +36,7 @@ class ScRadio extends ScElement {
       background-color: var(--sc-color-primary-1);
       font-family: var(--sc-font-family);
       font-size: var(--sc-font-size);
+      color: #fff;
       padding: 6px 7px 7px 7px;
       border-radius: 2px;
       overflow: auto;

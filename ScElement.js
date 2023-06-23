@@ -27,6 +27,7 @@ class ScElement extends LitElement {
   _requestUserSelectNoneOnBody() {
     if (userSelectNoneOnBodyRegister.size === 0) {
       document.body.style.userSelect = 'none';
+      document.body.style.webkitUserSelect = 'none';
     }
 
     userSelectNoneOnBodyRegister.add(this._scId);
@@ -37,6 +38,7 @@ class ScElement extends LitElement {
 
     if (userSelectNoneOnBodyRegister.size === 0) {
       document.body.style.userSelect = 'auto';
+      document.body.style.webkitUserSelect = 'auto';
     }
   }
 }
