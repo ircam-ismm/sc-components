@@ -37,7 +37,6 @@ class ScRadio extends ScElement {
       font-family: var(--sc-font-family);
       font-size: var(--sc-font-size);
       color: #fff;
-      padding: 6px 7px 7px 7px;
       border-radius: 2px;
       overflow: auto;
     }
@@ -45,11 +44,13 @@ class ScRadio extends ScElement {
     :host([orientation="horizontal"]) {
       height: 30px;
       width: auto;
+      padding: 4px 7px 4px 7px;
     }
 
     :host([orientation="vertical"]) {
       width: 200px;
       height: auto;
+      padding: 6px 7px 8px 7px;
     }
 
     :host([disabled]) {
@@ -68,11 +69,14 @@ class ScRadio extends ScElement {
     label {
       vertical-align: middle;
       user-select: none;
+      webkit-user-select: none;
     }
 
     :host([orientation="horizontal"]) label {
       display: inline-block;
       margin-right: 12px;
+      height: 20px;
+      line-height: 20px;
     }
 
     :host([orientation="vertical"]) label {
