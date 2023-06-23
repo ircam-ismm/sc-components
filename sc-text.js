@@ -61,6 +61,7 @@ class ScText extends ScElement {
         font-size: inherit;
         font-family: inherit;
         resize: none;
+        margin: 0;
       }
 
       :host(:focus) textarea, :host(:focus-visible) textarea {
