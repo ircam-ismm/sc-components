@@ -37,7 +37,7 @@
 
 ### new nodes
 
-- [ ] sc-knob / sc-dial
+- [x] sc-knob / sc-dial
 - [ ] sc-select (drop down list, radio or buttons)
 - [ ] sc-switch
 - [ ] sc-qrcode
@@ -56,6 +56,21 @@
 - use @touchstart to create an `<input type="number" />` and focus on it?
 
 ### keyboard controls
+
+- Enter for sc-bang, trigger, etc.
+- Arrows for dial, number, sliders - pattern
+
+```js
+  _onFocus() {
+    this._numKeyPressed = 0;
+    window.addEventListener('keydown', this.onKeyDown);
+  }
+
+  _onBlur() {
+    this.updateValueFromDisplayValue();
+    window.removeEventListener('keydown', this.onKeyDown);
+  }
+```
 
 ### file-tree
 

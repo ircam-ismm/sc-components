@@ -6,7 +6,8 @@ const testArray = ['a', 'b', 'c', 'g'];
 // const testObject = { a: 'aaa', b: 'bbb', c: 'ccc', d: 'ddd' };
 
 export const template = html`
-<h2>sc-text</h2>
+
+<h2>sc-radio</h2>
 
 <pre><code class="language-javascript">\
 ${`\
@@ -82,6 +83,7 @@ ${`\
 #test-radio {
   width: 200px;
   height: auto;
+  font-size: 11px;
 }
   "
   @change=${e => applyStyle(e.detail.value)}

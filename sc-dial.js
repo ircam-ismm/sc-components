@@ -129,7 +129,11 @@ class ScDial extends ScElement {
   }
 
   set min(value) {
-    console.log('set min', value)
+    // workaround weird display issue when min and max are equal
+    if (value === this.max) {
+      value -= 1e-10;
+    }
+
     this._min = value;
     // clamp value
     this.value = this.value;
@@ -143,6 +147,11 @@ class ScDial extends ScElement {
   }
 
   set max(value) {
+    // workaround weird display issue when min and max are equal
+    if (value === this.min) {
+      value += 1e-10;
+    }
+
     this._max = value;
     // clamp value
     this.value = this.value;

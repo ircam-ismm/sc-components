@@ -6,95 +6,127 @@ import { fontFamily, fontSize, theme } from './styles.js';
 import './sc-speed-surface.js';
 
 class ScNumber extends ScElement {
-  static get properties() {
-    return {
-      width: {
-        type: Number,
-      },
-      height: {
-        type: Number,
-      },
-      min: {
-        type: Number,
-      },
-      max: {
-        type: Number,
-      },
-      value: {
-        type: Number,
-      },
-      integer: {
-        type: Boolean,
-        reflect: true,
-      },
+  static properties = {
+    min: {
+      type: Number,
+      reflect: true,
+    },
+    max: {
+      type: Number,
+      reflect: true,
+    },
+    value: {
+      type: Number,
+    },
+    integer: {
+      type: Boolean,
+      reflect: true,
+    },
+    disabled: {
+      type: Boolean,
+      reflect: true,
+    },
+  };
+
+  static styles = css`
+    :host {
+      vertical-align: top;
+      display: inline-block;
+      width: 100px;
+      height: 30px;
+      box-sizing: border-box;
+      font-family: var(--sc-font-family);
+      font-size: var(--sc-font-size);
+      color: #ffffff;
     }
-  }
 
-  static get styles() {
-    return css`
-      :host {
-        vertical-align: top;
-        display: inline-block;
-      }
+    :host([disabled]) {
+      opacity: 0.7;
+    }
 
-      :host > div {
-        overflow-y: hidden;
-        position: relative;
-        box-sizing: border-box;
-        background-color: ${theme['--color-primary-1']};
-        border: 1px solid ${theme['--color-primary-2']};
-        font-family: ${fontFamily};
-        color: #ffffff;
-        user-select: none;
-      }
+    :host([hidden]) {
+      display: none
+    }
 
-      .container:focus {
-        outline: none;
-      }
+    :host(:focus), :host(:focus-visible) {
+      outline: none;
+      box-shadow: 0 0 2px var(--sc-color-primary-4);
+    }
 
-      .info {
-        width: 15px;
-        display: inline-block;
-        background-color: ${theme['--color-primary-2']};
-      }
+    .container {
+      overflow-y: hidden;
+      position: relative;
+      box-sizing: border-box;
+      width: 100%;
+      height: 100%;
+      background-color: var(--sc-color-primary-1);
+      border: 1px solid var(--sc-color-primary-2);
+      user-select: none;
+    }
 
-      .container:focus .info {
-        outline: 2px solid ${theme['--color-secondary-2']};
-      }
+    .container:focus {
+      outline: none;
+    }
 
-      .info.edited {
-        background-color: ${theme['--color-primary-3']};
-      }
+    .info {
+      width: 15px;
+      height: 100%;
+      display: inline-block;
+      background-color: var(--sc-color-primary-2);
+      box-sizing: border-box;
+    }
 
-      .content {
-        display: inline-block;
-        position: absolute;
-        top: 0;
-        left: 15px;
-        padding-left: 4px;
-        font-size: 0;
-      }
+    .container:focus .info {
+      outline: 2px solid var(--sc-color-secondary-2);
+    }
 
-      .z {
-        display: inline-block;
-        vertical-align: top;
-        text-align: center;
-        position: relative;
-        font-size: ${fontSize};
-      }
+    .info.edited {
+      background-color: var(--sc-color-primary-3);
+    }
 
-      .z:first-child {
-        margin-left: 3px;
-      }
+    .content {
+      display: flex;
+      box-sizing: border-box;
+      position: absolute;
+      top: 0;
+      left: 15px;
+      padding-left: 12px;
+      height: 100%;
+      width: calc(100% - 15px);
+    }
 
-      .z sc-speed-surface {
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: 1;
-      }
-    `;
-  }
+    .z {
+      display: inline-block;
+      vertical-align: top;
+      text-align: center;
+      position: relative;
+      width: 7px;
+      height: 100%;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    /* contains the integer part which can be larger than one character */
+    .z:first-child {
+      width: auto;
+      min-width: 7px;
+    }
+
+    /* full width if integer */
+    :host([integer]) .z {
+      width: 100%;
+      text-align: left;
+    }
+
+    .z sc-speed-surface {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+    }
+  `;
 
   set min(value) {
     this._min = Math.min(value, this._max);
@@ -139,32 +171,25 @@ class ScNumber extends ScElement {
   constructor() {
     super();
 
-    this.width = 100;
-    this.height = 30;
     this.integer = false;
     this._min = -Infinity;
     this._max = +Infinity;
     this._value = 0;
     this._displayValue = '0';
 
-    // init through setters
-    // this.min = -Infinity;
-    // this.max = +Infinity;
-    // this.value = 0;
-
     this._valueChanged = false;
 
-    this._updateValue1 = this.updateValueFromPointer(1);
-    this._updateValue01 = this.updateValueFromPointer(0.1);
-    this._updateValue001 = this.updateValueFromPointer(0.01);
-    this._updateValue0001 = this.updateValueFromPointer(0.001);
-    this._updateValue00001 = this.updateValueFromPointer(0.0001);
-    this._updateValue000001 = this.updateValueFromPointer(0.00001);
-    this._updateValue0000001 = this.updateValueFromPointer(0.000001);
+    this._updateValue1 = this._updateValueFromPointer(1);
+    this._updateValue01 = this._updateValueFromPointer(0.1);
+    this._updateValue001 = this._updateValueFromPointer(0.01);
+    this._updateValue0001 = this._updateValueFromPointer(0.001);
+    this._updateValue00001 = this._updateValueFromPointer(0.0001);
+    this._updateValue000001 = this._updateValueFromPointer(0.00001);
+    this._updateValue0000001 = this._updateValueFromPointer(0.000001);
 
 
     this._numKeyPressed = 0;
-    this.onKeyDown = this.onKeyDown.bind(this);
+    this._onKeyDown = this._onKeyDown.bind(this);
   }
 
   /**
@@ -180,134 +205,53 @@ class ScNumber extends ScElement {
 
     const emptySpace = ' ';
     const characterWidth = 7; // in pixels
-
     const isEdited = { edited: (this._numKeyPressed !== 0) };
 
     return html`
       <div
         tabindex="-1"
         class="container"
-        style="
-          width: ${this.width}px;
-          height: ${this.height}px;
-        "
-        @focus="${this.onFocus}"
-        @blur="${this.onBlur}"
-        @touchstart="${this.triggerFocus}"
+        @focus="${this._onFocus}"
+        @blur="${this._onBlur}"
+        @touchstart="${this._triggerFocus}"
         @contextmenu="${this._preventContextMenu}"
       >
-        <div
-          class="info ${classMap(isEdited)}"
-          style="height: ${this.height}px;"
-        ></div>
+        <div class="info ${classMap(isEdited)}"></div>
 
-        <div
-          class="content"
-          style="height: ${this.height}px;"
-        >
+        <div class="content">
 
-          <span class="z"
-            style="
-              height: ${this.height}px;
-              line-height: ${this.height}px;
-              width: ${characterWidth * parts[0].length}px;
-            "
-          >
+          <span class="z">
             ${parts[0]}
-            <sc-speed-surface
-              width="${characterWidth * Math.max(parts[0].length, 2)}"
-              height="${this.height}"
-              @input="${this._updateValue1}"
-            ></sc-speed-surface>
+            <sc-speed-surface @input="${this._updateValue1}"></sc-speed-surface>
           </span>
           ${!this.integer
             ? html`
-              <span class="z" style="height: ${this.height}px; line-height: ${this.height}px">
+              <span class="z">
                 .
               </span>
-              <span class="z"
-                style="
-                  height: ${this.height}px;
-                  line-height: ${this.height}px;
-                  width: ${characterWidth}px;
-                "
-              >
+              <span class="z">
                 ${parts[1][0] || emptySpace}
-                <sc-speed-surface
-                  width="${characterWidth}"
-                  height="${this.height}"
-                  @input="${this._updateValue01}"
-                ></sc-speed-surface>
+                <sc-speed-surface @input="${this._updateValue01}"></sc-speed-surface>
               </span>
-              <span class="z"
-                style="
-                  height: ${this.height}px;
-                  line-height: ${this.height}px;
-                  width: ${characterWidth}px;
-                "
-              >
+              <span class="z">
                 ${parts[1][1] || emptySpace}
-                <sc-speed-surface
-                  width="${characterWidth}"
-                  height="${this.height}"
-                  @input="${this._updateValue001}"
-                ></sc-speed-surface>
+                <sc-speed-surface @input="${this._updateValue001}"></sc-speed-surface>
               </span>
-              <span class="z"
-                style="
-                  height: ${this.height}px;
-                  line-height: ${this.height}px;
-                  width: ${characterWidth}px;
-                "
-              >
+              <span class="z">
                 ${parts[1][2] || emptySpace}
-                <sc-speed-surface
-                  width="${characterWidth}"
-                  height="${this.height}"
-                  @input="${this._updateValue0001}"
-                ></sc-speed-surface>
+                <sc-speed-surface @input="${this._updateValue0001}"></sc-speed-surface>
               </span>
-              <span class="z"
-                style="
-                  height: ${this.height}px;
-                  line-height: ${this.height}px;
-                  width: ${characterWidth}px;
-                "
-              >
+              <span class="z">
                 ${parts[1][3] || emptySpace}
-                <sc-speed-surface
-                  width="${characterWidth}"
-                  height="${this.height}"
-                  @input="${this._updateValue00001}"
-                ></sc-speed-surface>
+                <sc-speed-surface @input="${this._updateValue00001}"></sc-speed-surface>
               </span>
-              <span class="z"
-                style="
-                  height: ${this.height}px;
-                  line-height: ${this.height}px;
-                  width: ${characterWidth}px;
-                "
-              >
+              <span class="z">
                 ${parts[1][4] || emptySpace}
-                <sc-speed-surface
-                  width="${characterWidth}"
-                  height="${this.height}"
-                  @input="${this._updateValue000001}"
-                ></sc-speed-surface>
+                <sc-speed-surface @input="${this._updateValue000001}"></sc-speed-surface>
               </span>
-              <span class="z"
-                style="
-                  height: ${this.height}px;
-                  line-height: ${this.height}px;
-                  width: ${characterWidth}px;
-                "
-              >
+              <span class="z">
                 ${parts[1][5] || emptySpace}
-                <sc-speed-surface
-                  width="${characterWidth}"
-                  height="${this.height}"
-                  @input="${this._updateValue0000001}"
-                ></sc-speed-surface>
+                <sc-speed-surface @input="${this._updateValue0000001}"></sc-speed-surface>
               </span>`
             : nothing}
         </div>
@@ -315,24 +259,36 @@ class ScNumber extends ScElement {
     `;
   }
 
+  connectedCallback() {
+    super.connectedCallback();
+
+    if (!this.hasAttribute('tabindex')) {
+      this.setAttribute('tabindex', 0);
+    }
+  }
+
   // force focus for touchstart (is prevented by speed-surfaces...)
-  triggerFocus() {
+  _triggerFocus() {
     const $container = this.shadowRoot.querySelector('.container');
     $container.focus();
   }
 
   // keyboard interactions
-  onFocus() {
+  _onFocus() {
     this._numKeyPressed = 0;
-    window.addEventListener('keydown', this.onKeyDown);
+    window.addEventListener('keydown', this._onKeyDown);
   }
 
-  onBlur() {
-    this.updateValueFromDisplayValue();
-    window.removeEventListener('keydown', this.onKeyDown);
+  _onBlur() {
+    this._updateValueFromDisplayValue();
+    window.removeEventListener('keydown', this._onKeyDown);
   }
 
-  onKeyDown(e) {
+  _onKeyDown(e) {
+    if (this.disabled) {
+      return;
+    }
+
     const validSymbols = this.integer
       ? ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '-']
       : ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '-', '.', ','];
@@ -376,33 +332,17 @@ class ScNumber extends ScElement {
     if (e.key === 'Enter' || e.which === 13) {
       e.preventDefault();
       e.stopPropagation();
-      this.updateValueFromDisplayValue();
+      this._updateValueFromDisplayValue();
     }
   }
 
-  updateValueFromDisplayValue() {
-    if (this._numKeyPressed > 0) {
-      this._value = this.integer
-        ? parseInt(this._displayValue)
-        : parseFloat(this._displayValue);
-
-      // modify displayValue only if needed
-      if (this._value < this._min || this._value > this._max) {
-        this._value = Math.max(this._min, Math.min(this._max, this._value));
-        this._displayValue = this._value.toString();
-      }
-
-      this._numKeyPressed = 0;
-
-      this._emitInput();
-      this._emitChange();
-      this.requestUpdate();
-    }
-  }
-
-  updateValueFromPointer(step) {
+  _updateValueFromPointer(step) {
     return e => {
       e.stopPropagation();
+
+      if (this.disabled) {
+        return;
+      }
 
       // do all computation if not mouseup or touchend,
       // else only propagate the `change event`
@@ -459,6 +399,26 @@ class ScNumber extends ScElement {
         }
       }
 
+      this.requestUpdate();
+    }
+  }
+
+  _updateValueFromDisplayValue() {
+    if (this._numKeyPressed > 0) {
+      this._value = this.integer
+        ? parseInt(this._displayValue)
+        : parseFloat(this._displayValue);
+
+      // modify displayValue only if needed
+      if (this._value < this._min || this._value > this._max) {
+        this._value = Math.max(this._min, Math.min(this._max, this._value));
+        this._displayValue = this._value.toString();
+      }
+
+      this._numKeyPressed = 0;
+
+      this._emitInput();
+      this._emitChange();
       this.requestUpdate();
     }
   }

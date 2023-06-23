@@ -35,8 +35,7 @@ class ScRadio extends ScElement {
       box-sizing: border-box;
       background-color: var(--sc-color-primary-1);
       font-family: var(--sc-font-family);
-      line-height: 0;
-      font-size: 0;
+      font-size: var(--sc-font-size);
       padding: 6px 7px 7px 7px;
       border-radius: 2px;
       overflow: auto;
@@ -68,12 +67,11 @@ class ScRadio extends ScElement {
     label {
       vertical-align: middle;
       user-select: none;
-      font-size: var(--sc-font-size);
     }
 
     :host([orientation="horizontal"]) label {
       display: inline-block;
-      margin-right: 16px;
+      margin-right: 12px;
     }
 
     :host([orientation="vertical"]) label {
@@ -111,23 +109,21 @@ class ScRadio extends ScElement {
   render() {
     // note: `?disabled=${this.disabled && !(value == this.value)}`
     // is meant to keep a selected option displayed even when disabled
-    return html`
-      ${repeat(this.options, item => elementId++, (value, key) => {
-        return html`
-          <label>
-            <input
-              type="radio"
-              value=${value}
-              name=${this.name}
-              @change=${this._dispatchEvent}
-              ?checked=${value == this.value}
-              ?disabled=${this.disabled && !(value == this.value)}
-            />
-            ${value}
-          </label>
-        `;
-      })}
-    `;
+    return repeat(this.options, item => elementId++, (value, key) => {
+      return html`
+        <label>
+          <input
+            type="radio"
+            value=${value}
+            name=${this.name}
+            @change=${this._dispatchEvent}
+            ?checked=${value == this.value}
+            ?disabled=${this.disabled && !(value == this.value)}
+          />
+          ${value}
+        </label>
+      `;
+    });
   }
 
   _dispatchEvent(e) {

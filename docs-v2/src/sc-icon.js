@@ -2,7 +2,8 @@ import { html } from 'lit';
 import applyStyle from './utils/applyStyle.js';
 
 export const template = html`
-<h2>sc-bang</h2>
+
+<h2>sc-icon</h2>
 
 <pre><code class="language-javascript">\
 ${`\

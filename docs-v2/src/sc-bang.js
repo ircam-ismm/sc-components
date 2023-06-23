@@ -2,6 +2,7 @@ import { html } from 'lit';
 import applyStyle from './utils/applyStyle.js';
 
 export const template = html`
+
 <h2>sc-bang</h2>
 
 <pre><code class="language-javascript">\

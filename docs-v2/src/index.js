@@ -62,6 +62,7 @@ function setContent(pages) {
     'sc-radio': await import('./sc-radio.js'),
     'sc-icon': await import('./sc-icon.js'),
     'sc-dial': await import('./sc-dial.js'),
+    'sc-number': await import('./sc-number.js'),
   };
 
   const sortedKeys = Array.from(Object.keys(pages)).sort();

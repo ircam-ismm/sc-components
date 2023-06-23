@@ -5,8 +5,8 @@ let timeoutIdInput;
 let timeoutIdPress;
 let timeoutIdRelease;
 
-
 export const template = html`
+
 <h2>sc-button</h2>
 
 <pre><code class="language-javascript">\
