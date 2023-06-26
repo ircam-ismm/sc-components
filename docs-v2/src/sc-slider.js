@@ -56,9 +56,9 @@ const template = html\`<sc-slider></sc-slider>\`;`}
   ></sc-number>
 </p>
 <p>
-  <sc-text readonly>[?display-number=false]</sc-text>
+  <sc-text readonly>[?number-box=false]</sc-text>
   <sc-toggle
-    @change=${e => document.querySelector('#test-slider').displayNumber = e.detail.value}
+    @change=${e => document.querySelector('#test-slider').numberBox = e.detail.value}
   ></sc-toggle>
 </p>
 <p>

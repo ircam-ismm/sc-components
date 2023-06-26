@@ -64,6 +64,8 @@ function setContent(pages) {
     'sc-dial': await import('./sc-dial.js'),
     'sc-number': await import('./sc-number.js'),
     'sc-slider': await import('./sc-slider.js'),
+    'sc-clock': await import('./sc-clock.js'),
+    'sc-editor': await import('./sc-editor.js'),
   };
 
   const sortedKeys = Array.from(Object.keys(pages)).sort();
@@ -71,7 +73,6 @@ function setContent(pages) {
     acc[key] = pages[key];
     return acc;
   }, {});
-  console.log(sortedKeys, sortedPages);
 
   window.addEventListener('hashchange', (e) => setContent(sortedPages));
   setContent(sortedPages);

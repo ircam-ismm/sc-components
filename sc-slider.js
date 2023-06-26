@@ -28,10 +28,10 @@ class ScSlider extends ScElement {
         type: String,
         reflect: true,
       },
-      displayNumber: {
+      numberBox: {
         type: Boolean,
         reflect: true,
-        attribute: 'display-number',
+        attribute: 'number-box',
       },
     }
   }
@@ -55,11 +55,11 @@ class ScSlider extends ScElement {
         border: 1px solid var(--sc-color-primary-2);
       }
 
-      :host([display-number][orientation="horizontal"]) div {
+      :host([number-box][orientation="horizontal"]) div {
         width: calc(100% - 86px);
       }
 
-      :host([display-number][orientation="vertical"]) div {
+      :host([number-box][orientation="vertical"]) div {
         height: calc(100% - 36px);
       }
 
@@ -91,7 +91,7 @@ class ScSlider extends ScElement {
         width: 80px;
       }
 
-      :host([display-number][orientation="vertical"]) sc-number {
+      :host([number-box][orientation="vertical"]) sc-number {
         display: block;
       }
     `;
@@ -166,7 +166,7 @@ class ScSlider extends ScElement {
     this.step = 1e-3;
     this.value = 0.5;
     this.orientation = 'horizontal';
-    this.displayNumber = false;
+    this.numberBox = false;
 
     this._pointerId = null;
   }
@@ -196,7 +196,7 @@ class ScSlider extends ScElement {
           @pointerend=${this._onChange}
         ></sc-position-surface>
       </div>
-      ${this.displayNumber
+      ${this.numberBox
         ? html`
           <sc-number
             min=${this.min}

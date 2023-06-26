@@ -70,7 +70,7 @@ ${`\
 <sc-button
   @input=\${e => console.log(e.detail.value)}
 >My text</sc-button>`}
-<code></pre>
+</code></pre>
 
 <h3>Attributes</h3>
 <p>

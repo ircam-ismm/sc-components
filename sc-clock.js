@@ -2,15 +2,132 @@ import { css, html, svg, nothing } from 'lit';
 import ScElement from './ScElement.js';
 
 function padLeft(value, char, length) {
-  value = value + ''; // cast to string
+  value = value + '';
 
-  while (value.length < length)
+  while (value.length < length) {
     value = char + value;
+  }
 
   return value;
 }
 
-function getFormattedTimeInfos(time) {   // [-][hh:]mm:ss
+class ScClock extends ScElement {
+  static properties = {
+    // function that return a time in seconds
+    getTimeFunction: {
+      type: Function,
+      attribute: false,
+    },
+    twinkle: {
+      type: Boolean,
+      reflect: true,
+    },
+    format: {
+      type: String,
+      reflect: true,
+    },
+  };
+
+  static styles = css`
+    :host {
+      vertical-align: top;
+      display: inline-block;
+      box-sizing: border-box;
+      width: 200px;
+      height: 30px;
+      vertical-align: top;
+      border-radius: 2px;
+      font-size: var(--sc-font-size);
+      font-family: var(--sc-font-family);
+      background-color: var(--sc-color-primary-3);
+      color: white;
+      text-align: center;
+    }
+
+    div {
+      box-sizing: border-box;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      text-align: center;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .idle {
+      opacity: 0.3;
+    }
+
+    .hidden {
+      visibility: hidden;
+    }
+  `;
+
+  get format() {
+    return this._format;
+  }
+
+  set format(value) {
+    this._showHours = /hh/.test(value) ? true : false;
+    this._showMinutes = /mm/.test(value) ? true : false;
+    this._showSeconds = /ss/.test(value) ? true : false;
+    this._showMilliseconds = /ms/.test(value) ? true : false;
+
+    this._format = value;
+  }
+
+  constructor() {
+    super();
+
+    this._currentTime = { hours: null, minutes: null, seconds: null, millesconds: null };
+    this._format = null;
+    this._showHours = false;
+    this._showMinutes = false;
+    this._showSeconds = false;
+    this._showMilliseconds = false;
+
+    const offset = new Date().getTimezoneOffset(); // in minutes
+    const offsetInSec = offset * 60;
+
+    this.getTimeFunction = () => Date.now() / 1000 - offsetInSec;
+    this.twinkle = true;
+    this.format = 'hh:mm:ss:ms';
+
+  }
+
+  render() {
+    const { time, twinkle, sign, hours, minutes, seconds, milliseconds } = this._currentTime;
+    const idle = time === 0 ? true : false;
+    let inner = [];
+
+    if (this._showHours) {
+      inner.push(html`<span>${hours}</span>`);
+    }
+    if (this._showMinutes) {
+      inner.push(html`<span>${minutes}</span>`);
+    }
+    if (this._showSeconds) {
+      inner.push(html`<span>${seconds}</span>`);
+    }
+    if (this._showMilliseconds) {
+      inner.push(html`<span>${milliseconds}</span>`);
+    }
+
+    inner = inner.flatMap(el =>
+      [el, html`<span class="${twinkle ? 'hidden' : ''}">:</span>`]
+    ).slice(0, -1);
+
+    return html`
+      <div class="${idle ? 'idle' : ''}">
+        ${sign ? html`<span>${sign}</span>` : nothing}
+        ${inner}
+      </div>
+    `;
+  }
+
+  _getFormattedInfos() {
+    const time = this.getTimeFunction();
+
     let sign;
     let timeInSeconds;
 
@@ -29,148 +146,55 @@ function getFormattedTimeInfos(time) {   // [-][hh:]mm:ss
     const milliseconds = Math.floor(secondsFrac * 1000);
 
     return {
-      sign,
+      time: time,
+      sign: sign,
       hours: padLeft(hours % 24, '0', 2),
       minutes: padLeft(minutes, '0', 2),
       seconds: padLeft(seconds, '0', 2),
       milliseconds: padLeft(milliseconds, '0', 3),
     };
-}
-
-class ScClock extends ScElement {
-  static get properties() {
-    return {
-      getTimeFunction: {},
-      fontSize: { type: Number, attribute: 'font-size' },
-      width: { type: Number },
-      height: { type: Number },
-      twinkle: { type: Array },
-    }
-  }
-  static get styles() {
-    return css`
-      :host {
-        vertical-align: top;
-        display: inline-block;
-        box-sizing: border-box;
-        vertical-align: top;
-        font-size: 0;
-      }
-
-      div {
-        vertical-align: middle;
-        text-align: center;
-        box-sizing: border-box;
-        background-color: rgb(106, 106, 105);
-        border: 1px solid rgb(106, 106, 105);
-        color: white;
-        font-family: Consolas, monaco, monospace;
-        border-radius: 2px;
-        line-height: 16px;
-        resize: none;
-      }
-    `;
-  }
-
-  constructor() {
-    super();
-
-    // by default the component displays a raw clock (horloge)
-    this._defaultGetTimeFunction = () => {
-      const date = new Date();
-      const hours = date.getHours();
-      const minutes = date.getMinutes();
-      return { hours, minutes };
-    }
-    this._currentTime = { hours: null, minutes: null };
-
-
-    this.getTimeFunction = this._defaultGetTimeFunction;
-    this.width = 400;
-    this.height = 50;
-    this.fontSize = 13;
-    this.twinkle = null;
-  }
-
-  render() {
-    // default simple clock with current hours and minutes from local date
-    if (this.getTimeFunction === this._defaultGetTimeFunction) {
-      const hours = this._currentTime.hours < 10 ?
-        `0${this._currentTime.hours}` : `${this._currentTime.hours}`;
-      const minutes = this._currentTime.minutes < 10 ?
-        `0${this._currentTime.minutes}` : `${this._currentTime.minutes}`;
-
-      return html`
-        <div style="
-          width: ${this.width}px;
-          height: ${this.height}px;
-          line-height: ${this.height}px;
-          font-size: ${this.fontSize}px;
-          opacity: 0.6;
-        ">
-             <span>${hours}</span><!--
-          --><span style="visibility: ${visibility};">:</span><!--
-          --><span>${minutes}</span>
-        </div>
-      `;
-    }
-
-    // user defined clock, format hh:mm:ss:msec
-    // @todo - allow to change the format
-    const now = this.getTimeFunction();
-    const time = Number.isFinite(now) ? now : 0;
-    const { sign, hours, minutes, seconds, milliseconds } = getFormattedTimeInfos(time);
-
-    const millis = parseInt(milliseconds) / 1000;
-
-    let visibility = 'visible';
-    if (this.twinkle && millis >= this.twinkle[0] && millis < this.twinkle[1]) {
-      visibility = 'hidden';
-    }
-
-    // 0 is always visible (weird on stop)
-    if (millis === 0) {
-      visibility = 'visible';
-    }
-
-    const opacity = time === 0 ? 0.3 : 1;
-
-    // the HTML comments are weird, but prevent browsers to add
-    // spaces between the <span> elements
-    return html`
-      <div style="
-        width: ${this.width}px;
-        height: ${this.height}px;
-        line-height: ${this.height}px;
-        font-size: ${this.fontSize}px;
-        opacity: ${opacity};
-      ">
-           ${sign ? html`<span>${sign}</span>` : nothing}<!--
-        --><span>${hours}</span><!--
-        --><span style="visibility: ${visibility};">:</span><!--
-        --><span>${minutes}</span><!--
-        --><span style="visibility: ${visibility};">:</span><!--
-        --><span>${seconds}</span><!--
-        --><span style="visibility: ${visibility};">:</span><!--
-        --><span>${milliseconds}</span>
-      </div>
-    `;
   }
 
   _render() {
-    if (this.getTimeFunction === this._defaultGetTimeFunction) {
-      const now = this.getTimeFunction();
+    const now = this._getFormattedInfos();
+    let requestUpdate = false;
 
-      if (now.hours !== this._currentTime.hours || now.minutes !== this._currentTime.minutes) {
-        this._currentTime = now;
-        this.requestUpdate();
-      }
-    } else {
-      // user defined clock
+    if (this._currentTime.sign !== now.sign) {
+      requestUpdate = true;
+    }
+
+    if (this._showHours && this._currentTime.hours !== now.hours) {
+      requestUpdate = true;
+    }
+
+    if (this._showMinutes && this._currentTime.minutes !== now.minutes) {
+      requestUpdate = true;
+    }
+
+    if (this._showSeconds && this._currentTime.seconds !== now.seconds) {
+      requestUpdate = true;
+    }
+
+    if (this._showMilliseconds && this._currentTime.milliseconds !== now.milliseconds) {
+      requestUpdate = true;
+    }
+
+    now.twinkle = false;
+    const millis = parseInt(now.milliseconds) / 1000;
+
+    if (this.twinkle && millis >= 0.5 && millis < 1) {
+      now.twinkle = true;
+    }
+
+    if (this._currentTime.twinkle !== now.twinkle) {
+        requestUpdate = true;
+    }
+
+    if (requestUpdate) {
+      this._currentTime = now;
       this.requestUpdate();
     }
 
-    this.requestUpdate();
     this._rafId = requestAnimationFrame(() => this._render());
   }
 

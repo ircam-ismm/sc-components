@@ -5,9 +5,9 @@
   + [ ] remove selected option
   + [ ] add `behavior` attribute "switch" or "trigger"
 - [ ] sc-chenillard
-- [ ] sc-clock
+- [x] sc-clock
 - [ ] sc-context-menu
-- [ ] sc-dial
+- [x] sc-dial
   + [ ] support keyboard arrows
   + [ ] add label
 - [ ] sc-dot-map
@@ -19,18 +19,24 @@
 - [ ] sc-loop
 - [ ] sc-matrix
 - [ ] sc-midi
-- [ ] sc-number
+- [x] sc-number
+  + [ ] focus
+  + [ ] open numeric keyboard on touchscreens
 - [ ] sc-position-surface
 - [ ] sc-progress-bar
 - [x] sc-radio
 - [ ] sc-record
 - [ ] sc-return -> sc-backward
 - [ ] sc-signal
-- [ ] sc-slider
+- [x] sc-slider 
+  + [ ] focus
+  + [ ] disabled
+  + [ ] keyboard
 - [ ] sc-speed-surface
 - [ ] sc-tap-tempo
 - [x] sc-text
 - [x] sc-toggle
+  + [ ] focus
 - [ ] sc-transport
 
 ## Notes
@@ -42,13 +48,15 @@
 - [ ] sc-switch
 - [ ] sc-qrcode
 - [ ] multislider
+- [ ] sc-keyboard
+- [ ] sc-code-example
 
 ### audio components
 - [ ] sc-resume-context
 - [ ] sc-record -> return audio buffer or .wav file
-- [ ] sc-waveform
-- [ ] sc-preview
+- [ ] sc-waveform -> option to play the file
 - [ ] sc-meter
+
 
 ### sc-number
 

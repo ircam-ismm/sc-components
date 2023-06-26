@@ -1,6 +1,6 @@
-import { LitElement, html, css } from 'lit';
+import { LitElement, html, css, nothing } from 'lit';
 import { theme, fontSize } from './styles.js';
-import './sc-button.js';
+import './sc-icon.js';
 
 import CodeMirror from 'codemirror';
 import 'codemirror/mode/javascript/javascript.js';
@@ -17,77 +17,63 @@ import monokaiTheme from './vendors/theme-monokai-css.js';
 import addonDialog from './vendors/addon-dialog-css.js';
 
 
-// globalThis.JSHINT = JSHINT;
-
 CodeMirror.commands.save = function(cm) {
-  cm._scComponent.value = cm.getValue();
-
-  const event = new CustomEvent('change', {
-    bubbles: true,
-    composed: true,
-    detail: { value: cm._scComponent.value },
-  });
-
-  cm._scComponent.cleanDoc();
-  cm._scComponent.dispatchEvent(event);
+  cm._scComponent._save();
 };
 
+
 class ScEditor extends LitElement {
-  static get properties() {
-    return {
-      height: {
-        type: Number,
-      },
-      width: {
-        type: Number,
-      },
-      fontSize: {
-        type: Number,
-        attribute: 'font-size',
-      },
-      value: {
-        type: String,
-      },
-    };
-  }
+  static properties = {
+    value: {
+      type: String,
+    },
+    saveButton: {
+      type: Boolean,
+      reflect: true,
+      attribute: 'save-button',
+    },
+    dirty: {
+      type: Boolean,
+      reflect: true,
+    },
+  };
 
-  static get styles() {
-    // this is very ugly
-    // @todo - find a better solution to impor code mirror's css...
-    return css`
-      :host {
-        vertical-align: top;
-        display: inline-block;
-      }
+  static styles = css`
+    :host {
+      vertical-align: top;
+      display: inline-block;
+      box-sizing: boder-box;
+      width: 300px;
+      height: 200px;
+      border: 1px solid var(--sc-color-primary-2);
+      border-left: 2px solid var(--sc-color-primary-2);
+      position: relative;
+      font-size: var(--sc-font-size);
+    }
 
-      :host > div {
-        box-sizing: border-box;
-        border: 1px solid ${theme['--color-primary-2']};
-        border-left: 2px solid ${theme['--color-primary-2']};
-        position: relative;
-        font-size: ${fontSize};
-      }
+    :host([dirty]) {
+      border-left: 2px solid var(--sc-color-secondary-3);
+    }
 
-      :host > div.dirty {
-        border-left: 2px solid ${theme['--color-secondary-3']};
-      }
+    .container {
+      width: 100%;
+      height: 100%;
+    }
 
-      /* highlight focused editor */
-      .CodeMirror { opacity: 0.9; }
-      .CodeMirror.CodeMirror-focused { opacity: 1; }
+    /* highlight focused editor */
+    .CodeMirror { opacity: 0.9; }
+    .CodeMirror.CodeMirror-focused { opacity: 1; }
+    /* code mirror styles */
+    ${cmStyles}
+    ${monokaiTheme}
+    ${addonDialog}
 
-      ${cmStyles}
-      ${monokaiTheme}
-      ${addonDialog}
-
-      sc-button {
-        position: absolute;
-        right: 2px;
-        bottom: 2px;
-        z-index: 1;
-      }
-    `;
-  }
+    sc-icon {
+      position: absolute;
+      bottom: 2px;
+      right: 2px;
+    }
+  `;
 
   get value() {
     return this._value;
@@ -96,116 +82,65 @@ class ScEditor extends LitElement {
   set value(value) {
     this._value = value !== null ? value : '';
 
-    if (this.codeMirror) {
-      const pos = this.codeMirror.getCursor();
-      this.codeMirror.setValue(this._value);
-      this.codeMirror.setCursor(pos);
-      this.cleanDoc();
-      setTimeout(() => this.codeMirror.refresh(), 1);
-    }
-  }
-
-  get width() {
-    return this._width;
-  }
-
-  set width(value) {
-    this._width = value;
-    this._editorWidth = this._width - 3;
-
-    if (this.codeMirror) {
-      this.requestUpdate();
-    }
-  }
-
-  get height() {
-    return this._height;
-  }
-
-  set height(value) {
-    this._height = value;
-    this._editorHeight = this._height - 2;
-
-    if (this.codeMirror) {
-      this.requestUpdate();
+    if (this._codeMirror) {
+      const pos = this._codeMirror.getCursor();
+      this._codeMirror.setValue(this._value);
+      this._codeMirror.setCursor(pos);
+      this._cleanDoc();
+      setTimeout(() => this._codeMirror.refresh(), 1);
     }
   }
 
   constructor() {
     super();
 
-    this._value = null;
-
-    this.width = 300;
-    this.height = 200;
-    this.fontSize = 11;
     this.value = ``;
-
-    /** private */
-    this.$container = null;
+    this.saveButton = false;
+    this.dirty = false;
   }
 
-  render() {
-    if (this.codeMirror) {
-      // @note - a bit hardcore but more efficient than in setters
-      // @todo - debounce
-      this.codeMirror.setSize(this._editorWidth, this._editorHeight);
-    }
+  /**
+   * @note: Initialization order
+   * - connectedCallback()
+   * - render()
+   * - firstUpdated();
+   * -> ResizeObserver callback is called after `firstUpdated()`
+   */
 
+  render() {
     return html`
-      <div
-        style="
-          width: ${this._width}px;
-          height: ${this._height}px;
-        "
-        @keydown="${this.onKeydown}"
-      >
-        <div
-          class="codemirror"
-          style="
-            width: ${this._editorWidth}px;
-            height: ${this._editorHeight}px;
-            font-size: ${this.fontSize}px;
-          "
-        ></div>
-      </div>
+      <div @keydown="${this._onKeydown}" class="container"></div>
+      ${this.dirty && this.saveButton
+        ? html`<sc-icon icon="save" @input=${this._save}></sc-icon>`
+        : nothing
+      }
     `;
   }
 
-  onKeydown(e) {
-    e.stopPropagation();
+  connectedCallback() {
+    super.connectedCallback();
 
-    // manually do comment because opens Help menu otherwise...
-    if (e.metaKey && e.shiftKey) {
-      e.preventDefault();
+    this._resizeObserver = new ResizeObserver(entries => {
+      const $container = this.shadowRoot.querySelector('.container');
+      const { width, height } = $container.getBoundingClientRect();
 
-      if (e.key === '/') {
-        this.codeMirror.toggleComment();
-      }
-      // can't do anything for zoom, too deep in the system
-    }
-  }
-
-  // need to copy same logic as for cmd + s / ctrl + s
-  save(e) {
-    this._value = this.codeMirror.getValue();
-
-    const event = new CustomEvent('change', {
-      bubbles: true,
-      composed: true,
-      detail: { value: this._value },
+      this._codeMirror.setSize(width, height);
     });
 
-    this.cleanDoc();
-    this.dispatchEvent(event);
+    // we observe th ewhole element as the shadowRoot does not exists yet
+    this._resizeObserver.observe(this);
+  }
+
+  disconnectedCallback() {
+    this._resizeObserver.disconnect();
+    super.disconnectedCallback();
   }
 
   firstUpdated() {
-    this.$container = this.shadowRoot.querySelector('div');
-    this.$codeContainer = this.shadowRoot.querySelector('div .codemirror');
+    const $container = this.shadowRoot.querySelector('.container');
 
-    this.codeMirror = CodeMirror(this.$codeContainer, {
-      value: this._value, // init w/ markup value if any
+    this._codeMirror = CodeMirror($container, {
+      value: this.value,
       mode: 'javascript',
       theme: 'monokai',
       lineNumbers: true,
@@ -213,14 +148,11 @@ class ScEditor extends LitElement {
       keyMap: 'sublime',
     });
 
-    // monkey patch component in codeMirror to propagate save from keyboard
-    this.codeMirror._scComponent = this;
-
-    // set the size of the editor to match container
-    this.codeMirror.setSize(this._editorWidth, this._editorHeight);
+    // monkey patch component in _codeMirror to propagate _save from keyboard
+    this._codeMirror._scComponent = this;
 
     // replace tabs with 2 spaces
-    this.codeMirror.setOption('extraKeys', {
+    this._codeMirror.setOption('extraKeys', {
       Tab: function(cm) {
         let spaces = '';
         for (let i = 0; i < cm.getOption('indentUnit'); i++) {
@@ -232,16 +164,45 @@ class ScEditor extends LitElement {
     });
 
     // track if document is clean
-    this.codeMirror.on('change', () => {
-      if (!this.codeMirror.getDoc().isClean()) {
-        this.$container.classList.add('dirty');
+    this._codeMirror.on('change', () => {
+      if (!this._codeMirror.getDoc().isClean()) {
+        this.dirty = true;
       }
     });
   }
 
-  cleanDoc() {
-    this.codeMirror.getDoc().markClean();
-    this.$container.classList.remove('dirty');
+  _onKeydown(e) {
+    e.stopPropagation();
+
+    // manually do comment because opens Help menu otherwise...
+    if (e.metaKey && e.shiftKey) {
+      e.preventDefault();
+
+      if (e.key === '/') {
+        this._codeMirror.toggleComment();
+      }
+      // can't do anything for zoom, too deep in the system
+    }
+  }
+
+  // need to copy same logic as for cmd + s / ctrl + s
+  _save(e) {
+    this._value = this._codeMirror.getValue();
+
+    const event = new CustomEvent('change', {
+      bubbles: true,
+      composed: true,
+      detail: { value: this._value },
+    });
+
+    this._cleanDoc();
+    this.dispatchEvent(event);
+  }
+
+
+  _cleanDoc() {
+    this._codeMirror.getDoc().markClean();
+    this.dirty = false;
   }
 }
 

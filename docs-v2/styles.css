@@ -113,10 +113,11 @@ header > div > sc-icon {
   margin: 4px 0;
   font-weight: light;
   font-size: 1.2rem;
+  line-height: 1.8rem;
 }
 
-#main section p {
-  font-size: 1.2rem;
+#main section div {
+  margin: 4px 0;
 }
 
 #main #content.light {
