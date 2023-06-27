@@ -3,6 +3,7 @@ import { repeat } from 'lit/directives/repeat.js';
 import ScElement from './ScElement.js';
 
 let groupId = 0;
+let itemId = 0;
 
 class ScSelect extends ScElement {
   static properties = {
@@ -86,10 +87,10 @@ class ScSelect extends ScElement {
         @change=${this._dispatchEvent}
       >
         ${this.placeholder
-          ? html`<option value="">${this.placeholder}</option`
+          ? html`<option>${this.placeholder}</option`
           : nothing
         }
-        ${this.options.map(value => {
+        ${repeat(this.options, () => `sc-select-${itemId++}`, value => {
           return html`
             <option
               value=${value}

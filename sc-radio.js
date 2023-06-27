@@ -3,7 +3,7 @@ import { repeat } from 'lit/directives/repeat.js';
 import ScElement from './ScElement.js';
 
 let groupId = 0;
-let elementId = 0;
+let itemId = 0;
 
 class ScRadio extends ScElement {
   static properties = {
@@ -113,9 +113,7 @@ class ScRadio extends ScElement {
   }
 
   render() {
-    // note: `?disabled=${this.disabled && !(value == this.value)}`
-    // is meant to keep a selected option displayed even when disabled
-    return repeat(this.options, item => elementId++, (value, key) => {
+    return repeat(this.options, item => `sc-radio-${itemId++}`, (value, key) => {
       return html`
         <label>
           <input
@@ -137,7 +135,7 @@ class ScRadio extends ScElement {
       return;
     }
 
-    // we don't want to trigger the render, as we loose the focus when
+    // we don't want to trigger the render, because we loose the focus when
     // interacting with the keyboard, so we update the internal property, not
     // the reactive one.
     this._value = e.target.value;
