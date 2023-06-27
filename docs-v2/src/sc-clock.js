@@ -5,50 +5,47 @@ export const template = html`
 
 <h2>sc-clock</h2>
 
-<pre><code class="language-javascript">\
-${`\
+<sc-code-example language="javascript">${`
 import { html } from 'lit';
 import '@ircam/sc-components/sc-clock.js';
 
-const template = html\`<sc-clock
-  .getTimeFunction=\${e => Date.now() / 1000}
-></sc-clock>\`;`}
-</code></pre>
+const template = html\`<sc-clock></sc-clock>\`;
+`}</sc-code-example>
 
 <sc-clock id="test-clock"></sc-clock>
 
 <h3>Attributes</h3>
-<p>
+<div>
   <sc-text readonly>[?twinkle=true]</sc-text>
   <sc-toggle
     active
     @change=${e => document.querySelector('#test-clock').twinkle = e.detail.value}
   ></sc-toggle>
-</p>
-<p>
+</div>
+<div>
   <sc-text readonly>[format='hh:mm:ss:ms']</sc-text>
   <sc-text
     @change=${e => document.querySelector('#test-clock').format = e.detail.value}
   >hh:mm:ss:ms</sc-text>
-</p>
+</div>
 
 <h3>Properties</h3>
-<p>
+<div>
   <sc-text readonly>[.getTimeFunction]</sc-text>
   <sc-editor
+    style="width: 420px;"
     value="\
   const $clock = document.querySelector('#test-clock');
   const startTime = Date.now();
-
+  // return a time in seconds
   $clock.getTimeFunction = () => {
     const dt = Date.now() - startTime;
-     // return time in seconds
     return dt / 1000;
   }
 "
     @change=${e => eval(e.detail.value)}
   ></sc-editor>
-</p>
+</div>
 
 <h3>Styling</h3>
 <sc-editor
@@ -63,14 +60,3 @@ const template = html\`<sc-clock
 ></sc-editor>
 
 `;
-
-// (function() {
-//   const startTime = Date.now();
-
-//   // $clock.getTimeFunction = getTime
-//   return function getTime() {
-//     const dt = Date.now() - startTime;
-//      // return time in seconds
-//     return dt / 1000;
-//   }
-// }())

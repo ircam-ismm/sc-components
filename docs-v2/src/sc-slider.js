@@ -5,13 +5,12 @@ export const template = html`
 
 <h2>sc-slider</h2>
 
-<pre><code class="language-javascript">\
-${`\
+<sc-code-example language="javascript">${`
 import { html } from 'lit';
 import '@ircam/sc-components/sc-slider.js';
 
-const template = html\`<sc-slider></sc-slider>\`;`}
-</code></pre>
+const template = html\`<sc-slider></sc-slider>\`;
+`}</sc-code-example>
 
 <sc-slider
   id="test-slider"
@@ -20,55 +19,55 @@ const template = html\`<sc-slider></sc-slider>\`;`}
 ></sc-slider>
 
 <h3>Events</h3>
-<p>
+<div>
   <sc-text readonly>@input</sc-text>
   <sc-number id="slider-input"></sc-number>
-</p>
-<p>
+</div>
+<div>
   <sc-text readonly>@change</sc-text>
   <sc-number id="slider-change"></sc-number>
-</p>
+</div>
 
 
 <h3>Attributes</h3>
-<p>
+<div>
   <sc-text readonly>[min=0]</sc-text>
   <sc-number value="0" integer
     @input=${e => document.querySelector('#test-slider').min = e.detail.value}
   ></sc-number>
-</p>
-<p>
+</div>
+<div>
   <sc-text readonly>[max=1]</sc-text>
   <sc-number value="1" integer
     @input=${e => document.querySelector('#test-slider').max = e.detail.value}
   ></sc-number>
-</p>
-<p>
+</div>
+<div>
   <sc-text readonly>[value=0.5]</sc-text>
   <sc-number value="0.5"
     @input=${e => document.querySelector('#test-slider').value = e.detail.value}
   ></sc-number>
-</p>
-<p>
+</div>
+<div>
   <sc-text readonly>[step=0.001]</sc-text>
   <sc-number value="0.001"
     @input=${e => document.querySelector('#test-slider').step = e.detail.value}
   ></sc-number>
-</p>
-<p>
+</div>
+<div>
   <sc-text readonly>[?number-box=false]</sc-text>
   <sc-toggle
     @change=${e => document.querySelector('#test-slider').numberBox = e.detail.value}
   ></sc-toggle>
-</p>
-<p>
+</div>
+<div>
   <sc-text readonly>[?orientation=false]</sc-text>
   <sc-radio
     options=${JSON.stringify(['horizontal', 'vertical'])}
     value="horizontal"
     @change=${e => document.querySelector('#test-slider').orientation = e.detail.value}
   ></sc-radio>
-</p>
+</div>
 
 <h3>Styling</h3>
 <sc-editor

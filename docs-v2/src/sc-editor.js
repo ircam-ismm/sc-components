@@ -5,30 +5,29 @@ export const template = html`
 
 <h2>sc-editor</h2>
 
-<pre><code class="language-javascript">\
-${`\
+<sc-code-example language="javascript">${`
 import { html } from 'lit';
 import '@ircam/sc-components/sc-editor.js';
 
-const template = html\`<sc-editor></sc-editor>\`;`}
-</code></pre>
+const template = html\`<sc-editor></sc-editor>\`;
+`}</sc-code-example>
 
 <sc-editor
   id="test-editor"
   value="\
 function test() {
   return 42;
-}
-  "
+}"
   @change=${e => document.querySelector('#editor-change').value = e.detail.value}
 ></sc-editor>
 
-<pre><code class="language-markdown">\
-- The red line on the left shows if the editor is in dirty state, i.e. if the content has been changed but not saved yet.
-- The "change" event is triggered when:
-  1. "Cmd+S" is pressed,<br/>
-  2. on click on the "floppy disc" button if the "saev-button" attribute is set to true
-</pre></code>
+<sc-code-example language="markdown">${`
+The red line on the left shows if the editor is in dirty state, i.e. if the content has been changed but not saved yet.
+
+The "change" event is triggered when:
+- "Cmd+S" is pressed
+- on click on the "floppy disc" button if the "saev-button" attribute is set to true
+`}</sc-code-example>
 
 <h3>Events</h3>
 <div>
@@ -58,7 +57,6 @@ function test() {
     @change=${e => document.querySelector('#test-editor').dirty = e.detail.value}
   ></sc-toggle>
 </div>
-
 
 <h3>Styling</h3>
 <sc-editor

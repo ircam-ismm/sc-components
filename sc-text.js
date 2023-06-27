@@ -125,6 +125,8 @@ class ScText extends ScElement {
 
     this.addEventListener('focus', this._propagateFocus);
 
+    // this.textContext is the value inside the tags
+    // @todo - optionnally accept the `value` attribute
     this.value = this.textContent;
   }
 

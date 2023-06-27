@@ -80,7 +80,7 @@ header > div > sc-icon {
 
 #main nav a {
   color: white;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   display: block;
   margin-bottom: 4px;
 }
@@ -110,10 +110,10 @@ header > div > sc-icon {
 }
 
 #main section p {
-  margin: 4px 0;
+  margin: 6px 0 4px;
   font-weight: light;
-  font-size: 1.2rem;
-  line-height: 1.8rem;
+  font-size: 1.1rem;
+  line-height: 1.6rem;
 }
 
 #main section div {

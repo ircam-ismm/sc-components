@@ -5,13 +5,12 @@ export const template = html`
 
 <h2>sc-toggle</h2>
 
-<pre><code class="language-javascript">\
-${`\
+<sc-code-example language="javascript">${`
 import { html } from 'lit';
 import '@ircam/sc-components/sc-toggle.js';
 
-const template = html\`<sc-toggle></sc-toggle>\`;`}
-</code></pre>
+const template = html\`<sc-toggle></sc-toggle>\`;
+`}</sc-code-example>
 
 <sc-toggle
   id="test-toggle"
@@ -19,30 +18,29 @@ const template = html\`<sc-toggle></sc-toggle>\`;`}
 ></sc-toggle>
 
 <h3>Events</h3>
-<p>
+<div>
   <sc-text readonly>@change</sc-text>
   <sc-toggle id="toggle-change"></sc-toggle>
-</p>
-<pre><code class="language-html">\
-${`\
+</div>
+<sc-code-example language="html">${`
 <sc-toggle
   @change=\${e => console.log(e.detail.value)}
-></sc-toggle>`}
-<code></pre>
+></sc-toggle>
+`}</sc-code-example>
 
 <h3>Attributes</h3>
-<p>
+<div>
   <sc-text readonly>[?active=false]</sc-text>
   <sc-toggle
     @change=${e => document.querySelector('#test-toggle').active = e.detail.value}
   ></sc-toggle>
-</p>
-<p>
+</div>
+<div>
   <sc-text readonly>[?disabled=false]</sc-text>
   <sc-toggle
     @change=${e => document.querySelector('#test-toggle').disabled = e.detail.value}
   ></sc-toggle>
-</p>
+</div>
 
 <h3>Styling</h3>
 <sc-editor

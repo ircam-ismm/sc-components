@@ -38,6 +38,7 @@ class ScNumber extends ScElement {
       font-family: var(--sc-font-family);
       font-size: var(--sc-font-size);
       color: #ffffff;
+      position: relative;
     }
 
     :host([disabled]) {
@@ -127,6 +128,20 @@ class ScNumber extends ScElement {
       width: 100%;
       height: 100%;
     }
+
+    /*input[type="number"] {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 0;
+      padding: 0;
+      border: none;
+    }
+
+    input[type="number"]:focus {
+      outline: none;
+    }*/
   `;
 
   set min(value) {
@@ -211,6 +226,7 @@ class ScNumber extends ScElement {
         @focus="${this._onFocus}"
         @blur="${this._onBlur}"
         @touchstart="${this._triggerFocus}"
+        @touchend="${this._openKeyboard}"
         @contextmenu="${this._preventContextMenu}"
       >
         <div class="info ${classMap(isEdited)}"></div>
@@ -264,9 +280,38 @@ class ScNumber extends ScElement {
   }
 
   // force focus for touchstart (is prevented by speed-surfaces...)
-  _triggerFocus() {
-    const $container = this.shadowRoot.querySelector('.container');
-    $container.focus();
+  _triggerFocus(e) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+
+  _openKeyboard(e) {
+    const $number = document.createElement('input');
+    $number.type = 'number';
+    this.shadowRoot.appendChild($number);
+    $number.focus();
+    $number.click();
+
+    $number.addEventListener('input', e => {
+      console.log('input', $number.value);
+      // when "." or "," is pressed e.target.value is empty in chrome
+      // @todo - check firefox and safari
+      if (e.target.value) {
+        this.value = parseFloat(e.target.value);
+      }
+    });
+
+    $number.addEventListener('change', e => {
+      e.preventDefault(); // go to end of page
+      e.stopPropagation();
+
+      console.log('change', $number.value);
+      // when "." or "," is pressed e.target.value is empty in chrome
+      // @todo - check firefox and safari
+      if (e.target.value) {
+        this.value = parseFloat(e.target.value);
+      }
+    });
   }
 
   // keyboard interactions

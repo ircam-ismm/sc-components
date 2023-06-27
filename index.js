@@ -5,6 +5,7 @@ import './sc-bang.js';
 import './sc-button.js';
 import './sc-chenillard.js';
 import './sc-clock.js';
+import './sc-code-example.js';
 import './sc-context-menu.js';
 import './sc-dial.js';
 import './sc-dot-map.js';
