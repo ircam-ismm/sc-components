@@ -31,11 +31,10 @@ class ScSelect extends ScElement {
   static styles = css`
     :host {
       display: inline-block;
-      vertical-align: top;
       box-sizing: border-box;
+      vertical-align: top;
       height: 30px;
       width: 200px;
-      background-color: var(--sc-color-primary-1);
       font-family: var(--sc-font-family);
       font-size: var(--sc-font-size);
       color: #fff;
