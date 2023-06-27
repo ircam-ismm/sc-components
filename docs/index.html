@@ -2,14 +2,31 @@
 <html>
 <head lang='en'>
 	<meta charset='utf-8'>
-	<meta name='viewport' content='width=device-width'>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta name="theme-color" content="#000000">
 
-	<title>simple-components | documentation</title>
-
+	<title>sc-components | documentation</title>
+  <meta name="description" content="a Web Component library for rapid prototyping audio applications in the browser.">
 	<link rel="stylesheet" href="./styles.css" />
-	<script async defer src='./bundle.js'></script>
+	<script async defer type="module" src='./build/bundle.js'></script>
 </head>
 <body>
-  <div id="container"></div>
+  <header>
+    <h1>sc-components</h1>
+
+    <div>
+      <sc-button id="switch-mode">switch background</sc-button>
+      <sc-icon icon="burger" id="toggle-menu"></sc-icon>
+      <sc-icon icon="github" href="https://github.com/ircam-ismm/simple-components"></sc-icon>
+    </div>
+  </header>
+  <div id="main">
+    <nav>
+
+    </nav>
+    <section class="dark">
+
+    </section>
+  </div>
 </body>
 </html>

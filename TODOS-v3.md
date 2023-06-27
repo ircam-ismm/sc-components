@@ -12,7 +12,7 @@
   + [ ] add label
 - [ ] sc-dot-map
 - [ ] sc-dragndrop
-- [ ] sc-editor
+- [x] sc-editor
 - [ ] sc-file-tree
 - [ ] sc-flash
 - [x] sc-icon
@@ -44,12 +44,12 @@
 ### new nodes
 
 - [x] sc-knob / sc-dial
-- [ ] sc-select (drop down list, radio or buttons)
+- [x] sc-select (drop down list, radio or buttons)
 - [ ] sc-switch
 - [ ] sc-qrcode
 - [ ] multislider
 - [ ] sc-keyboard
-- [ ] sc-code-example
+- [c] sc-code-example
 
 ### audio components
 - [ ] sc-resume-context

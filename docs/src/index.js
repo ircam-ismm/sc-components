@@ -1,91 +1,16 @@
 import '@babel/polyfill';
 import '@webcomponents/webcomponentsjs';
 import { html, render } from 'lit/html.js';
-import { until } from 'lit/directives/until.js';
-import { unsafeHTML } from 'lit/directives/unsafe-html.js';
+import { map } from 'lit/directives/map.js';
+import hljs from 'highlight.js';
 
-import '../../sc-position-surface.js';
-import '../../sc-speed-surface.js';
+import applyStyle from './utils/applyStyle.js';
 
-import '../../sc-button.js';
-import '../../sc-toggle.js';
-import '../../sc-slider.js';
-import '../../sc-number.js';
-import '../../sc-editor.js';
-import '../../sc-text.js';
-import '../../sc-bang.js';
-import '../../sc-signal.js';
-import '../../sc-dot-map.js';
-import '../../sc-dragndrop.js';
-import '../../sc-matrix.js';
-import '../../sc-context-menu.js';
-import '../../sc-file-tree.js';
-import '../../sc-transport.js';
-import '../../sc-record.js';
-import '../../sc-loop.js';
-import '../../sc-tap-tempo.js';
-import '../../sc-return.js';
-import '../../sc-clock.js';
-import '../../sc-progress-bar.js';
-import '../../sc-chenillard.js';
-import '../../sc-gh-link.js';
-import '../../sc-icon-button.js';
-import '../../sc-flash.js';
+// import lib
+import '../../index.js';
 
-// controls
-import matrix from './sc-matrix-example.js';
-import dragndrop from './sc-dragndrop-example.js';
-import bang from './sc-bang-example.js';
-import button from './sc-button-example.js';
-import editor from './sc-editor-example.js';
-import number from './sc-number-example.js';
-import slider from './sc-slider-example.js';
-import text from './sc-text-example.js';
-import toggle from './sc-toggle-example.js';
-import dotMap from './sc-dot-map-example.js';
-import contextMenu from './sc-context-menu-example.js';
-import fileTree from './sc-file-tree-example.js';
-import transport from './sc-transport-example.js';
-import record from './sc-record-example.js';
-import loop from './sc-loop-example.js';
-import returnButton from './sc-return-example.js';
-import tapTempo from './sc-tap-tempo-example.js';
-import clock from './sc-clock-example.js';
-import progressBar from './sc-progress-bar-example.js';
-import chenillard from './sc-chenillard-example.js';
-import ghLink from './sc-gh-link-example.js';
-import iconButton from './sc-icon-button-example.js';
-import flash from './sc-flash-example.js';
-
-// monitoring
-import signal from './sc-signal-example.js';
-
-const docs = {
-  'sc-bang': bang,
-  'sc-toggle': toggle,
-  'sc-number': number,
-  'sc-slider': slider,
-  'sc-button': button,
-  'sc-text': text,
-  'sc-transport': transport,
-  'sc-record': record,
-  'sc-loop': loop,
-  'sc-editor': editor,
-  'sc-matrix': matrix,
-  'sc-dot-map': dotMap,
-  'sc-dragndrop': dragndrop,
-  'sc-context-menu': contextMenu,
-  'sc-signal': signal,
-  'sc-file-tree': fileTree,
-  'sc-transport': transport,
-  'sc-tap-tempo': tapTempo,
-  'sc-return': returnButton,
-  'sc-clock': clock,
-  'sc-progress-bar': progressBar,
-  'sc-gh-link': ghLink,
-  'sc-icon-button': iconButton,
-  'sc-flash': flash,
-};
+// ignore unescape html warnings
+hljs.configure({ ignoreUnescapedHTML: true });
 
 function setTheme(name) {
   switch (name) {
@@ -100,37 +25,68 @@ function setTheme(name) {
   }
 }
 
-setTheme('light');
+setTheme('dark');
 
-render(html`
-  <section class="menu">
-    <a href="https://github.com/ircam-ismm/simple-components">
-      <sc-button text="Github"></sc-button>
-    </a>
-    <sc-button text="dark background" @press="${e => setTheme('dark')}"></sc-button>
-    <sc-button text="light background" @press="${e => setTheme('light')}"></sc-button>
+function setContent(pages) {
+  let hash = window.location.hash.replace(/^#/, '');
 
-    ${Object.keys(docs).map(name => html`<a href="#${name}">&lt;${name}&gt;</a>`)}
+  // fallback to homepage
+  if (hash === '') {
+    hash = 'home';
+  }
 
-  </section>
-  <section class="content">
-    <h1>sc-components</h1>
+  // reset styles
+  applyStyle('');
 
-    <pre><code>
-npm install @ircam/simple-components --save
-    </code></pre>
+  // nav (order)
+  render(map(Object.entries(pages), ([key, value]) => {
+    return html`<a href="#${key}" class="${key === hash ? 'selected' : ''}">${key}</a>`;
+  }), document.querySelector('#main > nav'));
 
-    ${Object.keys(docs).map(name => {
-      return html`
-        <div class="component">
-          <div class="doc">
-            <h2><a href="#${name}" id="${name}" name="${name}">#</a> ${name}</h2>
-            ${docs[name]()}
-          </div>
-        </div>
-      `;
-    })}
+  // main page
+  const { template } = pages[hash];
+  render(template, document.querySelector('#main > section'));
 
-    <div style="height: 300px">&nbsp;</div>
-  </section>
-`, document.querySelector('#container'))
+  // highlight code blocks
+  hljs.highlightAll();
+}
+
+(async function main() {
+  // add pages
+  const pages = {
+    'home': await import('./home.js'),
+    'sc-bang': await import('./sc-bang.js'),
+    'sc-button': await import('./sc-button.js'),
+    'sc-toggle': await import('./sc-toggle.js'),
+    'sc-text': await import('./sc-text.js'),
+    'sc-radio': await import('./sc-radio.js'),
+    'sc-icon': await import('./sc-icon.js'),
+    'sc-dial': await import('./sc-dial.js'),
+    'sc-number': await import('./sc-number.js'),
+    'sc-slider': await import('./sc-slider.js'),
+    'sc-clock': await import('./sc-clock.js'),
+    'sc-editor': await import('./sc-editor.js'),
+    'sc-code-example': await import('./sc-code-example.js'),
+    'sc-select': await import('./sc-select.js'),
+  };
+
+  const sortedKeys = Array.from(Object.keys(pages)).sort();
+  const sortedPages = sortedKeys.reduce((acc, key) => {
+    acc[key] = pages[key];
+    return acc;
+  }, {});
+
+  window.addEventListener('hashchange', (e) => setContent(sortedPages));
+  setContent(sortedPages);
+
+  document.querySelector('#switch-mode').addEventListener('input', () => {
+    const $content = document.querySelector('#main > section');
+    $content.classList.toggle('dark');
+    $content.classList.toggle('light');
+  });
+
+  document.querySelector('#toggle-menu').addEventListener('input', () => {
+    const $nav = document.querySelector('#main > nav');
+    $nav.classList.toggle('active');
+  });
+}());

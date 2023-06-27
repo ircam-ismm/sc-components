@@ -1,9 +1,11 @@
 {
-  "name": "@ircam/simple-components",
+  "name": "@ircam/sc-components",
   "version": "2.5.0",
-  "description": "set of web components for audio interfaces and rapid prototyping",
+  "description": "Web Components for audio interfaces and rapid prototyping",
   "authors": [
-    "Benjamin Matuszewski"
+    "Benjamin Matuszewski",
+    "Aliénor Golvet",
+    "Etienne Démoulin"
   ],
   "main": "src/index.js",
   "license": "BSD-3-Clause",

@@ -1,111 +1,169 @@
+:root {
+  --header-height: 40px;
+  --nav-width: 250px;
+}
+
 * {
   box-sizing: border-box;
   font-family: Consolas, monaco, monospace;
-  /*font-family: Arial;*/
 }
 
 html, body {
-  min-height: 100%;
+  min-height: 100vh;
 }
 
 html {
   font-size: 62.5%;
+  line-height: 1.4rem;
 }
 
 body {
   margin: 0;
 }
 
-h1 {
-  font-size: 30px;
+/* light / dark modes */
+
+
+/* highlight.js monokai theme */
+pre code.hljs{display:block;overflow-x:auto;padding:1em}code.hljs{padding:3px 5px}.hljs{background:#23241f;color:#f8f8f2}.hljs-subst,.hljs-tag{color:#f8f8f2}.hljs-emphasis,.hljs-strong{color:#a8a8a2}.hljs-bullet,.hljs-link,.hljs-literal,.hljs-number,.hljs-quote,.hljs-regexp{color:#ae81ff}.hljs-code,.hljs-section,.hljs-selector-class,.hljs-title{color:#a6e22e}.hljs-strong{font-weight:700}.hljs-emphasis{font-style:italic}.hljs-attr,.hljs-keyword,.hljs-name,.hljs-selector-tag{color:#f92672}.hljs-attribute,.hljs-symbol{color:#66d9ef}.hljs-class .hljs-title,.hljs-params,.hljs-title.class_{color:#f8f8f2}.hljs-addition,.hljs-built_in,.hljs-selector-attr,.hljs-selector-id,.hljs-selector-pseudo,.hljs-string,.hljs-template-variable,.hljs-type,.hljs-variable{color:#e6db74}.hljs-comment,.hljs-deletion,.hljs-meta{color:#75715e}
+
+header {
+  height: var(--header-height);
+  border-bottom: 1px solid #454545;
+  background-color: #121212;
+  display: block;
+  color: #ffffff;
+  font-size: 0; /* avoid space between inline block elements */
 }
 
-h2, h2 a {
-  font-size: 24px;
-  text-decoration: none;
-}
-
-h3 {
-  font-size: 18px;
-}
-
-* {
-  font-size: 12px;
-}
-
-p {
-  margin: 2px 0;
-}
-
-body.light {
-  background-color: #ffffff;
-}
-
-body.light * {
-  color: #000000;
-}
-
-body.dark {
-  background-color: #000000;
-}
-
-body.dark * {
+header h1 {
+  margin: 0;
+  font-size: 16px;
+  line-height: var(--header-height);
+  text-indent: 20px;
   color: #ffffff;
 }
 
-body .menu {
-  width: 240px;
-  position: fixed;
+header > div {
+  position: absolute;
   top: 0;
-  left: 0;
-  background-color: #fefefe;
+  right: 0;
+}
+
+header > div > p {
+  display: inline-block;
+}
+
+header > div > sc-button {
+  height: var(--header-height);
+}
+
+header > div > sc-icon {
+  height: var(--header-height);
+  width: var(--header-height);
+}
+
+#main {
+  display: flex;
+  min-height: calc(100vh - var(--header-height));
+  position: relative;
+}
+
+#main nav {
+  background-color: #343434;
+  display: block;
+  width: var(--nav-width);
+  min-height: calc(100vh - var(--header-height));
+  overflow-y: auto;
   padding: 20px;
-  min-height: 100%;
-  border-right: 1px solid #272822ff;
+  border-right: 1px solid #565656;
 }
 
-body .menu * {
-  color: #000000;
+#main section {
+  display: block;
+  min-height: calc(100vh - var(--header-height));
+  width: calc(100vw - var(--nav-width));
+  background-color: black;
+  overflow-y: auto;
+  padding: 20px;
 }
 
-.menu sc-button {
+header #toggle-menu {
+  display: none;
+}
+
+/* be a bit friendly for small screen */
+@media only screen and (max-width: 768px) {
+  header #toggle-menu {
+    display: inline-block;
+  }
+
+  #main nav {
+    display: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 100;
+  }
+  #main nav.active {
+    display: block;
+  }
+
+  #main section {
+    width: 100%;
+  }
+}
+
+#main nav a {
+  color: white;
+  font-size: 1.1rem;
+  display: block;
   margin-bottom: 4px;
 }
 
-.menu a {
-  font-size: 12px;
-  color: #000000;
-  display: block;
-  margin: 10px 0;
+#main nav a:hover, #main nav a.selected {
+  color: #a3a3a3;
 }
 
-.content {
-  margin-left: 280px;
+#main section h2 {
+  margin-top: 0;
+  font-size: 2.4rem;
 }
 
-pre {
-  padding: 10px;
-  border-radius: 4px;
-  margin-right: 20px;
-}
-
-pre, code {
-  background-color: #343434 !important;
-  color: white !important;
-}
-
-/*.content .component {
-
-}
-
-.content .component .doc {
-  width: 60%;
-  float: left;
-}
-
-.content .component .example {
-  font-size: 12px;
-  width: 35%;
-  float: right;
+#main section h3 {
+  margin-top: 0;
+  font-size: 1.6rem;
   margin-top: 50px;
-}*/
+}
+
+#main section p {
+  margin: 6px 0 4px;
+  font-weight: light;
+  font-size: 1.1rem;
+  line-height: 1.6rem;
+}
+
+#main section div {
+  margin: 4px 0;
+}
+
+#main section.light {
+  color: #000;
+  background-color: #fff;
+}
+
+#main section.dark {
+  color: #fff;
+  background-color: #000;
+}
+
+#main section #home p {
+  margin-top: 24px;
+}
+
+.test {
+  background-color: var(--sc-color-primary-0);
+  width: 100px;
+  height: 100px;
+  outline: 1px solid red;
+}
