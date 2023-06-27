@@ -92,6 +92,7 @@ class ScRadio extends ScElement {
     }
   `;
 
+  // see  `_dispatchEvent` for the explaination of the getter / setter
   get value() {
     return this._value;
   }
@@ -108,7 +109,7 @@ class ScRadio extends ScElement {
     this.value = null;
     this.disabled = false;
     this.orientation = 'vertical';
-    this.name = `sc-radio-options-${groupId++}`;
+    this.name = `sc-radio-${groupId++}`;
   }
 
   render() {

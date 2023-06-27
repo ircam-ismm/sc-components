@@ -67,6 +67,7 @@ function setContent(pages) {
     'sc-clock': await import('./sc-clock.js'),
     'sc-editor': await import('./sc-editor.js'),
     'sc-code-example': await import('./sc-code-example.js'),
+    'sc-select': await import('./sc-select.js'),
   };
 
   const sortedKeys = Array.from(Object.keys(pages)).sort();
