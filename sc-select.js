@@ -87,7 +87,7 @@ class ScSelect extends ScElement {
         @change=${this._dispatchEvent}
       >
         ${this.placeholder
-          ? html`<option>${this.placeholder}</option`
+          ? html`<option value="">${this.placeholder}</option`
           : nothing
         }
         ${repeat(this.options, () => `sc-select-${itemId++}`, value => {
