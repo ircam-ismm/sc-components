@@ -7,8 +7,12 @@
     "Aliénor Golvet",
     "Etienne Démoulin"
   ],
-  "main": "src/index.js",
   "license": "BSD-3-Clause",
+  "main": "src/index.js",
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/ircam-ismm/simple-components"
