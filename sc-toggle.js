@@ -87,6 +87,8 @@ class ScToggle extends ScElement {
 
     this.active = false;
     this.disabled = false;
+    // @note: passive: false in event listener declaration lose the binding
+    this._updateValue = this._updateValue.bind(this);
   }
 
   render() {

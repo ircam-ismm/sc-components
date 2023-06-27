@@ -88,8 +88,8 @@ class ScIcon extends ScElement {
     this.disabled = false;
 
     this._pressed = false;
-
-    this.onEvent = this.onEvent.bind(this);
+    // @note: passive: false in event listener declaration lose the binding
+    this._onEvent = this._onEvent.bind(this);
   }
 
   render() {
@@ -107,13 +107,13 @@ class ScIcon extends ScElement {
 
     return html`
       <div
-        @mousedown="${this.onEvent}"
-        @mouseup="${this.onEvent}"
+        @mousedown="${this._onEvent}"
+        @mouseup="${this._onEvent}"
         @touchstart="${{
-          handleEvent:this.onEvent,
+          handleEvent:this._onEvent,
           passive: false,
         }}"
-        @touchend="${this.onEvent}"
+        @touchend="${this._onEvent}"
         @contextmenu="${this._preventContextMenu}"
       >
         ${include}
@@ -129,7 +129,7 @@ class ScIcon extends ScElement {
     }
   }
 
-  onEvent(e) {
+  _onEvent(e) {
     e.preventDefault();
 
     if (this.disabled) {

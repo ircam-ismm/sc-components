@@ -64,6 +64,8 @@ class ScBang extends ScElement {
     this.disabled = false;
 
     this._timeoutId = null;
+    // @note: passive: false in event listener declaration lose the binding
+    this._triggerEvent = this._triggerEvent.bind(this);
   }
 
   render() {

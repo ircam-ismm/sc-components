@@ -80,8 +80,13 @@ function setContent(pages) {
   setContent(sortedPages);
 
   document.querySelector('#switch-mode').addEventListener('input', () => {
-    const $content = document.querySelector('#content');
+    const $content = document.querySelector('#main > section');
     $content.classList.toggle('dark');
     $content.classList.toggle('light');
+  });
+
+  document.querySelector('#toggle-menu').addEventListener('input', () => {
+    const $nav = document.querySelector('#main > nav');
+    $nav.classList.toggle('active');
   });
 }());

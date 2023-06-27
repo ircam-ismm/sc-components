@@ -106,6 +106,8 @@ class ScButton extends ScElement {
     this.disabled = false;
 
     this._pressed = false;
+    // @note: passive: false in event listener declaration lose the binding
+    this._onEvent = this._onEvent.bind(this);
   }
 
   render() {

@@ -36,6 +36,7 @@ class ScPositionSurface extends ScElement {
     this._activePointers = new Map();
     this._pointerIds = []; // we want to keep the order of appearance consistant
 
+    // @note: passive: false in event listener declaration lose the binding
     this._mouseMove = this._mouseMove.bind(this);
     this._mouseUp = this._mouseUp.bind(this);
     this._touchStart = this._touchStart.bind(this);

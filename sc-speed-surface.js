@@ -26,6 +26,7 @@ class ScSpeedSurface extends ScElement {
     this._lastPointer = null;
     this._lastTime = null;
 
+    // @note: passive: false in event listener declaration lose the binding
     this._mouseMove = this._mouseMove.bind(this);
     this._mouseUp = this._mouseUp.bind(this);
 
