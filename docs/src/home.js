@@ -4,16 +4,20 @@ export const template = html`
 <div id="home">
   <h2>@ircam/sc-components</h2>
 
+  <p>Web Component library for rapid prototyping audio and creative applications in the browser.</p>
+  <br />
+  <sc-bang></sc-bang>
+  <sc-number></sc-number>
+  <sc-slider></sc-slider>
+  <sc-dial></sc-dial>
+  <sc-toggle></sc-toggle>
+  <sc-text>some text</sc-text>
+
   <h3>Install</h3>
 
   <pre><code>npm install --save @ircam/sc-components</code></pre>
 
-
   <h3>Usage</h3>
-
-  <p>Import all components at once:</p>
-
-  <pre><code class="language-javascript">import '@ircam/sc-components';</code></pre>
 
   <p>Import components one by one:</p>
 
@@ -22,6 +26,15 @@ export const template = html`
   import '@ircam/sc-components/sc-button.js';
   // ...
   </code></pre>
+
+
+  <p>
+    Or all components at once:<br >
+    <i>(note that it's best to import only the files you need to keep your bundle size as small as possibles)</i>
+  </p>
+
+  <pre><code class="language-javascript">import '@ircam/sc-components';</code></pre>
+
 
 
   <h3>Theming - global css variables</h3>
