@@ -51,10 +51,10 @@ class ScDots extends LitElement {
         vertical-align: top;
         width: 300px;
         height: 300px;
-        background-color: var(--sc-color-primary-0);
 
         --sc-dots-opacity: 1;
         --sc-dots-color: var(--sc-color-secondary-2);
+        --sc-dots-background-color: var(--sc-color-primary-0);
         --sc-dots-background-image: none;
       }
 
@@ -79,6 +79,7 @@ class ScDots extends LitElement {
 
       svg {
         position: relative;
+        background-color: var(--sc-dots-background-color);
         background-image: var(--sc-dots-background-image);
         background-size: contain;
         background-position: 50% 50%;

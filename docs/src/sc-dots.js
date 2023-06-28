@@ -136,6 +136,7 @@ export const template = html`
     --sc-dots-opacity: 1;
     --sc-dots-color: var(--sc-color-secondary-2);
     --sc-dots-background-image: url(./assets/seating-map.png);
+    --sc-dots-background-color: var(--sc-color-primary-0);
   }
     "
     @change=${e => applyStyle(e.detail.value)}
