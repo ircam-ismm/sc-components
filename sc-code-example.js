@@ -21,6 +21,7 @@ class ScCodeExample extends ScElement {
       font-size: var(--sc-font-size);
       font-family: var(--sc-font-family);
       border-radius: 2px;
+      background-color: #23241f;
     }
 
     pre, code {

@@ -70,10 +70,6 @@ export const template = html`
       <div style="width: 100px; height: 100px; background-color: var(--sc-color-secondary-5)"></div>
       <p style="margin-top: 8px;">--sc-color-secondary-5</p>
     </div>
-    <div style="width: 200px;">
-      <div style="width: 100px; height: 100px; background-color: var(--sc-color-secondary-6)"></div>
-      <p style="margin-top: 8px;">--sc-color-secondary-6</p>
-    </div>
   </div>
 </div>
 `;

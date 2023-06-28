@@ -44,8 +44,17 @@ function setContent(pages) {
   }), document.querySelector('#main > nav'));
 
   // main page
-  const { template } = pages[hash];
+  const { template } = pages[hash] ? pages[hash] : pages['home'];
   render(template, document.querySelector('#main > section'));
+
+  // example and api zones
+  // const $example = document.querySelector('.example');
+  // const $api = document.querySelector('.api');
+
+  // if ($example && $api) {
+  //   const { height } = $example.getBoundingClientRect();
+  //   $api.style.marginTop = `${height + 140}px`;
+  // }
 
   // highlight code blocks
   hljs.highlightAll();
@@ -68,6 +77,7 @@ function setContent(pages) {
     'sc-editor': await import('./sc-editor.js'),
     'sc-code-example': await import('./sc-code-example.js'),
     'sc-select': await import('./sc-select.js'),
+    'sc-dots': await import('./sc-dots.js'),
   };
 
   const sortedKeys = Array.from(Object.keys(pages)).sort();

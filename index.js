@@ -8,7 +8,7 @@ import './sc-clock.js';
 import './sc-code-example.js';
 // import './sc-context-menu.js';
 import './sc-dial.js';
-// import './sc-dot-map.js';
+import './sc-dots.js';
 // import './sc-dragndrop.js';
 import './sc-editor.js';
 // import './sc-file-tree.js';

@@ -89,14 +89,14 @@ class ScDial extends ScElement {
     }
 
     path.fg {
-      stroke: var(--sc-color-secondary-6);
+      stroke: var(--sc-color-secondary-1);
       stroke-width: 4px;
       fill: transparent;
     }
 
     line {
       stroke-width: 3px;
-      stroke: var(--sc-color-secondary-6);
+      stroke: var(--sc-color-secondary-1);
       stroke-linecap: butt;
     }
 

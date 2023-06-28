@@ -125,6 +125,12 @@ header #toggle-menu {
   color: #a3a3a3;
 }
 
+/*#main section .example {
+  position: fixed;
+  width: 100%;
+  background-color: inherit;
+}
+*/
 #main section h2 {
   margin-top: 0;
   font-size: 2.4rem;

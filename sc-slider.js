@@ -3,6 +3,7 @@ import ScElement from './ScElement.js';
 import { theme } from './styles.js';
 import getScale from './utils/getScale.js';
 import getClipper from './utils/getClipper.js';
+
 import './sc-position-surface.js';
 import './sc-number.js';
 
@@ -44,6 +45,9 @@ class ScSlider extends ScElement {
         width: 200px;
         height: 30px;
         vertical-align: top;
+
+        --sc-slider-background-color: var(--sc-color-primary-1);
+        --sc-slider-foreground-color: var(--sc-color-primary-4);
       }
 
       div {
@@ -70,11 +74,11 @@ class ScSlider extends ScElement {
       }
 
       rect.background {
-        fill: var(--sc-color-primary-1);
+        fill: var(--sc-slider-background-color);
       }
 
       rect.foreground {
-        fill: var(--sc-color-primary-4);
+        fill: var(--sc-slider-foreground-color);
       }
 
       sc-position-surface {

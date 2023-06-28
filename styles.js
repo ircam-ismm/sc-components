@@ -26,12 +26,11 @@ const cssVars = `
   --sc-color-primary-2: #3d3e39ff;
   --sc-color-primary-3: #6a6a69ff;
   --sc-color-primary-4: #dededeff;
-  --sc-color-secondary-1: #f0db4fff; /* yellow */
+  --sc-color-secondary-1: #f4b43eff; /* orange / yellow */
   --sc-color-secondary-2: #1c78c0ff; /* blue */
   --sc-color-secondary-3: #d9534fff; /* red */
   --sc-color-secondary-4: #5ec451ff; /* green */
   --sc-color-secondary-5: #cd7afaff; /* lila */
-  --sc-color-secondary-6: #f4b43eff; /* orange */
 }
 `;
 

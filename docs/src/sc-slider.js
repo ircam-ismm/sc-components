@@ -75,6 +75,8 @@ const template = html\`<sc-slider></sc-slider>\`;
 #test-slider {
   width: 200px;
   height: 30px;
+  --sc-slider-background-color: var(--sc-color-primary-1);
+  --sc-slider-foreground-color: var(--sc-color-primary-4);
 }
   "
   @change=${e => applyStyle(e.detail.value)}

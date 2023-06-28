@@ -1,6 +1,5 @@
 {
-  "name": "js-prototyping-boilerplate",
-  "private": true,
+  "name": "@ircam/sc-components-doc",
   "devDependencies": {
     "@babel/core": "^7.12.16",
     "@babel/plugin-proposal-class-properties": "^7.12.13",
@@ -14,15 +13,9 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
-    "@ircam/resume-audio-context": "^1.0.2",
-    "@ircam/sc-gettime": "^1.0.1",
-    "@ircam/simple-components": "^2.2.0",
     "@webcomponents/webcomponentsjs": "^2.6.0",
-    "core-js": "^3.8.3",
-    "highlight.js": "^11.8.0",
-    "lit": "^2.2.2",
-    "regenerator-runtime": "^0.13.7",
-    "showdown": "^2.1.0"
+    "json5": "^2.2.3",
+    "lit": "^2.7.5"
   },
   "scripts": {
     "build": "webpack --config webpack.config.js",
