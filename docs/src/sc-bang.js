@@ -48,7 +48,7 @@ html\`
 `}</sc-code-example>
 
 <div>
-  <sc-text readonly>[disabled=false]</sc-text>
+  <sc-text readonly>[?disabled=false]</sc-text>
   <sc-toggle
     @change=${e => document.querySelector('#test-bang').disabled = e.detail.value}
   ></sc-toggle>

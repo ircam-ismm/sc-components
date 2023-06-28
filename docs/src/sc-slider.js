@@ -68,6 +68,12 @@ const template = html\`<sc-slider></sc-slider>\`;
     @change=${e => document.querySelector('#test-slider').orientation = e.detail.value}
   ></sc-radio>
 </div>
+<div>
+  <sc-text readonly>[?disabled=false]</sc-text>
+  <sc-toggle
+    @change=${e => document.querySelector('#test-slider').disabled = e.detail.value}
+  ></sc-toggle>
+</div>
 
 <h3>Styling</h3>
 <sc-editor

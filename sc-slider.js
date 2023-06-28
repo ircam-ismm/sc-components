@@ -8,98 +8,111 @@ import './sc-position-surface.js';
 import './sc-number.js';
 
 class ScSlider extends ScElement {
-  static get properties() {
-    return {
-      min: {
-        type: Number,
-        reflect: true,
-      },
-      max: {
-        type: Number,
-        reflect: true,
-      },
-      step: {
-        type: Number,
-        reflect: true,
-      },
-      value: {
-        type: Number,
-      },
-      orientation: {
-        type: String,
-        reflect: true,
-      },
-      numberBox: {
-        type: Boolean,
-        reflect: true,
-        attribute: 'number-box',
-      },
+  static properties = {
+    min: {
+      type: Number,
+      reflect: true,
+    },
+    max: {
+      type: Number,
+      reflect: true,
+    },
+    step: {
+      type: Number,
+      reflect: true,
+    },
+    value: {
+      type: Number,
+    },
+    orientation: {
+      type: String,
+      reflect: true,
+    },
+    numberBox: {
+      type: Boolean,
+      reflect: true,
+      attribute: 'number-box',
+    },
+    disabled: {
+      type: Boolean,
+      reflect: true,
+    },
+  };
+
+  static styles = css`
+    :host {
+      display: inline-block;
+      box-sizing: border-box;
+      width: 200px;
+      height: 30px;
+      vertical-align: top;
+
+      --sc-slider-background-color: var(--sc-color-primary-1);
+      --sc-slider-foreground-color: var(--sc-color-primary-4);
     }
-  }
 
-  static get styles() {
-    return css`
-      :host {
-        display: inline-block;
-        box-sizing: border-box;
-        width: 200px;
-        height: 30px;
-        vertical-align: top;
+    :host([disabled]) {
+      opacity: 0.7;
+    }
 
-        --sc-slider-background-color: var(--sc-color-primary-1);
-        --sc-slider-foreground-color: var(--sc-color-primary-4);
-      }
+    :host([hidden]) {
+      display: none
+    }
 
-      div {
-        box-sizing: border-box;
-        width: 100%;
-        height: 100%;
-        position: relative;
-        display: inline-block;
-        border: 1px solid var(--sc-color-primary-2);
-      }
+    :host(:focus), :host(:focus-visible) {
+      outline: none;
+      box-shadow: 0 0 2px var(--sc-color-primary-4);
+    }
 
-      :host([number-box][orientation="horizontal"]) div {
-        width: calc(100% - 86px);
-      }
+    div {
+      box-sizing: border-box;
+      width: 100%;
+      height: 100%;
+      position: relative;
+      display: inline-block;
+      border: 1px solid var(--sc-color-primary-2);
+    }
 
-      :host([number-box][orientation="vertical"]) div {
-        height: calc(100% - 36px);
-      }
+    :host([number-box][orientation="horizontal"]) div {
+      width: calc(100% - 86px);
+    }
 
-      svg {
-        box-sizing: border-box;
-        width: 100%;
-        height: 100%;
-      }
+    :host([number-box][orientation="vertical"]) div {
+      height: calc(100% - 36px);
+    }
 
-      rect.background {
-        fill: var(--sc-slider-background-color);
-      }
+    svg {
+      box-sizing: border-box;
+      width: 100%;
+      height: 100%;
+    }
 
-      rect.foreground {
-        fill: var(--sc-slider-foreground-color);
-      }
+    rect.background {
+      fill: var(--sc-slider-background-color);
+    }
 
-      sc-position-surface {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 1;
-      }
+    rect.foreground {
+      fill: var(--sc-slider-foreground-color);
+    }
 
-      sc-number {
-        display: inline-block;
-        width: 80px;
-      }
+    sc-position-surface {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
 
-      :host([number-box][orientation="vertical"]) sc-number {
-        display: block;
-      }
-    `;
-  }
+    sc-number {
+      display: inline-block;
+      width: 80px;
+    }
+
+    :host([number-box][orientation="vertical"]) sc-number {
+      display: block;
+    }
+  `;
 
   get min() {
     return this._min;
@@ -214,6 +227,14 @@ class ScSlider extends ScElement {
     `;
   }
 
+  connectedCallback() {
+    super.connectedCallback();
+
+    if (!this.hasAttribute('tabindex')) {
+      this.setAttribute('tabindex', 0);
+    }
+  }
+
   _updateScales() {
     if (this._max < this._min) {
       const tmp = this._max;
@@ -230,6 +251,10 @@ class ScSlider extends ScElement {
 
   _onNumberBoxChange(e) {
     e.stopPropagation();
+
+    if (this.disabled) {
+      return;
+    }
 
     this.value = this._clipper(e.detail.value);
 
@@ -251,6 +276,10 @@ class ScSlider extends ScElement {
   }
 
   _onChange(e) {
+    if (this.disabled) {
+      return;
+    }
+
     if (e.detail.pointerId === this._pointerId) {
       this._pointerId = null;
 
@@ -267,6 +296,11 @@ class ScSlider extends ScElement {
   _onInput(e) {
     // stop propagation of event from sc-position-surface
     e.stopPropagation();
+
+    if (this.disabled) {
+      return;
+    }
+
     // consider only first pointer in list, we don't want a multitouch slider...
     if (
       e.detail.value[0] &&

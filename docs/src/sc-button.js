@@ -84,7 +84,7 @@ const template = html\`<sc-button>My text</sc-button>\`;
   ></sc-toggle>
 </div>
 <div>
-  <sc-text readonly>[disabled=false]</sc-text>
+  <sc-text readonly>[?disabled=false]</sc-text>
   <sc-toggle
     @change=${e => document.querySelector('#test-button').disabled = e.detail.value}
   ></sc-toggle>
