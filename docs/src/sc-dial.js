@@ -68,6 +68,8 @@ const template = html\`<sc-dial></sc-dial>\`;
 #test-dial {
   width: 50px;
   height: 50px;
+
+  --sc-dial-color: var(--sc-color-secondary-1);
 }
   "
   @change=${e => applyStyle(e.detail.value)}

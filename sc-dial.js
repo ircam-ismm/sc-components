@@ -67,6 +67,8 @@ class ScDial extends ScElement {
       font-size: 0;
       line-height: 0;
       position: relative;
+
+      --sc-dial-color: var(--sc-color-secondary-1);
     }
 
     :host([disabled]) {
@@ -89,14 +91,14 @@ class ScDial extends ScElement {
     }
 
     path.fg {
-      stroke: var(--sc-color-secondary-1);
+      stroke: var(--sc-dial-color);
       stroke-width: 4px;
       fill: transparent;
     }
 
     line {
       stroke-width: 3px;
-      stroke: var(--sc-color-secondary-1);
+      stroke: var(--sc-dial-color);
       stroke-linecap: butt;
     }
 
@@ -178,8 +180,8 @@ class ScDial extends ScElement {
     this._minAngle = -140;
     this._maxAngle = 140;
 
+    this.max = 1; // set max before min is important to avoid workaround in setters
     this.min = 0;
-    this.max = 1;
     this.value = 0;
     this.showValue = true;
     this.disabled = false;

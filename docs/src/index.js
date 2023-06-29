@@ -78,6 +78,7 @@ function setContent(pages) {
     'sc-code-example': await import('./sc-code-example.js'),
     'sc-select': await import('./sc-select.js'),
     'sc-dots': await import('./sc-dots.js'),
+    'sc-matrix': await import('./sc-matrix.js'),
   };
 
   const sortedKeys = Array.from(Object.keys(pages)).sort();

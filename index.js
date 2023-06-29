@@ -15,7 +15,7 @@ import './sc-editor.js';
 // import './sc-flash.js';
 import './sc-icon.js';
 // import './sc-loop.js';
-// import './sc-matrix.js';
+import './sc-matrix.js';
 import './sc-number.js';
 // import './sc-progress-bar.js';
 import './sc-select.js';

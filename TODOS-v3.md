@@ -49,7 +49,8 @@
 - [ ] sc-qrcode
 - [ ] multislider
 - [ ] sc-keyboard
-- [c] sc-code-example
+- [x] sc-code-example
+- [ ] sc-panel (open close panel) cf. dat.gui.js
 
 ### audio components
 - [ ] sc-resume-context
@@ -57,6 +58,11 @@
 - [ ] sc-waveform -> option to play the file
 - [ ] sc-meter
 
+### interactions
+
+- [ ] keyboard
+- [ ] undo / redo (for components that have a @change event)
+- [ ] editable attribute? or component w/ slot
 
 ### sc-number
 
