@@ -168,7 +168,7 @@ header #toggle-menu {
 }
 
 .test {
-  background-color: var(--sc-color-primary-0);
+  background-color: var(--sc-color-primary-1);
   width: 100px;
   height: 100px;
   outline: 1px solid red;

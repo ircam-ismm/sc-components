@@ -48,7 +48,7 @@ class ScSelect extends ScElement {
 
     :host(:focus), :host(:focus-visible) {
       outline: none;
-      box-shadow: 0 0 2px var(--sc-color-primary-4);
+      box-shadow: 0 0 2px var(--sc-color-primary-5);
     }
 
     select {

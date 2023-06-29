@@ -131,12 +131,12 @@ export const template = html`
   #test-dots {
     width: 300px;
     height: 300px;
-    background-color: var(--sc-color-primary-0);
+    background-color: var(--sc-color-primary-1);
 
     --sc-dots-opacity: 1;
     --sc-dots-color: var(--sc-color-secondary-2);
     --sc-dots-background-image: url(./assets/seating-map.png);
-    --sc-dots-background-color: var(--sc-color-primary-0);
+    --sc-dots-background-color: var(--sc-color-primary-1);
   }
     "
     @change=${e => applyStyle(e.detail.value)}

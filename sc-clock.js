@@ -39,7 +39,7 @@ class ScClock extends ScElement {
       border-radius: 2px;
       font-size: var(--sc-font-size);
       font-family: var(--sc-font-family);
-      background-color: var(--sc-color-primary-3);
+      background-color: var(--sc-color-primary-4);
       color: white;
       text-align: center;
     }

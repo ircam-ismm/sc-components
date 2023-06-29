@@ -33,7 +33,7 @@ class ScRadio extends ScElement {
       display: inline-block;
       vertical-align: top;
       box-sizing: border-box;
-      background-color: var(--sc-color-primary-1);
+      background-color: var(--sc-color-primary-2);
       font-family: var(--sc-font-family);
       font-size: var(--sc-font-size);
       color: #fff;
@@ -63,7 +63,7 @@ class ScRadio extends ScElement {
 
     :host(:focus), :host(:focus-visible) {
       outline: none;
-      box-shadow: 0 0 2px var(--sc-color-primary-4);
+      box-shadow: 0 0 2px var(--sc-color-primary-5);
     }
 
     label {

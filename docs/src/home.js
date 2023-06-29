@@ -15,17 +15,19 @@ export const template = html`
 
   <h3>Install</h3>
 
-  <pre><code>npm install --save @ircam/sc-components</code></pre>
+  <sc-code-example language="bash">
+npm install --save @ircam/sc-components
+  </sc-code-example>
 
   <h3>Usage</h3>
 
   <p>Import components one by one:</p>
 
-  <pre><code class="language-javascript">\
-  import '@ircam/sc-components/sc-toggle.js';
-  import '@ircam/sc-components/sc-button.js';
-  // ...
-  </code></pre>
+  <sc-code-example language="javascript">
+import '@ircam/sc-components/sc-toggle.js';
+import '@ircam/sc-components/sc-button.js';
+// ...
+  </sc-code-example>
 
 
   <p>
@@ -33,17 +35,15 @@ export const template = html`
     <i>(note that it's best to import only the files you need to keep your bundle size as small as possibles)</i>
   </p>
 
-  <pre><code class="language-javascript">import '@ircam/sc-components';</code></pre>
+  <sc-code-example language="javascript">
+import '@ircam/sc-components';
+  </sc-code-example>
 
 
 
   <h3>Theming - global css variables</h3>
 
   <div style="display: flex; flex-wrap: wrap;">
-    <div style="width: 200px;">
-      <div style="width: 100px; height: 100px; background-color: var(--sc-color-primary-0)"></div>
-      <p style="margin-top: 8px;">--sc-color-primary-0</p>
-    </div>
     <div style="width: 200px;">
       <div style="width: 100px; height: 100px; background-color: var(--sc-color-primary-1)"></div>
       <p style="margin-top: 8px;">--sc-color-primary-1</p>
@@ -59,6 +59,10 @@ export const template = html`
     <div style="width: 200px;">
       <div style="width: 100px; height: 100px; background-color: var(--sc-color-primary-4)"></div>
       <p style="margin-top: 8px;">--sc-color-primary-4</p>
+    </div>
+    <div style="width: 200px;">
+      <div style="width: 100px; height: 100px; background-color: var(--sc-color-primary-5)"></div>
+      <p style="margin-top: 8px;">--sc-color-primary-5</p>
     </div>
   </div>
 

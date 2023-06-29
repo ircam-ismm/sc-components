@@ -54,7 +54,7 @@ class ScDots extends LitElement {
 
         --sc-dots-opacity: 1;
         --sc-dots-color: var(--sc-color-secondary-2);
-        --sc-dots-background-color: var(--sc-color-primary-0);
+        --sc-dots-background-color: var(--sc-color-primary-1);
         --sc-dots-background-image: none;
       }
 

@@ -24,7 +24,7 @@ class ScToggle extends ScElement {
       height: 30px;
       vertical-align: top;
       box-sizing: border-box;
-      background-color: var(--sc-color-primary-1);
+      background-color: var(--sc-color-primary-2);
       font-size: 0;
       line-height: 0;
     }
@@ -39,19 +39,19 @@ class ScToggle extends ScElement {
 
     :host(:focus), :host(:focus-visible) {
       outline: none;
-      box-shadow: 0 0 2px var(--sc-color-primary-4);
+      box-shadow: 0 0 2px var(--sc-color-primary-5);
     }
 
     svg {
       width: 100%;
       height: 100%;
       box-sizing: border-box;
-      border: 1px solid var(--sc-color-primary-2);
+      border: 1px solid var(--sc-color-primary-3);
     }
 
     svg line {
       stroke-width: 10px;
-      stroke: var(--sc-color-primary-3);
+      stroke: var(--sc-color-primary-4);
     }
 
     svg.active line {

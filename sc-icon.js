@@ -30,8 +30,8 @@ class ScIcon extends ScElement {
       overflow: hidden;
       width: 30px;
       height: 30px;
-      border: 1px solid var(--sc-color-primary-2);
-      background-color: var(--sc-color-primary-1);
+      border: 1px solid var(--sc-color-primary-3);
+      background-color: var(--sc-color-primary-2);
       cursor: pointer;
     }
 
@@ -46,7 +46,7 @@ class ScIcon extends ScElement {
 
     :host(:focus), :host(:focus-visible) {
       outline: none;
-      box-shadow: 0 0 2px var(--sc-color-primary-4);
+      box-shadow: 0 0 2px var(--sc-color-primary-5);
     }
 
 

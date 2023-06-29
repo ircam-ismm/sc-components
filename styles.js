@@ -21,11 +21,11 @@ const cssVars = `
 :root {
   --sc-font-family: Consolas, monaco, monospace;
   --sc-font-size: 11px;
-  --sc-color-primary-0: #121212ff;
-  --sc-color-primary-1: #272822ff;
-  --sc-color-primary-2: #3d3e39ff;
-  --sc-color-primary-3: #6a6a69ff;
-  --sc-color-primary-4: #dededeff;
+  --sc-color-primary-1: #121212ff;
+  --sc-color-primary-2: #272822ff;
+  --sc-color-primary-3: #3d3e39ff;
+  --sc-color-primary-4: #6a6a69ff;
+  --sc-color-primary-5: #dededeff;
   --sc-color-secondary-1: #f4b43eff; /* orange / yellow */
   --sc-color-secondary-2: #1c78c0ff; /* blue */
   --sc-color-secondary-3: #d9534fff; /* red */

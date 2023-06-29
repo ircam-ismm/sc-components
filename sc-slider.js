@@ -47,8 +47,8 @@ class ScSlider extends ScElement {
       height: 30px;
       vertical-align: top;
 
-      --sc-slider-background-color: var(--sc-color-primary-1);
-      --sc-slider-foreground-color: var(--sc-color-primary-4);
+      --sc-slider-background-color: var(--sc-color-primary-2);
+      --sc-slider-foreground-color: var(--sc-color-primary-5);
     }
 
     :host([disabled]) {
@@ -61,7 +61,7 @@ class ScSlider extends ScElement {
 
     :host(:focus), :host(:focus-visible) {
       outline: none;
-      box-shadow: 0 0 2px var(--sc-color-primary-4);
+      box-shadow: 0 0 2px var(--sc-color-primary-5);
     }
 
     div {
@@ -70,7 +70,7 @@ class ScSlider extends ScElement {
       height: 100%;
       position: relative;
       display: inline-block;
-      border: 1px solid var(--sc-color-primary-2);
+      border: 1px solid var(--sc-color-primary-3);
     }
 
     :host([number-box][orientation="horizontal"]) div {

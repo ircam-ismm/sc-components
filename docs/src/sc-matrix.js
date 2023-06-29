@@ -84,11 +84,11 @@ const template = html\`<sc-matrix></sc-matrix>\`;
 #test-matrix {
   width: 300px;
   height: 200px;
-  background-color: var(--sc-color-primary-1);
-  border: 1px solid var(--sc-color-primary-2);
+  background-color: var(--sc-color-primary-2);
+  border: 1px solid var(--sc-color-primary-3);
 
   --sc-matrix-cell-color: #ffffff;
-  --sc-matrix-cell-border: var(--sc-color-primary-4);
+  --sc-matrix-cell-border: var(--sc-color-primary-5);
 }
   "
   @change=${e => applyStyle(e.detail.value)}

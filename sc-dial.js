@@ -63,7 +63,7 @@ class ScDial extends ScElement {
       height: 50px;
       vertical-align: top;
       box-sizing: border-box;
-      background-color: var(--sc-color-primary-1);
+      background-color: var(--sc-color-primary-2);
       font-size: 0;
       line-height: 0;
       position: relative;
@@ -81,7 +81,7 @@ class ScDial extends ScElement {
 
     :host(:focus), :host(:focus-visible) {
       outline: none;
-      box-shadow: 0 0 2px var(--sc-color-primary-4);
+      box-shadow: 0 0 2px var(--sc-color-primary-5);
     }
 
     path.bg {
@@ -118,7 +118,7 @@ class ScDial extends ScElement {
       width: 100%;
       height: 12px;
       line-height: 12px;
-      color: var(--sc-color-primary-4);
+      color: var(--sc-color-primary-5);
       font-size: 8px;
       margin: 0;
       text-align: center;

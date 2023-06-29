@@ -53,8 +53,8 @@ class ScText extends ScElement {
         height: 100%;
         vertical-align: top;
         box-sizing: border-box;
-        background-color: var(--sc-color-primary-2);
-        border: 1px dotted var(--sc-color-primary-4);
+        background-color: var(--sc-color-primary-3);
+        border: 1px dotted var(--sc-color-primary-5);
         color: white;
         padding: 6px 2px 6px 6px;
         border-radius: 2px;
@@ -66,7 +66,7 @@ class ScText extends ScElement {
 
       :host(:focus) textarea, :host(:focus-visible) textarea {
         outline: none;
-        border: 1px solid var(--sc-color-primary-4);
+        border: 1px solid var(--sc-color-primary-5);
       }
 
       :host(:focus) textarea.dirty, :host(:focus-visible) textarea.dirty {
@@ -74,8 +74,8 @@ class ScText extends ScElement {
       }
 
       textarea[readonly], textarea[readonly]:focus {
-        background-color: var(--sc-color-primary-3);
-        border: 1px solid var(--sc-color-primary-3);
+        background-color: var(--sc-color-primary-4);
+        border: 1px solid var(--sc-color-primary-4);
       }
     `;
   }

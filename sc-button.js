@@ -42,7 +42,7 @@ class ScButton extends ScElement {
 
     :host(:focus), :host(:focus-visible) {
       outline: none;
-      box-shadow: 0 0 2px var(--sc-color-primary-4);
+      box-shadow: 0 0 2px var(--sc-color-primary-5);
     }
 
     button {
@@ -50,8 +50,8 @@ class ScButton extends ScElement {
       height: 100%;
       box-sizing: border-box;
       font-family: var(--sc-font-family);
-      background-color: var(--sc-color-primary-1);
-      border: 1px solid var(--sc-color-primary-2);
+      background-color: var(--sc-color-primary-2);
+      border: 1px solid var(--sc-color-primary-3);
       border-radius:  1px;
       font-size: inherit;
       cursor: pointer;
@@ -64,17 +64,17 @@ class ScButton extends ScElement {
     }
 
     button:hover {
-      background-color: var(--sc-color-primary-2);
+      background-color: var(--sc-color-primary-3);
     }
 
     :host([disabled]) button:hover {
-      background-color: var(--sc-color-primary-1);
+      background-color: var(--sc-color-primary-2);
       cursor: default;
     }
 
     /* use class because :active does not work in Firefox because of e.preventDefault(); */
     button.active {
-      background-color: var(--sc-color-primary-3);
+      background-color: var(--sc-color-primary-4);
     }
 
     button.selected {
