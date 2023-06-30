@@ -6,7 +6,7 @@
   + [ ] add `behavior` attribute "switch" or "trigger"
 - [ ] sc-chenillard
 - [x] sc-clock
-- [ ] sc-context-menu
+- [ ] sc-context-menu (cannot be used...)
 - [x] sc-dial
   + [ ] support keyboard arrows
   + [ ] add label
@@ -17,7 +17,8 @@
 - [ ] sc-flash
 - [x] sc-icon
 - [ ] sc-loop
-- [ ] sc-matrix
+- [x] sc-matrix
+  + [ ] highlight row and or column
 - [ ] sc-midi
 - [x] sc-number
   + [ ] focus
