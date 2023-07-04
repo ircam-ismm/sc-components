@@ -61,12 +61,18 @@ const template = html\`<sc-slider></sc-slider>\`;
   ></sc-toggle>
 </div>
 <div>
-  <sc-text readonly>[?orientation=false]</sc-text>
+  <sc-text readonly>[orientation="horizontal"]</sc-text>
   <sc-radio
     options=${JSON.stringify(['horizontal', 'vertical'])}
     value="horizontal"
     @change=${e => document.querySelector('#test-slider').orientation = e.detail.value}
   ></sc-radio>
+</div>
+<div>
+  <sc-text readonly>[?relative=false]</sc-text>
+  <sc-toggle
+    @change=${e => document.querySelector('#test-slider').relative = e.detail.value}
+  ></sc-toggle>
 </div>
 <div>
   <sc-text readonly>[?disabled=false]</sc-text>

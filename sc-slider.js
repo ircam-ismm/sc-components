@@ -28,6 +28,10 @@ class ScSlider extends ScElement {
       type: String,
       reflect: true,
     },
+    relative: {
+      type: Boolean,
+      reflect: true,
+    },
     numberBox: {
       type: Boolean,
       reflect: true,
@@ -183,9 +187,13 @@ class ScSlider extends ScElement {
     this.step = 1e-3;
     this.value = 0.5;
     this.orientation = 'horizontal';
+    this.relative = false;
     this.numberBox = false;
 
     this._pointerId = null;
+    // for relative interaction
+    this._startPointerValue = null;
+    this._startSliderValue = null;
   }
 
   render() {
@@ -301,26 +309,57 @@ class ScSlider extends ScElement {
       return;
     }
 
-    // consider only first pointer in list, we don't want a multitouch slider...
-    if (
-      e.detail.value[0] &&
-      (this._pointerId === null || e.detail.value[0].pointerId === this._pointerId)
-    ) {
-      const { x, y, pointerId } = e.detail.value[0];
-      const value = this.orientation === 'horizontal' ? x : y;
+    if (this.relative) {
+      // consider only first pointer in list, we don't want a multitouch slider...
+      if (
+        e.detail.value[0] &&
+        (this._pointerId === null || e.detail.value[0].pointerId === this._pointerId)
+      ) {
+        const { x, y, pointerId } = e.detail.value[0];
+        const value = this.orientation === 'horizontal' ? x : y;
 
-      this._pointerId = pointerId;
-      this.value = this._clipper(value);
+        if (this._pointerId === null) {
+          this._startPointerValue = value;
+          this._startSliderValue = this.value;
+        }
 
-      const event = new CustomEvent('input', {
-        bubbles: true,
-        composed: true,
-        detail: { value: this.value },
-      });
+        this._pointerId = pointerId;
 
-      this.dispatchEvent(event);
-      this.requestUpdate();
+        const diff = value - this._startPointerValue;
+
+        this.value = this._clipper(this._startSliderValue + diff);
+
+        const event = new CustomEvent('input', {
+          bubbles: true,
+          composed: true,
+          detail: { value: this.value },
+        });
+
+        this.dispatchEvent(event);
+
+      }
+    } else {
+      // consider only first pointer in list, we don't want a multitouch slider...
+      if (
+        e.detail.value[0] &&
+        (this._pointerId === null || e.detail.value[0].pointerId === this._pointerId)
+      ) {
+        const { x, y, pointerId } = e.detail.value[0];
+        const value = this.orientation === 'horizontal' ? x : y;
+
+        this._pointerId = pointerId;
+        this.value = this._clipper(value);
+
+        const event = new CustomEvent('input', {
+          bubbles: true,
+          composed: true,
+          detail: { value: this.value },
+        });
+
+        this.dispatchEvent(event);
+      }
     }
+
   }
 }
 
