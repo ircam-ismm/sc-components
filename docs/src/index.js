@@ -27,6 +27,8 @@ function setTheme(name) {
 
 setTheme('dark');
 
+let current = null;
+
 function setContent(pages) {
   let hash = window.location.hash.replace(/^#/, '');
 
@@ -43,9 +45,18 @@ function setContent(pages) {
     return html`<a href="#${key}" class="${key === hash ? 'selected' : ''}">${key}</a>`;
   }), document.querySelector('#main > nav'));
 
-  // main page
-  const { template } = pages[hash] ? pages[hash] : pages['home'];
-  render(template, document.querySelector('#main > section'));
+  // exit current page
+  if (current && current.exit) {
+    current.exit();
+  }
+  // grab new page
+  current = pages[hash] ? pages[hash] : pages['home'];
+
+  render(current.template, document.querySelector('#main > section'));
+
+  if (current.enter) {
+    current.enter();
+  }
 
   // example and api zones
   // const $example = document.querySelector('.example');
@@ -79,6 +90,7 @@ function setContent(pages) {
     'sc-select': await import('./sc-select.js'),
     'sc-dots': await import('./sc-dots.js'),
     'sc-matrix': await import('./sc-matrix.js'),
+    'sc-signal': await import('./sc-signal.js'),
   };
 
   const sortedKeys = Array.from(Object.keys(pages)).sort();

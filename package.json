@@ -15,12 +15,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ircam-ismm/simple-components"
+    "url": "https://github.com/ircam-ismm/sc-components"
   },
   "bugs": {
-    "url": "https://github.com/ircam-ismm/simple-components/issues"
+    "url": "https://github.com/ircam-ismm/sc-components/issues"
   },
-  "homepage": "https://ircam-ismm.github.io/simple-components/",
+  "homepage": "https://ircam-ismm.github.io/sc-components/",
   "keywords": [
     "web components",
     "gui",

@@ -1,6 +1,8 @@
 import { html } from 'lit';
 import applyStyle from './utils/applyStyle.js';
 
+const myVar = 'coucou';
+
 export const template = html`
 
 <h2>sc-text</h2>
@@ -69,4 +71,7 @@ ${`\
   "
   @change=${e => applyStyle(e.detail.value)}
 ></sc-editor>
+
+<!-- testing -->
+<!-- <sc-text readonly>${myVar}</sc-text> -->
 `;

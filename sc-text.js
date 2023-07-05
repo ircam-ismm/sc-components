@@ -127,6 +127,7 @@ class ScText extends ScElement {
 
     // this.textContext is the value inside the tags
     // @todo - optionnally accept the `value` attribute
+    // this is not robust - find a better solution
     this.value = this.textContent;
   }
 

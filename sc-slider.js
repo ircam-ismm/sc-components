@@ -336,7 +336,6 @@ class ScSlider extends ScElement {
         });
 
         this.dispatchEvent(event);
-
       }
     } else {
       // consider only first pointer in list, we don't want a multitouch slider...

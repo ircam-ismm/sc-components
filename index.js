@@ -25,6 +25,6 @@ import './sc-toggle.js';
 import './sc-radio.js';
 // import './sc-record.js';
 // import './sc-return.js';
-// import './sc-signal.js';
+import './sc-signal.js';
 // import './sc-transport.js';
 // import './sc-tap-tempo.js';

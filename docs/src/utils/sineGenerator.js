@@ -19,7 +19,7 @@ export default function sineGenerator(frequency, sampleRate, blockSize, callback
   self.start = () => {
     (function createBlock() {
       for (let i = 0; i < blockSize; i++) {
-        const value = Math.sin(phase * _2PI);
+        const value = Math.sin(phase * 2 * Math.PI);
         block[i] = value;
         phase = (phase + pIncr) % 1;
       }

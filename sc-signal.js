@@ -3,59 +3,67 @@ import ScElement from './ScElement.js';
 import { theme, fontFamily } from './styles.js';
 
 class ScSignal extends ScElement {
-  static get properties() {
-    return {
-      width: {
-        type: Number,
-      },
-      height: {
-        type: Number,
-      },
-      duration: {
-        type: Number,
-      },
-      min: {
-        type: Number,
-      },
-      max: {
-        type: Number,
-        reflect: true,
-      },
-      colors: {
-        type: Array,
-      },
-      lineWidth: {
-        type: Number,
-        reflect: true,
-        attribute: 'line-width',
-      },
-      displayMinMax: {
-        type: Boolean,
-        attribute: 'display-min-max',
-        reflect: true,
-      },
-    };
-  }
+  static properties = {
+    duration: {
+      type: Number,
+      reflect: true,
+    },
+    min: {
+      type: Number,
+      reflect: true,
+    },
+    max: {
+      type: Number,
+      reflect: true,
+    },
+    colors: {
+      type: Array,
+    },
+    lineWidth: {
+      type: Number,
+      reflect: true,
+      attribute: 'line-width',
+    },
+    minMax: {
+      type: Boolean,
+      attribute: 'min-max',
+      reflect: true,
+    },
+
+    // private reactive properties
+    _maxValue: {
+      type: Number,
+      state: true,
+    },
+    _minValue: {
+      type: Number,
+      state: true,
+    },
+  };
 
   static get styles() {
     return css`
       :host {
         vertical-align: top;
         display: inline-block;
+        width: 300px;
+        height: 150px;
         box-sizing: border-box;
         background-color: white;
-        line-height: 0;
-        outline: 1px solid ${theme['--color-primary-2']};
+        outline: 1px solid var(--sc-color-primary-3);
+        color: var(--sc-color-primary-1);
         position: relative;
       }
 
       canvas {
         margin: 0;
+        width: 100%;
+        height: 100%;
       }
 
       .min, .max {
         display: block;
-        width: 50px;
+        width: 100%;
         height: 14px;
         line-height: 14px;
         font-size: 10px;
@@ -64,7 +72,7 @@ class ScSignal extends ScElement {
         right: 0px;
         text-align: right;
         padding-right: 2px;
-        color: ${theme['--color-primary-0']};;
+        color: inherit;
       }
 
       .min {
@@ -82,61 +90,76 @@ class ScSignal extends ScElement {
     // need to copy values at some point
     this._frameStack.push(frame);
 
-    if (this.displayMinMax) {
-      let changed = false;
-
+    if (this.minMax) {
       for (let i = 0; i < frame.data.length; i++) {
         if (frame.data[i] > this._maxValue) {
           this._maxValue = frame.data[i];
-          changed = true;
         }
 
         if (frame.data[i] < this._minValue) {
           this._minValue = frame.data[i];
-          changed = true;
         }
       }
-
-      if (changed) {
-        this.requestUpdate();
-      }
     }
+  }
+
+  update(changedProperties) {
+    if (changedProperties.has('duration')
+      || changedProperties.has('min')
+      || changedProperties.has('max')
+      || changedProperties.has('colors')
+      // || changedProperties.has('lineWidth')
+      // || changedProperties.has('minMax')
+    ) {
+      this._resetCanvas();
+    }
+
+    super.update(changedProperties);
   }
 
   constructor() {
     super();
 
-    this.width = 300;
-    this.height = 150;
     this.duration = 1;
     this.colors = ['#4682B4', '#ffa500', '#00e600', '#ff0000', '#800080', '#224153'];
-    this.displayMinMax = false;
+    this.lineWidth = 1;
+    this.minMax = false;
 
     this.min = -1;
     this.max = 1;
 
-    this._frameStack = [];
-    this._pixelIndex = null;
-
-    this._dirty = true;
     this._maxValue = -Infinity;
     this._minValue = +Infinity;
+
+    this._frameStack = [];
+    this._pixelIndex = null;
+    this._lastFrame = null;
+
+    this._canvas = null;
+    this._ctx = null;
+    this._cachedCanvas = null;
+    this._cachedCtx = null;
+    this._getYPosition = null;
+    // accroding to window.devicePixelRatio
+    this._logicalWidth = null;
+    this._logicalHeight = null;
 
     this._renderSignal = this._renderSignal.bind(this);
   }
 
+  /**
+   * @note: Initialization order
+   * - connectedCallback()
+   * - render()
+   * - firstUpdated();
+   * -> ResizeObserver callback is called after `firstUpdated()`
+   */
+
   render() {
     return html`
-      <div
-        @contextmenu="${this._preventContextMenu}"
-      >
-        <canvas
-          style="
-            width: ${this.width}px;
-            height: ${this.height}px;
-          "
-        ></canvas>
-        ${this.displayMinMax
+      <div @contextmenu="${this._preventContextMenu}">
+        <canvas></canvas>
+        ${this.minMax
           ? html`
             <span class="max">${this._maxValue.toFixed(3)}</span>
             <span class="min">${this._minValue.toFixed(3)}</span>
@@ -148,85 +171,80 @@ class ScSignal extends ScElement {
   }
 
   firstUpdated() {
-    const scale = window.devicePixelRatio;
+    super.firstUpdated();
 
-    this.canvas = this.shadowRoot.querySelector('canvas');
-    this.ctx = this.canvas.getContext('2d');
-
-    this.cachedCanvas = document.createElement('canvas');
-    this.cachedCtx = this.cachedCanvas.getContext('2d');
+    this._canvas = this.shadowRoot.querySelector('canvas');
+    this._ctx = this._canvas.getContext('2d');
+    this._cachedCanvas = document.createElement('canvas');
+    this._cachedCtx = this._cachedCanvas.getContext('2d');
 
     // debug cached canvas
-    // this.cachedCanvas.style.position = 'absolute';
-    // this.cachedCanvas.style.top = 0;
-    // this.cachedCanvas.style.right = 0;
-    // this.cachedCanvas.style.outline = '1px solid red';
-    // document.body.appendChild(this.cachedCanvas);
-
-    super.firstUpdated();
+    // this._cachedCanvas.style.position = 'absolute';
+    // this._cachedCanvas.style.top = 0;
+    // this._cachedCanvas.style.right = 0;
+    // this._cachedCanvas.style.outline = '1px solid red';
+    // document.body.appendChild(this._cachedCanvas);
   }
 
   connectedCallback() {
+    super.connectedCallback();
+
     this._frameStack.length = 0;
     this._pixelIndex = null;
 
-    super.connectedCallback();
+    this._resizeObserver = new ResizeObserver(entries => {
+      const entry = entries[0];
+      const { width, height } = entry.contentRect;
+
+      this._logicalWidth = width * window.devicePixelRatio;
+      this._logicalHeight = height * window.devicePixelRatio;
+
+      this._canvas.width = this._logicalWidth;
+      this._canvas.height = this._logicalHeight;
+      this._cachedCanvas.width = this._logicalWidth;
+      this._cachedCanvas.height = this._logicalHeight;
+
+      this._resetCanvas();
+    });
+
+    this._resizeObserver.observe(this);
 
     this.rAFId = window.requestAnimationFrame(this._renderSignal);
   }
 
-  update(changedProperties) {
-    this._dirty = true;
-    super.update(changedProperties);
-  }
-
   disconnectedCallback() {
-    window.cancelAnimationFrame(this.rAFId);
+    this._resizeObserver.disconnect();
 
-    this._frameStack.length = 0;
-    this.ctx.clearRect(0, 0, this._logicalWidth, this._logicalHeight);
-    this.cachedCtx.clearRect(0, 0, this._logicalWidth, this._logicalHeight);
+    window.cancelAnimationFrame(this.rAFId);
+    this._resetCanvas();
 
     super.disconnectedCallback();
   }
 
-  _renderSignal() {
-
-    if (this._dirty) {
-      // @todo - fix weird behavior when updating `width`
-      const scale = window.devicePixelRatio;
-      this._logicalWidth = this.width * scale;
-      this._logicalHeight = this.height * scale;
-
-      this.canvas.width = this._logicalWidth;
-      this.canvas.height = this._logicalHeight;
-      this.cachedCanvas.width = this._logicalWidth;
-      this.cachedCanvas.height = this._logicalHeight;
-
-      // create y scale (should be called on height, min or max change)
-      const min = this.min;
-      const max = this.max;
-      const height = this._logicalHeight;
-
-      const a = (0 - height) / (max - min);
-      const b = height - (a * min);
+  _resetCanvas() {
+    // can be called before `firstUpdated`
+    if (this._ctx && this._cachedCtx) {
+      const a = (0 - this._logicalHeight) / (this.max - this.min);
+      const b = this._logicalHeight - (a * this.min);
 
       this._getYPosition = (x) => a * x + b;
 
+      this._lastFrame = null;
       this._frameStack.length = 0;
       this._pixelIndex = null;
-      this.ctx.clearRect(0, 0, this._logicalWidth, this._logicalHeight);
-      this.cachedCtx.clearRect(0, 0, this._logicalWidth, this._logicalHeight);
 
-      this._dirty = false;
+      this._ctx.clearRect(0, 0, this._logicalWidth, this._logicalHeight);
+      this._cachedCtx.clearRect(0, 0, this._logicalWidth, this._logicalHeight);
     }
+  }
 
+  _renderSignal() {
     const frameStackSize = this._frameStack.length;
 
     if (frameStackSize > 0) {
       let shiftCanvasPixels = 0;
       let abort = false;
-      const pixelDuration = this.duration / this.width;
+      const pixelDuration = this.duration / this._logicalWidth;
 
       if (this._pixelIndex === null) {
         this._pixelIndex = Math.floor(this._frameStack[0].time / pixelDuration);
@@ -272,40 +290,40 @@ class ScSignal extends ScElement {
         if (candidateIndex !== null) {
           const frame = this._frameStack[candidateIndex];
           // draw line since last frame
-          if (this.lastFrame) {
+          if (this._lastFrame) {
             const width = this._logicalWidth;
             const height = this._logicalHeight;
             const lastFramePixel = width - shiftCanvasPixels;
 
             // shift canvas from `shiftCanvasPixels`
-            this.ctx.clearRect(0, 0, width, height);
-            this.ctx.drawImage(this.cachedCanvas,
+            this._ctx.clearRect(0, 0, width, height);
+            this._ctx.drawImage(this._cachedCanvas,
               shiftCanvasPixels, 0, lastFramePixel, height,
               0, 0, lastFramePixel, height
             );
 
-            this.ctx.lineWidth = this.lineWidth;
-            this.ctx.lineCap = 'round';
+            this._ctx.lineWidth = this.lineWidth;
+            this._ctx.lineCap = 'round';
 
             for (let i = 0; i < frame.data.length; i++) {
-              this.ctx.strokeStyle = this.colors[i];
+              this._ctx.strokeStyle = this.colors[i];
               // draw line between lastFrame (width - shiftCanvasPixels, y)
               // and currentFrame (width, y)
-              const lastY = this._getYPosition(this.lastFrame.data[i]);
+              const lastY = this._getYPosition(this._lastFrame.data[i]);
               const currentY = this._getYPosition(frame.data[i]);
 
-              this.ctx.beginPath();
-              this.ctx.moveTo(lastFramePixel, lastY);
-              this.ctx.lineTo(width, currentY);
-              this.ctx.stroke();
+              this._ctx.beginPath();
+              this._ctx.moveTo(lastFramePixel, lastY);
+              this._ctx.lineTo(width, currentY);
+              this._ctx.stroke();
             }
 
             // save currentState into cache
-            this.cachedCtx.clearRect(0, 0, width, height);
-            this.cachedCtx.drawImage(this.canvas, 0, 0, width, height);
+            this._cachedCtx.clearRect(0, 0, width, height);
+            this._cachedCtx.drawImage(this._canvas, 0, 0, width, height);
           }
 
-          this.lastFrame = frame;
+          this._lastFrame = frame;
           shiftCanvasPixels = 0;
 
           // remove frames from stack including rendered candidate
