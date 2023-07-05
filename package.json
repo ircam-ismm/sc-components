@@ -1,6 +1,6 @@
 {
   "name": "@ircam/sc-components",
-  "version": "3.0.0-alpha.5",
+  "version": "3.0.0-alpha.6",
   "description": "Web Components for audio interfaces and rapid prototyping",
   "authors": [
     "Benjamin Matuszewski",
