@@ -67,6 +67,10 @@ ${`\
   width: 200px;
   height: 30px;
   font-size: 11px;
+  border-radius: 2px;
+
+  font-size: var(--sc-font-size);
+  font-family: var(--sc-font-family);
 }
   "
   @change=${e => applyStyle(e.detail.value)}

@@ -32,6 +32,7 @@ class ScText extends ScElement {
         font-size: 0;
         width: 200px;
         height: 30px;
+        border-radius: 2px;
         font-size: var(--sc-font-size);
         font-family: var(--sc-font-family);
       }
@@ -57,7 +58,7 @@ class ScText extends ScElement {
         border: 1px dotted var(--sc-color-primary-5);
         color: white;
         padding: 6px 2px 6px 6px;
-        border-radius: 2px;
+        border-radius: inherit;
         font-size: inherit;
         font-family: inherit;
         resize: none;
