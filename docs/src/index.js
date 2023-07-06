@@ -92,6 +92,7 @@ function setContent(pages) {
     'sc-matrix': await import('./sc-matrix.js'),
     'sc-signal': await import('./sc-signal.js'),
     'sc-tap-tempo': await import('./sc-tap-tempo.js'),
+    'sc-switch': await import('./sc-switch.js'),
   };
 
   const sortedKeys = Array.from(Object.keys(pages)).sort();
@@ -103,7 +104,8 @@ function setContent(pages) {
   window.addEventListener('hashchange', (e) => setContent(sortedPages));
   setContent(sortedPages);
 
-  document.querySelector('#switch-mode').addEventListener('input', () => {
+  document.querySelector('#switch-mode').addEventListener('change', () => {
+    console.log('coucou');
     const $content = document.querySelector('#main > section');
     $content.classList.toggle('dark');
     $content.classList.toggle('light');

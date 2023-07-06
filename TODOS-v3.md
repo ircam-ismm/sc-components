@@ -1,3 +1,7 @@
+## Tests
+
+- [ ] with all global css removed
+
 ## components updated
 
 - [x] sc-bang
@@ -64,6 +68,7 @@
 - [ ] keyboard
 - [ ] undo / redo (for components that have a @change event)
 - [ ] editable attribute? or component w/ slot
+- [ ] bypass focus when disabled
 
 ### sc-number
 

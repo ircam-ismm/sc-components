@@ -16,9 +16,8 @@ const template = html\`<sc-clock></sc-clock>\`;
 
 <h3>Attributes</h3>
 <div>
-  <sc-text readonly>[?twinkle=true]</sc-text>
+  <sc-text readonly>[?twinkle=false]</sc-text>
   <sc-toggle
-    active
     @change=${e => document.querySelector('#test-clock').twinkle = e.detail.value}
   ></sc-toggle>
 </div>

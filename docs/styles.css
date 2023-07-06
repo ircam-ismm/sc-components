@@ -54,6 +54,18 @@ header > div > p {
   display: inline-block;
 }
 
+header > div > sc-switch {
+  height: var(--header-height);
+  border-radius: 0;
+}
+
+header > div > sc-text {
+  height: var(--header-height);
+  line-height: calc(var(--header-height) - 16px);
+  border-radius: 0;
+  width: 180px;
+}
+
 header > div > sc-button {
   height: var(--header-height);
 }

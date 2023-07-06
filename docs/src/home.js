@@ -12,6 +12,7 @@ export const template = html`
   <sc-dial></sc-dial>
   <sc-toggle></sc-toggle>
   <sc-text>some text</sc-text>
+  <sc-switch></sc-switch>
 
   <h3>Install</h3>
 

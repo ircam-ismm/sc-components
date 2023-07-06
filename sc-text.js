@@ -34,8 +34,11 @@ class ScText extends ScElement {
         height: 30px;
         border-radius: 2px;
         font-size: var(--sc-font-size);
+        line-height: var(--sc-font-size);
         font-family: var(--sc-font-family);
+
         color: white;
+        line-height: 18px;
       }
 
       :host([disabled]) {
@@ -55,15 +58,16 @@ class ScText extends ScElement {
         height: 100%;
         vertical-align: top;
         box-sizing: border-box;
-        background-color: var(--sc-color-primary-3);
-        border: 1px dotted var(--sc-color-primary-5);
         color: inherit;
-        padding: 6px 2px 6px 6px;
         border-radius: inherit;
         font-size: inherit;
         font-family: inherit;
+        line-height: inherit;
         resize: none;
         margin: 0;
+        padding: 6px 2px 6px 6px;
+        background-color: var(--sc-color-primary-3);
+        border: 1px dotted var(--sc-color-primary-5);
       }
 
       :host(:focus) textarea, :host(:focus-visible) textarea {
@@ -140,7 +144,7 @@ class ScText extends ScElement {
   }
 
   _propagateFocus() {
-    this.shadowRoot.querySelector('textarea').focus()
+    this.shadowRoot.querySelector('textarea').focus();
   }
 
   _onKeyDown(e) {
