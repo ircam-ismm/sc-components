@@ -21,6 +21,7 @@ class ScBang extends ScElement {
       vertical-align: top;
       box-sizing: border-box;
       background-color: var(--sc-color-primary-2);
+      border: 1px solid var(--sc-color-primary-3);
       font-size: 0;
       line-height: 0;
     }
@@ -40,7 +41,6 @@ class ScBang extends ScElement {
 
     svg {
       box-sizing: border-box;
-      border: 1px solid var(--sc-color-primary-3);
       width: 100%;
       height: 100%;
     }

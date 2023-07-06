@@ -50,6 +50,7 @@ class ScSlider extends ScElement {
       width: 200px;
       height: 30px;
       vertical-align: top;
+      border: 1px solid var(--sc-color-primary-3);
 
       --sc-slider-background-color: var(--sc-color-primary-2);
       --sc-slider-foreground-color: var(--sc-color-primary-5);
@@ -74,7 +75,6 @@ class ScSlider extends ScElement {
       height: 100%;
       position: relative;
       display: inline-block;
-      border: 1px solid var(--sc-color-primary-3);
     }
 
     :host([number-box][orientation="horizontal"]) div {

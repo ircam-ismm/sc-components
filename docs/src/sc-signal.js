@@ -37,9 +37,9 @@ export const template = html`
 
 <sc-code-example language="javascript">${`
 import { html } from 'lit';
-import '@ircam/sc-components/sc-slider.js';
+import '@ircam/sc-components/sc-signal.js';
 
-const template = html\`<sc-slider></sc-slider>\`;
+const template = html\`<sc-signal></sc-signal>\`;
 `}</sc-code-example>
 
 <sc-signal id="test-signal"></sc-signal>

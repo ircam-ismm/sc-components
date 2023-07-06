@@ -91,6 +91,7 @@ function setContent(pages) {
     'sc-dots': await import('./sc-dots.js'),
     'sc-matrix': await import('./sc-matrix.js'),
     'sc-signal': await import('./sc-signal.js'),
+    'sc-tap-tempo': await import('./sc-tap-tempo.js'),
   };
 
   const sortedKeys = Array.from(Object.keys(pages)).sort();

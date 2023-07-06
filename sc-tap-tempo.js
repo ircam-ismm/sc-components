@@ -4,47 +4,52 @@ import { theme } from './styles.js';
 import { getTime } from '@ircam/sc-gettime';
 
 class ScTapTempo extends ScElement {
-  static get properties() {
-    return {
-      width: {
-        type: Number,
-      },
-      height: {
-        type: Number,
-      },
-      value: {
-        type: Number,
-        reflect: true,
-      },
-    };
-  }
+  static properties = {
+    value: {
+      type: Number,
+      reflect: true,
+    },
+  };
 
-  static get styles() {
-    return css`
-      :host {
-        display: inline-block;
-        box-sizing: border-box;
-        vertical-align: top;
-        font-size: 0px;
-      }
+  static styles = css`
+    :host {
+      display: inline-block;
+      box-sizing: border-box;
+      vertical-align: top;
+      font-size: 0px;
+      width: 50px;
+      height: 30px;
+      border: 1px solid var(--sc-color-primary-4);
+      background-color: var(--sc-color-primary-3);
+      border-radius: 2px;
+      font-size: 11px;
+      color: #ffffff;
+      font-family: var(--sc-font-family);
 
-      div {
-        box-sizing: border-box;
-        border: 1px solid ${theme['--color-primary-3']};
-        color: #ffffff;
-        border-radius: 2px;
-        font-size: 11px;
-        text-align: center;
-        cursor: pointer;
-      }
-    `;
-  }
+      --sc-tap-tempo-background-color: var(--sc-color-secondary-5);
+    }
+
+    div {
+      box-sizing: border-box;
+      text-align: center;
+      border-radius: inherit;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: space-evenly;
+      align-items: center;
+      color: inherit;
+    }
+
+    div.active {
+      background-color: var(--sc-tap-tempo-background-color);
+    }
+  `;
 
   constructor() {
     super();
 
-    this.width = 50;
-    this.height = 30;
     this.value = 60;
 
     this._active = false;
@@ -62,17 +67,12 @@ class ScTapTempo extends ScElement {
 
     return html`
       <div
-        style="
-          width: ${this.width}px;
-          height: ${this.height}px;
-          line-height: ${this.height}px;
-          background-color: ${this._active ? theme['--color-secondary-6'] : theme['--color-primary-3']}
-        "
+        class="${this._active ? 'active' : ''}"
         @mousedown="${this._tap}"
         @touchstart="${this._tap}"
         @contextmenu="${this._preventContextMenu}"
       >
-        Tap
+        <slot>tap</slot>
       </div>
     `
   }

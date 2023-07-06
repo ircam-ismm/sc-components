@@ -27,4 +27,4 @@ import './sc-radio.js';
 // import './sc-return.js';
 import './sc-signal.js';
 // import './sc-transport.js';
-// import './sc-tap-tempo.js';
+import './sc-tap-tempo.js';

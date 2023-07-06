@@ -3,14 +3,14 @@
 - [x] sc-bang
 - [x] sc-button
   + [ ] remove selected option
-  + [ ] add `behavior` attribute "switch" or "trigger"
+  + [ ] add `behavior` attribute "switch" or "trigger"?
 - [ ] sc-chenillard
 - [x] sc-clock
 - [ ] sc-context-menu (cannot be used...)
 - [x] sc-dial
   + [ ] support keyboard arrows
   + [ ] add label
-- [ ] sc-dot-map
+- [x] sc-dot-map
 - [ ] sc-dragndrop
 - [x] sc-editor
 - [ ] sc-file-tree
@@ -23,17 +23,17 @@
 - [x] sc-number
   + [ ] focus
   + [ ] open numeric keyboard on touchscreens
-- [ ] sc-position-surface
+- [x] sc-position-surface
 - [ ] sc-progress-bar
 - [x] sc-radio
 - [ ] sc-record
 - [ ] sc-return -> sc-backward
-- [ ] sc-signal
+- [x] sc-signal
 - [x] sc-slider 
   + [ ] focus
   + [ ] disabled
   + [ ] keyboard
-- [ ] sc-speed-surface
+- [x] sc-speed-surface
 - [ ] sc-tap-tempo
 - [x] sc-text
 - [x] sc-toggle
