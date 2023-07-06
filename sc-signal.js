@@ -107,9 +107,6 @@ class ScSignal extends ScElement {
     if (changedProperties.has('duration')
       || changedProperties.has('min')
       || changedProperties.has('max')
-      || changedProperties.has('colors')
-      // || changedProperties.has('lineWidth')
-      // || changedProperties.has('minMax')
     ) {
       this._resetCanvas();
     }

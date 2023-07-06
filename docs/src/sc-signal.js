@@ -1,6 +1,7 @@
 import { html } from 'lit';
 import applyStyle from './utils/applyStyle.js';
 import sineGenerator from './utils/sineGenerator.js';
+import JSON5 from 'json5';
 
 let sine1 = null;
 let sine2 = null;
@@ -101,11 +102,27 @@ setInterval(() => {
   ></sc-number>
 </div>
 <div>
+  <sc-text readonly>[colors=[]]</sc-text>
+  <sc-text
+    style="width: 500px;"
+    @change=${e => document.querySelector('#test-signal').colors = JSON5.parse(e.detail.value)}
+  >['#4682B4', '#ffa500', '#00e600', '#ff0000', '#800080', '#224153']</sc-text>
+</div>
+<div>
   <sc-text readonly>[?min-max=true]</sc-text>
   <sc-toggle
     @change=${e => document.querySelector('#test-signal').minMax = e.detail.value}
   ></sc-toggle>
 </div>
 
-
+<h3>Styling</h3>
+<sc-editor
+  value="\
+#test-signal {
+  width: 300px;
+  height: 150px;
+}
+  "
+  @change=${e => applyStyle(e.detail.value)}
+></sc-editor>
 `;
