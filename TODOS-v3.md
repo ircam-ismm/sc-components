@@ -9,8 +9,9 @@
   + [ ] remove selected option
   + [ ] add `behavior` attribute "switch" or "trigger"?
 - [ ] sc-chenillard
+  + [ ] move into metronome for now
 - [x] sc-clock
-- [ ] sc-context-menu (cannot be used...)
+- [ ] sc-context-menu (is kind of broken for now...)
 - [x] sc-dial
   + [ ] support keyboard arrows
   + [ ] add label
@@ -38,7 +39,7 @@
   + [ ] disabled
   + [ ] keyboard
 - [x] sc-speed-surface
-- [ ] sc-tap-tempo
+- [x] sc-tap-tempo
 - [x] sc-text
 - [x] sc-toggle
   + [ ] focus
@@ -49,8 +50,10 @@
 ### new nodes
 
 - [x] sc-knob / sc-dial
-- [x] sc-select (drop down list, radio or buttons)
-- [ ] sc-switch
+- [x] sc-select
+- [x] sc-radio
+- [x] sc-switch
+- [ ] sc-tab (cf. live.tab in Max)
 - [ ] sc-qrcode
 - [ ] multislider
 - [ ] sc-keyboard

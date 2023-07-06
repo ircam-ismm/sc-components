@@ -1,18 +1,20 @@
 import { html } from 'lit';
 
 export const template = html`
-<div id="home">
+<div id="homepage">
   <h2>@ircam/sc-components</h2>
 
   <p>Web Component library for rapid prototyping audio and creative applications in the browser.</p>
-  <br />
-  <sc-bang></sc-bang>
-  <sc-number></sc-number>
-  <sc-slider></sc-slider>
-  <sc-dial></sc-dial>
-  <sc-toggle></sc-toggle>
-  <sc-text>some text</sc-text>
-  <sc-switch></sc-switch>
+
+  <div id="demo">
+    <sc-bang></sc-bang>
+    <sc-number></sc-number>
+    <sc-slider></sc-slider>
+    <sc-dial></sc-dial>
+    <sc-toggle></sc-toggle>
+    <sc-text>some text</sc-text>
+    <sc-switch></sc-switch>
+  </div>
 
   <h3>Install</h3>
 

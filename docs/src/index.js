@@ -40,10 +40,14 @@ function setContent(pages) {
   // reset styles
   applyStyle('');
 
-  // nav (order)
+  // render navbar and close it if it is opened - ordered
+  const $nav = document.querySelector('#main > nav');
+
   render(map(Object.entries(pages), ([key, value]) => {
     return html`<a href="#${key}" class="${key === hash ? 'selected' : ''}">${key}</a>`;
-  }), document.querySelector('#main > nav'));
+  }), $nav);
+
+  $nav.classList.remove('active');
 
   // exit current page
   if (current && current.exit) {
@@ -93,6 +97,7 @@ function setContent(pages) {
     'sc-signal': await import('./sc-signal.js'),
     'sc-tap-tempo': await import('./sc-tap-tempo.js'),
     'sc-switch': await import('./sc-switch.js'),
+    'sc-flash': await import('./sc-flash.js'),
   };
 
   const sortedKeys = Array.from(Object.keys(pages)).sort();
@@ -104,13 +109,14 @@ function setContent(pages) {
   window.addEventListener('hashchange', (e) => setContent(sortedPages));
   setContent(sortedPages);
 
+  // ligh / dark mode
   document.querySelector('#switch-mode').addEventListener('change', () => {
-    console.log('coucou');
     const $content = document.querySelector('#main > section');
     $content.classList.toggle('dark');
     $content.classList.toggle('light');
   });
 
+  // show / hide nav bar on small screens
   document.querySelector('#toggle-menu').addEventListener('input', () => {
     const $nav = document.querySelector('#main > nav');
     $nav.classList.toggle('active');

@@ -69,8 +69,6 @@ class ScBang extends ScElement {
   }
 
   render() {
-    const size = this._size - 2;
-
     if (this.active) {
       clearTimeout(this._timeoutId);
       this._timeoutId = setTimeout(() => this.active = false, 50);
