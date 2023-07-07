@@ -1,21 +1,21 @@
 import { css } from 'lit';
 
 // @todo - review that... not clean
-export const fontFamily = css`Consolas, monaco, monospace`;
-export const fontSize = css`11px`;
+// export const fontFamily = css`Consolas, monaco, monospace`;
+// export const fontSize = css`11px`;
 
-export const theme = {};
-theme['--color-primary-0'] = css`#121212ff`;
-theme['--color-primary-1'] = css`#272822ff`;
-theme['--color-primary-2'] = css`#3d3e39ff`;
-theme['--color-primary-3'] = css`#6a6a69ff`;
-theme['--color-primary-4'] = css`#dededeff`;
-theme['--color-secondary-1'] = css`#f0db4fff`;
-theme['--color-secondary-2'] = css`#1c78c0ff`;
-theme['--color-secondary-3'] = css`#d9534fff`;
-theme['--color-secondary-4'] = css`#5ec451ff`;
-theme['--color-secondary-5'] = css`#cd7afaff`;
-theme['--color-secondary-6'] = css`#f4b43eff`;
+// export const theme = {};
+// theme['--color-primary-0'] = css`#121212ff`;
+// theme['--color-primary-1'] = css`#272822ff`;
+// theme['--color-primary-2'] = css`#3d3e39ff`;
+// theme['--color-primary-3'] = css`#6a6a69ff`;
+// theme['--color-primary-4'] = css`#dededeff`;
+// theme['--color-secondary-1'] = css`#f0db4fff`;
+// theme['--color-secondary-2'] = css`#1c78c0ff`;
+// theme['--color-secondary-3'] = css`#d9534fff`;
+// theme['--color-secondary-4'] = css`#5ec451ff`;
+// theme['--color-secondary-5'] = css`#cd7afaff`;
+// theme['--color-secondary-6'] = css`#f4b43eff`;
 
 const cssVars = `
 :root {

@@ -1,69 +1,41 @@
 import { html, svg, css } from 'lit';
-import { theme } from './styles.js';
 import ScElement from './ScElement.js';
 
 class ScRecord extends ScElement {
-  static get properties() {
-    return {
-      width: {
-        type: Number,
-      },
-      height: {
-        type: Number,
-      },
-      active: {
-        type: Boolean,
-        reflect: true,
-      },
-      value: {
-        type: Boolean,
-      },
-    };
-  }
+  static properties = {
+    active: {
+      type: Boolean,
+      reflect: true,
+    },
+    value: {
+      type: Boolean,
+    },
+  };
 
-  static get styles() {
-    return css`
-      :host {
-        vertical-align: top;
-        display: inline-block;
-        box-sizing: border-box;
-        font-size: 0 !important;
-        cursor: pointer;
-      }
+  static styles = css`
+    :host {
+      display: inline-block;
+      box-sizing: border-box;
+      vertical-align: top;
+      cursor: pointer;
+      width: 30px;
+      height: 30px;
+      border: 1px solid var(--sc-color-primary-3);
+      background-color: var(--sc-color-primary-3);
+      border-radius: 2px;
+    }
 
-      svg {
-        margin-right: 5px;
-        box-sizing: border-box;
-        border-radius: 2px;
-        border: 1px solid ${theme['--color-primary-2']};
-        background-color: ${theme['--color-primary-2']};
-        fill:  #ffffff;
-      }
+    svg {
+      width: 100%;
+      height: 100%;
+      fill: #ffffff;
+    }
 
-      svg.active {
-        background-color: ${theme['--color-primary-0']};
-        fill: ${theme['--color-secondary-3']};
-      }
-    `;
-  }
-
-  set width(value) {
-    this._size = value;
-    this.requestUpdate();
-  }
-
-  get width() {
-    return this._size;
-  }
-
-  set height(value) {
-    this._size = value;
-    this.requestUpdate();
-  }
-
-  get height() {
-    return this._size;
-  }
+    svg.active {
+      background-color: var(--sc-color-primary-1);
+      fill: var(--sc-color-secondary-3);
+    }
+  `;
 
   // alias active for consistency and genericity with other components
   get value() {
@@ -77,30 +49,20 @@ class ScRecord extends ScElement {
   constructor() {
     super();
 
-    this.width = 30;
     this.active = false;
-
   }
 
   render() {
-    const size = this._size - 2;
-
     return html`
-      <div>
-        <svg
-          class="${this.active ? 'active' : ''}"
-          style="
-            width: ${size}px;
-            height: ${size}px;
-          "
-          viewbox="0 0 20 20"
-          @mousedown="${this._onChange}"
-          @touchstart="${this._onChange}"
-          @contextmenu="${this._preventContextMenu}"
-        >
-          <circle class="record-shape" cx="10" cy="10" r="5"></circle>  
-        </svg>
-      </div>
+      <svg
+        class="${this.active ? 'active' : ''}"
+        viewbox="0 0 20 20"
+        @mousedown="${this._onChange}"
+        @touchstart="${this._onChange}"
+        @contextmenu="${this._preventContextMenu}"
+      >
+        <circle cx="10" cy="10" r="5"></circle>
+      </svg>
     `
   }
 

@@ -1,6 +1,5 @@
 import { html, css, nothing } from 'lit';
 import ScElement from './ScElement.js';
-import { theme, fontFamily } from './styles.js';
 
 class ScSignal extends ScElement {
   static properties = {
@@ -67,7 +66,7 @@ class ScSignal extends ScElement {
         height: 14px;
         line-height: 14px;
         font-size: 10px;
-        font-family: ${fontFamily};
+        font-family: var(--sc-font-family);
         position: absolute;
         right: 0px;
         text-align: right;
