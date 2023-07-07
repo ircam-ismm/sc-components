@@ -30,6 +30,8 @@ const pages = [
   'sc-switch',
   'sc-flash',
   'sc-record',
+  'sc-prev',
+  'sc-next',
 ].sort();
 
 function setTheme(name) {
