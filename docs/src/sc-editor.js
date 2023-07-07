@@ -40,6 +40,7 @@ The "change" event is triggered when:
 <div>
   <sc-text readonly>[value='']</sc-text>
   <sc-editor
+    save-button
     value="const myValue = true;"
     @change=${e => document.querySelector('#test-editor').value = e.detail.value}
   ></sc-editor>
@@ -60,7 +61,7 @@ The "change" event is triggered when:
 
 <h3>Styling</h3>
 <sc-editor
-  resizable
+  save-button
   value="\
 #test-editor {
   width: 300px;

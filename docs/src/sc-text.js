@@ -62,6 +62,7 @@ ${`\
 
 <h3>Styling</h3>
 <sc-editor
+  save-button
   value="\
 #test-text {
   width: 200px;

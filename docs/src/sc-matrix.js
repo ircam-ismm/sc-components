@@ -79,6 +79,7 @@ const template = html\`<sc-matrix></sc-matrix>\`;
 
 <h3>Styling</h3>
 <sc-editor
+  save-button
   style="width: 500px;"
   value="\
 #test-matrix {

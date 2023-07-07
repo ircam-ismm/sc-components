@@ -92,7 +92,7 @@ const template = html\`<sc-button>My text</sc-button>\`;
 
 <h3>Styling</h3>
 <sc-editor
-  resizable
+  save-button
   value="\
 #test-button {
   width: 200px;

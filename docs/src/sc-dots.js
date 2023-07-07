@@ -126,6 +126,7 @@ export const template = html`
 
   <h3>Styling</h3>
   <sc-editor
+    save-button
     style="width: 500px;"
     value="\
   #test-dots {

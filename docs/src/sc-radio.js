@@ -49,6 +49,7 @@ const template = html\`
 <div>
   <sc-text readonly>options=[]</sc-text>
   <sc-editor
+    save-button
     value="${JSON.stringify(testArray)}"
     @change=${e => {
       document.querySelector('#test-radio').options = JSON.parse(e.detail.value);
@@ -73,6 +74,7 @@ const template = html\`
 
 <h3>Styling</h3>
 <sc-editor
+  save-button
   value="\
 #test-radio {
   width: 200px;

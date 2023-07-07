@@ -35,6 +35,7 @@ const template = html\`<sc-switch></sc-switch>\`;
 
 <h3>Styling</h3>
 <sc-editor
+  save-button
   value="\
 #test-switch {
   width: 60px;

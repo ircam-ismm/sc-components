@@ -99,7 +99,7 @@ class ScToggle extends ScElement {
         class="${this.active ? 'active' : ''}"
         viewbox="0 0 100 100"
         @mousedown="${this._updateValue}"
-        @touchstart="${{
+        @touchend="${{
           handleEvent: this._updateValue,
           passive: false,
         }}"
@@ -119,6 +119,7 @@ class ScToggle extends ScElement {
     }
   }
 
+  // we use touchend on mobile as it is more stable and does not spoil the responsiveness
   _updateValue(e) {
     e.preventDefault();
     e.stopPropagation();

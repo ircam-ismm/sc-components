@@ -30,6 +30,7 @@ const template = html\`
 
 <h3>Styling</h3>
 <sc-editor
+  save-button
   value="\
 #test-code-example {
   width: 100%;

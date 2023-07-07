@@ -27,6 +27,7 @@ const template = html\`<sc-tap-tempo>tap</sc-tap-tempo>\`;
 
 <h3>Styling</h3>
 <sc-editor
+  save-button
   value="\
 #test-tap-tempo {
   width: 50px;

@@ -32,6 +32,7 @@ const template = html\`<sc-clock></sc-clock>\`;
 <div>
   <sc-text readonly>[.getTimeFunction]</sc-text>
   <sc-editor
+    save-button
     style="width: 420px;"
     value="\
   const $clock = document.querySelector('#test-clock');
@@ -48,6 +49,7 @@ const template = html\`<sc-clock></sc-clock>\`;
 
 <h3>Styling</h3>
 <sc-editor
+  save-button
   value="\
 #test-clock {
   width: 200px;

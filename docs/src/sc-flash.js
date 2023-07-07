@@ -50,6 +50,7 @@ html\`
 
 <h3>Styling</h3>
 <sc-editor
+  save-button
   value="\
 #test-flash {
   width: 100px;

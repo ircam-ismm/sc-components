@@ -325,15 +325,16 @@ class ScNumber extends ScElement {
       // @todo - check firefox and safari
       if (e.target.value) {
         this.value = parseFloat(e.target.value);
-        // this prevents the focus to go to the next focusable element
-        this.focus();
-        // clean the box
-        $number.remove();
-        this._hasVirtualKeyboard = false;
-
-        this._emitInput();
-        this._emitChange();
       }
+
+      // this prevents the focus to go to the next focusable element
+      this.focus();
+      // clean the box
+      $number.remove();
+      this._hasVirtualKeyboard = false;
+
+      this._emitInput();
+      this._emitChange();
     });
   }
 

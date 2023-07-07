@@ -83,6 +83,7 @@ const template = html\`<sc-slider></sc-slider>\`;
 
 <h3>Styling</h3>
 <sc-editor
+  save-button
   value="\
 #test-slider {
   width: 200px;

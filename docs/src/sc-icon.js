@@ -62,6 +62,7 @@ const template = html\`<sc-icon icon="question"></sc-icon>\`;
 
 <h3>Styling</h3>
 <sc-editor
+  save-button
   value="\
 #test-icon {
   width: 30px;

@@ -44,6 +44,7 @@ const template = html\`<sc-toggle></sc-toggle>\`;
 
 <h3>Styling</h3>
 <sc-editor
+  save-button
   value="\
 #test-toggle {
   width: 30px;

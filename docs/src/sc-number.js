@@ -62,6 +62,7 @@ const template = html\`<sc-number></sc-number>\`;
 
 <h3>Styling</h3>
 <sc-editor
+  save-button
   value="\
 #test-number {
   width: 100px;
