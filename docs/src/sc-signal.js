@@ -26,7 +26,6 @@ export function enter() {
 }
 
 export function exit() {
-  console.log('exit signal');
   sine1.stop();
   sine2.stop();
 }

@@ -80,7 +80,7 @@ class ScSwitch extends ScElement {
         viewBox="0 0 10 10"
         preserveAspectRatio="none"
         @mousedown=${this._updateValue}
-        @touchstart=${this._updateValue}
+        @touchend=${this._updateValue}
       >
          <rect x="${this.active ? 5 : 0}" width="5" height="10" />
       </svg>
