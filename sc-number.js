@@ -129,19 +129,20 @@ class ScNumber extends ScElement {
       height: 100%;
     }
 
-    /*input[type="number"] {
+    input[type="number"] {
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 0;
-      height: 0;
+      top: 1px;
+      left: 1px;
+      width: 1px;
+      height: 1px;
       padding: 0;
       border: none;
+      background-color: var(--sc-color-primary-3);
     }
 
     input[type="number"]:focus {
       outline: none;
-    }*/
+    }
   `;
 
   set min(value) {
@@ -204,6 +205,7 @@ class ScNumber extends ScElement {
     this._updateValue0000001 = this._updateValueFromPointer(0.000001);
 
 
+    this._hasVirtualKeyboard = false;
     this._numKeyPressed = 0;
     this._onKeyDown = this._onKeyDown.bind(this);
   }
@@ -226,7 +228,7 @@ class ScNumber extends ScElement {
         @focus="${this._onFocus}"
         @blur="${this._onBlur}"
         @touchstart="${this._triggerFocus}"
-        @touchend="${this._openKeyboard}"
+        @touchend="${this._openVirtualKeyboard}"
         @contextmenu="${this._preventContextMenu}"
       >
         <div class="info ${classMap(isEdited)}"></div>
@@ -285,19 +287,33 @@ class ScNumber extends ScElement {
     e.stopPropagation();
   }
 
-  _openKeyboard(e) {
+  // this only works on touchend
+  _openVirtualKeyboard(e) {
+    e.preventDefault(); // go to end of page
+    e.stopPropagation();
+
+    if (this._hasVirtualKeyboard) {
+      return;
+    }
+
+    // lock speed surface events
+    this._hasVirtualKeyboard = true;
+
     const $number = document.createElement('input');
     $number.type = 'number';
+
     this.shadowRoot.appendChild($number);
     $number.focus();
     $number.click();
 
     $number.addEventListener('input', e => {
-      console.log('input', $number.value);
+      e.preventDefault();
+      e.stopPropagation();
       // when "." or "," is pressed e.target.value is empty in chrome
       // @todo - check firefox and safari
       if (e.target.value) {
         this.value = parseFloat(e.target.value);
+        this._emitInput();
       }
     });
 
@@ -305,11 +321,18 @@ class ScNumber extends ScElement {
       e.preventDefault(); // go to end of page
       e.stopPropagation();
 
-      console.log('change', $number.value);
       // when "." or "," is pressed e.target.value is empty in chrome
       // @todo - check firefox and safari
       if (e.target.value) {
         this.value = parseFloat(e.target.value);
+        // this prevents the focus to go to the next focusable element
+        this.focus();
+        // clean the box
+        $number.remove();
+        this._hasVirtualKeyboard = false;
+
+        this._emitInput();
+        this._emitChange();
       }
     });
   }
@@ -382,6 +405,11 @@ class ScNumber extends ScElement {
       e.stopPropagation();
 
       if (this.disabled) {
+        return;
+      }
+
+      // bypass speed surface when virtual keyboard is opened
+      if (this._hasVirtualKeyboard) {
         return;
       }
 
