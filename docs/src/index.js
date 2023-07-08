@@ -60,8 +60,6 @@ async function setContent(pages, page) {
 
   const title = (page === 'home') ? 'sc-component | documentation' : `${page} | sc-components`;
   document.title = title;
-  history.pushState(null, title, `/${page}`);
-
   // reset styles
   applyStyle('');
 
@@ -74,6 +72,12 @@ async function setContent(pages, page) {
       class="${value === page ? 'selected' : ''}"
       @click=${e => {
         e.preventDefault();
+
+        if (value === page) {
+          return;
+        }
+
+        history.pushState({ page: value }, '', `/${value}`);
         setContent(pages, value);
       }}
     >${value}</a>`;
@@ -100,8 +104,14 @@ async function setContent(pages, page) {
   const pathname = window.location.pathname;
   const page = pathname.replace(/^\//, '');
 
-  setContent(pages, page);
+  // history stuff
+  history.pushState({ page }, '', `/${page}`);
 
+  window.addEventListener('popstate', e => {
+    setContent(pages, e.state.page);
+  });
+
+  setContent(pages, page);
   // ligh / dark mode
   document.querySelector('#switch-mode').addEventListener('change', () => {
     const $content = document.querySelector('#main > section');

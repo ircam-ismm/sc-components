@@ -19,7 +19,7 @@
 - [ ] sc-dragndrop
 - [x] sc-editor
 - [ ] sc-file-tree
-- [ ] sc-flash
+- [x] sc-flash
 - [x] sc-icon
 - [ ] sc-loop
 - [x] sc-matrix
@@ -31,8 +31,9 @@
 - [x] sc-position-surface
 - [ ] sc-progress-bar
 - [x] sc-radio
-- [ ] sc-record
-- [ ] sc-return -> sc-backward
+- [x] sc-record
+- [x] sc-return -> sc-prev
+- [x] sc-next
 - [x] sc-signal
 - [x] sc-slider 
   + [ ] focus

@@ -35,13 +35,13 @@ const template = html\`<sc-clock></sc-clock>\`;
     save-button
     style="width: 420px;"
     value="\
-  const $clock = document.querySelector('#test-clock');
-  const startTime = Date.now();
-  // return a time in seconds
-  $clock.getTimeFunction = () => {
-    const dt = Date.now() - startTime;
-    return dt / 1000;
-  }
+const $clock = document.querySelector('#test-clock');
+const startTime = Date.now();
+// return a time in seconds
+$clock.getTimeFunction = () => {
+  const dt = Date.now() - startTime;
+  return dt / 1000;
+}
 "
     @change=${e => eval(e.detail.value)}
   ></sc-editor>
