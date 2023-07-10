@@ -57,8 +57,8 @@ class ScRecord extends ScElement {
       <svg
         class="${this.active ? 'active' : ''}"
         viewbox="0 0 20 20"
-        @mousedown="${this._onChange}"
-        @touchstart="${this._onChange}"
+        @mousedown="${this._propagateChange}"
+        @touchstart="${this._propagateChange}"
         @contextmenu="${this._preventContextMenu}"
       >
         <circle cx="10" cy="10" r="5"></circle>
@@ -66,7 +66,7 @@ class ScRecord extends ScElement {
     `
   }
 
-  _onChange(e) {
+  _propagateChange(e) {
     e.preventDefault();
     e.stopPropagation();
 

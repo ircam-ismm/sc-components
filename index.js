@@ -14,7 +14,7 @@ import './sc-editor.js';
 // import './sc-file-tree.js';
 import './sc-flash.js';
 import './sc-icon.js';
-// import './sc-loop.js';
+import './sc-loop.js';
 import './sc-matrix.js';
 import './sc-next.js';
 import './sc-number.js';

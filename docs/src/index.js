@@ -32,6 +32,7 @@ const pages = [
   'sc-record',
   'sc-prev',
   'sc-next',
+  'sc-loop',
 ].sort();
 
 function setTheme(name) {
