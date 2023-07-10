@@ -30,6 +30,10 @@ class ScButton extends ScElement {
       height: 30px;
       font-size: var(--sc-font-size);
       color: #ffffff;
+      border-radius:  1px;
+      border: 1px solid var(--sc-color-primary-3);
+
+      --sc-button-selected: var(--sc-color-secondary-3);
     }
 
     :host([disabled]) {
@@ -45,14 +49,17 @@ class ScButton extends ScElement {
       box-shadow: 0 0 2px var(--sc-color-primary-5);
     }
 
+    :host([selected]) {
+      border: 1px solid var(--sc-button-selected);
+    }
+
     button {
       width: 100%;
       height: 100%;
       box-sizing: border-box;
       font-family: var(--sc-font-family);
       background-color: var(--sc-color-primary-2);
-      border: 1px solid var(--sc-color-primary-3);
-      border-radius:  1px;
+      border: none;
       font-size: inherit;
       cursor: pointer;
       color: inherit;
@@ -78,12 +85,11 @@ class ScButton extends ScElement {
     }
 
     button.selected {
-      background-color: var(--sc-color-secondary-3);
-      border: 1px solid var(--sc-color-secondary-3);
+      background-color: var(--sc-button-selected);
     }
 
     :host([disabled]) button.selected:hover {
-      background-color: var(--sc-color-secondary-3);
+      background-color: var(--sc-button-selected);
       cursor: default;
     }
   `;

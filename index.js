@@ -22,6 +22,7 @@ import './sc-prev.js';
 // import './sc-progress-bar.js';
 import './sc-select.js';
 import './sc-slider.js';
+import './sc-tab.js';
 import './sc-text.js';
 import './sc-toggle.js';
 import './sc-radio.js';
