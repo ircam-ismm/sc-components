@@ -14,10 +14,6 @@ class ScRadio extends ScElement {
       type: String,
       reflect: true,
     },
-    name: {
-      type: String,
-      reflect: true,
-    },
     disabled: {
       type: Boolean,
       reflect: true,
@@ -109,7 +105,7 @@ class ScRadio extends ScElement {
     this.value = null;
     this.disabled = false;
     this.orientation = 'vertical';
-    this.name = `sc-radio-${groupId++}`;
+    this._name = `sc-radio-${groupId++}`;
   }
 
   render() {
@@ -119,7 +115,7 @@ class ScRadio extends ScElement {
           <input
             type="radio"
             value=${value}
-            name=${this.name}
+            name=${this._name}
             @change=${this._dispatchEvent}
             ?checked=${value == this.value}
             ?disabled=${this.disabled && !(value == this.value)}
@@ -144,7 +140,6 @@ class ScRadio extends ScElement {
       bubbles: true,
       composed: true,
       detail: {
-        name: this.name,
         value: this.value,
       },
     });

@@ -2,7 +2,6 @@ import { html, svg, css, nothing } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import ScElement from './ScElement.js';
 
-let groupId = 0;
 let itemId = 0;
 
 class ScSelect extends ScElement {
@@ -11,10 +10,6 @@ class ScSelect extends ScElement {
       type: Object,
     },
     value: {
-      type: String,
-      reflect: true,
-    },
-    name: {
       type: String,
       reflect: true,
     },
@@ -75,7 +70,6 @@ class ScSelect extends ScElement {
     this.options = [];
     this.value = null;
     this.disabled = false;
-    this.name = `sc-select-${groupId++}`;
     this.placeholder = '';
   }
 
@@ -112,7 +106,6 @@ class ScSelect extends ScElement {
       bubbles: true,
       composed: true,
       detail: {
-        name: this.name,
         value: this.value,
       },
     });

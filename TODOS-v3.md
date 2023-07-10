@@ -21,7 +21,7 @@
 - [ ] sc-file-tree
 - [x] sc-flash
 - [x] sc-icon
-- [ ] sc-loop
+- [x] sc-loop
 - [x] sc-matrix
   + [ ] highlight row and or column
 - [ ] sc-midi

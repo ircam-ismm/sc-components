@@ -1,5 +1,4 @@
 import { html, svg, css } from 'lit';
-import { theme } from './styles.js';
 import ScElement from './ScElement.js';
 
 class ScLoop extends ScElement {

@@ -1,6 +1,5 @@
 import { html, svg, css, nothing } from 'lit';
 import ScElement from './ScElement.js';
-import { theme } from './styles.js';
 import getScale from './utils/getScale.js';
 import getClipper from './utils/getClipper.js';
 
