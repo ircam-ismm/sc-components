@@ -1,6 +1,9 @@
 name: GH Pages
 
 on:
+  workflow_dispatch
+
+on:
   push:
     tags:
       - '*'
