@@ -29,7 +29,6 @@
   ],
   "scripts": {
     "clean": "rm -Rf vendors",
-    "preversion": "cp docs/index.html docs/404.html",
     "postinstall": "node bin/prepare-codemirror.js"
   },
   "dependencies": {
