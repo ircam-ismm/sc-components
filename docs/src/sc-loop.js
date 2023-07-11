@@ -14,13 +14,13 @@ const template = html\`<sc-loop></sc-loop>\`;
 
 <sc-loop
   id="test-loop"
-  @change=${e => document.querySelector('#loop-input').active = e.detail.value}
+  @change=${e => document.querySelector('#loop-change').active = e.detail.value}
 ></sc-loop>
 
 <h3>Events</h3>
 <p>
-  <sc-text readonly>@input</sc-text>
-  <sc-toggle id="loop-input"></sc-toggle>
+  <sc-text readonly>@change</sc-text>
+  <sc-toggle id="loop-change"></sc-toggle>
 </p>
 
 <h3>Attributes</h3>

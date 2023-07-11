@@ -34,6 +34,7 @@ const pages = [
   'sc-next',
   'sc-loop',
   'sc-tab',
+  'sc-transport',
 ].sort();
 
 function setTheme(name) {

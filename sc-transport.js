@@ -1,162 +1,123 @@
 import { html, css, svg, nothing } from 'lit';
 import ScElement from './ScElement.js';
-import { theme } from './styles.js';
 
 class ScTransport extends ScElement {
-  static get properties() {
-    return {
-      width: {
-        type: Number,
-      },
-      height: {
-        type: Number,
-      },
-      buttons: {},
-      state: {
-        type: String,
-      },
-      value: {},
-    };
+  static properties = {
+    buttons: {
+      type: Array,
+    },
+    state: {
+      type: String,
+      reflect: true,
+    },
+  };
+
+  static styles = css`
+    :host {
+      box-sizing: border-box;
+      vertical-align: top;
+      display: inline-flex;
+      justify-content: space-between;
+      width: auto;
+      height: 30px;
+
+      --sc-transport-background-color: var(--sc-color-primary-3);
+      --sc-transport-active-background-color: var(--sc-color-primary-1);
+      --sc-transport-active-play-fill: var(--sc-color-secondary-4);
+      --sc-transport-active-pause-fill: var(--sc-color-secondary-1);
+      --sc-transport-active-stop-fill: var(--sc-color-secondary-3);
+    }
+
+    svg {
+      cursor: pointer;
+      border-radius: 2px;
+      border: 1px solid var(--sc-transport-background-color);
+      background-color: var(--sc-transport-background-color);
+      fill:  #ffffff;
+      height: 100%;
+      width: auto;
+      margin-right: 4px;
+    }
+
+    svg:last-child {
+      margin-right: 0px;
+    }
+
+    svg.active {
+      background-color: var(--sc-transport-active-background-color);
+    }
+
+    svg.play.active {
+      fill: var(--sc-transport-active-play-fill);
+    }
+
+    svg.pause.active {
+      fill: var(--sc-transport-active-pause-fill);
+    }
+
+    svg.stop.active {
+      fill: var(--sc-transport-active-stop-fill);
+    }
+  `;
+
+  // alias state
+  get value() {
+    return this.state;
   }
 
-  static get styles() {
-    return css`
-      :host {
-        vertical-align: top;
-        display: inline-block;
-        box-sizing: border-box;
-        font-size: 0 !important;
-        cursor: pointer;
-      }
-
-      svg {
-        margin-right: 5px;
-        box-sizing: border-box;
-        border-radius: 2px;
-        border: 1px solid ${theme['--color-primary-2']};
-        background-color: ${theme['--color-primary-2']};
-        fill:  #ffffff;
-      }
-
-      svg.active {
-        background-color: ${theme['--color-primary-0']};
-      }
-
-      svg.play.active {
-        fill: ${theme['--color-secondary-4']};
-      }
-
-      svg.pause.active {
-        fill: ${theme['--color-secondary-5']};
-      }
-
-      svg.stop.active {
-        fill: ${theme['--color-secondary-3']};
-      }
-    `;
-  }
-
-  set width(value) {
-    this._size = value;
-    this.requestUpdate();
-  }
-
-  get width() {
-    return this._size;
-  }
-
-  set height(value) {
-    this._size = value;
-    this.requestUpdate();
-  }
-
-  get height() {
-    return this._size;
-  }
-
-  set buttons(value) {
-    const replace = value.replace(/[\[\]\s]/g, '');
-    this._buttons = replace.split(',');
-    this.requestUpdate();
+  set value(value) {
+    this.state = value;
   }
 
   constructor() {
     super();
 
-    this.width = 30;
-    this.height = 30;
-    this.value = true;
-    this.buttons = "";
-    this.state = undefined;
-
-    this.renderFunctions = {
-      play: this.renderPlay.bind(this),
-      pause: this.renderPause.bind(this),
-      stop: this.renderStop.bind(this),
-    };
-  }
-
-  renderPlay(size) {
-    return html`
-      <svg 
-        class="play ${this.state === 'play' ? 'active' : ''}"
-        style="
-          width: ${size}px;
-          height: ${size}px;
-        "
-        viewbox="0 0 20 20"
-        @mousedown="${e => this._onChange(e, 'play')}"
-        @touchstart="${e => this._onChange(e, 'play')}"
-        @contextmenu="${this._preventContextMenu}"
-      >
-        <polygon class="play-shape" points="6, 5, 15, 10, 6, 15"></polygon>
-      </svg>
-    `
-  }
-
-  renderPause(size) {
-    return html`
-      <svg 
-        class="pause ${this.state === 'pause' ? 'active' : ''}"
-        style="
-          width: ${size}px;
-          height: ${size}px;
-        "
-        viewbox="0 0 20 20"
-        @mousedown="${e => this._onChange(e, 'pause') }"
-        @touchstart="${e => this._onChange(e, 'stop') }"
-        @contextmenu="${this._preventContextMenu}"
-      >
-        <rect class="left" x="5" y="5" width="3" height="10"></rect>
-        <rect class="right" x="12" y="5" width="3" height="10"></rect>
-      </svg>
-    `
-  }
-
-  renderStop(size) {
-    return html`
-      <svg 
-        class="stop ${this.state === 'stop' ? 'active' : ''}"
-        style="
-          width: ${size}px;
-          height: ${size}px;
-        "
-        viewbox="0 0 20 20"
-        @mousedown="${e => this._onChange(e, 'stop') }"
-        @touchstart="${e => this._onChange(e, 'stop') }"
-        @contextmenu="${this._preventContextMenu}"
-      >
-        <rect class="stop-shape" x="6" y="6" width="8" height="8"></rect>
-      </svg>
-    `
+    this.buttons = ['play', 'pause', 'stop'];
+    this.state = null;
   }
 
   render() {
-    const size = this._size - 2;
-
     return html`
-      ${this._buttons.map(type => {
-        return this.renderFunctions[type](size);
+      ${this.buttons.map(type => {
+        switch (type) {
+          case 'play':
+            return html`
+              <svg
+                class="play ${this.state === 'play' ? 'active' : ''}"
+                viewbox="0 0 20 20"
+                @mousedown=${e => this._onChange(e, 'play')}
+                @touchstart=${e => this._onChange(e, 'play')}
+                @contextmenu=${this._preventContextMenu}
+              >
+                <polygon class="play-shape" points="6, 5, 15, 10, 6, 15"></polygon>
+              </svg>
+            `;
+          case 'pause':
+            return html`
+              <svg
+                class="pause ${this.state === 'pause' ? 'active' : ''}"
+                viewbox="0 0 20 20"
+                @mousedown=${e => this._onChange(e, 'pause')}
+                @touchstart=${e => this._onChange(e, 'pause')}
+                @contextmenu=${this._preventContextMenu}
+              >
+                <rect class="left" x="5" y="5" width="3" height="10"></rect>
+                <rect class="right" x="12" y="5" width="3" height="10"></rect>
+              </svg>
+            `;
+          case 'stop':
+            return html`
+              <svg
+                class="stop ${this.state === 'stop' ? 'active' : ''}"
+                viewbox="0 0 20 20"
+                @mousedown=${e => this._onChange(e, 'stop')}
+                @touchstart=${e => this._onChange(e, 'stop')}
+                @contextmenu=${this._preventContextMenu}
+              >
+                <rect class="stop-shape" x="6" y="6" width="8" height="8"></rect>
+              </svg>
+            `;
+        }
       })}
     `;
   }
@@ -175,7 +136,6 @@ class ScTransport extends ScElement {
       });
 
       this.dispatchEvent(changeEvent);
-      this.requestUpdate();
     }
   }
 

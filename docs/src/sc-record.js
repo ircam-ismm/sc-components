@@ -14,13 +14,13 @@ const template = html\`<sc-record></sc-record>\`;
 
 <sc-record
   id="test-record"
-  @change=${e => document.querySelector('#record-input').active = e.detail.value}
+  @change=${e => document.querySelector('#record-change').active = e.detail.value}
 ></sc-record>
 
 <h3>Events</h3>
 <p>
-  <sc-text readonly>@input</sc-text>
-  <sc-toggle id="record-input"></sc-toggle>
+  <sc-text readonly>@change</sc-text>
+  <sc-toggle id="record-change"></sc-toggle>
 </p>
 
 <h3>Attributes</h3>

@@ -29,5 +29,5 @@ import './sc-radio.js';
 import './sc-record.js';
 import './sc-signal.js';
 import './sc-switch.js';
-// import './sc-transport.js';
+import './sc-transport.js';
 import './sc-tap-tempo.js';
