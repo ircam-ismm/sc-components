@@ -81,7 +81,8 @@ async function setContent(pages, page) {
           return;
         }
 
-        history.pushState({ page: value }, '', `${prefix}/${value}`);
+        let url = value === 'home' ? `${prefix}/` : `${prefix}/${value}`;
+        history.pushState({ page: value }, '', url);
         setContent(pages, value);
       }}
     >${value}</a>`;
