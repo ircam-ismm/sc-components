@@ -29,7 +29,7 @@
   ],
   "scripts": {
     "clean": "rm -Rf vendors",
-    "prepublish": "cp docs/index.html 404.html",
+    "preversion": "cp docs/index.html docs/404.html",
     "postinstall": "node bin/prepare-codemirror.js"
   },
   "dependencies": {
