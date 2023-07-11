@@ -54,6 +54,7 @@ setTheme('dark');
 
 // current page module
 let current = null;
+let prefix = null;
 
 async function setContent(pages, page) {
   // fallback to homepage
@@ -71,7 +72,7 @@ async function setContent(pages, page) {
 
   render(map(pages, (value) => {
     return html`<a
-      href="/${value}"
+      href="./${value}"
       class="${value === page ? 'selected' : ''}"
       @click=${e => {
         e.preventDefault();
@@ -80,7 +81,7 @@ async function setContent(pages, page) {
           return;
         }
 
-        history.pushState({ page: value }, '', `/${value}`);
+        history.pushState({ page: value }, '', `${prefix}/${value}`);
         setContent(pages, value);
       }}
     >${value}</a>`;
@@ -105,10 +106,13 @@ async function setContent(pages, page) {
 (async function main() {
   // init on rigth page
   const pathname = window.location.pathname;
-  const page = pathname.replace(/^\//, '');
+  const isProd = pathname.startsWith('/sc-components');
+  prefix = isProd ? '/sc-components' : '';
+
+  const page = pathname.replace(new RegExp(`^${prefix}/`), '');
 
   // history stuff
-  history.pushState({ page }, '', `/${page}`);
+  history.pushState({ page }, '', `${prefix}/${page}`);
 
   window.addEventListener('popstate', e => {
     setContent(pages, e.state.page);
