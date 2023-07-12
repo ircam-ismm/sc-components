@@ -1,6 +1,8 @@
 # @ircam/sc-components
 
-Web Components for audio interfaces and rapid prototyping, based [lit](https://lit.dev/) library.
+[![npm version](https://badge.fury.io/js/@ircam%2Fsc-components.svg)](https://badge.fury.io/js/@ircam%2Fsc-components)
+
+Web Components for audio interfaces and rapid prototyping, based on the [lit](https://lit.dev/) library.
 
 ## Documentation
 
@@ -14,11 +16,11 @@ npm install lit @ircam/sc-components --save
 
 ## Usage
 
-Each components lives in its own file and should be imported separately, e.g.
+Each components lives in its own file and can be imported separately, e.g.:
 
 ```js
 import { html, render } from 'lit';
-import '@ircam/sc-components/sc-toggle.js'
+import '@ircam/sc-components/sc-toggle.js';
 
 render(html`
   <sc-toggle
@@ -26,6 +28,16 @@ render(html`
   ></sc-toggle>
 `, document.body);
 ```
+
+For convenience, we also provide a global entry point which gives access to all components. However, in most cases, you should avoid using this shortcut to keep your bundle size as small as possible:
+
+```js
+import '@ircam/sc-components';
+```
+
+## Integration with other frameworks
+
+For now, we never used the library within other frameworks such as React or Vue as these framework are not part of our stack. Hence, any feedback on such attempt would be really welcome.
 
 ## License
 
