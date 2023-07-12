@@ -1,4 +1,4 @@
-name: GH Pages
+name: Build Docs
 
 on:
   workflow_dispatch:
@@ -24,10 +24,6 @@ jobs:
 
       - name: Install docs dependencies
         run: npm install
-        working-directory: ./docs
-
-      - name: Copy index
-        run: cp index.html 404.html
         working-directory: ./docs
 
       - name: Build docs

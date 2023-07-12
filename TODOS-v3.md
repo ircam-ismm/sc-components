@@ -1,3 +1,8 @@
+## Prod
+
+- [ ] create all `sc-*.html` files dynamically, the 404.html trick is not good, it (logically) returns a 404 HTML status
+      
+
 ## Tests
 
 - [ ] with all global css removed

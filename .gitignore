@@ -7,5 +7,7 @@ node_modules
 
 .bak
 
+# doc build artifacts
 docs/build
+docs/sc-*.html
 
