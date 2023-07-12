@@ -1,4 +1,4 @@
-# @ircam/sc-components
+# sc-components
 
 [![npm version](https://badge.fury.io/js/@ircam%2Fsc-components.svg)](https://badge.fury.io/js/@ircam%2Fsc-components)
 
