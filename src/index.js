@@ -6,36 +6,8 @@ import applyStyle from './utils/applyStyle.js';
 
 // import lib
 import '../../index.js';
-
 // list of pages
-const pages = [
-  'home',
-  'sc-bang',
-  'sc-button',
-  'sc-toggle',
-  'sc-text',
-  'sc-radio',
-  'sc-icon',
-  'sc-dial',
-  'sc-number',
-  'sc-slider',
-  'sc-clock',
-  'sc-editor',
-  'sc-code-example',
-  'sc-select',
-  'sc-dots',
-  'sc-matrix',
-  'sc-signal',
-  'sc-tap-tempo',
-  'sc-switch',
-  'sc-flash',
-  'sc-record',
-  'sc-prev',
-  'sc-next',
-  'sc-loop',
-  'sc-tab',
-  'sc-transport',
-].sort();
+import pages from './pages.js'
 
 function setTheme(name) {
   switch (name) {

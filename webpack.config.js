@@ -1,6 +1,10 @@
-const path = require('path');
+import path from 'node:path';
+import * as url from 'node:url';
 
-module.exports = env => {
+const __filename = url.fileURLToPath(import.meta.url);
+const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
+
+export default env => {
   let options = {};
 
   if (env.production) {
