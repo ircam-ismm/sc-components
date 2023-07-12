@@ -34,7 +34,7 @@ import '@ircam/sc-components/sc-button.js';
 
   <p>
     Or all components at once:<br >
-    <i>(note that it's best to import only the files you need to keep your bundle size as small as possibles)</i>
+    <i>(note that it's best to import only the files you need to keep your bundle size as small as possible)</i>
   </p>
 
   <sc-code-example language="javascript">
