@@ -1430,7 +1430,7 @@ span.CodeMirror-selectedtext { background: none; }
             >${e}</option>
           `))}
       </select>
-    `}_dispatchEvent(e){if(this.disabled)return;this.value=e.target.value;const t=new CustomEvent("change",{bubbles:!0,composed:!0,detail:{value:this.value}});this.dispatchEvent(t)}}void 0===customElements.get("sc-select")&&customElements.define("sc-select",Tt);class yt extends Ee{static properties={min:{type:Number,reflect:!0},max:{type:Number,reflect:!0},step:{type:Number,reflect:!0},value:{type:Number},orientation:{type:String,reflect:!0},relative:{type:Boolean,reflect:!0},numberBox:{type:Boolean,reflect:!0,attribute:"number-box"},disabled:{type:Boolean,reflect:!0}};static styles=d`
+    `}_dispatchEvent(e){if(this.disabled)return;const t=this.placeholder?e.target.selectedIndex-1:e.target.selectedIndex;this.value=this.options[t];const n=new CustomEvent("change",{bubbles:!0,composed:!0,detail:{value:this.value}});this.dispatchEvent(n)}}void 0===customElements.get("sc-select")&&customElements.define("sc-select",Tt);class yt extends Ee{static properties={min:{type:Number,reflect:!0},max:{type:Number,reflect:!0},step:{type:Number,reflect:!0},value:{type:Number},orientation:{type:String,reflect:!0},relative:{type:Boolean,reflect:!0},numberBox:{type:Boolean,reflect:!0,attribute:"number-box"},disabled:{type:Boolean,reflect:!0}};static styles=d`
     :host {
       display: inline-block;
       box-sizing: border-box;
@@ -1568,7 +1568,7 @@ span.CodeMirror-selectedtext { background: none; }
     }
   `;constructor(){super(),this.options=[],this.value=null,this.orientation="horizontal"}render(){return ze(this.options,(()=>"sc-tab-"+Ct++),(e=>$`
         <sc-button
-          value="${e}"
+          .value=${e}
           ?selected=${e===this.value}
           @input="${this._triggerChange}"
           tabindex="-1"
@@ -1763,6 +1763,7 @@ span.CodeMirror-selectedtext { background: none; }
           <input
             type="radio"
             value=${e}
+            data-index=${t}
             name=${this._name}
             @change=${this._dispatchEvent}
             ?checked=${e==this.value}
@@ -1770,7 +1771,7 @@ span.CodeMirror-selectedtext { background: none; }
           />
           ${e}
         </label>
-      `))}_dispatchEvent(e){if(this.disabled)return;this._value=e.target.value;const t=new CustomEvent("change",{bubbles:!0,composed:!0,detail:{value:this.value}});this.dispatchEvent(t)}}void 0===customElements.get("sc-radio")&&customElements.define("sc-radio",It);class xt extends Ee{static properties={active:{type:Boolean,reflect:!0},value:{type:Boolean}};static styles=d`
+      `))}_dispatchEvent(e){if(this.disabled)return;const t=parseInt(e.target.dataset.index);this._value=this.options[t];const n=new CustomEvent("change",{bubbles:!0,composed:!0,detail:{value:this.value}});this.dispatchEvent(n)}}void 0===customElements.get("sc-radio")&&customElements.define("sc-radio",It);class xt extends Ee{static properties={active:{type:Boolean,reflect:!0},value:{type:Boolean}};static styles=d`
     :host {
       display: inline-block;
       box-sizing: border-box;
