@@ -70,7 +70,7 @@ class ScTab extends ScElement {
     return repeat(this.options, () => `sc-tab-${itemId++}`, value => {
       return html`
         <sc-button
-          value="${value}"
+          .value=${value}
           ?selected=${value === this.value}
           @input="${this._triggerChange}"
           tabindex="-1"

@@ -100,7 +100,8 @@ class ScSelect extends ScElement {
       return;
     }
 
-    this.value = e.target.value;
+    const index = this.placeholder ? e.target.selectedIndex - 1 : e.target.selectedIndex;
+    this.value = this.options[index];
 
     const changeEvent = new CustomEvent('change', {
       bubbles: true,

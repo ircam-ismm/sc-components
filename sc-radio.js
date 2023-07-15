@@ -109,12 +109,13 @@ class ScRadio extends ScElement {
   }
 
   render() {
-    return repeat(this.options, item => `sc-radio-${itemId++}`, (value, key) => {
+    return repeat(this.options, item => `sc-radio-${itemId++}`, (value, index) => {
       return html`
         <label>
           <input
             type="radio"
             value=${value}
+            data-index=${index}
             name=${this._name}
             @change=${this._dispatchEvent}
             ?checked=${value == this.value}
@@ -134,7 +135,8 @@ class ScRadio extends ScElement {
     // we don't want to trigger the render, because we loose the focus when
     // interacting with the keyboard, so we update the internal property, not
     // the reactive one.
-    this._value = e.target.value;
+    const index = parseInt(e.target.dataset.index);
+    this._value = this.options[index];
 
     const changeEvent = new CustomEvent('change', {
       bubbles: true,
