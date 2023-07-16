@@ -29,7 +29,7 @@ render(html`
 `, document.body);
 ```
 
-For convenience, we also provide a global entry point which gives access to all components. However, in most cases, you should avoid using this shortcut to keep your bundle size as small as possible:
+For convenience, we also provide a global entry point which imports all components. However, in most cases, you should avoid using this shortcut to keep your bundle size as small as possible:
 
 ```js
 import '@ircam/sc-components';
@@ -37,7 +37,8 @@ import '@ircam/sc-components';
 
 ## Integration with other frameworks
 
-For now, we never used the library within other frameworks such as React or Vue as these framework are not part of our stack. Hence, any feedback on such attempt would be really welcome.
+For now, the library has never been tested within other frameworks such as React or Vue as these are not part of our stack.  
+Any feedback on such attempt would be welcome!
 
 ## License
 

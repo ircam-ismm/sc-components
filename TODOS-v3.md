@@ -1,7 +1,10 @@
-## Prod
+## Deployement
 
-- [ ] create all `sc-*.html` files dynamically, the 404.html trick is not good, it (logically) returns a 404 HTML status
-      
+- [ ] provide an unpkg version
+
+## Doc
+
+- [x] create all `sc-*.html` files dynamically, the 404.html trick is not good, it (logically) returns a 404 HTML status      
 
 ## Tests
 
@@ -11,15 +14,16 @@
 
 - [x] sc-bang
 - [x] sc-button
-  + [ ] remove selected option
+  + [ ] remove selected option (?)
   + [ ] add `behavior` attribute "switch" or "trigger"?
 - [ ] sc-chenillard
-  + [ ] move into metronome for now
+  + [ ] remove, just move into metronome codebase for now
 - [x] sc-clock
 - [ ] sc-context-menu (is kind of broken for now...)
+  + [ ] do not expose, just use it in `sc-filetree`
 - [x] sc-dial
   + [ ] support keyboard arrows
-  + [ ] add label
+  + [ ] add label (?)
 - [x] sc-dot-map
 - [ ] sc-dragndrop
 - [x] sc-editor
@@ -28,11 +32,10 @@
 - [x] sc-icon
 - [x] sc-loop
 - [x] sc-matrix
-  + [ ] highlight row and or column
+  + [ ] highlight row and/or column
 - [ ] sc-midi
 - [x] sc-number
-  + [ ] focus
-  + [ ] open numeric keyboard on touchscreens
+  + [x] use keyboard on touch screens
 - [x] sc-position-surface
 - [ ] sc-progress-bar
 - [x] sc-radio
@@ -40,16 +43,13 @@
 - [x] sc-return -> sc-prev
 - [x] sc-next
 - [x] sc-signal
+  + [ ] implement observer attribute, cf. https://github.com/ircam-ismm/simple-components/issues/6
 - [x] sc-slider 
-  + [ ] focus
-  + [ ] disabled
-  + [ ] keyboard
 - [x] sc-speed-surface
 - [x] sc-tap-tempo
 - [x] sc-text
 - [x] sc-toggle
-  + [ ] focus
-- [ ] sc-transport
+- [x] sc-transport
 
 ## Notes
 
@@ -59,30 +59,30 @@
 - [x] sc-select
 - [x] sc-radio
 - [x] sc-switch
-- [ ] sc-tab (cf. live.tab in Max)
+- [x] sc-tab (cf. live.tab in Max)
+- [ ] sc-keyboard
 - [ ] sc-qrcode
 - [ ] multislider
-- [ ] sc-keyboard
 - [x] sc-code-example
 - [ ] sc-panel (open close panel) cf. dat.gui.js
 
 ### audio components
+
 - [ ] sc-resume-context
 - [ ] sc-record -> return audio buffer or .wav file
 - [ ] sc-waveform -> option to play the file
 - [ ] sc-meter
 
-### interactions
+### Check/improve interactions on all components
 
-- [ ] keyboard
-- [ ] undo / redo (for components that have a @change event)
-- [ ] editable attribute? or component w/ slot
+- [ ] focus
+- [ ] disabled
 - [ ] bypass focus when disabled
+- [ ] keyboard
+- [ ] undo / redo (for components that have a @change event) (?)
+- [ ] editable attribute or component w/ slot
 
-### sc-number
-
-- open keyboard on phone
-- use @touchstart to create an `<input type="number" />` and focus on it?
+- [ ] global save/restore state, generalize over sc-midi
 
 ### keyboard controls
 
