@@ -29,7 +29,7 @@ render(html`
 `, document.body);
 ```
 
-For convenience, we also provide a global entry point which imports all components. However, in most cases, you should avoid using this shortcut to keep your bundle size as small as possible:
+For convenience, we also provide a global entry point which imports all components. However, in most cases you should avoid using this shortcut to keep your bundle size as small as possible:
 
 ```js
 import '@ircam/sc-components';

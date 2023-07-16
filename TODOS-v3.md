@@ -62,7 +62,9 @@
 - [x] sc-tab (cf. live.tab in Max)
 - [ ] sc-keyboard
 - [ ] sc-qrcode
-- [ ] multislider
+- [ ] sc-multislider
+- [ ] sc-range
+- [ ] sc-breakpoint (see .bak)
 - [x] sc-code-example
 - [ ] sc-panel (open close panel) cf. dat.gui.js
 
@@ -82,7 +84,10 @@
 - [ ] undo / redo (for components that have a @change event) (?)
 - [ ] editable attribute or component w/ slot
 
-- [ ] global save/restore state, generalize over sc-midi
+- [ ] global save/restore state / presets, 
+  + [ ] generalize over sc-midi
+  + [ ] generate some serialized version of the state (e.g. share link, etc.)
+  + [ ] should integrate properly with soundwork's states too
 
 ### keyboard controls
 

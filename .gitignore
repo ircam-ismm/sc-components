@@ -11,3 +11,6 @@ node_modules
 docs/build
 docs/sc-*.html
 
+# testing stuff
+tests
+
