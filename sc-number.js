@@ -22,6 +22,10 @@ class ScNumber extends ScElement {
       type: Boolean,
       reflect: true,
     },
+    readonly: {
+      type: Boolean,
+      reflect: true,
+    },
     disabled: {
       type: Boolean,
       reflect: true,
@@ -54,6 +58,12 @@ class ScNumber extends ScElement {
       box-shadow: 0 0 2px var(--sc-color-primary-5);
     }
 
+    :host([disabled]:focus), :host([disabled]:focus-visible),
+    :host([readonly]:focus), :host([readonly]:focus-visible) {
+      outline: none;
+      box-shadow: none;
+    }
+
     .container {
       overflow-y: hidden;
       position: relative;
@@ -81,6 +91,11 @@ class ScNumber extends ScElement {
       outline: 2px solid var(--sc-color-secondary-2);
     }
 
+    :host([disabled]) .container:focus .info,
+    :host([readonly]) .container:focus .info {
+      outline: none;
+    }
+
     .info.edited {
       background-color: var(--sc-color-primary-4);
     }
@@ -95,6 +110,16 @@ class ScNumber extends ScElement {
       padding-left: 12px;
       height: 100%;
       width: calc(100% - 15px);
+    }
+
+    :host([readonly]) .info {
+      width: 5px;
+      background-color: var(--sc-color-primary-2);
+    }
+
+    :host([readonly]) .content {
+      left: 5px;
+      width: calc(100% - 5px);
     }
 
     .z {
@@ -188,11 +213,13 @@ class ScNumber extends ScElement {
   constructor() {
     super();
 
-    this.integer = false;
     this._min = -Infinity;
     this._max = +Infinity;
     this._value = 0;
     this._displayValue = '0';
+    this.integer = false;
+    this.disabled = false;
+    this.readonly = false;
 
     this._valueChanged = false;
 
@@ -296,6 +323,10 @@ class ScNumber extends ScElement {
       return;
     }
 
+    if (this.disabled || this.readonly) {
+      return;
+    }
+
     // lock speed surface events
     this._hasVirtualKeyboard = true;
 
@@ -350,7 +381,7 @@ class ScNumber extends ScElement {
   }
 
   _onKeyDown(e) {
-    if (this.disabled) {
+    if (this.disabled || this.readonly) {
       return;
     }
 
@@ -405,7 +436,7 @@ class ScNumber extends ScElement {
     return e => {
       e.stopPropagation();
 
-      if (this.disabled) {
+      if (this.disabled || this.readonly) {
         return;
       }
 
