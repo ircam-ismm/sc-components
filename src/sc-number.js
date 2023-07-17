@@ -54,6 +54,12 @@ const template = html\`<sc-number></sc-number>\`;
   ></sc-toggle>
 </div>
 <div>
+  <sc-text readonly>[?readonly=false]</sc-text>
+  <sc-toggle
+    @change=${e => document.querySelector('#test-number').readonly = e.detail.value}
+  ></sc-toggle>
+</div>
+<div>
   <sc-text readonly>[?disabled=false]</sc-text>
   <sc-toggle
     @change=${e => document.querySelector('#test-number').disabled = e.detail.value}
