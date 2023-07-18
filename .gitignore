@@ -10,7 +10,3 @@ node_modules
 # doc build artifacts
 docs/build
 docs/sc-*.html
-
-# testing stuff
-tests
-

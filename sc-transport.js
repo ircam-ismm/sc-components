@@ -29,7 +29,7 @@ class ScTransport extends ScElement {
     }
 
     svg {
-      cursor: pointer;
+      box-sizing: border-box;
       border-radius: 2px;
       border: 1px solid var(--sc-transport-background-color);
       background-color: var(--sc-transport-background-color);
@@ -37,6 +37,7 @@ class ScTransport extends ScElement {
       height: 100%;
       width: auto;
       margin-right: 4px;
+      cursor: pointer;
     }
 
     svg:last-child {

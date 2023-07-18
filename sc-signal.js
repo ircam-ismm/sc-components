@@ -49,12 +49,18 @@ class ScSignal extends ScElement {
         height: 150px;
         box-sizing: border-box;
         background-color: white;
-        outline: 1px solid var(--sc-color-primary-3);
         color: var(--sc-color-primary-1);
         position: relative;
+        border: 1px solid var(--sc-color-primary-3);
+      }
+
+      :host > div {
+        width: 100%;
+        height: 100%;
       }
 
       canvas {
+        box-sizing: border-box;
         margin: 0;
         width: 100%;
         height: 100%;
