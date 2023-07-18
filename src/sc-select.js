@@ -1,9 +1,9 @@
 import { html } from 'lit';
 import applyStyle from './utils/applyStyle.js';
 
-const testArray = ['a', 'b', 'c', 'g'];
+const testData = ['a', true, 43, 'g'];
 // Object does not work for now...
-// const testObject = { a: 'aaa', b: 'bbb', c: 'ccc', d: 'ddd' };
+// const testData = { 'aaa': true, 'bbb': 32,  'ccc': 'coucou'  };
 
 export const template = html`
 
@@ -23,7 +23,7 @@ const template = html\`
 <sc-select
   id="test-select"
   placeholder="Select an option"
-  options="${JSON.stringify(testArray)}"
+  options="${JSON.stringify(testData)}"
   @change=${e => document.querySelector('#options-value').value = e.detail.value}
 ></sc-select>
 
@@ -42,17 +42,17 @@ const template = html\`
 <h3>Attributes</h3>
 <div>
   <sc-text readonly>[value=null]</sc-text>
-  <sc-radio
+  <sc-select
     id="radio-change"
-    options="${JSON.stringify(testArray)}"
+    options="${JSON.stringify(testData)}"
     @change=${e => document.querySelector('#test-select').value = e.detail.value}
-  ></sc-radio>
+  ></sc-select>
 </div>
 <div>
   <sc-text readonly>options=[]</sc-text>
   <sc-editor
     save-button
-    value="${JSON.stringify(testArray)}"
+    value="${JSON.stringify(testData)}"
     @change=${e => {
       document.querySelector('#test-select').options = JSON.parse(e.detail.value);
       document.querySelector('#radio-change').options = JSON.parse(e.detail.value);
