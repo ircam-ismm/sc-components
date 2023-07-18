@@ -1,5 +1,6 @@
 import { html, svg, css, nothing } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
+import { isPlainObject } from '@ircam/sc-utils';
 import ScElement from './ScElement.js';
 
 let itemId = 0;
@@ -74,6 +75,8 @@ class ScSelect extends ScElement {
   }
 
   render() {
+    const isObject = isPlainObject(this.options);
+
     return html`
       <select
         ?disabled=${this.disabled}
@@ -83,12 +86,13 @@ class ScSelect extends ScElement {
           ? html`<option value="">${this.placeholder}</option`
           : nothing
         }
-        ${repeat(this.options, () => `sc-select-${itemId++}`, value => {
+        ${repeat(Object.entries(this.options), () => `sc-select-${itemId++}`, ([key, value]) => {
+          // @note - key and value are always strings
           return html`
             <option
-              value=${value}
+              value=${key}
               ?selected=${value === this.value}
-            >${value}</option>
+            >${isObject ? key : value}</option>
           `;
         })}
       </select>
@@ -100,8 +104,18 @@ class ScSelect extends ScElement {
       return;
     }
 
-    const index = this.placeholder ? e.target.selectedIndex - 1 : e.target.selectedIndex;
-    this.value = this.options[index];
+    const isObject = isPlainObject(this.options);
+
+    if (isObject) {
+      // for objects the key is displayed and the value is used as value so that
+      // it can be of any type
+      const key = e.target.value;
+      this.value = this.options[key];
+    } else {
+      // for Arrays, we need to find the index because option.value stringifies eveything
+      const index = this.placeholder ? e.target.selectedIndex - 1 : e.target.selectedIndex;
+      this.value = this.options[index];
+    }
 
     const changeEvent = new CustomEvent('change', {
       bubbles: true,
