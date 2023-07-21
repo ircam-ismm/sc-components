@@ -9,6 +9,7 @@
   ],
   "license": "BSD-3-Clause",
   "main": "index.js",
+  "unpkg": "./build/bundle.js",
   "type": "module",
   "publishConfig": {
     "access": "public"
@@ -29,7 +30,8 @@
   ],
   "scripts": {
     "clean": "rm -Rf vendors",
-    "postinstall": "node bin/prepare-codemirror.js"
+    "postinstall": "node bin/prepare-codemirror.js",
+    "preversion": "webpack --config webpack.config.js"
   },
   "dependencies": {
     "@ircam/sc-gettime": "^1.0.1",
@@ -38,5 +40,9 @@
     "highlight.js": "^11.8.0",
     "lit": "^2.7.5",
     "number-precision": "^1.6.0"
+  },
+  "devDependencies": {
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4"
   }
 }

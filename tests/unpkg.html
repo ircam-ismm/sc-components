@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <script type="module">
+    import { html, render } from 'https://unpkg.com/lit-html?module';
+    import './bundle.js';
+
+    render(html`
+      <sc-toggle
+        @change=${e => console.log('Hello toggle', e.detail.value)}
+      ></sc-toggle>
+    `, document.body);
+  </script>
+
+</head>
+<body>
+
+</body>
+</html>
