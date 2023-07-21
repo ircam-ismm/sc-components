@@ -35,6 +35,25 @@ For convenience, we also provide a global entry point which imports all componen
 import '@ircam/sc-components';
 ```
 
+## Unpkg
+
+```js
+import 'https://unpkg.com/@ircam/sc-components@latest';
+```
+
+### Example
+
+```js
+import { html, render } from 'https://unpkg.com/lit-html?module';
+import 'https://unpkg.com/@ircam/sc-components@latest';
+
+render(html`
+  <sc-toggle
+    @change=${e => console.log('Hello toggle', e.detail.value)}
+  ></sc-toggle>
+`, document.body);
+```
+
 ## Integration with other frameworks
 
 For now, the library has never been tested within other frameworks such as React or Vue as these are not part of our stack.  

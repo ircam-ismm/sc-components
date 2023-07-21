@@ -10,3 +10,6 @@ docs
 
 .github
 TODOS-v3.md
+
+tests
+webpack.config.js
