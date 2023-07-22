@@ -28,6 +28,7 @@ class ScButton extends ScElement {
       overflow: hidden;
       width: 200px;
       height: 30px;
+      line-height: 0;
       font-size: var(--sc-font-size);
       color: #ffffff;
       border-radius:  1px;

@@ -7,6 +7,8 @@ import '../../index.js';
 import components from './components.js';
 
 // current page module
+const DEFAULT_TEST = 'raw-style';
+// const DEFAULT_TEST = 'sw-header';
 let current = null;
 
 async function setContent(page) {
@@ -24,8 +26,6 @@ async function setContent(page) {
 }
 
 (async function main() {
-  setContent('raw-style');
-  // setContent('directives');
   // init on rigth page
   const $links = document.body.querySelectorAll('nav a');
   $links.forEach($link => {
@@ -36,4 +36,6 @@ async function setContent(page) {
       setContent(page);
     });
   });
+
+  setContent(DEFAULT_TEST);
 }());
