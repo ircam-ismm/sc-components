@@ -11,7 +11,7 @@ export const template = html`
 import { html } from 'lit';
 import '@ircam/sc-components/sc-text.js';
 
-const template = html\`<sc-text>My Text</sc-text>\`;
+const template = html\`<sc-text>Hello!</sc-text>\`;
 `}</sc-code-example>
 
 <sc-text
@@ -19,38 +19,27 @@ const template = html\`<sc-text>My Text</sc-text>\`;
   @change=${e => document.querySelector('#text-change').value = e.detail.value}
 >Hello!</sc-text>
 
-<sc-code-example language="markdown">${`
-The red border indicates that the text is in dirty state, i.e. the content has been changed but not saved yet.
+  <sc-code-example language="markdown">${`
+When editable, the behavior is as follows:
 
-The "change" event is triggered when:
-- "Cmd+S" is pressed
-- when the element loose the focus, i.e. on blur
+- The red border indicates that the text is in dirty state (content has been changed but not saved)
+- The "change" event is triggered when:
+  + "Cmd+S" is pressed
+  + when the element loose the focus, i.e. on blur
 `}</sc-code-example>
-
-
-<h3>Events</h3>
-<div>
-  <sc-text readonly>@change</sc-text>
-  <sc-text readonly id="text-change"></sc-text>
-</div>
-<pre><code class="language-html">\
-${`\
-<sc-text
-  @change=\${e => console.log(e.detail.value)}
-></sc-text>`}
-<code></pre>
 
 <h3>Attributes</h3>
 <div>
   <sc-text readonly>[value='']</sc-text>
   <sc-text
+    editable
     @change=${e => document.querySelector('#test-text').value = e.detail.value}
-  ></sc-text>
+  >Hello!</sc-text>
 </div>
 <div>
-  <sc-text readonly>[readonly=false]</sc-text>
+  <sc-text readonly>[editable=false]</sc-text>
   <sc-toggle
-    @change=${e => document.querySelector('#test-text').readonly = e.detail.value}
+    @change=${e => document.querySelector('#test-text').editable = e.detail.value}
   ></sc-toggle>
 </div>
 <div>
@@ -59,6 +48,18 @@ ${`\
     @change=${e => document.querySelector('#test-text').disabled = e.detail.value}
   ></sc-toggle>
 </div>
+
+<h3>Events</h3>
+<div>
+  <sc-text readonly>@change</sc-text>
+  <sc-text readonly id="text-change"></sc-text>
+</div>
+<sc-code-example language="html">
+${`\
+<sc-text
+  @change=\${e => console.log(e.detail.value)}
+></sc-text>`}
+</sc-code-example>
 
 <h3>Styling</h3>
 <sc-editor
