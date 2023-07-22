@@ -56,8 +56,9 @@ render(html`
 
 ## Integration with other frameworks
 
-For now, the library has never been tested within other frameworks such as React or Vue as these are not part of our stack.  
-Any feedback on such attempt would be welcome!
+The library has never been tested within other frameworks such as React or Vue.
+
+Any feedback is be welcome!
 
 ## License
 
