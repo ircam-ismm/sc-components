@@ -41,6 +41,8 @@ import '@ircam/sc-components';
 
 ## Unpkg
 
+For testing or if you don't use a bundler, you can also use the library from [https://unpkg.com/](https://unpkg.com/).
+
 ```js
 import 'https://unpkg.com/@ircam/sc-components@latest';
 ```
