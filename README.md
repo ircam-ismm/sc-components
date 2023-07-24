@@ -2,7 +2,11 @@
 
 [![npm version](https://badge.fury.io/js/@ircam%2Fsc-components.svg)](https://badge.fury.io/js/@ircam%2Fsc-components)
 
-Web Components for audio interfaces and rapid prototyping, based on the [lit](https://lit.dev/) library.
+Robust and easy to use Web Components for rapid prototyping audio interfaces. 
+
+![banner](./docs/assets/banner.png)
+
+The components are built on top of the [lit](https://lit.dev/) library.
 
 ## Documentation
 
