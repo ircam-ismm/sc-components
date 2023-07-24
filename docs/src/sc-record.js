@@ -9,7 +9,9 @@ export const template = html`
 import { html } from 'lit';
 import '@ircam/sc-components/sc-record.js';
 
-const template = html\`<sc-record></sc-record>\`;
+const template = html\`
+  <sc-record></sc-record>
+\`;
 `}</sc-code-example>
 
 <sc-record
@@ -19,13 +21,13 @@ const template = html\`<sc-record></sc-record>\`;
 
 <h3>Events</h3>
 <p>
-  <sc-text readonly>@change</sc-text>
+  <sc-text>@change</sc-text>
   <sc-toggle id="record-change"></sc-toggle>
 </p>
 
 <h3>Attributes</h3>
 <div>
-  <sc-text readonly>[active=false]</sc-text>
+  <sc-text>[active=false]</sc-text>
   <sc-toggle
     @change=${e => document.querySelector('#test-record').active = e.detail.value}
   ></sc-toggle>
@@ -34,6 +36,7 @@ const template = html\`<sc-record></sc-record>\`;
 
 <h3>Styling</h3>
 <sc-editor
+  style="width: 500px;"
   save-button
   value="\
 #test-record {

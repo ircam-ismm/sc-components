@@ -14,7 +14,9 @@ export const template = html`
 import { html } from 'lit';
 import '@ircam/sc-components/sc-matrix.js';
 
-const template = html\`<sc-matrix></sc-matrix>\`;
+const template = html\`
+  <sc-matrix></sc-matrix>
+\`;
 `}</sc-code-example>
 
 <sc-matrix
@@ -25,13 +27,13 @@ const template = html\`<sc-matrix></sc-matrix>\`;
 <h3>Events</h3>
 
 <div>
-  <sc-text readonly>@change</sc-text>
-  <sc-text readonly style="width: 300px; height: 150px;" id="matrix-change"></sc-text>
+  <sc-text>@change</sc-text>
+  <sc-text style="width: 300px; height: 150px;" id="matrix-change"></sc-text>
 </div>
 
 <h3>Attributes</h3>
 <div>
-  <sc-text readonly>[rows=4]</sc-text>
+  <sc-text>[rows=4]</sc-text>
   <sc-number
     integer
     min="1"
@@ -41,7 +43,7 @@ const template = html\`<sc-matrix></sc-matrix>\`;
   ></sc-number>
 </div>
 <div>
-  <sc-text readonly>[columns=8]</sc-text>
+  <sc-text>[columns=8]</sc-text>
   <sc-number
     integer
     min="1"
@@ -51,7 +53,7 @@ const template = html\`<sc-matrix></sc-matrix>\`;
   ></sc-number>
 </div>
 <div>
-  <sc-text readonly>[?reset=false]</sc-text>
+  <sc-text>[?reset=false]</sc-text>
   <sc-bang
     @input=${e => document.querySelector('#test-matrix').reset = e.detail.value}
   ></sc-bang>
@@ -59,16 +61,18 @@ const template = html\`<sc-matrix></sc-matrix>\`;
 
 <h3>Properties</h3>
 <div>
-  <p>The different values a cell can take</p>
-  <sc-text readonly>[.states=[0, 1]]</sc-text>
+  <p>the different values a cell can take</p>
+  <sc-text>[.states=[0, 1]]</sc-text>
   <sc-text
+    editable
     @change=${e => document.querySelector('#test-matrix').states = JSON5.parse(e.detail.value)}
   >[0, 0.5, 1]</sc-text>
 </div>
 <div>
-  <p>Change the whole matrix state at once</p>
-  <sc-text readonly>[.value=[]]</sc-text>
+  <p>changes the whole matrix state at once</p>
+  <sc-text>[.value=[]]</sc-text>
   <sc-text
+    editable
     style="height: 80px;"
     @change=${e => document.querySelector('#test-matrix').value = JSON5.parse(e.detail.value)}
   >[
@@ -79,8 +83,8 @@ const template = html\`<sc-matrix></sc-matrix>\`;
 
 <h3>Styling</h3>
 <sc-editor
-  save-button
   style="width: 500px;"
+  save-button
   value="\
 #test-matrix {
   width: 300px;

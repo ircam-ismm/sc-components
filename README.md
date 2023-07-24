@@ -2,7 +2,7 @@
 
 [![npm version](https://badge.fury.io/js/@ircam%2Fsc-components.svg)](https://badge.fury.io/js/@ircam%2Fsc-components)
 
-Robust and easy to use Web Components for rapid prototyping audio interfaces. 
+Robust and easy to use Web Components focused on rapid prototyping of audio and creative applications. 
 
 ![banner](./docs/assets/banner.png)
 
@@ -40,6 +40,8 @@ import '@ircam/sc-components';
 ```
 
 ## Unpkg
+
+For testing or if you don't use a bundler, you can also use the library from [https://unpkg.com/](https://unpkg.com/).
 
 ```js
 import 'https://unpkg.com/@ircam/sc-components@latest';

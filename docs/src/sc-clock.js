@@ -9,28 +9,32 @@ export const template = html`
 import { html } from 'lit';
 import '@ircam/sc-components/sc-clock.js';
 
-const template = html\`<sc-clock></sc-clock>\`;
+const template = html\`
+  <sc-clock></sc-clock>
+\`;
 `}</sc-code-example>
 
 <sc-clock id="test-clock"></sc-clock>
 
 <h3>Attributes</h3>
 <div>
-  <sc-text readonly>[?twinkle=false]</sc-text>
+  <sc-text>[?twinkle=false]</sc-text>
   <sc-toggle
     @change=${e => document.querySelector('#test-clock').twinkle = e.detail.value}
   ></sc-toggle>
 </div>
 <div>
-  <sc-text readonly>[format='hh:mm:ss:ms']</sc-text>
+  <sc-text>[format='hh:mm:ss:ms']</sc-text>
   <sc-text
+    editable
     @change=${e => document.querySelector('#test-clock').format = e.detail.value}
   >hh:mm:ss:ms</sc-text>
 </div>
 
 <h3>Properties</h3>
 <div>
-  <sc-text readonly>[.getTimeFunction]</sc-text>
+  <p>by default, the time is retrieved from the locale date/time</p>
+  <sc-text>[.getTimeFunction]</sc-text>
   <sc-editor
     save-button
     style="width: 420px;"
@@ -49,6 +53,7 @@ $clock.getTimeFunction = () => {
 
 <h3>Styling</h3>
 <sc-editor
+  style="width: 500px;"
   save-button
   value="\
 #test-clock {

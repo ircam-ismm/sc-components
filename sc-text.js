@@ -45,7 +45,7 @@ class ScText extends ScElement {
         white-space: pre;
         background-color: var(--sc-color-primary-4);
         border: 1px solid var(--sc-color-primary-4);
-        padding: 6px 6px 6px 6px;
+        padding: 5px 6px;
         outline: none;
       }
 

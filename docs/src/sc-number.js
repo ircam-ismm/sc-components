@@ -9,7 +9,9 @@ export const template = html`
 import { html } from 'lit';
 import '@ircam/sc-components/sc-number.js';
 
-const template = html\`<sc-number></sc-number>\`;
+const template = html\`
+  <sc-number></sc-number>
+\`;
 `}</sc-code-example>
 
 <sc-number
@@ -30,37 +32,37 @@ const template = html\`<sc-number></sc-number>\`;
 
 <h3>Attributes</h3>
 <div>
-  <sc-text readonly>[min=-Infinity]</sc-text>
+  <sc-text>[min=-Infinity]</sc-text>
   <sc-number max="0" value="-9999" integer
     @input=${e => document.querySelector('#test-number').min = e.detail.value}
   ></sc-number>
 </div>
 <div>
-  <sc-text readonly>[max=+Infinity]</sc-text>
+  <sc-text>[max=+Infinity]</sc-text>
   <sc-number min="1" value="9999" integer
     @input=${e => document.querySelector('#test-number').max = e.detail.value}
   ></sc-number>
 </div>
 <div>
-  <sc-text readonly>[value=0]</sc-text>
+  <sc-text>[value=0]</sc-text>
   <sc-number
     @input=${e => document.querySelector('#test-number').value = e.detail.value}
   ></sc-number>
 </div>
 <div>
-  <sc-text readonly>[?integer=false]</sc-text>
+  <sc-text>[?integer=false]</sc-text>
   <sc-toggle
     @change=${e => document.querySelector('#test-number').integer = e.detail.value}
   ></sc-toggle>
 </div>
 <div>
-  <sc-text readonly>[?readonly=false]</sc-text>
+  <sc-text>[?readonly=false]</sc-text>
   <sc-toggle
     @change=${e => document.querySelector('#test-number').readonly = e.detail.value}
   ></sc-toggle>
 </div>
 <div>
-  <sc-text readonly>[?disabled=false]</sc-text>
+  <sc-text>[?disabled=false]</sc-text>
   <sc-toggle
     @change=${e => document.querySelector('#test-number').disabled = e.detail.value}
   ></sc-toggle>
@@ -68,6 +70,7 @@ const template = html\`<sc-number></sc-number>\`;
 
 <h3>Styling</h3>
 <sc-editor
+  style="width: 500px;"
   save-button
   value="\
 #test-number {

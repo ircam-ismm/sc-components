@@ -9,7 +9,9 @@ export const template = html`
 import { html } from 'lit';
 import '@ircam/sc-components/sc-switch.js';
 
-const template = html\`<sc-switch></sc-switch>\`;
+const template = html\`
+  <sc-switch></sc-switch>
+\`;
 `}</sc-code-example>
 
 <sc-switch
@@ -20,14 +22,14 @@ const template = html\`<sc-switch></sc-switch>\`;
 <h3>Events</h3>
 
 <div>
-  <sc-text readonly>@change</sc-text>
+  <sc-text>@change</sc-text>
   <sc-switch id="switch-change"></sc-switch>
 </div>
 
 <h3>Attributes</h3>
 
 <div>
-  <sc-text readonly>[active=false]</sc-text>
+  <sc-text>[active=false]</sc-text>
   <sc-switch
     @change=${e => document.querySelector('#test-switch').active = e.detail.value}
   ></sc-switch>
@@ -35,6 +37,7 @@ const template = html\`<sc-switch></sc-switch>\`;
 
 <h3>Styling</h3>
 <sc-editor
+  style="width: 500px;"
   save-button
   value="\
 #test-switch {

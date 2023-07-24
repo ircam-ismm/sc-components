@@ -22,14 +22,16 @@ const template = html\`
 <h3>Attributes</h3>
 
 <div>
-  <sc-text readonly>[language="javascript"]</sc-text>
+  <sc-text>[language="javascript"]</sc-text>
   <sc-text
+    editable
     @change=${e => document.querySelector('#test-code-example').language = e.detail.value}
   >javascript</sc-text>
 </div>
 
 <h3>Styling</h3>
 <sc-editor
+  style="width: 500px;"
   save-button
   value="\
 #test-code-example {

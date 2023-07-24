@@ -10,7 +10,9 @@ export const template = html`
 import { html } from 'lit';
 import '@ircam/sc-components/sc-transport.js';
 
-const template = html\`<sc-transport></sc-transport>\`;
+const template = html\`
+  <sc-transport></sc-transport>
+\`;
 `}</sc-code-example>
 
 <sc-transport
@@ -20,28 +22,31 @@ const template = html\`<sc-transport></sc-transport>\`;
 
 <h3>Events</h3>
 <p>
-  <sc-text readonly>@change</sc-text>
-  <sc-text readonly id="transport-input"></sc-text>
+  <sc-text>@change</sc-text>
+  <sc-text id="transport-input"></sc-text>
 </p>
 
 <h3>Attributes</h3>
 <div>
   <p>define which button(s) should be displayed</p>
-  <sc-text style="width: 260px;" readonly>[buttons=["play", "pause", "stop"]]</sc-text>
+  <sc-text style="width: 260px;">[buttons=["play", "pause", "stop"]]</sc-text>
   <sc-text
+    editable
     @change=${e => document.querySelector('#test-transport').buttons = JSON5.parse(e.detail.value)}
   >["play", "pause", "stop"]</sc-text>
 </div>
-<p>note that "value" and "state" are aliases</p>
+<p>set component state to one of the <code>buttons</code> value, note that "value" and "state" are aliases</p>
 <div>
-  <sc-text readonly>[state=null]</sc-text>
+  <sc-text>[state=null]</sc-text>
   <sc-text
+    editable
     @change=${e => document.querySelector('#test-transport').state = e.detail.value}
   ></sc-text>
 </div>
 <div>
-  <sc-text readonly>[value=null]</sc-text>
+  <sc-text>[value=null]</sc-text>
   <sc-text
+    editable
     @change=${e => document.querySelector('#test-transport').value = e.detail.value}
   ></sc-text>
 </div>

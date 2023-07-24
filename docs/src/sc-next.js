@@ -9,7 +9,9 @@ export const template = html`
 import { html } from 'lit';
 import '@ircam/sc-components/sc-next.js';
 
-const template = html\`<sc-next></sc-next>\`;
+const template = html\`
+  <sc-next></sc-next>
+\`;
 `}</sc-code-example>
 
 <sc-next
@@ -19,12 +21,13 @@ const template = html\`<sc-next></sc-next>\`;
 
 <h3>Events</h3>
 <p>
-  <sc-text readonly>@input</sc-text>
+  <sc-text>@input</sc-text>
   <sc-bang id="next-input"></sc-bang>
 </p>
 
 <h3>Styling</h3>
 <sc-editor
+  style="width: 500px;"
   save-button
   value="\
 #test-next {

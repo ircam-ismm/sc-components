@@ -128,7 +128,6 @@ class ScMatrix extends ScElement {
   }
 
   set states(states) {
-    console.log(states);
     this._states = states;
 
     // check existing values against new states
