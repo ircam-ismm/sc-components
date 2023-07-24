@@ -3,7 +3,7 @@
 
 <h2>sc-editor</h2>
 
-<sc-code-example language="javascript">${"\nimport { html } from 'lit';\nimport '@ircam/sc-components/sc-editor.js';\n\nconst template = html`<sc-editor></sc-editor>`;\n"}</sc-code-example>
+<sc-code-example language="javascript">${"\nimport { html } from 'lit';\nimport '@ircam/sc-components/sc-editor.js';\n\nconst template = html`\n  <sc-editor></sc-editor>\n`;\n"}</sc-code-example>
 
 <sc-editor
   id="test-editor"
@@ -18,14 +18,14 @@ function test() {
 
 <h3>Events</h3>
 <div>
-  <sc-text readonly>@change</sc-text>
+  <sc-text>@change</sc-text>
   <sc-editor id="editor-change"></sc-bang>
 </div>
 
 <h3>Attributes</h3>
 
 <div>
-  <sc-text readonly>[value='']</sc-text>
+  <sc-text>[value='']</sc-text>
   <sc-editor
     save-button
     value="const myValue = true;"
@@ -33,14 +33,14 @@ function test() {
   ></sc-editor>
 </div>
 <div>
-  <sc-text readonly>[save-button=false]</sc-text>
+  <sc-text>[save-button=false]</sc-text>
   <sc-toggle
     @change=${t=>document.querySelector("#test-editor").saveButton=t.detail.value}
   ></sc-toggle>
   <pre><code class="language-markdown">Note that the button only appears whens the editor is in "dirty" state</pre></code>
 </div>
 <div>
-  <sc-text readonly>[dirty=false]</sc-text>
+  <sc-text>[dirty=false]</sc-text>
   <sc-toggle
     @change=${t=>document.querySelector("#test-editor").dirty=t.detail.value}
   ></sc-toggle>
@@ -48,6 +48,7 @@ function test() {
 
 <h3>Styling</h3>
 <sc-editor
+  style="width: 500px;"
   save-button
   value="\
 #test-editor {

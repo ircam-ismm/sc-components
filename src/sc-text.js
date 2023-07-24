@@ -11,7 +11,9 @@ export const template = html`
 import { html } from 'lit';
 import '@ircam/sc-components/sc-text.js';
 
-const template = html\`<sc-text>Hello!</sc-text>\`;
+const template = html\`
+  <sc-text>Hello!</sc-text>
+\`;
 `}</sc-code-example>
 
 <sc-text
@@ -30,20 +32,20 @@ When editable, the behavior is as follows:
 
 <h3>Attributes</h3>
 <div>
-  <sc-text readonly>[value='']</sc-text>
+  <sc-text>[value='']</sc-text>
   <sc-text
     editable
     @change=${e => document.querySelector('#test-text').value = e.detail.value}
   >Hello!</sc-text>
 </div>
 <div>
-  <sc-text readonly>[editable=false]</sc-text>
+  <sc-text>[editable=false]</sc-text>
   <sc-toggle
     @change=${e => document.querySelector('#test-text').editable = e.detail.value}
   ></sc-toggle>
 </div>
 <div>
-  <sc-text readonly>[?disabled=false]</sc-text>
+  <sc-text>[?disabled=false]</sc-text>
   <sc-toggle
     @change=${e => document.querySelector('#test-text').disabled = e.detail.value}
   ></sc-toggle>
@@ -51,8 +53,9 @@ When editable, the behavior is as follows:
 
 <h3>Events</h3>
 <div>
-  <sc-text readonly>@change</sc-text>
-  <sc-text readonly id="text-change"></sc-text>
+  <p>if editable, the change event is trigerred on Cmd+S and on blur</p>
+  <sc-text>@change</sc-text>
+  <sc-text id="text-change"></sc-text>
 </div>
 <sc-code-example language="html">
 ${`\
@@ -63,6 +66,7 @@ ${`\
 
 <h3>Styling</h3>
 <sc-editor
+  style="width: 500px;"
   save-button
   value="\
 #test-text {
@@ -79,5 +83,5 @@ ${`\
 ></sc-editor>
 
 <!-- testing -->
-<!-- <sc-text readonly>${myVar}</sc-text> -->
+<!-- <sc-text>${myVar}</sc-text> -->
 `;

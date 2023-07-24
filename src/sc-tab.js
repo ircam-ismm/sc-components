@@ -1,7 +1,7 @@
 import { html } from 'lit';
 import applyStyle from './utils/applyStyle.js';
 
-const testArray = ['a', 'b', 'c', 'g'];
+const testArray = ['a', 'b', 'c', 'd'];
 
 export const template = html`
 
@@ -26,8 +26,8 @@ const template = html\`
 
 <h3>Events</h3>
 <div>
-  <sc-text readonly>@change</sc-text>
-  <sc-text readonly id="options-value"></sc-text>
+  <sc-text>@change</sc-text>
+  <sc-text id="options-value"></sc-text>
 </div>
 <sc-code-example language="html">${`
 <sc-tab
@@ -37,7 +37,7 @@ const template = html\`
 
 <h3>Attributes</h3>
 <div>
-  <sc-text readonly>[value=null]</sc-text>
+  <sc-text>[value=null]</sc-text>
   <sc-tab
     id="tab-change"
     options="${JSON.stringify(testArray)}"
@@ -45,7 +45,7 @@ const template = html\`
   ></sc-tab>
 </div>
 <div>
-  <sc-text readonly>options=[]</sc-text>
+  <sc-text>options=[]</sc-text>
   <sc-editor
     save-button
     value="${JSON.stringify(testArray)}"
@@ -56,7 +56,7 @@ const template = html\`
   ></sc-editor>
 </div>
 <div>
-  <sc-text readonly>[orientation="vertical"]</sc-text>
+  <sc-text>[orientation="vertical"]</sc-text>
   <sc-tab
     options="${JSON.stringify(['vertical', 'horizontal'])}"
     value="horizontal"
@@ -64,7 +64,7 @@ const template = html\`
   ></sc-tab>
 </div>
 <!-- <div>
-  <sc-text readonly>[?disabled=false]</sc-text>
+  <sc-text>[?disabled=false]</sc-text>
   <sc-toggle
     @change=${e => document.querySelector('#test-tab').disabled = e.detail.value}
   ></sc-toggle>
@@ -72,6 +72,7 @@ const template = html\`
 
 <h3>Styling</h3>
 <sc-editor
+  style="width: 500px;"
   save-button
   value="\
 #test-tab {

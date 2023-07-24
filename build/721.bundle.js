@@ -3,7 +3,7 @@
 
 <h2>sc-tap-tempo</h2>
 
-<sc-code-example language="javascript">${"\nimport { html } from 'lit';\nimport '@ircam/sc-components/sc-tap-tempo.js';\n\nconst template = html`<sc-tap-tempo>tap</sc-tap-tempo>`;\n"}</sc-code-example>
+<sc-code-example language="javascript">${"\nimport { html } from 'lit';\nimport '@ircam/sc-components/sc-tap-tempo.js';\n\nconst template = html`\n  <sc-tap-tempo>tap</sc-tap-tempo>\n`;\n"}</sc-code-example>
 
 <sc-tap-tempo
   id="test-tap-tempo"
@@ -13,12 +13,13 @@
 <h3>Events</h3>
 
 <div>
-  <sc-text readonly>@change</sc-text>
+  <sc-text>@change</sc-text>
   <sc-number id="tap-tempo-change"></sc-number>
 </div>
 
 <h3>Styling</h3>
 <sc-editor
+  style="width: 500px;"
   save-button
   value="\
 #test-tap-tempo {

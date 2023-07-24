@@ -3,7 +3,7 @@
 
 <h2>sc-flash</h2>
 
-<sc-code-example language="javascript">${"import { html } from 'lit';\nimport '@ircam/sc-components/sc-flash.js';\n\nconst template = html`<sc-flash></sc-flash>`;\n"}</sc-code-example>
+<sc-code-example language="javascript">${"import { html } from 'lit';\nimport '@ircam/sc-components/sc-flash.js';\n\nconst template = html`\n  <sc-flash></sc-flash>\n`;\n"}</sc-code-example>
 
 <sc-flash
   id="test-flash"
@@ -12,7 +12,7 @@
 
 <h3>Attributes</h3>
 <div>
-  <sc-text readonly>[active=false]</sc-text>
+  <sc-text>[active=false]</sc-text>
   <sc-bang
     @input=${t=>document.querySelector("#test-flash").active=!0}
   ></sc-bang>
@@ -22,7 +22,7 @@
 
 <div>
   <p>duration of the flash, expressed in seconds:</p>
-  <sc-text readonly>[duration=0.05]</sc-text>
+  <sc-text>[duration=0.05]</sc-text>
   <sc-number
     value="0.05"
     min="0.01"
@@ -34,6 +34,7 @@
 
 <h3>Styling</h3>
 <sc-editor
+  style="width: 500px;"
   save-button
   value="\
 #test-flash {

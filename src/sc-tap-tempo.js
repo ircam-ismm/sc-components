@@ -10,7 +10,9 @@ export const template = html`
 import { html } from 'lit';
 import '@ircam/sc-components/sc-tap-tempo.js';
 
-const template = html\`<sc-tap-tempo>tap</sc-tap-tempo>\`;
+const template = html\`
+  <sc-tap-tempo>tap</sc-tap-tempo>
+\`;
 `}</sc-code-example>
 
 <sc-tap-tempo
@@ -21,12 +23,13 @@ const template = html\`<sc-tap-tempo>tap</sc-tap-tempo>\`;
 <h3>Events</h3>
 
 <div>
-  <sc-text readonly>@change</sc-text>
+  <sc-text>@change</sc-text>
   <sc-number id="tap-tempo-change"></sc-number>
 </div>
 
 <h3>Styling</h3>
 <sc-editor
+  style="width: 500px;"
   save-button
   value="\
 #test-tap-tempo {

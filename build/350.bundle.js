@@ -3,7 +3,7 @@
 
 <h2>sc-dial</h2>
 
-<sc-code-example language="javascript">${"\nimport { html } from 'lit';\nimport '@ircam/sc-components/sc-dial.js';\n\nconst template = html`<sc-dial></sc-dial>`;\n"}</sc-code-example>
+<sc-code-example language="javascript">${"\nimport { html } from 'lit';\nimport '@ircam/sc-components/sc-dial.js';\n\nconst template = html`\n  <sc-dial></sc-dial>\n`;\n"}</sc-code-example>
 
 <sc-dial
   id="test-dial"
@@ -13,43 +13,43 @@
 
 <h3>Events</h3>
 <div>
-  <sc-text readonly>@input</sc-text>
+  <sc-text>@input</sc-text>
   <sc-number id="dial-input"></sc-number>
 </div>
 <div>
-  <sc-text readonly>@change</sc-text>
+  <sc-text>@change</sc-text>
   <sc-number id="dial-change"></sc-number>
 </div>
 
 <h3>Attributes</h3>
 <div>
-  <sc-text readonly>[min=0]</sc-text>
+  <sc-text>[min=0]</sc-text>
   <sc-number
     @change=${t=>document.querySelector("#test-dial").min=t.detail.value}
   >0</sc-number>
 </div>
 <div>
-  <sc-text readonly>[max=1]</sc-text>
+  <sc-text>[max=1]</sc-text>
   <sc-number
     value="1"
     @change=${t=>document.querySelector("#test-dial").max=t.detail.value}
   >1</sc-number>
 </div>
 <div>
-  <sc-text readonly>[value=0]</sc-text>
+  <sc-text>[value=0]</sc-text>
   <sc-number
     @input=${t=>document.querySelector("#test-dial").value=t.detail.value}
   >0</sc-number>
 </div>
 <div>
-  <sc-text readonly>[show-value=true]</sc-text>
+  <sc-text>[show-value=true]</sc-text>
   <sc-toggle
     active
     @change=${t=>document.querySelector("#test-dial").showValue=t.detail.value}
   >0</sc-toggle>
 </div>
 <div>
-  <sc-text readonly>[?disabled=false]</sc-text>
+  <sc-text>[?disabled=false]</sc-text>
   <sc-toggle
     @change=${t=>document.querySelector("#test-dial").disabled=t.detail.value}
   ></sc-toggle>
@@ -57,6 +57,7 @@
 
 <h3>Styling</h3>
 <sc-editor
+  style="width: 500px;"
   save-button
   value="\
 #test-dial {

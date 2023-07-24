@@ -3,7 +3,7 @@
 
 <h2>sc-next</h2>
 
-<sc-code-example language="javascript">${"import { html } from 'lit';\nimport '@ircam/sc-components/sc-next.js';\n\nconst template = html`<sc-next></sc-next>`;\n"}</sc-code-example>
+<sc-code-example language="javascript">${"import { html } from 'lit';\nimport '@ircam/sc-components/sc-next.js';\n\nconst template = html`\n  <sc-next></sc-next>\n`;\n"}</sc-code-example>
 
 <sc-next
   id="test-next"
@@ -12,12 +12,13 @@
 
 <h3>Events</h3>
 <p>
-  <sc-text readonly>@input</sc-text>
+  <sc-text>@input</sc-text>
   <sc-bang id="next-input"></sc-bang>
 </p>
 
 <h3>Styling</h3>
 <sc-editor
+  style="width: 500px;"
   save-button
   value="\
 #test-next {

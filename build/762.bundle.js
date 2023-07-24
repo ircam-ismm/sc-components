@@ -3,7 +3,7 @@
 
 <h2>sc-record</h2>
 
-<sc-code-example language="javascript">${"import { html } from 'lit';\nimport '@ircam/sc-components/sc-record.js';\n\nconst template = html`<sc-record></sc-record>`;\n"}</sc-code-example>
+<sc-code-example language="javascript">${"import { html } from 'lit';\nimport '@ircam/sc-components/sc-record.js';\n\nconst template = html`\n  <sc-record></sc-record>\n`;\n"}</sc-code-example>
 
 <sc-record
   id="test-record"
@@ -12,13 +12,13 @@
 
 <h3>Events</h3>
 <p>
-  <sc-text readonly>@change</sc-text>
+  <sc-text>@change</sc-text>
   <sc-toggle id="record-change"></sc-toggle>
 </p>
 
 <h3>Attributes</h3>
 <div>
-  <sc-text readonly>[active=false]</sc-text>
+  <sc-text>[active=false]</sc-text>
   <sc-toggle
     @change=${t=>document.querySelector("#test-record").active=t.detail.value}
   ></sc-toggle>
@@ -27,6 +27,7 @@
 
 <h3>Styling</h3>
 <sc-editor
+  style="width: 500px;"
   save-button
   value="\
 #test-record {

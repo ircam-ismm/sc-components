@@ -3,7 +3,7 @@
 
 <h2>sc-prev</h2>
 
-<sc-code-example language="javascript">${"import { html } from 'lit';\nimport '@ircam/sc-components/sc-prev.js';\n\nconst template = html`<sc-prev></sc-prev>`;\n"}</sc-code-example>
+<sc-code-example language="javascript">${"import { html } from 'lit';\nimport '@ircam/sc-components/sc-prev.js';\n\nconst template = html`\n  <sc-prev></sc-prev>\n`;\n"}</sc-code-example>
 
 <sc-prev
   id="test-prev"
@@ -12,12 +12,13 @@
 
 <h3>Events</h3>
 <p>
-  <sc-text readonly>@input</sc-text>
+  <sc-text>@input</sc-text>
   <sc-bang id="prev-input"></sc-bang>
 </p>
 
 <h3>Styling</h3>
 <sc-editor
+  style="width: 500px;"
   save-button
   value="\
 #test-prev {

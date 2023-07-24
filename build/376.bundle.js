@@ -2,20 +2,20 @@
 
 <h2>sc-signal</h2>
 
-<sc-code-example language="javascript">${"\nimport { html } from 'lit';\nimport '@ircam/sc-components/sc-signal.js';\n\nconst template = html`<sc-signal></sc-signal>`;\n"}</sc-code-example>
+<sc-code-example language="javascript">${"\nimport { html } from 'lit';\nimport '@ircam/sc-components/sc-signal.js';\n\nconst template = html`\n  <sc-signal></sc-signal>\n`;\n"}</sc-code-example>
 
 <sc-signal id="test-signal"></sc-signal>
 
 <h3>Properties</h3>
 
 <div>
-  <sc-text readonly>.value={ time, data[] }</sc-text>
+  <sc-text>.value={ time, data[] }</sc-text>
   <sc-code-example language="javascript">${"\nrender(html`<sc-signal></sc-signal>`, $container);\n\nconst $signal = $container.querySelector('sc-signal');\n\nsetInterval(() => {\n  const frame = {\n    time: Date.now() / 1000, // time is is seconds\n    data: [Math.random()],\n  }\n\n  $signal.value = frame;\n}, 100);\n  "}</sc-code-example>
 </div>
 
 <h3>Attributes</h3>
 <div>
-  <sc-text readonly>[duration=1]</sc-text>
+  <sc-text>[duration=1]</sc-text>
   <sc-number
     min="0.5"
     max="10"
@@ -24,7 +24,7 @@
   ></sc-number>
 </div>
 <div>
-  <sc-text readonly>[min=-1]</sc-text>
+  <sc-text>[min=-1]</sc-text>
   <sc-number
     min="-10"
     max="0"
@@ -33,7 +33,7 @@
   ></sc-number>
 </div>
 <div>
-  <sc-text readonly>[max=1]</sc-text>
+  <sc-text>[max=1]</sc-text>
   <sc-number
     min="0"
     max="10"
@@ -42,7 +42,7 @@
   ></sc-number>
 </div>
 <div>
-  <sc-text readonly>[line-width=1]</sc-text>
+  <sc-text>[line-width=1]</sc-text>
   <sc-number
     min="1"
     max="10"
@@ -51,14 +51,15 @@
   ></sc-number>
 </div>
 <div>
-  <sc-text readonly>[colors=[]]</sc-text>
+  <sc-text>[colors=[]]</sc-text>
   <sc-text
+    editable
     style="width: 500px;"
     @change=${e=>document.querySelector("#test-signal").colors=l.parse(e.detail.value)}
   >['#4682B4', '#ffa500', '#00e600', '#ff0000', '#800080', '#224153']</sc-text>
 </div>
 <div>
-  <sc-text readonly>[?min-max=true]</sc-text>
+  <sc-text>[?min-max=true]</sc-text>
   <sc-toggle
     @change=${e=>document.querySelector("#test-signal").minMax=e.detail.value}
   ></sc-toggle>
@@ -66,6 +67,7 @@
 
 <h3>Styling</h3>
 <sc-editor
+  style="width: 500px;"
   save-button
   value="\
 #test-signal {

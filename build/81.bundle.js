@@ -1,8 +1,8 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[81],{9081:(e,t,a)=>{a.r(t),a.d(t,{template:()=>i});var c=a(9392),r=a(1142),s=a(4670);const i=c.dy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[81],{9081:(e,t,c)=>{c.r(t),c.d(t,{template:()=>i});var a=c(9392),s=c(1142),r=c(4670);const i=a.dy`
 
 <h2>sc-matrix</h2>
 
-<sc-code-example language="javascript">${"\nimport { html } from 'lit';\nimport '@ircam/sc-components/sc-matrix.js';\n\nconst template = html`<sc-matrix></sc-matrix>`;\n"}</sc-code-example>
+<sc-code-example language="javascript">${"\nimport { html } from 'lit';\nimport '@ircam/sc-components/sc-matrix.js';\n\nconst template = html`\n  <sc-matrix></sc-matrix>\n`;\n"}</sc-code-example>
 
 <sc-matrix
   id="test-matrix"
@@ -12,13 +12,13 @@
 <h3>Events</h3>
 
 <div>
-  <sc-text readonly>@change</sc-text>
-  <sc-text readonly style="width: 300px; height: 150px;" id="matrix-change"></sc-text>
+  <sc-text>@change</sc-text>
+  <sc-text style="width: 300px; height: 150px;" id="matrix-change"></sc-text>
 </div>
 
 <h3>Attributes</h3>
 <div>
-  <sc-text readonly>[rows=4]</sc-text>
+  <sc-text>[rows=4]</sc-text>
   <sc-number
     integer
     min="1"
@@ -28,7 +28,7 @@
   ></sc-number>
 </div>
 <div>
-  <sc-text readonly>[columns=8]</sc-text>
+  <sc-text>[columns=8]</sc-text>
   <sc-number
     integer
     min="1"
@@ -38,7 +38,7 @@
   ></sc-number>
 </div>
 <div>
-  <sc-text readonly>[?reset=false]</sc-text>
+  <sc-text>[?reset=false]</sc-text>
   <sc-bang
     @input=${e=>document.querySelector("#test-matrix").reset=e.detail.value}
   ></sc-bang>
@@ -46,18 +46,20 @@
 
 <h3>Properties</h3>
 <div>
-  <p>The different values a cell can take</p>
-  <sc-text readonly>[.states=[0, 1]]</sc-text>
+  <p>the different values a cell can take</p>
+  <sc-text>[.states=[0, 1]]</sc-text>
   <sc-text
-    @change=${e=>document.querySelector("#test-matrix").states=r.parse(e.detail.value)}
+    editable
+    @change=${e=>document.querySelector("#test-matrix").states=s.parse(e.detail.value)}
   >[0, 0.5, 1]</sc-text>
 </div>
 <div>
-  <p>Change the whole matrix state at once</p>
-  <sc-text readonly>[.value=[]]</sc-text>
+  <p>changes the whole matrix state at once</p>
+  <sc-text>[.value=[]]</sc-text>
   <sc-text
+    editable
     style="height: 80px;"
-    @change=${e=>document.querySelector("#test-matrix").value=r.parse(e.detail.value)}
+    @change=${e=>document.querySelector("#test-matrix").value=s.parse(e.detail.value)}
   >[
   [0, 1],
   [1, 0],
@@ -66,8 +68,8 @@
 
 <h3>Styling</h3>
 <sc-editor
-  save-button
   style="width: 500px;"
+  save-button
   value="\
 #test-matrix {
   width: 300px;
@@ -79,7 +81,7 @@
   --sc-matrix-cell-border: var(--sc-color-primary-5);
 }
   "
-  @change=${e=>(0,s.default)(e.detail.value)}
+  @change=${e=>(0,r.default)(e.detail.value)}
 ></sc-editor>
 
 `}}]);

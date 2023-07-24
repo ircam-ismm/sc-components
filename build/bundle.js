@@ -1110,7 +1110,7 @@ span.CodeMirror-selectedtext { background: none; }
       stroke: var(--sc-matrix-cell-border);
       shape-rendering: crispedges;
     }
-  `;set rows(e){e<1?console.warn("sc-matrix: Invalid value for rows, should be >= 1"):(this._rows=e,this._resizeMatrix())}get rows(){return this._rows}set columns(e){e<1?console.warn("sc-matrix: Invalid value for columns, should be >= 1"):(this._columns=e,this._resizeMatrix())}get columns(){return this._columns}set value(e){this._value=e,this._rows=this._value.length,this._columns=this._value[0].length,this.requestUpdate()}get value(){return this._value}set reset(e){this._value.forEach((e=>{for(let t=0;t<e.length;t++)e[t]=this._states[0]})),this.requestUpdate(),this._emitChange()}get reset(){}set states(e){console.log(e),this._states=e;for(let e=0;e<this._value.length;e++){const t=this._value[e];for(let n=0;n<t.length;n++){const r=t[n];if(-1===this._states.indexOf(r)){const t=this.states.reduce(((e,t)=>Math.abs(t-r)<Math.abs(e-r)?t:e));this._value[e][n]=t}}}this._emitChange(),this.requestUpdate()}get states(){return this._states}constructor(){super(),this._value=[],this._states=[0,1],this._width=300,this._height=200,this._resizeObserver=null,this.columns=8,this.rows=4}render(){const e=this._width/this.columns,t=this._height/this.rows,n=this._states[0],r=this._states[this._states.length-1];return $`
+  `;set rows(e){e<1?console.warn("sc-matrix: Invalid value for rows, should be >= 1"):(this._rows=e,this._resizeMatrix())}get rows(){return this._rows}set columns(e){e<1?console.warn("sc-matrix: Invalid value for columns, should be >= 1"):(this._columns=e,this._resizeMatrix())}get columns(){return this._columns}set value(e){this._value=e,this._rows=this._value.length,this._columns=this._value[0].length,this.requestUpdate()}get value(){return this._value}set reset(e){this._value.forEach((e=>{for(let t=0;t<e.length;t++)e[t]=this._states[0]})),this.requestUpdate(),this._emitChange()}get reset(){}set states(e){this._states=e;for(let e=0;e<this._value.length;e++){const t=this._value[e];for(let n=0;n<t.length;n++){const r=t[n];if(-1===this._states.indexOf(r)){const t=this.states.reduce(((e,t)=>Math.abs(t-r)<Math.abs(e-r)?t:e));this._value[e][n]=t}}}this._emitChange(),this.requestUpdate()}get states(){return this._states}constructor(){super(),this._value=[],this._states=[0,1],this._width=300,this._height=200,this._resizeObserver=null,this.columns=8,this.rows=4}render(){const e=this._width/this.columns,t=this._height/this.rows,n=this._states[0],r=this._states[this._states.length-1];return $`
       <svg @contextmenu="${this._preventContextMenu}">
         <g>
           ${this.value.map(((i,a)=>{const o=a*t;return i.map(((i,s)=>z`
@@ -1616,7 +1616,7 @@ span.CodeMirror-selectedtext { background: none; }
         white-space: pre;
         background-color: var(--sc-color-primary-4);
         border: 1px solid var(--sc-color-primary-4);
-        padding: 6px 6px 6px 6px;
+        padding: 5px 6px;
         outline: none;
       }
 

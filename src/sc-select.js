@@ -15,7 +15,7 @@ import '@ircam/sc-components/sc-select.js';
 
 const template = html\`
   <sc-select
-    options="\${JSON.stringify(['a', 'b', 'c', 'd'])}"
+    options="\${JSON.stringify(['a', true, 43, 'g'])}"
   ></sc-select>
 \`;
 `}</sc-code-example>
@@ -29,8 +29,8 @@ const template = html\`
 
 <h3>Events</h3>
 <div>
-  <sc-text readonly>@change</sc-text>
-  <sc-text readonly id="options-value"></sc-text>
+  <sc-text>@change</sc-text>
+  <sc-text id="options-value"></sc-text>
 </div>
 <sc-code-example language="html">${`
 <sc-select
@@ -41,7 +41,7 @@ const template = html\`
 
 <h3>Attributes</h3>
 <div>
-  <sc-text readonly>[value=null]</sc-text>
+  <sc-text>[value=null]</sc-text>
   <sc-select
     id="radio-change"
     options="${JSON.stringify(testData)}"
@@ -49,10 +49,11 @@ const template = html\`
   ></sc-select>
 </div>
 <div>
-  <sc-text readonly>options=[]</sc-text>
+  <p>if an object is given, the key will be used as the option text and the value as the value</p>
+  <sc-text>options=[]</sc-text>
   <sc-editor
     save-button
-    value="${JSON.stringify(testData)}"
+    value="${JSON.stringify({ a: true, b: 42 }, null, 2)}"
     @change=${e => {
       document.querySelector('#test-select').options = JSON.parse(e.detail.value);
       document.querySelector('#radio-change').options = JSON.parse(e.detail.value);
@@ -60,13 +61,14 @@ const template = html\`
   ></sc-editor>
 </div>
 <div>
-  <sc-text readonly>[placeholder='']</sc-text>
+  <sc-text>[placeholder='']</sc-text>
   <sc-text
+    editable
     @change=${e => document.querySelector('#test-select').placeholder = e.detail.value}
   ></sc-text>
 </div>
 <div>
-  <sc-text readonly>[?disabled=false]</sc-text>
+  <sc-text>[?disabled=false]</sc-text>
   <sc-toggle
     @change=${e => document.querySelector('#test-select').disabled = e.detail.value}
   ></sc-toggle>
@@ -74,6 +76,7 @@ const template = html\`
 
 <h3>Styling</h3>
 <sc-editor
+  style="width: 500px;"
   save-button
   value="\
 #test-select {

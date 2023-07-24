@@ -3,7 +3,7 @@
 
 <h2>sc-slider</h2>
 
-<sc-code-example language="javascript">${"\nimport { html } from 'lit';\nimport '@ircam/sc-components/sc-slider.js';\n\nconst template = html`<sc-slider></sc-slider>`;\n"}</sc-code-example>
+<sc-code-example language="javascript">${"\nimport { html } from 'lit';\nimport '@ircam/sc-components/sc-slider.js';\n\nconst template = html`\n  <sc-slider></sc-slider>\n`;\n"}</sc-code-example>
 
 <sc-slider
   id="test-slider"
@@ -13,48 +13,48 @@
 
 <h3>Events</h3>
 <div>
-  <sc-text readonly>@input</sc-text>
+  <sc-text>@input</sc-text>
   <sc-number id="slider-input"></sc-number>
 </div>
 <div>
-  <sc-text readonly>@change</sc-text>
+  <sc-text>@change</sc-text>
   <sc-number id="slider-change"></sc-number>
 </div>
 
 
 <h3>Attributes</h3>
 <div>
-  <sc-text readonly>[min=0]</sc-text>
+  <sc-text>[min=0]</sc-text>
   <sc-number value="0" integer
     @input=${t=>document.querySelector("#test-slider").min=t.detail.value}
   ></sc-number>
 </div>
 <div>
-  <sc-text readonly>[max=1]</sc-text>
+  <sc-text>[max=1]</sc-text>
   <sc-number value="1" integer
     @input=${t=>document.querySelector("#test-slider").max=t.detail.value}
   ></sc-number>
 </div>
 <div>
-  <sc-text readonly>[value=0.5]</sc-text>
+  <sc-text>[value=0.5]</sc-text>
   <sc-number value="0.5"
     @input=${t=>document.querySelector("#test-slider").value=t.detail.value}
   ></sc-number>
 </div>
 <div>
-  <sc-text readonly>[step=0.001]</sc-text>
+  <sc-text>[step=0.001]</sc-text>
   <sc-number value="0.001"
     @input=${t=>document.querySelector("#test-slider").step=t.detail.value}
   ></sc-number>
 </div>
 <div>
-  <sc-text readonly>[?number-box=false]</sc-text>
+  <sc-text>[?number-box=false]</sc-text>
   <sc-toggle
     @change=${t=>document.querySelector("#test-slider").numberBox=t.detail.value}
   ></sc-toggle>
 </div>
 <div>
-  <sc-text readonly>[orientation="horizontal"]</sc-text>
+  <sc-text>[orientation="horizontal"]</sc-text>
   <sc-radio
     options=${JSON.stringify(["horizontal","vertical"])}
     value="horizontal"
@@ -62,13 +62,13 @@
   ></sc-radio>
 </div>
 <div>
-  <sc-text readonly>[?relative=false]</sc-text>
+  <sc-text>[?relative=false]</sc-text>
   <sc-toggle
     @change=${t=>document.querySelector("#test-slider").relative=t.detail.value}
   ></sc-toggle>
 </div>
 <div>
-  <sc-text readonly>[?disabled=false]</sc-text>
+  <sc-text>[?disabled=false]</sc-text>
   <sc-toggle
     @change=${t=>document.querySelector("#test-slider").disabled=t.detail.value}
   ></sc-toggle>
@@ -76,6 +76,7 @@
 
 <h3>Styling</h3>
 <sc-editor
+  style="width: 500px;"
   save-button
   value="\
 #test-slider {

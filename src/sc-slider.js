@@ -9,7 +9,9 @@ export const template = html`
 import { html } from 'lit';
 import '@ircam/sc-components/sc-slider.js';
 
-const template = html\`<sc-slider></sc-slider>\`;
+const template = html\`
+  <sc-slider></sc-slider>
+\`;
 `}</sc-code-example>
 
 <sc-slider
@@ -20,48 +22,48 @@ const template = html\`<sc-slider></sc-slider>\`;
 
 <h3>Events</h3>
 <div>
-  <sc-text readonly>@input</sc-text>
+  <sc-text>@input</sc-text>
   <sc-number id="slider-input"></sc-number>
 </div>
 <div>
-  <sc-text readonly>@change</sc-text>
+  <sc-text>@change</sc-text>
   <sc-number id="slider-change"></sc-number>
 </div>
 
 
 <h3>Attributes</h3>
 <div>
-  <sc-text readonly>[min=0]</sc-text>
+  <sc-text>[min=0]</sc-text>
   <sc-number value="0" integer
     @input=${e => document.querySelector('#test-slider').min = e.detail.value}
   ></sc-number>
 </div>
 <div>
-  <sc-text readonly>[max=1]</sc-text>
+  <sc-text>[max=1]</sc-text>
   <sc-number value="1" integer
     @input=${e => document.querySelector('#test-slider').max = e.detail.value}
   ></sc-number>
 </div>
 <div>
-  <sc-text readonly>[value=0.5]</sc-text>
+  <sc-text>[value=0.5]</sc-text>
   <sc-number value="0.5"
     @input=${e => document.querySelector('#test-slider').value = e.detail.value}
   ></sc-number>
 </div>
 <div>
-  <sc-text readonly>[step=0.001]</sc-text>
+  <sc-text>[step=0.001]</sc-text>
   <sc-number value="0.001"
     @input=${e => document.querySelector('#test-slider').step = e.detail.value}
   ></sc-number>
 </div>
 <div>
-  <sc-text readonly>[?number-box=false]</sc-text>
+  <sc-text>[?number-box=false]</sc-text>
   <sc-toggle
     @change=${e => document.querySelector('#test-slider').numberBox = e.detail.value}
   ></sc-toggle>
 </div>
 <div>
-  <sc-text readonly>[orientation="horizontal"]</sc-text>
+  <sc-text>[orientation="horizontal"]</sc-text>
   <sc-radio
     options=${JSON.stringify(['horizontal', 'vertical'])}
     value="horizontal"
@@ -69,13 +71,13 @@ const template = html\`<sc-slider></sc-slider>\`;
   ></sc-radio>
 </div>
 <div>
-  <sc-text readonly>[?relative=false]</sc-text>
+  <sc-text>[?relative=false]</sc-text>
   <sc-toggle
     @change=${e => document.querySelector('#test-slider').relative = e.detail.value}
   ></sc-toggle>
 </div>
 <div>
-  <sc-text readonly>[?disabled=false]</sc-text>
+  <sc-text>[?disabled=false]</sc-text>
   <sc-toggle
     @change=${e => document.querySelector('#test-slider').disabled = e.detail.value}
   ></sc-toggle>
@@ -83,6 +85,7 @@ const template = html\`<sc-slider></sc-slider>\`;
 
 <h3>Styling</h3>
 <sc-editor
+  style="width: 500px;"
   save-button
   value="\
 #test-slider {

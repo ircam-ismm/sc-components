@@ -9,7 +9,9 @@ export const template = html`
 import { html } from 'lit';
 import '@ircam/sc-components/sc-flash.js';
 
-const template = html\`<sc-flash></sc-flash>\`;
+const template = html\`
+  <sc-flash></sc-flash>
+\`;
 `}</sc-code-example>
 
 <sc-flash
@@ -19,7 +21,7 @@ const template = html\`<sc-flash></sc-flash>\`;
 
 <h3>Attributes</h3>
 <div>
-  <sc-text readonly>[active=false]</sc-text>
+  <sc-text>[active=false]</sc-text>
   <sc-bang
     @input=${e => document.querySelector('#test-flash').active = true}
   ></sc-bang>
@@ -38,7 +40,7 @@ html\`
 
 <div>
   <p>duration of the flash, expressed in seconds:</p>
-  <sc-text readonly>[duration=0.05]</sc-text>
+  <sc-text>[duration=0.05]</sc-text>
   <sc-number
     value="0.05"
     min="0.01"
@@ -50,6 +52,7 @@ html\`
 
 <h3>Styling</h3>
 <sc-editor
+  style="width: 500px;"
   save-button
   value="\
 #test-flash {
