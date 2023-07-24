@@ -1,7 +1,7 @@
 {
   "name": "@ircam/sc-components",
   "version": "3.0.0-alpha.14",
-  "description": "Web Components for audio interfaces and rapid prototyping",
+  "description": "Robust and easy to use Web Components focused on rapid prototyping of audio and creative applications",
   "authors": [
     "Benjamin Matuszewski",
     "Aliénor Golvet",
@@ -23,10 +23,12 @@
   },
   "homepage": "https://ircam-ismm.github.io/sc-components/",
   "keywords": [
-    "web components",
-    "gui",
-    "interfaces",
-    "web audio"
+    "lit",
+    "components",
+    "GUI",
+    "prototyping",
+    "web audio",
+    "creative coding"
   ],
   "scripts": {
     "clean": "rm -Rf vendors",
