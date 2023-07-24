@@ -9,7 +9,9 @@ export const template = html`
 import { html } from 'lit';
 import '@ircam/sc-components/sc-prev.js';
 
-const template = html\`<sc-prev></sc-prev>\`;
+const template = html\`
+  <sc-prev></sc-prev>
+\`;
 `}</sc-code-example>
 
 <sc-prev
@@ -19,12 +21,13 @@ const template = html\`<sc-prev></sc-prev>\`;
 
 <h3>Events</h3>
 <p>
-  <sc-text readonly>@input</sc-text>
+  <sc-text>@input</sc-text>
   <sc-bang id="prev-input"></sc-bang>
 </p>
 
 <h3>Styling</h3>
 <sc-editor
+  style="width: 500px;"
   save-button
   value="\
 #test-prev {

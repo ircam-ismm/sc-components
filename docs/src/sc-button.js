@@ -13,7 +13,9 @@ export const template = html`
 import { html } from 'lit';
 import '@ircam/sc-components/sc-button.js';
 
-const template = html\`<sc-button>My text</sc-button>\`;
+const template = html\`
+  <sc-button value="my-value">My text</sc-button>
+\`;
 `}</sc-code-example>
 
 <sc-button
@@ -50,19 +52,19 @@ const template = html\`<sc-button>My text</sc-button>\`;
 
 <h3>Events</h3>
 <div>
-  <sc-text readonly>@input</sc-text>
+  <sc-text>@input</sc-text>
   <sc-bang id="button-input"></sc-bang>
-  <sc-text readonly id="button-value-input"></sc-text>
+  <sc-text id="button-value-input"></sc-text>
 </div>
 <div>
-  <sc-text readonly>@press</sc-text>
+  <sc-text>@press</sc-text>
   <sc-bang id="button-press"></sc-bang>
-  <sc-text readonly id="button-value-press"></sc-text>
+  <sc-text id="button-value-press"></sc-text>
 </div>
 <div>
-  <sc-text readonly>@release</sc-text>
+  <sc-text>@release</sc-text>
   <sc-bang id="button-release"></sc-bang>
-  <sc-text readonly id="button-value-release"></sc-text>
+  <sc-text id="button-value-release"></sc-text>
 </div>
 <sc-code-example language="html">${`
 <sc-button
@@ -72,19 +74,21 @@ const template = html\`<sc-button>My text</sc-button>\`;
 
 <h3>Attributes</h3>
 <div>
-  <sc-text readonly>[value=null]</sc-text>
+  <p>value propagated within the events, defaults to null</p>
+  <sc-text>[value=null]</sc-text>
   <sc-text
+    editable
     @change=${e => document.querySelector('#test-button').value = e.detail.value}
-  ></sc-text>
+  >my-value</sc-text>
 </div>
 <div>
-  <sc-text readonly>[selected=false]</sc-text>
+  <sc-text>[selected=false]</sc-text>
   <sc-toggle
     @change=${e => document.querySelector('#test-button').selected = e.detail.value}
   ></sc-toggle>
 </div>
 <div>
-  <sc-text readonly>[?disabled=false]</sc-text>
+  <sc-text>[?disabled=false]</sc-text>
   <sc-toggle
     @change=${e => document.querySelector('#test-button').disabled = e.detail.value}
   ></sc-toggle>
@@ -92,6 +96,7 @@ const template = html\`<sc-button>My text</sc-button>\`;
 
 <h3>Styling</h3>
 <sc-editor
+  style="width: 500px;"
   save-button
   value="\
 #test-button {

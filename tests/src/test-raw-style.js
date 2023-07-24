@@ -76,8 +76,9 @@ export const template = html`
           ${comp}
         </h2>
         <${literal`${unsafeStatic(comp)}`}
+          options="${JSON.stringify(['a', 'b', 'c'])}"
           @hover=${e => console.log('hover')}
-        ></${literal`${unsafeStatic(comp)}`}>
+        >slot</${literal`${unsafeStatic(comp)}`}>
         <br />
         <p style="display: inline-block"></p>
         <button @click=${e => toggleRulers(comp)}>toggle rulers</button>

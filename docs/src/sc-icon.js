@@ -9,7 +9,12 @@ export const template = html`
 import { html } from 'lit';
 import '@ircam/sc-components/sc-icon.js';
 
-const template = html\`<sc-icon icon="question"></sc-icon>\`;
+const template = html\`
+  <sc-icon
+    icon="question"
+    value="my-icon"
+  ></sc-icon>
+\`;
 `}</sc-code-example>
 
 <sc-icon
@@ -21,8 +26,8 @@ const template = html\`<sc-icon icon="question"></sc-icon>\`;
 
 <h3>Events</h3>
 <div>
-  <sc-text readonly>@input</sc-text>
-  <sc-text readonly id="icon-input"></sc-text>
+  <sc-text>@input</sc-text>
+  <sc-text id="icon-input"></sc-text>
 </div>
 <sc-code-example language="html">${`
 <sc-icon
@@ -34,7 +39,7 @@ const template = html\`<sc-icon icon="question"></sc-icon>\`;
 
 <h3>Attributes</h3>
 <div>
-  <sc-text readonly>[icon="question"]</sc-text>
+  <sc-text>[icon="question"]</sc-text>
   <sc-radio
     options="${JSON.stringify(['question', 'info', 'github', 'burger', 'gear', 'save'])}"
     value="question"
@@ -42,19 +47,23 @@ const template = html\`<sc-icon icon="question"></sc-icon>\`;
   ></sc-radio>
 </div>
 <div>
-  <sc-text readonly>[value=null]</sc-text>
+  <p>value propagated within the event</p>
+  <sc-text>[value=null]</sc-text>
   <sc-text
+    editable
     @change=${e => document.querySelector('#test-icon').value = e.detail.value}
   ></sc-text>
 </div>
 <div>
-  <sc-text readonly>[href=null]</sc-text>
+  <p>if set, the button will act as a link with <code>target="_blank"</code></p>
+  <sc-text>[href=null]</sc-text>
   <sc-text
+    editable
     @change=${e => document.querySelector('#test-icon').href = e.detail.value}
   >https://soundworks.dev</sc-text>
 </div>
 <div>
-  <sc-text readonly>[?disabled=false]</sc-text>
+  <sc-text>[?disabled=false]</sc-text>
   <sc-toggle
     @change=${e => document.querySelector('#test-icon').disabled = e.detail.value}
   ></sc-toggle>
@@ -62,6 +71,7 @@ const template = html\`<sc-icon icon="question"></sc-icon>\`;
 
 <h3>Styling</h3>
 <sc-editor
+  style="width: 500px;"
   save-button
   value="\
 #test-icon {
