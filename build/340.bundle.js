@@ -2,7 +2,7 @@
 
 <h2>sc-dots</h2>
 
-<sc-code-example language="javascript">${`\nimport { html } from 'lit';\nimport '@ircam/sc-components/sc-dots.js';\n\nconst template = html\`\n  <sc-dots\n    .value=${[{x:.5,y:.5}]}\n  ></sc-dots>\n\`;\n`}</sc-code-example>
+<sc-code-example language="javascript">${"\nimport { html } from 'lit';\nimport '@ircam/sc-components/sc-dots.js';\n\nconst template = html`\n  <sc-dots\n    .value=${[{ x: 0.5, y: 0.5 }]}\n  ></sc-dots>\n`;\n"}</sc-code-example>
 
 <sc-dots
   id="test-dots"

@@ -36,7 +36,7 @@ import '@ircam/sc-components/sc-dots.js';
 
 const template = html\`
   <sc-dots
-    .value=${[{ x: 0.5, y: 0.5 }]}
+    .value=\${[{ x: 0.5, y: 0.5 }]}
   ></sc-dots>
 \`;
 `}</sc-code-example>

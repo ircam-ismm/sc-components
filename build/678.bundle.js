@@ -3,7 +3,7 @@
 
 <h2>sc-toggle</h2>
 
-<sc-code-example language="javascript">${"\nimport { html } from 'lit';\nimport '@ircam/sc-components/sc-toggle.js';\n\nconst template = html`<sc-toggle></sc-toggle>`;\n"}</sc-code-example>
+<sc-code-example language="javascript">${"\nimport { html } from 'lit';\nimport '@ircam/sc-components/sc-toggle.js';\n\nconst template = html`\n  <sc-toggle></sc-toggle>\n`;\n"}</sc-code-example>
 
 <sc-toggle
   id="test-toggle"
