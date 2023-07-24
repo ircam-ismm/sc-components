@@ -37,7 +37,7 @@ const template = html\`
     @input=${e => document.querySelector('#test-bang').active = true}
   ></sc-bang>
 </div>
-<p>use the "live" directive to make the element responsive to events:</p>
+<p>use the "live" directive to make the element reactive to external events:</p>
 <sc-code-example language="javascript">${`
 import { html } from 'lit';
 import { live } from 'lit/directives/live.js';

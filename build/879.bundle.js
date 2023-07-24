@@ -24,7 +24,7 @@
     @input=${t=>document.querySelector("#test-bang").active=!0}
   ></sc-bang>
 </div>
-<p>use the "live" directive to make the element responsive to events:</p>
+<p>use the "live" directive to make the element reactive to external events:</p>
 <sc-code-example language="javascript">${"\nimport { html } from 'lit';\nimport { live } from 'lit/directives/live.js';\n\nhtml`\n  <sc-bang\n    ?active=${live(myFlag)}\n  ></sc-bang>\n`;\n"}</sc-code-example>
 
 <div>

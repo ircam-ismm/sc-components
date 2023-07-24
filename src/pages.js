@@ -26,5 +26,6 @@ export default [
   'sc-loop',
   'sc-tab',
   'sc-transport',
+  'sc-keyboard',
 ].sort();
 
