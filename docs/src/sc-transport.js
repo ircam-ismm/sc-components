@@ -10,7 +10,9 @@ export const template = html`
 import { html } from 'lit';
 import '@ircam/sc-components/sc-transport.js';
 
-const template = html\`<sc-transport></sc-transport>\`;
+const template = html\`
+  <sc-transport></sc-transport>
+\`;
 `}</sc-code-example>
 
 <sc-transport

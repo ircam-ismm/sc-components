@@ -9,7 +9,9 @@ export const template = html`
 import { html } from 'lit';
 import '@ircam/sc-components/sc-toggle.js';
 
-const template = html\`<sc-toggle></sc-toggle>\`;
+const template = html\`
+  <sc-toggle></sc-toggle>
+\`;
 `}</sc-code-example>
 
 <sc-toggle
