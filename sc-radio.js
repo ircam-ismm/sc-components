@@ -118,6 +118,7 @@ class ScRadio extends ScElement {
             data-index=${index}
             name=${this._name}
             @change=${this._dispatchEvent}
+            @input=${e => e.stopPropagation()}
             ?checked=${value == this.value}
             ?disabled=${this.disabled && !(value == this.value)}
           />

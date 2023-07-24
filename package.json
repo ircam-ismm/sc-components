@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "@ircam/sc-gettime": "^1.0.1",
-    "@ircam/sc-utils": "^1.1.1",
+    "@ircam/sc-utils": "^1.2.0",
     "codemirror": "^5.55.0",
     "highlight.js": "^11.8.0",
     "lit": "^2.7.5",
