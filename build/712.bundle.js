@@ -3,7 +3,7 @@
 
 <h2>sc-keyboard</h2>
 
-<sc-code-example language="javascript">${"\nimport { html } from 'lit';\nimport '@ircam/sc-components/sc-keyboard.js';\n\nconst template = html`<sc-keyboard></sc-keyboard>`;\n"}</sc-code-example>
+<sc-code-example language="javascript">${"\nimport { html } from 'lit';\nimport '@ircam/sc-components/sc-keyboard.js';\n\nconst template = html`\n  <sc-keyboard></sc-keyboard>\n`;\n"}</sc-code-example>
 
 <sc-keyboard
   id="test-keyboard"
