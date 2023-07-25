@@ -16,6 +16,10 @@ export const template = html`
     <sc-switch></sc-switch>
   </div>
 
+  <a  href="https://badge.fury.io/js/@ircam%2Fsc-components">
+    <img alt="npm version" src="https://badge.fury.io/js/@ircam%2Fsc-components.svg" />
+  </a>
+
   <h3>Install</h3>
 
   <sc-code-example language="bash">

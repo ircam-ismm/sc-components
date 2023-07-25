@@ -2,7 +2,7 @@
 // deploying on github
 import fs from 'node:fs';
 
-import pages from '../src/pages.js';
+import pages from '../src/components.js';
 
 console.log(process.cwd());
 

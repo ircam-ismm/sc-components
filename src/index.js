@@ -5,9 +5,9 @@ import { map } from 'lit/directives/map.js';
 import applyStyle from './utils/applyStyle.js';
 
 // import lib
-import '../../index.js';
+import '../../src/index.js';
 // list of pages
-import pages from './pages.js'
+import pages from './components.js'
 
 function setTheme(name) {
   switch (name) {
