@@ -35,10 +35,12 @@
     "creative coding"
   ],
   "scripts": {
+    "build": "webpack --config webpack.config.js",
     "clean": "rm -Rf vendors",
-    "preversion": "node .bin/prepare-codemirror.js && webpack --config webpack.config.js",
-    "doc": "node .bin/prepare-codemirror.js && cd docs && npm run dev",
-    "test": "node .bin/prepare-codemirror.js && cd tests && npm run dev"
+    "preversion": "npm run vendors && npm run build",
+    "doc": "npm run vendors && cd docs && npm run dev",
+    "test": "npm run vendors && cd tests && npm run dev",
+    "vendors": "node .bin/prepare-codemirror.js"
   },
   "dependencies": {
     "@ircam/sc-gettime": "^1.0.1",
