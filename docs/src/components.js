@@ -27,5 +27,5 @@ export default [
   'sc-tab',
   'sc-transport',
   'sc-keyboard',
+  'sc-dragndrop',
 ].sort();
-

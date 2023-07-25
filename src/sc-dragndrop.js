@@ -6,76 +6,91 @@ import { fontFamily, fontSize, theme } from './styles.js';
 const audioContext = new AudioContext();
 
 class ScDragNDrop extends ScElement {
-  static get properties() {
-    return {
-      width: { type: Number },
-      height: { type: Number },
-      label: { type: String },
-      status: { type: String },
-      format: { type: String }, // "load" || "raw"
-    };
+  static properties = {
+    // "load" || "raw"
+    format: {
+      type: String,
+      reflect: true,
+    },
+    _status: {
+      type: String,
+      state: true,
+    },
+  };
+
+  static styles = css`
+    :host {
+      display: inline-block;
+      width: 300px;
+      height: 150px;
+      box-sizing: border-box;
+      user-select: none;
+      border: 1px solid var(--sc-color-primary-2);
+      background-color: var(--sc-color-primary-1);
+      border-radius: 2px;
+      font-family: var(--sc-font-family);
+      font-size: var(--sc-font-size);
+      color: white;
+
+      --sc-dragndrop-dragged-background-color: var(--sc-color-primary-2);
+      --sc-dragndrop-processing-background-color: var(--sc-color-secondary-3);
+    }
+
+    .drop-zone {
+      box-sizing: border-box;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .drop-zone.dragged {
+      background-color: var(--sc-dragndrop-dragged-background-color);
+    }
+
+    .drop-zone.processing {
+      background-color: var(--sc-dragndrop-processing-background-color);
+    }
+  `;
+
+  get format() {
+    return this._format;
   }
 
-  static get styles() {
-    return css`
-      :host {
-        display: inline-block;
-        box-sizing: border-box;
-        user-select: none;
-        vertical-align: middle;
-      }
+  set format(value) {
+    if (value !== 'load' && value !== 'raw') {
+      console.warn('sc-dragndrop: format should be either "load" or "raw"');
+      return;
+    }
 
-      .drop-zone {
-        background-color: red;
-        text-align: center;
-        vertical-align: middle;
-        background-color: ${theme['--color-primary-1']};
-        border: 1px solid ${theme['--color-primary-2']};
-        box-sizing: border-box;
-        border-radius: 2px;
-        color: white;
-        font-family: ${fontFamily};
-      }
-
-      .drop-zone.drag {
-        background-color: ${theme['--color-primary-2']};
-      }
-
-      .drop-zone.processing {
-        background-color: ${theme['--color-secondary-3']};
-      }
-    `
+    const oldValue = this._format;
+    this._format = value;
+    this.requestUpdate('format', oldValue);
   }
 
   constructor() {
     super();
 
-    this.width = 300;
-    this.height = 200;
-    this.label = 'Drag and drop Files';
-    this.status = 'idle'; // 'drag' | 'decoding'
-
-    this.format = 'load';
+    this._status = 'idle'; // 'drag' | 'processing'
+    this.format = 'load'; // load | raw
   }
 
   render() {
     const classes = {
       'drop-zone': true,
-      'drag': this.status === 'drag',
-      'processing': this.status === 'processing',
+      'dragged': this._status === 'drag',
+      'processing': this._status === 'processing',
     };
 
     return html`
       <div class="${classMap(classes)}"
-        style="
-          width: ${this.width}px;
-          height: ${this.height}px;
-          line-height: ${this.height}px;
-        "
-        @dragover="${this.onDragOver}"
-        @dragleave="${this.onDragLeave}"
-        @drop="${this.onDrop}"
-      >${this.status !== 'processing' ? this.label : 'Processing...'}</div>
+        @dragover=${this.onDragOver}
+        @dragleave=${this.onDragLeave}
+        @drop=${this.onDrop}
+      >
+        ${this._status === 'processing' ? `processing...` : html`<slot>drag and drop files</slot>`}
+      </div>
     `;
   }
 
@@ -83,19 +98,19 @@ class ScDragNDrop extends ScElement {
     e.preventDefault();
     e.dataTransfer.dropEffect = 'copy';
 
-    this.status = 'drag';
+    this._status = 'drag';
   }
 
   onDragLeave(e) {
     e.preventDefault();
 
-    this.status = 'idle';
+    this._status = 'idle';
   }
 
   onDrop(e) {
     e.preventDefault();
 
-    this.status = 'processing';
+    this._status = 'processing';
 
     if (this.format === 'load') {
       const files = Array.from(e.dataTransfer.files);
@@ -168,7 +183,7 @@ class ScDragNDrop extends ScElement {
             });
 
             this.dispatchEvent(changeEvent);
-            this.status = 'idle';
+            this._status = 'idle';
           }
         }
 
@@ -206,7 +221,9 @@ class ScDragNDrop extends ScElement {
       });
 
       this.dispatchEvent(changeEvent);
-      this.status = 'idle';
+
+      this._status = 'idle';
+
     } else {
       console.log(`Unknow format: "${this.format}"`)
     }

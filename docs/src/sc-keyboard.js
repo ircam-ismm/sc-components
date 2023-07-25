@@ -9,7 +9,9 @@ export const template = html`
 import { html } from 'lit';
 import '@ircam/sc-components/sc-keyboard.js';
 
-const template = html\`<sc-keyboard></sc-keyboard>\`;
+const template = html\`
+  <sc-keyboard></sc-keyboard>
+\`;
 `}</sc-code-example>
 
 <sc-keyboard
