@@ -2,9 +2,7 @@ import { html, render } from 'lit/html.js';
 import { map } from 'lit/directives/map.js';
 
 // import lib
-import '../../index.js';
-// list of pages
-import components from './components.js';
+import '../../src/index.js';
 
 // current page module
 const DEFAULT_TEST = 'raw-style';

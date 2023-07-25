@@ -8,7 +8,7 @@
 
 ## Tests
 
-- [ ] with all global css removed
+- [x] with all global css removed
 
 ## components updated
 
@@ -58,9 +58,9 @@
 - [x] sc-knob / sc-dial
 - [x] sc-select
 - [x] sc-radio
-- [x] sc-switch
 - [x] sc-tab (cf. live.tab in Max)
-- [ ] sc-keyboard
+- [x] sc-switch
+- [x] sc-keyboard
 - [ ] sc-qrcode
 - [ ] sc-multislider
 - [ ] sc-range

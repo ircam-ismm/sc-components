@@ -12,9 +12,9 @@ import 'codemirror/addon/dialog/dialog.js';
 import 'codemirror/addon/comment/comment.js';
 
 // css
-import cmStyles from './vendors/codemirror-css.js';
-import monokaiTheme from './vendors/theme-monokai-css.js';
-import addonDialog from './vendors/addon-dialog-css.js';
+import cmStyles from '../vendors/codemirror-css.js';
+import monokaiTheme from '../vendors/theme-monokai-css.js';
+import addonDialog from '../vendors/addon-dialog-css.js';
 
 
 CodeMirror.commands.save = function(cm) {

@@ -1,15 +1,13 @@
 .DS_Store
 Thumbs.db
 
+.bak
+.bin
+.github
 .babelrc
 .editorconfig
-
-vendors
-docs
-.bak
-
-.github
+webpack.config.js
 TODOS-v3.md
 
+docs
 tests
-webpack.config.js

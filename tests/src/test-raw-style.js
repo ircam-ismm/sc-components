@@ -1,6 +1,6 @@
 import { html, literal, unsafeStatic } from 'lit/static-html.js';
 import {  } from 'lit/static-html.js';
-import components from './components.js';
+import components from '../../docs/src/components.js';
 
 const rulers = new Map();
 

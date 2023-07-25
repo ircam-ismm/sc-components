@@ -8,8 +8,12 @@
     "Etienne Démoulin"
   ],
   "license": "BSD-3-Clause",
-  "main": "index.js",
+  "main": "src/index.js",
   "unpkg": "./build/bundle.js",
+  "exports": {
+    ".": "src/index.js",
+    "./": "src/"
+  },
   "type": "module",
   "publishConfig": {
     "access": "public"
@@ -32,8 +36,9 @@
   ],
   "scripts": {
     "clean": "rm -Rf vendors",
-    "postinstall": "node bin/prepare-codemirror.js",
-    "preversion": "webpack --config webpack.config.js"
+    "preversion": "node .bin/prepare-codemirror.js && webpack --config webpack.config.js",
+    "doc": "node .bin/prepare-codemirror.js && cd docs && npm run dev",
+    "test": "node .bin/prepare-codemirror.js && cd tests && npm run dev"
   },
   "dependencies": {
     "@ircam/sc-gettime": "^1.0.1",

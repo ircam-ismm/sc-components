@@ -1,5 +1,6 @@
 import { html, css, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import NP from 'number-precision';
 import ScElement from './ScElement.js';
 import { fontFamily, fontSize, theme } from './styles.js';
@@ -127,7 +128,6 @@ class ScNumber extends ScElement {
       vertical-align: top;
       text-align: center;
       position: relative;
-/*      width: 7px;*/
       height: 100%;
       display: inline-flex;
       align-items: center;
@@ -244,7 +244,7 @@ class ScNumber extends ScElement {
       parts[1] = [];
     }
 
-    const emptySpace = ' ';
+    const emptySpace = unsafeHTML('&nbsp;');
     const characterWidth = 7; // in pixels
     const isEdited = { edited: (this._numKeyPressed !== 0) };
 

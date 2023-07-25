@@ -356,7 +356,7 @@ class ScMidi extends ScElement {
     `
   }
 
-  renderDeviceMenu() {
+  renderDeviceMenu() {
     return html`
       <div id="device-menu">
         <h3>select device</h3>

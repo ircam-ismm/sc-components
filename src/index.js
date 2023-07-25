@@ -1,3 +1,9 @@
+/**
+ * @license
+ * Copyright (c) 2023-present IRCAM – Centre Pompidou (France, Paris)
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+
 import './sc-position-surface.js';
 import './sc-speed-surface.js';
 
