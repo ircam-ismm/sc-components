@@ -2,7 +2,7 @@
 
 [![npm version](https://badge.fury.io/js/@ircam%2Fsc-components.svg)](https://badge.fury.io/js/@ircam%2Fsc-components)
 
-Simple and robust Web Components for rapid prototyping audio and creative applications in the browser. 
+Simple and robust Web Component library for rapid prototyping audio and creative applications in the browser. 
 
 ![banner](./docs/assets/banner.png)
 
