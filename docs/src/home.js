@@ -4,7 +4,7 @@ export const template = html`
 <div id="homepage">
   <h2>@ircam/sc-components</h2>
 
-  <p>Web Component library for rapid prototyping audio and creative applications in the browser.</p>
+  <p>Simple and robust Web Components for rapid prototyping audio and creative applications in the browser.</p>
 
   <div id="demo">
     <sc-bang></sc-bang>
