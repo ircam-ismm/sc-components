@@ -1,7 +1,7 @@
 {
   "name": "@ircam/sc-components",
   "version": "3.0.0-alpha.15",
-  "description": "Robust and easy to use Web Components focused on rapid prototyping of audio and creative applications",
+  "description": "Simple and robust Web Components focused on rapid prototyping of audio and creative applications.",
   "authors": [
     "Benjamin Matuszewski",
     "Aliénor Golvet",

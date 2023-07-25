@@ -2,7 +2,7 @@
 
 [![npm version](https://badge.fury.io/js/@ircam%2Fsc-components.svg)](https://badge.fury.io/js/@ircam%2Fsc-components)
 
-Robust and easy to use Web Components focused on rapid prototyping of audio and creative applications. 
+Simple and robust Web Components focused on rapid prototyping of audio and creative applications. 
 
 ![banner](./docs/assets/banner.png)
 

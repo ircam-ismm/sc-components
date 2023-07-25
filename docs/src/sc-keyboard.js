@@ -28,7 +28,7 @@ const template = html\`<sc-keyboard></sc-keyboard>\`;
   <sc-text>[offset=48]</sc-text>
   <sc-number
     integer
-    min="1"
+    min="0"
     max="100"
     value="48"
     @input=${e => document.querySelector('#test-keyboard').offset = e.detail.value}
@@ -45,12 +45,35 @@ const template = html\`<sc-keyboard></sc-keyboard>\`;
   ></sc-number>
 </div>
 <div>
-  <sc-text>[input-mode='reactive']</sc-text>
+  <sc-text>[input-mode="reactive"]</sc-text>
   <sc-radio
-    options="${JSON.stringify(['reactive', 'statefull'])}"
+    options="${JSON.stringify(['reactive', 'stateful'])}"
     value="reactive"
     @change=${e => document.querySelector('#test-keyboard').inputMode = e.detail.value}
   ></sc-radio>
 </div>
+<div>
+  <p>For now "mode=polyphonic" only works if "input-mode=stateful"</p>
+  <sc-text>[mode="monophonic"]</sc-text>
+  <sc-radio
+    options="${JSON.stringify(['monophonic', 'polyphonic'])}"
+    value="monophonic"
+    @change=${e => document.querySelector('#test-keyboard').mode = e.detail.value}
+  ></sc-radio>
+</div>
 
+<h3>Styling</h3>
+<sc-editor
+  style="width: 500px;"
+  save-button
+  value="\
+#test-keyboard {
+  width: 300px;
+  height: 80px;
+
+  --sc-keyboard-active-key: var(--sc-color-secondary-2);
+}
+  "
+  @change=${e => applyStyle(e.detail.value)}
+></sc-editor>
 `;
