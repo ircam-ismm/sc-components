@@ -1,7 +1,7 @@
 import { html, svg, css, nothing } from 'lit';
 import ScElement from './ScElement.js';
-import getScale from './utils/getScale.js';
-import getClipper from './utils/getClipper.js';
+import getScale from './utils/get-scale.js';
+import getClipper from './utils/get-clipper.js';
 
 import './sc-position-surface.js';
 import './sc-number.js';

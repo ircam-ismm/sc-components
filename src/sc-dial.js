@@ -1,6 +1,6 @@
 import { html, css, svg, nothing } from 'lit';
 import ScElement from './ScElement.js';
-import getScale from './utils/getScale.js';
+import getScale from './utils/get-scale.js';
 import './sc-speed-surface.js';
 
 

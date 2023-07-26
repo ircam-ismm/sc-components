@@ -17,7 +17,7 @@ import './sc-dial.js';
 import './sc-dots.js';
 import './sc-dragndrop.js';
 import './sc-editor.js';
-// import './sc-file-tree.js';
+import './sc-filetree.js';
 import './sc-flash.js';
 import './sc-keyboard.js';
 import './sc-icon.js';

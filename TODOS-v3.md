@@ -27,7 +27,7 @@
 - [x] sc-dot-map
 - [x] sc-dragndrop
 - [x] sc-editor
-- [ ] sc-file-tree
+- [x] sc-filetree
 - [x] sc-flash
 - [x] sc-icon
 - [x] sc-loop
@@ -38,6 +38,7 @@
   + [x] use keyboard on touch screens
 - [x] sc-position-surface
 - [ ] sc-progress-bar
+  --> should we expose that?
 - [x] sc-radio
 - [x] sc-record
 - [x] sc-return -> sc-prev
