@@ -164,6 +164,10 @@ header #toggle-menu {
   line-height: 1.6rem;
 }
 
+#main section a {
+  color: #efefef;
+}
+
 #main section div {
   margin: 4px 0;
 }

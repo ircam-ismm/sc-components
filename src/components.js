@@ -28,4 +28,5 @@ export default [
   'sc-transport',
   'sc-keyboard',
   'sc-dragndrop',
+  'sc-filetree',
 ].sort();
