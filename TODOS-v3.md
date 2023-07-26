@@ -25,7 +25,7 @@
   + [ ] support keyboard arrows
   + [ ] add label (?)
 - [x] sc-dot-map
-- [ ] sc-dragndrop
+- [x] sc-dragndrop
 - [x] sc-editor
 - [ ] sc-file-tree
 - [x] sc-flash

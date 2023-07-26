@@ -60,9 +60,31 @@ render(html`
 `, document.body);
 ```
 
-## Integration with other frameworks
+## Integration
 
-The library has never been tested within other frameworks such as React or Vue.
+### Raw HTML and JS
+
+THe components can be used as raw Web Components, e.g.
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <script type="module" src="https://unpkg.com/@ircam/sc-components@latest"></script>
+</head>
+<body>
+  <sc-toggle></sc-toggle>
+  <script>
+    const $toggle = document.querySelector('sc-toggle');
+    $toggle.addEventListener('change', e => console.log('Hello toggle', e.detail.value));
+  </script>
+</body>
+<body>
+```
+
+### Others
+
+The library has not been tested yet within other frameworks such as React or Vue.
 
 Any feedback is be welcome!
 
