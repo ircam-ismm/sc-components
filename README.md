@@ -62,9 +62,9 @@ render(html`
 
 ## Integration
 
-### Raw HTML and JS
+### Raw HTML and JavaScript
 
-THe components can be used as raw Web Components, e.g.
+The components can be used without the `lit` helpers, e.g.
 
 ```html
 <!DOCTYPE html>
