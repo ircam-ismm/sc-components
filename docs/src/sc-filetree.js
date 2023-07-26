@@ -70,7 +70,7 @@ const template = html\`
 ></sc-filetree>
 
 <p>
-The data format used by the component is based on the format proposed by the <a href="https://www.npmjs.com/package/directory-tree" target="_blank">directory-tree</a> library.
+the data format used by the component is based on the format proposed by the <a href="https://www.npmjs.com/package/directory-tree" target="_blank">directory-tree</a> library.
 </p>
 
 <h3>Events</h3>
@@ -87,7 +87,7 @@ The data format used by the component is based on the format proposed by the <a 
 <h3>Properties</h3>
 <div>
   <p>
-    Add create, rename, delete interface on the filetree, be aware that the value
+    add "create", "rename", "delete" interfaces on the filetree, be aware that the value
     is never changed by the components, it only gives you commands to forward to
     another abstraction which should do the real work
   </p>
@@ -96,6 +96,7 @@ The data format used by the component is based on the format proposed by the <a 
     @change=${e => document.querySelector('#test-filetree').editable = e.detail.value}
   ></sc-toggle>
 <div>
+  <p>value of the underlying file tree</p>
   <sc-text>[.value={}]</sc-text>
   <sc-editor
     style="width: 500px; height: 500px;"
