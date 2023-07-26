@@ -165,7 +165,7 @@ header #toggle-menu {
 }
 
 #main section a {
-  color: #efefef;
+  color: inherit;
 }
 
 #main section div {
