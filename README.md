@@ -12,13 +12,17 @@ The library is built on top of [lit](https://lit.dev/).
 
 [http://ircam-ismm.github.io/sc-components/](http://ircam-ismm.github.io/sc-components/)
 
-## Installation
+## Usage
+
+### With NPM and bundlers
+
+#### Installation
 
 ```sh
-npm install lit @ircam/sc-components --save
+npm install @ircam/sc-components --save
 ```
 
-## Usage
+#### Usage
 
 Each components lives in its own file and can be imported separately, e.g.:
 
@@ -39,11 +43,11 @@ For convenience, we also provide a global entry point which imports all componen
 import '@ircam/sc-components';
 ```
 
-## Unpkg
+## With Unpkg
 
 If you don't use a bundler or for testing, you can also use the library from [https://unpkg.com/](https://unpkg.com/). Note that this will import the whole bundled library which is quite large, you may not want to use this is production.
 
-### In HTML File
+### In HTML file
 
 ```html
 <!DOCTYPE html>
@@ -61,7 +65,7 @@ If you don't use a bundler or for testing, you can also use the library from [ht
 <body>
 ```
 
-### In a JS File
+### In a JS file
 
 ```js
 import { html, render } from 'https://unpkg.com/lit-html?module';
@@ -87,6 +91,8 @@ Any feedback is be welcome!
 ### Global CSS variables
 
 ### Styling components
+
+## The sc-* ecosystem
 
 ## Contributing
 
