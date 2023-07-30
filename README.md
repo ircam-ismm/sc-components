@@ -14,9 +14,9 @@ The library is built on top of [lit](https://lit.dev/).
 
 ## Usage
 
-### With NPM and bundlers
+### With npm and bundlers
 
-Install the library
+Install the library using npm (or yarn, or whatever)
 
 ```sh
 npm install --save @ircam/sc-components
@@ -41,7 +41,7 @@ For convenience, we also provide a global entry point which imports all componen
 import '@ircam/sc-components';
 ```
 
-### With Unpkg
+### With unpkg
 
 If you don't use a bundler or for testing, you can also use the library from [https://unpkg.com/](https://unpkg.com/). Note that this will import the whole bundled library which is quite large, you may not want to use this is production.
 
