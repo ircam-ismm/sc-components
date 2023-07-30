@@ -6,7 +6,7 @@ Simple and robust Web Component library for rapid prototyping audio and creative
 
 ![banner](./docs/assets/banner.png)
 
-The library is built on top of [lit](https://lit.dev/).
+The library is built with [lit](https://lit.dev/).
 
 ## Demo and Documentation
 
