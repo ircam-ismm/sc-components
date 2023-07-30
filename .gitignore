@@ -4,8 +4,7 @@ Thumbs.db
 
 vendors
 node_modules
-
-.bak
+_resources
 
 # doc build artifacts
 docs/build
@@ -13,3 +12,4 @@ docs/sc-*.html
 
 build
 tests/build
+
