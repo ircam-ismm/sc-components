@@ -2,6 +2,8 @@
 
 [![npm version](https://badge.fury.io/js/@ircam%2Fsc-components.svg)](https://badge.fury.io/js/@ircam%2Fsc-components)
 
+![sc-components logo](./docs/assets/logo-200x200.png)
+
 Simple and robust Web Component library for rapid prototyping audio and creative applications in the browser. 
 
 ![banner](./docs/assets/banner.png)
@@ -86,7 +88,7 @@ Any feedback is be welcome!
 
 <!--
   todos
-## Theming
+## Theming and styling
 
 ### Global CSS variables
 
