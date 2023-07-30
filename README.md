@@ -43,7 +43,7 @@ import '@ircam/sc-components';
 
 ### With unpkg
 
-If you don't use a bundler or for testing, you can also use the library from [https://unpkg.com/](https://unpkg.com/). Note that this will import the whole bundled library which is quite large, you may not want to use this is production.
+If you don't use a bundler or for simple testing, you can also use the library from [https://unpkg.com/](https://unpkg.com/).
 
 #### In HTML file
 
@@ -75,6 +75,8 @@ render(html`
   ></sc-toggle>
 `, document.body);
 ```
+
+_Note that this method will import the whole bundled library which is quite large, you may not want to use this is production.__
 
 ### Integration within other frameworks
 
