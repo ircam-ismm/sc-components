@@ -76,7 +76,7 @@ render(html`
 `, document.body);
 ```
 
-_Note that this method will import the whole bundled library which is quite large, you may not want to use this is production.__
+_Note that this method will import the whole bundled library which is quite large, you may not want to use this is production._
 
 ### Integration within other frameworks
 
