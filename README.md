@@ -6,9 +6,9 @@ Simple and robust Web Component library for rapid prototyping audio and creative
 
 ![banner](./docs/assets/banner.png)
 
-The components are built on top of the [lit](https://lit.dev/) library.
+The library is built on top of [lit](https://lit.dev/).
 
-## Documentation
+## Demo and Documentation
 
 [http://ircam-ismm.github.io/sc-components/](http://ircam-ismm.github.io/sc-components/)
 
@@ -41,30 +41,9 @@ import '@ircam/sc-components';
 
 ## Unpkg
 
-For testing or if you don't use a bundler, you can also use the library from [https://unpkg.com/](https://unpkg.com/).
+If you don't use a bundler or for testing, you can also use the library from [https://unpkg.com/](https://unpkg.com/). Note that this will import the whole bundled library which is quite large, you may not want to use this is production.
 
-```js
-import 'https://unpkg.com/@ircam/sc-components@latest';
-```
-
-### Example
-
-```js
-import { html, render } from 'https://unpkg.com/lit-html?module';
-import 'https://unpkg.com/@ircam/sc-components@latest';
-
-render(html`
-  <sc-toggle
-    @change=${e => console.log('Hello toggle', e.detail.value)}
-  ></sc-toggle>
-`, document.body);
-```
-
-## Integration
-
-### Raw HTML and JavaScript
-
-The components can be used without the `lit` helpers, e.g.
+### In HTML File
 
 ```html
 <!DOCTYPE html>
@@ -82,11 +61,37 @@ The components can be used without the `lit` helpers, e.g.
 <body>
 ```
 
-### Others
+### In a JS File
 
-The library has not been tested yet within other frameworks such as React or Vue.
+```js
+import { html, render } from 'https://unpkg.com/lit-html?module';
+import 'https://unpkg.com/@ircam/sc-components@latest';
+
+render(html`
+  <sc-toggle
+    @change=${e => console.log('Hello toggle', e.detail.value)}
+  ></sc-toggle>
+`, document.body);
+```
+
+## Integration within other frameworks
+
+The library has not been tested within other frameworks such as React or Vue yet.
 
 Any feedback is be welcome!
+
+<!--
+  todos
+## Theming
+
+### Global CSS variables
+
+### Styling components
+
+## Contributing
+
+## Credits
+-->
 
 ## License
 
