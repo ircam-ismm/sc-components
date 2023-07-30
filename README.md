@@ -16,13 +16,11 @@ The library is built on top of [lit](https://lit.dev/).
 
 ### With NPM and bundlers
 
-#### Installation
+Install the library
 
 ```sh
-npm install @ircam/sc-components --save
+npm install --save @ircam/sc-components
 ```
-
-#### Usage
 
 Each components lives in its own file and can be imported separately, e.g.:
 
@@ -43,11 +41,11 @@ For convenience, we also provide a global entry point which imports all componen
 import '@ircam/sc-components';
 ```
 
-## With Unpkg
+### With Unpkg
 
 If you don't use a bundler or for testing, you can also use the library from [https://unpkg.com/](https://unpkg.com/). Note that this will import the whole bundled library which is quite large, you may not want to use this is production.
 
-### In HTML file
+#### In HTML file
 
 ```html
 <!DOCTYPE html>
@@ -65,7 +63,7 @@ If you don't use a bundler or for testing, you can also use the library from [ht
 <body>
 ```
 
-### In a JS file
+#### In JS file
 
 ```js
 import { html, render } from 'https://unpkg.com/lit-html?module';
@@ -78,7 +76,7 @@ render(html`
 `, document.body);
 ```
 
-## Integration within other frameworks
+### Integration within other frameworks
 
 The library has not been tested within other frameworks such as React or Vue yet.
 
