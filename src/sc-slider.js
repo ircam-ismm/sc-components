@@ -1,12 +1,13 @@
 import { html, svg, css, nothing } from 'lit';
 import ScElement from './ScElement.js';
+import midiLearnMixin from './inner/midi-learn-mixin.js';
 import getScale from './utils/get-scale.js';
 import getClipper from './utils/get-clipper.js';
 
 import './sc-position-surface.js';
 import './sc-number.js';
 
-class ScSlider extends ScElement {
+const ScSlider = midiLearnMixin('ScSlider', class extends ScElement {
   static properties = {
     min: {
       type: Number,
@@ -44,12 +45,14 @@ class ScSlider extends ScElement {
 
   static styles = css`
     :host {
+      /* @todo - use inline flex */
       display: inline-block;
       box-sizing: border-box;
       width: 200px;
       height: 30px;
       vertical-align: top;
       border: 1px solid var(--sc-color-primary-3);
+      font-size: 0;
 
       --sc-slider-background-color: var(--sc-color-primary-2);
       --sc-slider-foreground-color: var(--sc-color-primary-5);
@@ -77,11 +80,11 @@ class ScSlider extends ScElement {
     }
 
     :host([number-box][orientation="horizontal"]) div {
-      width: calc(100% - 86px);
+      width: calc(100% - 80px);
     }
 
     :host([number-box][orientation="vertical"]) div {
-      height: calc(100% - 36px);
+      height: calc(100% - 30px);
     }
 
     svg {
@@ -110,10 +113,15 @@ class ScSlider extends ScElement {
     sc-number {
       display: inline-block;
       width: 80px;
+      height: 100%;
     }
 
     :host([number-box][orientation="vertical"]) sc-number {
       display: block;
+      height: 30px;
+      width: 100%;
+      position: relative;
+      top: -7px;
     }
   `;
 
@@ -149,21 +157,9 @@ class ScSlider extends ScElement {
 
     this.value = this._clipper(newValue);
 
-    const inputEvent = new CustomEvent('input', {
-      bubbles: true,
-      composed: true,
-      detail: { value: this.value },
-    });
-
-    this.dispatchEvent(inputEvent);
-
-    const changeEvent = new CustomEvent('change', {
-      bubbles: true,
-      composed: true,
-      detail: { value: this.value },
-    });
-
-    this.dispatchEvent(changeEvent);
+    this._dispatchInputEvent();
+    // should be trigerred after some timeout
+    this._dispatchChangeEvent();
   }
 
   get midiValue() {
@@ -216,8 +212,8 @@ class ScSlider extends ScElement {
           x-range=${JSON.stringify([this.min, this.max])}
           y-range=${JSON.stringify([this.max, this.min])}
           clamp
-          @input=${this._onInput}
-          @pointerend=${this._onChange}
+          @input=${this._onPositionInput}
+          @pointerend=${this._onPositionChange}
         ></sc-position-surface>
       </div>
       ${this.numberBox
@@ -226,7 +222,8 @@ class ScSlider extends ScElement {
             min=${this.min}
             max=${this.max}
             value=${this.value}
-            @input=${this._onNumberBoxChange}
+            @input=${this._onNumberBoxInput}
+            @change=${this._onNumberBoxChange}
           ></sc-number>
         `
         : nothing
@@ -256,6 +253,17 @@ class ScSlider extends ScElement {
     this.value = this._clipper(this.value);
   }
 
+  _onNumberBoxInput(e) {
+    e.stopPropagation();
+
+    if (this.disabled) {
+      return;
+    }
+
+    this.value = this._clipper(e.detail.value);
+    this._dispatchInputEvent();
+  }
+
   _onNumberBoxChange(e) {
     e.stopPropagation();
 
@@ -264,43 +272,21 @@ class ScSlider extends ScElement {
     }
 
     this.value = this._clipper(e.detail.value);
-
-    const inputEvent = new CustomEvent('input', {
-      bubbles: true,
-      composed: true,
-      detail: { value: this.value },
-    });
-
-    this.dispatchEvent(inputEvent);
-
-    const changeEvent = new CustomEvent('change', {
-      bubbles: true,
-      composed: true,
-      detail: { value: this.value },
-    });
-
-    this.dispatchEvent(changeEvent);
+    this._dispatchChangeEvent();
   }
 
-  _onChange(e) {
+  _onPositionChange(e) {
     if (this.disabled) {
       return;
     }
 
     if (e.detail.pointerId === this._pointerId) {
       this._pointerId = null;
-
-      const event = new CustomEvent('change', {
-        bubbles: true,
-        composed: true,
-        detail: { value: this.value },
-      });
-
-      this.dispatchEvent(event);
+      this._dispatchChangeEvent();
     }
   }
 
-  _onInput(e) {
+  _onPositionInput(e) {
     // stop propagation of event from sc-position-surface
     e.stopPropagation();
 
@@ -327,14 +313,7 @@ class ScSlider extends ScElement {
         const diff = value - this._startPointerValue;
 
         this.value = this._clipper(this._startSliderValue + diff);
-
-        const event = new CustomEvent('input', {
-          bubbles: true,
-          composed: true,
-          detail: { value: this.value },
-        });
-
-        this.dispatchEvent(event);
+        this._dispatchInputEvent();
       }
     } else {
       // consider only first pointer in list, we don't want a multitouch slider...
@@ -346,23 +325,47 @@ class ScSlider extends ScElement {
         const value = this.orientation === 'horizontal' ? x : y;
 
         this._pointerId = pointerId;
+
         this.value = this._clipper(value);
-
-        const event = new CustomEvent('input', {
-          bubbles: true,
-          composed: true,
-          detail: { value: this.value },
-        });
-
-        this.dispatchEvent(event);
+        this._dispatchInputEvent();
       }
     }
-
   }
-}
+
+  _dispatchInputEvent() {
+    const event = new CustomEvent('input', {
+      bubbles: true,
+      composed: true,
+      detail: { value: this.value },
+    });
+
+    this.dispatchEvent(event);
+  }
+
+  _dispatchChangeEvent() {
+    const event = new CustomEvent('change', {
+      bubbles: true,
+      composed: true,
+      detail: { value: this.value },
+    });
+
+    this.dispatchEvent(event);
+  }
+});
 
 if (customElements.get('sc-slider') === undefined) {
+  // customElements.define('sc-slider', mixin(ScSlider, 'ScSlider'));
   customElements.define('sc-slider', ScSlider);
 }
+
+const A = customElements.get('sc-slider')
+const a = new A();
+// console.log(a);
+console.log('className', a.constructor.name);
+console.log('tagName', a.tagName.toLowerCase());
+console.log('midiValue', a.midiValue);
+a.midiValue = 1;
+console.log('midiValue', a.midiValue);
+
 
 export default ScSlider;

@@ -28,9 +28,7 @@ class ScSwitch extends ScElement {
       border: 1px solid var(--sc-color-primary-4);
       font-size: 0;
       line-height: 0;
-      /* @todo - must be dynamic */
       border-radius: 1px;
-/*      cursor: pointer;*/
 
       --sc-switch-transition-time: 75ms;
       --sc-switch-toggle-color: white;

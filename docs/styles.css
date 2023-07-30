@@ -56,6 +56,7 @@ header > div > p {
 header > div > sc-switch {
   height: var(--header-height);
   border-radius: 0;
+  border-top: none;
 }
 
 header > div > sc-text {

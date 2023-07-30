@@ -1,6 +1,8 @@
 import { html } from 'lit';
 import applyStyle from './utils/applyStyle.js';
 
+const icons = ['question', 'info', 'github', 'burger', 'gear', 'save', 'delete'];
+
 export const template = html`
 
 <h2>sc-icon</h2>
@@ -41,7 +43,7 @@ const template = html\`
 <div>
   <sc-text>[icon="question"]</sc-text>
   <sc-radio
-    options="${JSON.stringify(['question', 'info', 'github', 'burger', 'gear', 'save'])}"
+    options="${JSON.stringify(icons)}"
     value="question"
     @change=${e => document.querySelector('#test-icon').icon = e.detail.value}
   ></sc-radio>

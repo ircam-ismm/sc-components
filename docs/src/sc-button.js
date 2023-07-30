@@ -82,7 +82,7 @@ const template = html\`
   >my-value</sc-text>
 </div>
 <div>
-  <sc-text>[selected=false]</sc-text>
+  <sc-text>[?selected=false]</sc-text>
   <sc-toggle
     @change=${e => document.querySelector('#test-button').selected = e.detail.value}
   ></sc-toggle>
