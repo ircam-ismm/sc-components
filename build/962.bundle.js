@@ -23,7 +23,7 @@
 <div>
   <sc-text>[icon="question"]</sc-text>
   <sc-radio
-    options="${JSON.stringify(["question","info","github","burger","gear","save"])}"
+    options="${JSON.stringify(["question","info","github","burger","gear","save","delete"])}"
     value="question"
     @change=${t=>document.querySelector("#test-icon").icon=t.detail.value}
   ></sc-radio>
