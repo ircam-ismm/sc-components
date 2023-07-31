@@ -21,17 +21,5 @@ export default env => {
       filename: 'bundle.js',
       path: path.join(path.resolve(__dirname), 'build'),
     },
-    module: {
-      rules: [
-        {
-          test: /\.worklet\.js$/,
-          use: {
-            loader: 'worklet-loader'
-          },
-        },
-      ],
-    },
   };
 };
-
-

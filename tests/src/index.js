@@ -5,7 +5,7 @@ import { map } from 'lit/directives/map.js';
 import '../../src/index.js';
 
 // current page module
-const DEFAULT_TEST = 'raw-style';
+const DEFAULT_TEST = 'editor-growth';
 // const DEFAULT_TEST = 'sw-header';
 let current = null;
 
