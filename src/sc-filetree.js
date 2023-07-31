@@ -237,6 +237,7 @@ class ScFileTree extends ScElement {
         ? html`
             <sc-text
               editable
+              @input=${e => e.stopPropagation()}
               @change=${this._onTreeChange}
             >${this._updateTreeInfos.command === 'rename'
               ? this._updateTreeInfos.node.name
