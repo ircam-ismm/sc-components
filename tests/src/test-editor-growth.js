@@ -4,8 +4,8 @@ import { html } from 'lit';
 // did not find a way to reproduce yet...
 
 export const template = html`
-  <div>
-     <sc-editor style="height: 100%"></sc-editor>
+  <div style="display: flex; align-content: stretch; align-items: stretch;">
+     <sc-editor style="height: 100%; width: 100%"></sc-editor>
   </div>
 
   <!-- <div style="width: 50vw; height: 50vh;">
