@@ -1,13 +1,14 @@
 import { html, svg, css, nothing } from 'lit';
 import ScElement from './ScElement.js';
-import midiLearnMixin from './inner/midi-learn-mixin.js';
+
+import midiLearn from './mixins/midi-learn.js';
 import getScale from './utils/get-scale.js';
 import getClipper from './utils/get-clipper.js';
 
 import './sc-position-surface.js';
 import './sc-number.js';
 
-const ScSlider = midiLearnMixin('ScSlider', class extends ScElement {
+class ScSlider extends ScElement {
   static properties = {
     min: {
       type: Number,
@@ -152,6 +153,7 @@ const ScSlider = midiLearnMixin('ScSlider', class extends ScElement {
     this._updateScales();
   }
 
+  // required by midi-learn mixin
   set midiValue(value) {
     const newValue = (this.max - this.min) * value / 127. + this.min;
 
@@ -351,21 +353,10 @@ const ScSlider = midiLearnMixin('ScSlider', class extends ScElement {
 
     this.dispatchEvent(event);
   }
-});
-
-if (customElements.get('sc-slider') === undefined) {
-  // customElements.define('sc-slider', mixin(ScSlider, 'ScSlider'));
-  customElements.define('sc-slider', ScSlider);
 }
 
-const A = customElements.get('sc-slider')
-const a = new A();
-// console.log(a);
-console.log('className', a.constructor.name);
-console.log('tagName', a.tagName.toLowerCase());
-console.log('midiValue', a.midiValue);
-a.midiValue = 1;
-console.log('midiValue', a.midiValue);
-
+if (customElements.get('sc-slider') === undefined) {
+  customElements.define('sc-slider', midiLearn('ScSlider', ScSlider));
+}
 
 export default ScSlider;
