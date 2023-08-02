@@ -1,11 +1,26 @@
 import { html, css, nothing } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
+import { classMap } from 'lit/directives/class-map.js';
 import ScElement from './ScElement.js';
 
 
 const midiLearnSymbol = Symbol.for('sc-midi-learn');
 
-function deviceToLightweight(device) {
+/**
+ * Just use a concatenation of "name" and "manufacturer" as device id
+ *
+ * We can't rely on the one given by the brwoser, e.g. we have a new id each
+ * time we restart Max on Chrome... This is de facto more susceptible of collisions,
+ * but people genrally don't have dozens of MIDI control interface. At contrary
+ * this will break if we connect twice the same interface.
+ *
+ * @todo - find if there is a way to mitigate these two issues.
+ */
+function getDeviceId(device) {
+  return `${device.manufacturer}${device.name}`;
+}
+
+function deviceInfos(device) {
   return {
     id: device.id,
     manufacturer: device.manufacturer,
@@ -22,6 +37,7 @@ function deviceToString(device) {
 
 function getBindingInfos(device, channel) {
   return {
+    device: deviceInfos(device),
     deviceString: deviceToString(device),
     channel,
   };
@@ -32,20 +48,18 @@ function getNodeId(node) {
   return node.id || node._scId;
 }
 
-// this._devices
-// this._knownDevices Map<id, <id, name, manufacturer>>
-// this._bindings =Map<deviceId, Map<channel, Set<el.id>>
-// this._liveElements = Map<elId, ScElement>
-
-// @todo
-// - export config
-// - use mutation observer (https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver)
+// @todos
+// - [x] use mutation observer (https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver)
 //   to maintain a live list of <id, nodes>
-// - change the bindings data to store only the ids and get the Element from the live list
-// - store the devices that have been seen so far in knownDevices
-// - delete device behavior,
-//   - [if device connected] keep in list [else] remove from known devices
-//   - delete related bindings are deleted
+// - [x] change the bindings data to store only the ids and get the Element from the live list
+// - [x] store the devices that have been seen so far in knownDevices
+// - [x] delete device
+// - [x] use concatenation of name and manufacturer has deviceId
+// - [x] disallow multiple bindings on a single element
+
+// - [ ] import / export config - trigger @change event
+// - [ ] highlight element on panel hover
+
 class ScMidiLearn extends ScElement {
   static properties = {
     active: {
@@ -69,23 +83,120 @@ class ScMidiLearn extends ScElement {
       overflow: hidden;
       font-family: var(--sc-font-family);
       font-size: var(--sc-font-size);
-      width: 50px;
+      width: 80px;
       height: 30px;
+
+      --sc-midi-learn-panel-position-top: 0;
+      --sc-midi-learn-panel-position-right: 0;
+      --sc-midi-learn-panel-position-bottom: auto;
+      --sc-midi-learn-panel-position-left: auto;
+      --sc-midi-learn-panel-position-width: 300px;
+      --sc-midi-learn-panel-position-height: auto;
     }
 
-    sc-button {
+    .button {
       width: 100%;
       height: 100%;
+      display: flex;
+      flex-orientation: row;
+      justify-content: space-between;
+      background-color: var(--sc-color-primary-3);
+      cursor: pointer;
+    }
+
+    .button.active {
+      background-color: var(--sc-color-secondary-3);
+    }
+
+    .button sc-text, .button sc-icon {
+      background: transparent;
+      border: none;
+    }
+
+    .button sc-text {
+      user-select: none;
+    }
+
+    .button sc-text {
+      width: 40px;
+    }
+
+    .button sc-icon {
+      opacity: 0.6;
+    }
+
+    .button.connected sc-icon {
+      opacity: 1;
     }
 
     .control-panel {
       position: fixed;
-      /* use variables */
-      top: 0;
-      right: 0;
-      width: 200px;
-      height: 600px;
-      background-color: green;
+      top: var(--sc-midi-learn-panel-position-top);
+      right: var(--sc-midi-learn-panel-position-right);;
+      bottom: var(--sc-midi-learn-panel-position-bottom);;
+      left: var(--sc-midi-learn-panel-position-left);
+      width: var(--sc-midi-learn-panel-position-width);
+      height: var(--sc-midi-learn-panel-position-height);
+      box-sizing: border-box;
+      background-color: var(--sc-color-primary-2);
+      border: 1px solid var(--sc-color-primary-3);
+      z-index: 50;
+    }
+
+    .control-panel .header {
+      display: flex;
+      padding: 4px 0;
+      background-color: var(--sc-color-primary-1);
+    }
+
+    .control-panel .header sc-text {
+      width: 80%;
+    }
+
+    .control-panel .header sc-icon {
+      background-color: var(--sc-color-primary-1);
+      border: none;
+    }
+
+    .device-bindings {
+      margin-top: 12px;
+    }
+
+    .device-bindings .title {
+      display: flex;
+    }
+
+    .device-bindings .title sc-text {
+      background-color: var(--sc-color-primary-3);
+      width: 100%;
+    }
+
+    .device-bindings.disconnected {
+      font-style: italic;
+      opacity: 0.6;
+    }
+
+    .binding-item {
+      display: flex;
+      flex-orientation: row;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--sc-color-primary-3);
+    }
+
+    .binding-item.not-in-dom {
+      font-style: italic;
+      opacity: 0.6;
+    }
+
+    /* channel */
+    .binding-item > sc-text.channel {
+      width: 70px;
+      border-right: 1px solid var(--sc-color-primary-4);
+    }
+
+    /* id */
+    .binding-item > sc-text.node-id {
+      width: 80%;
     }
   `;
 
@@ -93,23 +204,29 @@ class ScMidiLearn extends ScElement {
     super();
 
     // list of connected devices
-    this._devices = new Map();
+    // Map<id, MidiInputDevice>
+    this._devices = new Map(); // <
     // list of lightweigth devices that have been seen
+    // Map<id, Object<id, name, manufacturer>>
     this._knownDevices = new Map();
     // list of elements that are midi learnable
     // the list is live
+    // Map<id, ScElement>
     this._$nodes = new Map();
-     // currently selected element for learning
-    this._$selectedNode = null;
-     // Map<deviceId, Map<channel, Set<ScElement>>
+    // list of bindings
+    // Map<deviceId, Map<channel, Set<id>>
     this._bindings = new Map();
+
+    // currently selected element for learning
+    this._$selectedNode = null;
     // observer that observe the DOM to maintain the live _$elements list
     this._mutationObserver = null;
 
     this.active = false;
 
+    // binsd some callbacks
     this._processMidiMessage = this._processMidiMessage.bind(this);
-    this._onSelectElement = this._onSelectElement.bind(this);
+    this._onSelectNode = this._onSelectNode.bind(this);
     this._updateNodeList = this._updateNodeList.bind(this);
 
     // retrieve infos from local storage
@@ -117,29 +234,78 @@ class ScMidiLearn extends ScElement {
   }
 
   render() {
+    const hasConnections = this._devices.size > 0;
+
+    const btnClasses = {
+      button: true,
+      active: this.active,
+      connected: hasConnections,
+    }
+
     return html`
-      <sc-button
-        ?selected="${this.active}"
-        @input=${this._toggleActive}
-      >MIDI</sc-button>
+      <div
+        class="${classMap(btnClasses)}"
+        @click=${this._toggleActive}
+      >
+        <sc-icon type="midi"></sc-icon>
+        <sc-text>MIDI</sc-text>
+      </div>
 
       ${this.active ?
         html`
           <div class="control-panel">
-            <sc-icon
-              icon="delete"
-              @input=${this._toggleActive}
-            >close</sc-icon>
+            <div class="header">
+              <sc-icon type="midi"></sc-icon>
+              <sc-text>MIDI bindings</sc-text>
+              <sc-icon
+                class="close"
+                type="close"
+                @input=${this._toggleActive}
+              >close</sc-icon>
+            </div>
 
             <div class="select-interface">
-              <sc-text>connected interfaces</sc-text>
-              <ul>
-                ${repeat(this._knownDevices, ([id, device]) => id, ([id, device]) => {
-                  let connected = this._devices.has(device.id);
+              ${repeat(this._knownDevices, ([deviceId, device]) => deviceId, ([deviceId, device]) => {
+                const connected = this._devices.has(deviceId);
+                const bindings = this._bindings.get(deviceId);
 
-                  return html`<li>${deviceToString(device)}</li>`;
-                })}
-              </ul>
+                const list = [];
+                // a device may have node bindings
+                if (bindings) {
+                  for (let [channel, ids] of bindings.entries()) {
+                    ids.forEach(nodeId => {
+                      const inDOM = this._$nodes.has(nodeId);
+
+                      const template = html`
+                        <div
+                          class="binding-item ${inDOM ? '' : 'not-in-dom'}"
+                          @mouseover=${e => this._highlightElement(nodeId)}
+                          @mouseout=${e => this._unhighlightElement(nodeId)}
+                        >
+                          <sc-text class="channel">cc ${channel}</sc-text>
+                          <sc-text class="node-id">${nodeId}</sc-text>
+                          <sc-icon
+                            type="delete"
+                            @input=${e => this._deleteBinding(deviceId, channel, nodeId)}
+                          ></sc-icon>
+                        </div>
+                      `
+
+                      list.push(template)
+                    });
+                  }
+                }
+
+                return html`
+                  <div class="device-bindings ${connected ? '' : 'disconnected'}">
+                    <div class="title">
+                      <sc-text>${deviceToString(device)}</sc-text>
+                      <sc-icon type="delete" @input=${e => this._deleteDevice(deviceId)}></sc-icon>
+                    </div>
+                    ${list}
+                  </div>
+                `;
+              })}
             </div>
           </div>
         ` : nothing
@@ -185,7 +351,7 @@ class ScMidiLearn extends ScElement {
     this._$nodes.clear();
 
     $learnable.forEach($el => {
-      const id = $el.id || $el._scId;
+      const id = getNodeId($el);
       this._$nodes.set(id, $el);
     });
 
@@ -203,6 +369,7 @@ class ScMidiLearn extends ScElement {
         });
       }
     }
+
     // update learnable elements if some new ones appeared
     this._toggleLearnableElements();
   }
@@ -215,8 +382,9 @@ class ScMidiLearn extends ScElement {
       device.removeEventListener('midimessage', this._processMidiMessage);
       device.addEventListener('midimessage', this._processMidiMessage);
 
-      this._devices.set(id, device);
-      this._knownDevices.set(id, deviceToLightweight(device));
+      const deviceId = getDeviceId(device);
+      this._devices.set(deviceId, device);
+      this._knownDevices.set(deviceId, deviceInfos(device));
     }
 
     this._persistToLocalStorage();
@@ -231,17 +399,28 @@ class ScMidiLearn extends ScElement {
     if (this.active) {
       this._$nodes.forEach($el => {
         $el.midiLearnActive = true;
-        $el.addEventListener('click', this._onSelectElement);
+        $el.addEventListener('click', this._onSelectNode);
       });
     } else {
       this._$nodes.forEach($el => {
         $el.midiLearnActive = false;
-        $el.removeEventListener('click', this._onSelectElement);
+        $el.removeEventListener('click', this._onSelectNode);
       });
     }
   }
 
-  _onSelectElement(e) {
+  // highlight element on mouseover in panel
+  _highlightElement(nodeId) {
+    const $el = this._$nodes.get(nodeId);
+    $el.midiLearnHighlight = true;
+  }
+
+  _unhighlightElement(nodeId) {
+    const $el = this._$nodes.get(nodeId);
+    $el.midiLearnHighlight = false;
+  }
+
+  _onSelectNode(e) {
     const $target = e.currentTarget;
 
     this._$nodes.forEach(($el) => {
@@ -261,7 +440,7 @@ class ScMidiLearn extends ScElement {
 
   _processMidiMessage(e) {
     const device = e.currentTarget;
-    const deviceId = device.id;
+    const deviceId = getDeviceId(device);
     const [_messageType, channel, value] = e.data;
 
     if (this.active && this._$selectedNode !== null) {
@@ -279,7 +458,16 @@ class ScMidiLearn extends ScElement {
       const nodeId = getNodeId(this._$selectedNode);
 
       if (!channelBindings.has(nodeId)) {
-         channelBindings.add(nodeId);
+        // remove previous binding if any
+        if (this._$selectedNode.midiLearnInfos) {
+          const { device, channel } = this._$selectedNode.midiLearnInfos;
+          const deviceId = getDeviceId(device);
+          const nodeId = getNodeId(this._$selectedNode);
+
+          this._deleteBinding(deviceId, channel, nodeId);
+        }
+
+        channelBindings.add(nodeId);
         // set midiLearnInfos on _$selectedNode
         const bindingInfos = getBindingInfos(device, channel);
         this._$selectedNode.midiLearnInfos = bindingInfos;
@@ -302,8 +490,45 @@ class ScMidiLearn extends ScElement {
     }
   }
 
-  _deleteBinding() {
-    // @todo
+  _deleteBinding(deviceId, channel, nodeId) {
+    this._bindings.get(deviceId).get(channel).delete(nodeId);
+
+    const $node = this._$nodes.get(nodeId);
+    $node.midiLearnInfos = null;
+
+    this._persistToLocalStorage();
+    this.requestUpdate();
+  }
+
+  _deleteDevice(deviceId) {
+    const connected = this._devices.has(deviceId);
+
+    // retrieve the list of node associated to this device for cleaning
+    const nodeList = [];
+
+    if (this._bindings.has(deviceId)) {
+      const deviceBindings = this._bindings.get(deviceId);
+
+      for (let [channel, nodeIds] of deviceBindings.entries()) {
+        nodeIds.forEach(id => nodeList.push(id));
+      }
+    }
+
+    // if device is not connected remove from known devices
+    if (!connected) {
+      this._knownDevices.delete(deviceId);
+    }
+
+    // delete all related bindings
+    this._bindings.delete(deviceId);
+    // clean infos on nodes
+    nodeList.forEach(id => {
+      const $node = this._$nodes.get(id);
+      $node.midiLearnInfos = null;
+    });
+
+    this._persistToLocalStorage();
+    this.requestUpdate();
   }
 
   // create POJO data from this._bindings structure
