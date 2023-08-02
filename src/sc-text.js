@@ -37,7 +37,7 @@ class ScText extends ScElement {
         line-height: var(--sc-font-size);
         font-family: var(--sc-font-family);
         color: white;
-        line-height: 18px;
+        line-height: 20px;
         /* white-space: pre; is important to keep the new lines
            cf. https://stackoverflow.com/a/33052216
         */
