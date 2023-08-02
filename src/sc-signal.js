@@ -54,11 +54,6 @@ class ScSignal extends ScElement {
         border: 1px solid var(--sc-color-primary-2);
       }
 
-      :host > div {
-        width: 100%;
-        height: 100%;
-      }
-
       canvas {
         box-sizing: border-box;
         margin: 0;
@@ -159,16 +154,14 @@ class ScSignal extends ScElement {
 
   render() {
     return html`
-      <div @contextmenu="${this._preventContextMenu}">
-        <canvas></canvas>
-        ${this.minMax
-          ? html`
-            <span class="max">${this._maxValue.toFixed(3)}</span>
-            <span class="min">${this._minValue.toFixed(3)}</span>
-            `
-          : nothing
-        }
-      </div>
+      <canvas></canvas>
+      ${this.minMax
+        ? html`
+          <span class="max">${this._maxValue.toFixed(3)}</span>
+          <span class="min">${this._minValue.toFixed(3)}</span>
+          `
+        : nothing
+      }
     `;
   }
 

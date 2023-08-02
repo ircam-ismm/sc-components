@@ -87,7 +87,6 @@ class ScTapTempo extends ScElement {
         class="${this._active ? 'active' : ''}"
         @mousedown="${this._tap}"
         @touchstart="${this._tap}"
-        @contextmenu="${this._preventContextMenu}"
       >
         <slot>tap</slot>
       </div>

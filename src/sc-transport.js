@@ -107,7 +107,6 @@ class ScTransport extends ScElement {
                 viewbox="0 0 20 20"
                 @mousedown=${e => this._onChange(e, 'play')}
                 @touchstart=${e => this._onChange(e, 'play')}
-                @contextmenu=${this._preventContextMenu}
               >
                 <polygon class="play-shape" points="6, 5, 15, 10, 6, 15"></polygon>
               </svg>
@@ -119,7 +118,6 @@ class ScTransport extends ScElement {
                 viewbox="0 0 20 20"
                 @mousedown=${e => this._onChange(e, 'pause')}
                 @touchstart=${e => this._onChange(e, 'pause')}
-                @contextmenu=${this._preventContextMenu}
               >
                 <rect class="left" x="5" y="5" width="3" height="10"></rect>
                 <rect class="right" x="12" y="5" width="3" height="10"></rect>
@@ -132,7 +130,6 @@ class ScTransport extends ScElement {
                 viewbox="0 0 20 20"
                 @mousedown=${e => this._onChange(e, 'stop')}
                 @touchstart=${e => this._onChange(e, 'stop')}
-                @contextmenu=${this._preventContextMenu}
               >
                 <rect class="stop-shape" x="6" y="6" width="8" height="8"></rect>
               </svg>

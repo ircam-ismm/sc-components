@@ -1,6 +1,7 @@
-import { LitElement, html, css, nothing } from 'lit';
-import { theme, fontSize } from './styles.js';
+import { html, css, nothing } from 'lit';
 import './sc-icon.js';
+
+import ScElement from './ScElement.js';
 
 import CodeMirror from 'codemirror';
 import 'codemirror/mode/javascript/javascript.js';
@@ -22,7 +23,7 @@ CodeMirror.commands.save = function(cm) {
 };
 
 
-class ScEditor extends LitElement {
+class ScEditor extends ScElement {
   static properties = {
     value: {
       type: String,

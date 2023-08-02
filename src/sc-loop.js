@@ -85,7 +85,6 @@ class ScLoop extends ScElement {
         viewbox="-10 -8 120 120"
         @mousedown="${this._propagateChange}"
         @touchstart="${this._propagateChange}"
-        @contextmenu="${this._preventContextMenu}"
       >
         <path
           d="M 30,20

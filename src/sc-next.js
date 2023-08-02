@@ -72,7 +72,6 @@ class ScNext extends ScElement {
         @touchstart="${this._dispatchEvent}"
         @mouseup="${this._release}"
         @touchend="${this._release}"
-        @contextmenu="${this._preventContextMenu}"
       >
         <path d="M 80,20L 80,80"></path>
         <polygon points="20,20 70,50 20,80"></polygon>

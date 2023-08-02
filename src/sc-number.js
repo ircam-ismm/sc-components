@@ -257,7 +257,6 @@ class ScNumber extends ScElement {
         @blur="${this._onBlur}"
         @touchstart="${this._triggerFocus}"
         @touchend="${this._openVirtualKeyboard}"
-        @contextmenu="${this._preventContextMenu}"
       >
         <div class="info ${classMap(isEdited)}"></div>
 

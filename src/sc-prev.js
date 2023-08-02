@@ -72,7 +72,6 @@ class ScPrev extends ScElement {
         @touchstart="${this._dispatchEvent}"
         @mouseup="${this._release}"
         @touchend="${this._release}"
-        @contextmenu="${this._preventContextMenu}"
       >
         <path d="M 20,20L 20,80"></path>
         <polygon points="30,50 80,20 80,80"></polygon>

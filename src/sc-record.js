@@ -72,7 +72,6 @@ class ScRecord extends ScElement {
         viewbox="0 0 20 20"
         @mousedown="${this._propagateChange}"
         @touchstart="${this._propagateChange}"
-        @contextmenu="${this._preventContextMenu}"
       >
         <circle cx="10" cy="10" r="5"></circle>
       </svg>

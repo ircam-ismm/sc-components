@@ -202,7 +202,7 @@ class ScMatrix extends ScElement {
     const maxValue = this._states[this._states.length - 1];
 
     return html`
-      <svg @contextmenu="${this._preventContextMenu}">
+      <svg>
         <g>
           ${this.value.map((row, rowIndex) => {
             const y = rowIndex * cellHeight;

@@ -232,7 +232,6 @@ class ScKeyboard extends ScElement {
       <svg
         @mousedown=${this._onMouseDown}
         @mouseup=${this._onMouseUp}
-        @contextmenu="${this._preventContextMenu}"
       >
         ${whiteKeyRects}
         ${blackKeyRects}

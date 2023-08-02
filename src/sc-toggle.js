@@ -101,7 +101,6 @@ class ScToggle extends ScElement {
           handleEvent: this._updateValue,
           passive: false,
         }}"
-        @contextmenu="${this._preventContextMenu}"
       >
         <line x1="${padding}" y1="${padding}" x2="${100 - padding}" y2="${100 - padding}" />
         <line x1="${padding}" y1="${100 - padding}" x2="${100 - padding}" y2="${padding}" />

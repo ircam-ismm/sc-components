@@ -121,7 +121,6 @@ class ScIcon extends ScElement {
           passive: false,
         }}"
         @touchend="${this._onEvent}"
-        @contextmenu="${this._preventContextMenu}"
       >
         ${include}
       </div>

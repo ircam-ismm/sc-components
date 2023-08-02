@@ -1,11 +1,11 @@
 import { LitElement, html, svg, css, nothing } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { repeat } from 'lit/directives/repeat.js';
-import { theme } from './styles.js';
+import ScElement from './ScElement.js';
 
 import './sc-position-surface.js';
 
-class ScDots extends LitElement {
+class ScDots extends ScElement {
   static properties = {
     value: {
       type: Array,

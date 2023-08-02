@@ -327,7 +327,7 @@ class ScFileTree extends ScElement {
   }
 
   _onContextMenuCommand(e) {
-    // note that context menu is closed through the colse event just after
+    // note that context menu is closed through the close event just after
     // this method is called, so `this._contextMenuInfos` is still valid and
     // will be reset in the `_hideContextMenu` method
     //

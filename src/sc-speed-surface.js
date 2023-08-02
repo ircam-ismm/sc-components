@@ -46,7 +46,6 @@ class ScSpeedSurface extends ScElement {
           handleEvent: this._touchStart,
           passive: false,
         }}"
-        @contextmenu="${this._preventContextMenu}"
       ></div>
     `;
   }
