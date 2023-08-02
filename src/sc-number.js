@@ -44,6 +44,8 @@ class ScNumber extends ScElement {
       font-size: var(--sc-font-size);
       color: #ffffff;
       position: relative;
+      background-color: var(--sc-color-primary-2);
+      border: 1px solid var(--sc-color-primary-3);
     }
 
     :host([disabled]) {
@@ -56,7 +58,7 @@ class ScNumber extends ScElement {
 
     :host(:focus), :host(:focus-visible) {
       outline: none;
-      box-shadow: 0 0 2px var(--sc-color-primary-5);
+      border: 1px solid var(--sc-color-primary-4);
     }
 
     :host([disabled]:focus), :host([disabled]:focus-visible),
@@ -71,8 +73,6 @@ class ScNumber extends ScElement {
       box-sizing: border-box;
       width: 100%;
       height: 100%;
-      background-color: var(--sc-color-primary-2);
-      border: 1px solid var(--sc-color-primary-3);
       user-select: none;
     }
 

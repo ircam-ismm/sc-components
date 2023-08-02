@@ -47,10 +47,8 @@ class ScSlider extends ScElement {
   static styles = css`
     :host {
       /* @todo - use inline flex */
-      display: inline-block;
+      display: inline-flex;
       box-sizing: border-box;
-      width: 200px;
-      height: 30px;
       vertical-align: top;
       border: 1px solid var(--sc-color-primary-3);
       font-size: 0;
@@ -69,23 +67,44 @@ class ScSlider extends ScElement {
 
     :host(:focus), :host(:focus-visible) {
       outline: none;
-      box-shadow: 0 0 2px var(--sc-color-primary-5);
+      border: 1px solid var(--sc-color-primary-4);
     }
 
-    div {
+    :host([orientation="horizontal"]) {
+      flex-direction: row;
+      height: 30px;
+      width: 200px;
+    }
+
+    :host([orientation="vertical"]) {
+      flex-direction: column;
+      height: 200px;
+      width: 30px;
+    }
+
+    :host([number-box][orientation="horizontal"]) {
+      width: 280px;
+    }
+
+    :host([number-box][orientation="vertical"]) {
+      width: 80px;
+    }
+
+    :host([number-box][orientation="horizontal"]) .slider {
+      width: calc(100% - 80px);
+    }
+
+    :host([number-box][orientation="vertical"]) .slider {
+      flex-direction: column;
+      height: calc(100% - 30px);
+    }
+
+    .slider {
       box-sizing: border-box;
       width: 100%;
       height: 100%;
       position: relative;
       display: inline-block;
-    }
-
-    :host([number-box][orientation="horizontal"]) div {
-      width: calc(100% - 80px);
-    }
-
-    :host([number-box][orientation="vertical"]) div {
-      height: calc(100% - 30px);
     }
 
     svg {
@@ -115,14 +134,13 @@ class ScSlider extends ScElement {
       display: inline-block;
       width: 80px;
       height: 100%;
+      border: none;
     }
 
     :host([number-box][orientation="vertical"]) sc-number {
       display: block;
       height: 30px;
       width: 100%;
-      position: relative;
-      top: -7px;
     }
   `;
 
@@ -203,7 +221,7 @@ class ScSlider extends ScElement {
     const size = Math.max(0, this._scale(this.value));
 
     return html`
-      <div @contextmenu=${this._preventContextMenu}>
+      <div class="slider">
         <svg viewbox="0 0 1000 1000" preserveAspectRatio="none">
           ${this.orientation === 'horizontal'
             ? svg`

@@ -20,10 +20,24 @@ class ScElement extends LitElement {
     super();
 
     this._scId = `${this.tagName.toLowerCase()}-${id++}`;
+
+    this._preventContextMenu = this._preventContextMenu.bind(this);
   }
 
   _preventContextMenu(e) {
     e.preventDefault();
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+
+    this.addEventListener('contextmenu', this._preventContextMenu);
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+
+    this.removeEventListener('contextmenu', this._preventContextMenu);
   }
 
   _requestUserSelectNoneOnBody() {
@@ -45,8 +59,6 @@ class ScElement extends LitElement {
       document.body.style.webkitTouchCallout = 'auto';
     }
   }
-
-
 }
 
 export default ScElement;
