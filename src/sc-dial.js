@@ -1,5 +1,7 @@
 import { html, css, svg, nothing } from 'lit';
 import ScElement from './ScElement.js';
+
+import midiLearn from './mixins/midi-learn.js';
 import getScale from './utils/get-scale.js';
 import './sc-speed-surface.js';
 
@@ -171,6 +173,23 @@ class ScDial extends ScElement {
     this.requestUpdate();
   }
 
+  // midi-learn interface
+  set midiValue(value) {
+    this.value = (this.max - this.min) * value / 127. + this.min;
+
+    this._dispatchInputEvent();
+
+    clearTimeout(this._midiValueTimeout);
+    // triger change after some timeout
+    this._midiValueTimeout = setTimeout(() => {
+      this._dispatchChangeEvent();
+    }, 500);
+  }
+
+  get midiValue() {
+    return Math.round((this.value - this.min) / (this.max - this.min) * 127.);
+  }
+
   constructor() {
     super();
 
@@ -185,6 +204,8 @@ class ScDial extends ScElement {
     this.value = 0;
     this.showValue = true;
     this.disabled = false;
+
+    this._midiValueTimeout = null;
   }
 
   render() {
@@ -255,15 +276,8 @@ class ScDial extends ScElement {
 
     this.value = this.min;
 
-    ['input', 'change'].forEach(eventName => {
-      const event = new CustomEvent(eventName, {
-        bubbles: true,
-        composed: true,
-        detail: { value: this.value },
-      });
-
-      this.dispatchEvent(event);
-    });
+    this._dispatchInputEvent();
+    this._dispatchChangeEvent();
   }
 
   _updateValue(e) {
@@ -288,29 +302,35 @@ class ScDial extends ScElement {
       // const diff = e.detail.dy * 10;
       // console.log('updateValue', e.detail.dy, diff);
       this.value += diff;
-
-      const event = new CustomEvent('input', {
-        bubbles: true,
-        composed: true,
-        detail: { value: this.value },
-      });
-
-      this.dispatchEvent(event);
+      this._dispatchInputEvent();
     } else {
-      // propagate change event
-      const event = new CustomEvent('change', {
-        bubbles: true,
-        composed: true,
-        detail: { value: this.value },
-      });
-
-      this.dispatchEvent(event);
+      this._dispatchChangeEvent();
     }
+  }
+
+  _dispatchInputEvent() {
+    const event = new CustomEvent('input', {
+      bubbles: true,
+      composed: true,
+      detail: { value: this.value },
+    });
+
+    this.dispatchEvent(event);
+  }
+
+  _dispatchChangeEvent() {
+    const event = new CustomEvent('change', {
+      bubbles: true,
+      composed: true,
+      detail: { value: this.value },
+    });
+
+    this.dispatchEvent(event);
   }
 }
 
 if (customElements.get('sc-dial') === undefined) {
-  customElements.define('sc-dial', ScDial);
+  customElements.define('sc-dial', midiLearn('ScDial', ScDial));
 }
 
 export default ScDial;

@@ -14,10 +14,12 @@ const userSelectNoneOnBodyRegister = new Set();
  * userSelect, ids, etc.
  */
 class ScElement extends LitElement {
+
+
   constructor() {
     super();
 
-    this._scId = `${this.constructor.name.toLowerCase()}-${id++}`;
+    this._scId = `${this.tagName.toLowerCase()}-${id++}`;
   }
 
   _preventContextMenu(e) {
@@ -43,6 +45,8 @@ class ScElement extends LitElement {
       document.body.style.webkitTouchCallout = 'auto';
     }
   }
+
+
 }
 
 export default ScElement;

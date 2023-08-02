@@ -1,7 +1,17 @@
 import { html } from 'lit';
 import applyStyle from './utils/applyStyle.js';
 
-const icons = ['question', 'info', 'github', 'burger', 'gear', 'save', 'delete'];
+const icons = [
+  'question',
+  'info',
+  'github',
+  'burger',
+  'gear',
+  'save',
+  'delete',
+  'close',
+  'midi',
+];
 
 export const template = html`
 
@@ -13,7 +23,7 @@ import '@ircam/sc-components/sc-icon.js';
 
 const template = html\`
   <sc-icon
-    icon="question"
+    type="question"
     value="my-icon"
   ></sc-icon>
 \`;
@@ -22,7 +32,7 @@ const template = html\`
 <sc-icon
   id="test-icon"
   value="my-icon"
-  icon="question"
+  type="question"
   @input=${e => document.querySelector('#icon-input').value = e.detail.value}
 ></sc-icon>
 
@@ -33,7 +43,7 @@ const template = html\`
 </div>
 <sc-code-example language="html">${`
 <sc-icon
-  icon="burger"
+  type="burger"
   value="menu"
   @input=\${e => console.log(e.detail.value)}
 ></sc-icon>
@@ -41,11 +51,11 @@ const template = html\`
 
 <h3>Attributes</h3>
 <div>
-  <sc-text>[icon="question"]</sc-text>
+  <sc-text>[type="question"]</sc-text>
   <sc-radio
     options="${JSON.stringify(icons)}"
     value="question"
-    @change=${e => document.querySelector('#test-icon').icon = e.detail.value}
+    @change=${e => document.querySelector('#test-icon').type = e.detail.value}
   ></sc-radio>
 </div>
 <div>

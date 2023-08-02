@@ -30,21 +30,19 @@ class ScText extends ScElement {
         display: inline-block;
         box-sizing: border-box;
         vertical-align: top;
-        font-size: 0;
-        min-width: 200px;
-        min-height: 30px;
-        border-radius: 2px;
+        width: 200px;
+        height: 30px;
+        border-radius: 0px;
         font-size: var(--sc-font-size);
         line-height: var(--sc-font-size);
         font-family: var(--sc-font-family);
         color: white;
-        line-height: 18px;
+        line-height: 20px;
         /* white-space: pre; is important to keep the new lines
            cf. https://stackoverflow.com/a/33052216
         */
         white-space: pre;
-        background-color: var(--sc-color-primary-4);
-        border: 1px solid var(--sc-color-primary-4);
+        background-color: var(--sc-color-primary-1);
         padding: 5px 6px;
         outline: none;
       }

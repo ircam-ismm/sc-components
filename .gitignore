@@ -4,8 +4,7 @@ Thumbs.db
 
 vendors
 node_modules
-
-.bak
+_resources
 
 # doc build artifacts
 docs/build
@@ -15,3 +14,4 @@ build
 tests/build
 
 TODOS.md
+

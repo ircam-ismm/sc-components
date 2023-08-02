@@ -1,5 +1,8 @@
 import { html, css } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
 import ScElement from './ScElement.js';
+
+import midiLearn from './mixins/midi-learn.js';
 
 class ScButton extends ScElement {
   static properties = {
@@ -18,6 +21,10 @@ class ScButton extends ScElement {
       type: Boolean,
       reflect: true,
     },
+    _pressed: {
+      type: Boolean,
+      state: true,
+    }
   };
 
   static styles = css`
@@ -80,13 +87,13 @@ class ScButton extends ScElement {
       cursor: default;
     }
 
+    button.selected {
+      background-color: var(--sc-button-selected);
+    }
+
     /* use class because :active does not work in Firefox because of e.preventDefault(); */
     button.active {
       background-color: var(--sc-color-primary-4);
-    }
-
-    button.selected {
-      background-color: var(--sc-button-selected);
     }
 
     :host([disabled]) button.selected:hover {
@@ -105,6 +112,10 @@ class ScButton extends ScElement {
     this._dispatchEvent(eventName);
   }
 
+  get midiValue() {
+    return this._pressed ? 127 : 0;
+  }
+
   constructor() {
     super();
 
@@ -118,10 +129,15 @@ class ScButton extends ScElement {
   }
 
   render() {
+    const classes = {
+      active: this._pressed,
+      selected: this.selected,
+    }
+
     return html`
       <button
         tabindex="-1"
-        class="${this.selected ? 'selected' : ''}"
+        class="${classMap(classes)}"
         @mousedown="${this._onEvent}"
         @mouseup="${this._onEvent}"
 
@@ -154,13 +170,6 @@ class ScButton extends ScElement {
 
     const eventName = (e.type === 'touchend' || e.type === 'mouseup') ? 'release' : 'press';
 
-    // add class for visual feedback
-    if (eventName === 'release') {
-      this.shadowRoot.querySelector('button').classList.remove('active');
-    } else {
-      this.shadowRoot.querySelector('button').classList.add('active');
-    }
-
     this._dispatchEvent(eventName);
   }
 
@@ -170,12 +179,13 @@ class ScButton extends ScElement {
       return;
     }
 
+    const value = this.value === null ? this.textContent : this.value;
     this._pressed = (eventName === 'press');
 
     const event = new CustomEvent(eventName, {
       bubbles: true,
       composed: true,
-      detail: { value: this.value },
+      detail: { value: value },
     });
 
     this.dispatchEvent(event);
@@ -184,7 +194,7 @@ class ScButton extends ScElement {
       const inputEvent = new CustomEvent('input', {
         bubbles: true,
         composed: true,
-        detail: { value: this.value },
+        detail: { value: value },
       });
 
       this.dispatchEvent(inputEvent);
@@ -193,7 +203,7 @@ class ScButton extends ScElement {
 }
 
 if (customElements.get('sc-button') === undefined) {
-  customElements.define('sc-button', ScButton);
+  customElements.define('sc-button', midiLearn('ScButton', ScButton));
 }
 
 export default ScButton;
