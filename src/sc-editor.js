@@ -111,7 +111,7 @@ class ScEditor extends LitElement {
     return html`
       <div @keydown="${this._onKeydown}" class="container"></div>
       ${this.dirty && this.saveButton
-        ? html`<sc-icon icon="save" @input=${this._save}></sc-icon>`
+        ? html`<sc-icon type="save" @input=${this._save}></sc-icon>`
         : nothing
       }
     `;

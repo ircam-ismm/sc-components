@@ -4,7 +4,7 @@ import icons from './utils/icons.js';
 
 class ScIcon extends ScElement {
   static properties = {
-    icon: {
+    type: {
       type: String,
       reflect: true,
     },
@@ -49,6 +49,9 @@ class ScIcon extends ScElement {
       box-shadow: 0 0 2px var(--sc-color-primary-5);
     }
 
+    :host(:hover) {
+      background-color: var(--sc-color-primary-3);
+    }
 
     div {
       width: 100%;
@@ -82,7 +85,7 @@ class ScIcon extends ScElement {
   constructor() {
     super();
 
-    this.icon = 'question';
+    this.type = 'question';
     this.value = null;
     this.href = null;
     this.disabled = false;
@@ -98,11 +101,11 @@ class ScIcon extends ScElement {
     if (this.href !== null && this.href !== '' && !this.disabled) {
       include = html`
         <a href="${this.href}" target="_blank">
-          ${icons[this.icon]}
+          ${icons[this.type]}
         </a>
       `;
     } else {
-      include = icons[this.icon];
+      include = icons[this.type];
     }
 
     return html`
