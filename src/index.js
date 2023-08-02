@@ -34,7 +34,7 @@ async function setContent(pages, page) {
     page = 'home';
   }
 
-  const title = (page === 'home') ? 'sc-component | documentation' : `${page} | sc-components`;
+  const title = (page === 'home') ? 'sc-components | documentation' : `${page} | sc-components`;
   document.title = title;
   // reset styles
   applyStyle('');
