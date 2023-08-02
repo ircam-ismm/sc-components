@@ -84,7 +84,7 @@
 
 <div>
   <p>set "capture-events" to true to get events from the interface</p>
-  <sc-text>[@input]</sc-text>
+  <sc-text>@input</sc-text>
   <sc-text id="dots-input" style="height: 200px;"></sc-text>
 
 </div>

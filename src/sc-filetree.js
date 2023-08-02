@@ -111,8 +111,13 @@ const template = html\`
   save-button
   value="\
 #test-filetree {
-  width: 30px;
-  height: 30px;
+  color: #cccccc;
+  width: 300px;
+  height: 150px;
+
+  background-color: var(--sc-color-primary-2);
+  --sc-filetree-hover-background-color: var(--sc-color-primary-3);
+  --sc-filetree-active-background-color: var(--sc-color-primary-4);
 }
   "
   @change=${e => applyStyle(e.detail.value)}

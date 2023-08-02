@@ -12,6 +12,7 @@
 ></sc-midi-learn>
 
 <h3>Compatible elements</h3>
+
 <div style="margin: 30px 0;">
   <sc-slider @input=${o} @change=${o}></sc-slider>
   <sc-bang @input=${o}></sc-bang>

@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[698],{8698:(e,t,s)=>{s.r(t),s.d(t,{template:()=>o});var c=s(4254),u=s(4670);let l,a,n;const o=c.dy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[698],{8698:(t,e,c)=>{c.r(e),c.d(e,{template:()=>n});var s=c(4254),o=c(4670);let u,a,l;const n=s.dy`
 
 <h2>sc-button</h2>
 
@@ -7,9 +7,9 @@
 <sc-button
   id="test-button"
   value="my-value"
-  @input=${e=>{document.querySelector("#button-input").active=!0;const t=document.querySelector("#button-value-input");t.value=e.detail.value,clearTimeout(l),l=setTimeout((()=>t.value=""),500)}}
-  @press=${e=>{document.querySelector("#button-press").active=!0;const t=document.querySelector("#button-value-press");t.value=e.detail.value,clearTimeout(a),a=setTimeout((()=>t.value=""),500)}}
-  @release=${e=>{document.querySelector("#button-release").active=!0;const t=document.querySelector("#button-value-release");t.value=e.detail.value,clearTimeout(n),n=setTimeout((()=>t.value=""),500)}}
+  @input=${t=>{document.querySelector("#button-input").active=!0;const e=document.querySelector("#button-value-input");e.value=t.detail.value,clearTimeout(u),u=setTimeout((()=>e.value=""),500)}}
+  @press=${t=>{document.querySelector("#button-press").active=!0;const e=document.querySelector("#button-value-press");e.value=t.detail.value,clearTimeout(a),a=setTimeout((()=>e.value=""),500)}}
+  @release=${t=>{document.querySelector("#button-release").active=!0;const e=document.querySelector("#button-value-release");e.value=t.detail.value,clearTimeout(l),l=setTimeout((()=>e.value=""),500)}}
 >My text</sc-button>
 
 <h3>Events</h3>
@@ -36,19 +36,19 @@
   <sc-text>[value=null]</sc-text>
   <sc-text
     editable
-    @change=${e=>document.querySelector("#test-button").value=e.detail.value}
+    @change=${t=>document.querySelector("#test-button").value=t.detail.value}
   >my-value</sc-text>
 </div>
 <div>
   <sc-text>[?selected=false]</sc-text>
   <sc-toggle
-    @change=${e=>document.querySelector("#test-button").selected=e.detail.value}
+    @change=${t=>document.querySelector("#test-button").selected=t.detail.value}
   ></sc-toggle>
 </div>
 <div>
   <sc-text>[?disabled=false]</sc-text>
   <sc-toggle
-    @change=${e=>document.querySelector("#test-button").disabled=e.detail.value}
+    @change=${t=>document.querySelector("#test-button").disabled=t.detail.value}
   ></sc-toggle>
 </div>
 
@@ -61,8 +61,13 @@
   width: 200px;
   height: 30px;
   font-size: 11px;
+
+  --sc-button-background-color: var(--sc-color-primary-2);
+  --sc-button-background-color-hover: var(--sc-color-primary-3);
+  --sc-button-background-color-active: var(--sc-color-primary-4);
+  --sc-button-background-color-selected: var(--sc-color-secondary-3);
 }
   "
-  @change=${e=>(0,u.default)(e.detail.value)}
+  @change=${t=>(0,o.default)(t.detail.value)}
 ></sc-editor>
 `}}]);

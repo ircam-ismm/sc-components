@@ -16,6 +16,14 @@
   <sc-bang id="next-input"></sc-bang>
 </p>
 
+<h3>Attributes</h3>
+<div>
+  <sc-text>[?disabled=false]</sc-text>
+  <sc-toggle
+    @change=${t=>document.querySelector("#test-next").disabled=t.detail.value}
+  ></sc-toggle>
+</div>
+
 <h3>Styling</h3>
 <sc-editor
   style="width: 500px;"

@@ -39,6 +39,12 @@
     @change=${t=>document.querySelector("#test-transport").value=t.detail.value}
   ></sc-text>
 </div>
+<div>
+  <sc-text>[?disabled=false]</sc-text>
+  <sc-toggle
+    @change=${t=>document.querySelector("#test-transport").disabled=t.detail.value}
+  ></sc-toggle>
+</div>
 
 
 <h3>Styling</h3>

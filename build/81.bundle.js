@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[81],{9081:(e,t,c)=>{c.r(t),c.d(t,{template:()=>i});var a=c(9392),s=c(1142),r=c(4670);const i=a.dy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[81],{9081:(e,t,c)=>{c.r(t),c.d(t,{template:()=>r});var a=c(9392),s=c(1142),i=c(4670);const r=a.dy`
 
 <h2>sc-matrix</h2>
 
@@ -65,6 +65,12 @@
   [1, 0],
 ]</sc-text>
 </div>
+<div>
+  <sc-text>[?disabled=false]</sc-text>
+  <sc-toggle
+    @change=${e=>document.querySelector("#test-matrix").disabled=e.detail.value}
+  ></sc-toggle>
+</div>
 
 <h3>Styling</h3>
 <sc-editor
@@ -78,10 +84,10 @@
   border: 1px solid var(--sc-color-primary-3);
 
   --sc-matrix-cell-color: #ffffff;
-  --sc-matrix-cell-border: var(--sc-color-primary-5);
+  --sc-matrix-cell-border: var(--sc-color-primary-4);
 }
   "
-  @change=${e=>(0,r.default)(e.detail.value)}
+  @change=${e=>(0,i.default)(e.detail.value)}
 ></sc-editor>
 
 `}}]);

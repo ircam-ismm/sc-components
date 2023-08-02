@@ -25,6 +25,14 @@ const template = html\`
   <sc-bang id="prev-input"></sc-bang>
 </p>
 
+<h3>Attributes</h3>
+<div>
+  <sc-text>[?disabled=false]</sc-text>
+  <sc-toggle
+    @change=${e => document.querySelector('#test-prev').disabled = e.detail.value}
+  ></sc-toggle>
+</div>
+
 <h3>Styling</h3>
 <sc-editor
   style="width: 500px;"

@@ -103,6 +103,11 @@ const template = html\`
   width: 200px;
   height: 30px;
   font-size: 11px;
+
+  --sc-button-background-color: var(--sc-color-primary-2);
+  --sc-button-background-color-hover: var(--sc-color-primary-3);
+  --sc-button-background-color-active: var(--sc-color-primary-4);
+  --sc-button-background-color-selected: var(--sc-color-secondary-3);
 }
   "
   @change=${e => applyStyle(e.detail.value)}

@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[275],{7275:(e,t,i)=>{i.r(t),i.d(t,{template:()=>c});var n=i(9392),a=i(1142),s=i(4670);const r={path:"docs",name:"docs",children:[{path:"docs/inner",name:"inner",children:[{path:"docs/inner/niap.md",name:"niap.md",size:1584,extension:".md",type:"file"},{path:"docs/inner/test.md",name:"test.md",size:1588,extension:".md",type:"file"}],size:3172,type:"directory"},{path:"docs/niap.md",name:"niap.md",size:1584,extension:".md",type:"file"},{path:"docs/test.md",name:"test.md",size:1588,extension:".md",type:"file"}],size:3172,type:"directory"},c=n.dy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[275],{7275:(e,t,i)=>{i.r(t),i.d(t,{template:()=>s});var r=i(9392),c=i(1142),a=i(4670);const n={path:"docs",name:"docs",children:[{path:"docs/inner",name:"inner",children:[{path:"docs/inner/niap.md",name:"niap.md",size:1584,extension:".md",type:"file"},{path:"docs/inner/test.md",name:"test.md",size:1588,extension:".md",type:"file"}],size:3172,type:"directory"},{path:"docs/niap.md",name:"niap.md",size:1584,extension:".md",type:"file"},{path:"docs/test.md",name:"test.md",size:1588,extension:".md",type:"file"}],size:3172,type:"directory"},s=r.dy`
 
 <h2>sc-filetree</h2>
 
@@ -6,7 +6,7 @@
 
 <sc-filetree
   id="test-filetree"
-  .value=${r}
+  .value=${n}
   @input=${e=>document.querySelector("#filetree-input").value=JSON.stringify(e.detail.value,null,2)}
   @change=${e=>document.querySelector("#filetree-change").value=JSON.stringify(e.detail.value,null,2)}
 ></sc-filetree>
@@ -42,8 +42,8 @@
   <sc-text>[.value={}]</sc-text>
   <sc-editor
     style="width: 500px; height: 500px;"
-    .value=${JSON.stringify(r,null,2)}
-    @change=${e=>document.querySelector("#test-filetree").value=a.parse(e.detail.value)}
+    .value=${JSON.stringify(n,null,2)}
+    @change=${e=>document.querySelector("#test-filetree").value=c.parse(e.detail.value)}
   ></sc-editor>
 </div>
 
@@ -53,11 +53,16 @@
   save-button
   value="\
 #test-filetree {
-  width: 30px;
-  height: 30px;
+  color: #cccccc;
+  width: 300px;
+  height: 150px;
+
+  background-color: var(--sc-color-primary-2);
+  --sc-filetree-hover-background-color: var(--sc-color-primary-3);
+  --sc-filetree-active-background-color: var(--sc-color-primary-4);
 }
   "
-  @change=${e=>(0,s.default)(e.detail.value)}
+  @change=${e=>(0,a.default)(e.detail.value)}
 ></sc-editor>
 
 `}}]);

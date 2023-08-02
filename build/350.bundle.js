@@ -14,11 +14,11 @@
 <h3>Events</h3>
 <div>
   <sc-text>@input</sc-text>
-  <sc-number id="dial-input"></sc-number>
+  <sc-number readonly id="dial-input"></sc-number>
 </div>
 <div>
   <sc-text>@change</sc-text>
-  <sc-number id="dial-change"></sc-number>
+  <sc-number readonly id="dial-change"></sc-number>
 </div>
 
 <h3>Attributes</h3>

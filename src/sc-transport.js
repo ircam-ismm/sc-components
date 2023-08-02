@@ -50,6 +50,12 @@ const template = html\`
     @change=${e => document.querySelector('#test-transport').value = e.detail.value}
   ></sc-text>
 </div>
+<div>
+  <sc-text>[?disabled=false]</sc-text>
+  <sc-toggle
+    @change=${e => document.querySelector('#test-transport').disabled = e.detail.value}
+  ></sc-toggle>
+</div>
 
 
 <h3>Styling</h3>
