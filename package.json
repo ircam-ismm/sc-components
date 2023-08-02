@@ -1,6 +1,6 @@
 {
   "name": "@ircam/sc-components",
-  "version": "3.0.0-alpha.20",
+  "version": "3.0.0-alpha.21",
   "description": "Simple and robust Web Component library for rapid prototyping audio and creative applications in the browser.",
   "authors": [
     "Benjamin Matuszewski",
