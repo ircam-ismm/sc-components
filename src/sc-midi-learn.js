@@ -93,6 +93,14 @@ class ScMidiLearn extends ScElement {
       --sc-midi-learn-panel-position-height: auto;
     }
 
+    :host([hidden]) {
+      display: none
+    }
+
+    :host(:focus), :host(:focus-visible) {
+      outline: none;
+    }
+
     .button {
       width: 100%;
       height: 100%;
@@ -247,7 +255,7 @@ class ScMidiLearn extends ScElement {
         class="${classMap(btnClasses)}"
         @click=${this._toggleActive}
       >
-        <sc-icon type="midi"></sc-icon>
+        <sc-icon type="midi" disabled></sc-icon>
         <sc-text>MIDI</sc-text>
       </div>
 

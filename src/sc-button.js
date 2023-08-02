@@ -38,27 +38,25 @@ class ScButton extends ScElement {
       line-height: 0;
       font-size: var(--sc-font-size);
       color: #ffffff;
-      border-radius:  1px;
       border: 1px solid var(--sc-color-primary-3);
 
-      --sc-button-selected: var(--sc-color-secondary-3);
-    }
-
-    :host([disabled]) {
-      opacity: 0.7;
+      --sc-button-background-color: var(--sc-color-primary-2);
+      --sc-button-background-color-hover: var(--sc-color-primary-3);
+      --sc-button-background-color-active: var(--sc-color-primary-4);
+      --sc-button-background-color-selected: var(--sc-color-secondary-3);
     }
 
     :host([hidden]) {
       display: none
     }
 
-    :host(:focus), :host(:focus-visible) {
-      outline: none;
-      box-shadow: 0 0 2px var(--sc-color-primary-5);
+    :host([disabled]) {
+      opacity: 0.7;
     }
 
-    :host([selected]) {
-      border: 1px solid var(--sc-button-selected);
+    :host(:focus), :host(:focus-visible) {
+      outline: none;
+      border: 1px solid var(--sc-color-primary-4);
     }
 
     button {
@@ -66,11 +64,11 @@ class ScButton extends ScElement {
       height: 100%;
       box-sizing: border-box;
       font-family: var(--sc-font-family);
-      background-color: var(--sc-color-primary-2);
+      background-color: var(--sc-button-background-color);
       border: none;
       font-size: inherit;
-      cursor: pointer;
       color: inherit;
+      cursor: pointer;
     }
 
     /* remove default button focus */
@@ -79,25 +77,34 @@ class ScButton extends ScElement {
     }
 
     button:hover {
-      background-color: var(--sc-color-primary-3);
-    }
-
-    :host([disabled]) button:hover {
-      background-color: var(--sc-color-primary-2);
-      cursor: default;
+      background-color: var(--sc-button-background-color-hover);
     }
 
     button.selected {
-      background-color: var(--sc-button-selected);
+      background-color: var(--sc-button-background-color-selected);
+    }
+
+    :host([selected]) {
+      border: 1px solid var(--sc-button-background-color-selected);
     }
 
     /* use class because :active does not work in Firefox because of e.preventDefault(); */
     button.active {
-      background-color: var(--sc-color-primary-4);
+      background-color: var(--sc-button-background-color-active);
+    }
+
+    /* prevent any layout change when disabled */
+    :host([disabled]) button {
+      cursor: default;
+    }
+
+    :host([disabled]) button:hover {
+      background-color: var(--sc-button-background-color);
+      cursor: default;
     }
 
     :host([disabled]) button.selected:hover {
-      background-color: var(--sc-button-selected);
+      background-color: var(--sc-button-background-color-selected);
       cursor: default;
     }
   `;
@@ -146,19 +153,14 @@ class ScButton extends ScElement {
           passive: false,
         }}"
         @touchend="${this._onEvent}"
-        @contextmenu="${this._preventContextMenu}"
       >
         <slot>${this.value}</slot>
       </button>
     `;
   }
 
-  connectedCallback() {
-    super.connectedCallback();
-
-    if (!this.hasAttribute('tabindex')) {
-      this.setAttribute('tabindex', 0);
-    }
+  updated(changedProperties) {
+    this.disabled ? this.removeAttribute('tabindex') : this.setAttribute('tabindex', 0);
   }
 
   _onEvent(e) {

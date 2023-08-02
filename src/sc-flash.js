@@ -15,10 +15,8 @@ class ScFlash extends ScElement {
 
   static styles = css`
     :host {
-      vertical-align: top;
       display: inline-block;
       box-sizing: border-box;
-
       width: 100px;
       height: 30px;
       background-color: var(--sc-color-primary-1);

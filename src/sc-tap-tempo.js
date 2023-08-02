@@ -9,6 +9,10 @@ class ScTapTempo extends ScElement {
       type: Number,
       reflect: true,
     },
+    disabled: {
+      type: Boolean,
+      reflect: true,
+    },
   };
 
   static styles = css`
@@ -19,21 +23,34 @@ class ScTapTempo extends ScElement {
       font-size: 0px;
       width: 50px;
       height: 30px;
-      border: 1px solid var(--sc-color-primary-4);
-      background-color: var(--sc-color-primary-3);
-      border-radius: 2px;
+      border: 1px solid var(--sc-color-primary-3);
+      background-color: var(--sc-color-primary-2);
       font-size: 11px;
       color: #ffffff;
       font-family: var(--sc-font-family);
+      cursor: pointer;
 
       --sc-tap-tempo-background-color: var(--sc-color-secondary-5);
+    }
+
+    :host([hidden]) {
+      display: none
+    }
+
+    :host([disabled]) {
+      opacity: 0.7;
+      cursor: default;
+    }
+
+    :host(:focus), :host(:focus-visible) {
+      outline: none;
+      border: 1px solid var(--sc-color-primary-4);
     }
 
     div {
       box-sizing: border-box;
       text-align: center;
       border-radius: inherit;
-      cursor: pointer;
       width: 100%;
       height: 100%;
       display: flex;
@@ -77,8 +94,16 @@ class ScTapTempo extends ScElement {
     `
   }
 
+  updated(changedProperties) {
+    this.disabled ? this.removeAttribute('tabindex') : this.setAttribute('tabindex', 0);
+  }
+
   _tap(e) {
     e.preventDefault();
+
+    if (this.disabled) {
+      return;
+    }
 
     clearTimeout(this._timeoutId);
 

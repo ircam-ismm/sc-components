@@ -43,6 +43,7 @@ const template = html\`
 ></sc-midi-learn>
 
 <h3>Compatible elements</h3>
+
 <div style="margin: 30px 0;">
   <sc-slider @input=${logEvent} @change=${logEvent}></sc-slider>
   <sc-bang @input=${logEvent}></sc-bang>

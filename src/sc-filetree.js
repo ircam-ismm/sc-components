@@ -49,6 +49,10 @@ class ScFileTree extends ScElement {
       --sc-filetree-active-background-color: var(--sc-color-primary-4);
     }
 
+    :host([hidden]) {
+      display: none
+    }
+
     ul {
       font-size: 11px;
       list-style: none;

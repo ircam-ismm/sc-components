@@ -35,18 +35,18 @@ class ScIcon extends ScElement {
       cursor: pointer;
     }
 
+    :host([hidden]) {
+      display: none;
+    }
+
     :host([disabled]) {
       opacity: 0.7;
       cursor: default;
     }
 
-    :host([hidden]) {
-      display: none;
-    }
-
     :host(:focus), :host(:focus-visible) {
       outline: none;
-      box-shadow: 0 0 2px var(--sc-color-primary-5);
+      border: 1px solid var(--sc-color-primary-4);
     }
 
     :host(:hover) {
@@ -60,11 +60,7 @@ class ScIcon extends ScElement {
     }
 
     div:active {
-      opacity: 0.7;
-    }
-
-    :host([disabled]) div:active {
-      opacity: 1;
+      opacity: 0.5;
     }
 
     a {
@@ -79,6 +75,14 @@ class ScIcon extends ScElement {
       padding: 3px;
       width: 100%;
       height: 100%;
+    }
+
+    :host([disabled]:hover) {
+      background-color: var(--sc-color-primary-2);
+    }
+
+    :host([disabled]) div:active {
+      opacity: 1;
     }
   `;
 
@@ -124,12 +128,8 @@ class ScIcon extends ScElement {
     `;
   }
 
-  connectedCallback() {
-    super.connectedCallback();
-
-    if (!this.hasAttribute('tabindex')) {
-      this.setAttribute('tabindex', 0);
-    }
+  updated(changedProperties) {
+    this.disabled ? this.removeAttribute('tabindex') : this.setAttribute('tabindex', 0);
   }
 
   _onEvent(e) {

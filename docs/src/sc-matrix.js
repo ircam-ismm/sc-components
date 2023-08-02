@@ -80,6 +80,12 @@ const template = html\`
   [1, 0],
 ]</sc-text>
 </div>
+<div>
+  <sc-text>[?disabled=false]</sc-text>
+  <sc-toggle
+    @change=${e => document.querySelector('#test-matrix').disabled = e.detail.value}
+  ></sc-toggle>
+</div>
 
 <h3>Styling</h3>
 <sc-editor
@@ -93,7 +99,7 @@ const template = html\`
   border: 1px solid var(--sc-color-primary-3);
 
   --sc-matrix-cell-color: #ffffff;
-  --sc-matrix-cell-border: var(--sc-color-primary-5);
+  --sc-matrix-cell-border: var(--sc-color-primary-4);
 }
   "
   @change=${e => applyStyle(e.detail.value)}

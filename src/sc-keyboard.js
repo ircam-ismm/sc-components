@@ -27,6 +27,10 @@ class ScKeyboard extends ScElement {
       type: String,
       reflect: true,
       attribute: 'input-mode',
+    },
+    disabled: {
+      type: Boolean,
+      reflect: true,
     }
   }
 
@@ -36,8 +40,22 @@ class ScKeyboard extends ScElement {
       width: 300px;
       height: 80px;
       background-color: white;
+      border-top: 1px solid var(--sc-color-primary-3);
 
       --sc-keyboard-active-key: var(--sc-color-secondary-2);
+    }
+
+    :host([hidden]) {
+      display: none
+    }
+
+    :host([disabled]) {
+      opacity: 0.7;
+    }
+
+    :host(:focus), :host(:focus-visible) {
+      outline: none;
+      border-top: 1px solid var(--sc-color-primary-4);
     }
 
     svg {
@@ -222,6 +240,10 @@ class ScKeyboard extends ScElement {
     `
   }
 
+  updated(changedProperties) {
+    this.disabled ? this.removeAttribute('tabindex') : this.setAttribute('tabindex', 0);
+  }
+
   connectedCallback() {
     super.connectedCallback();
 
@@ -243,6 +265,10 @@ class ScKeyboard extends ScElement {
 
   _onMouseDown(e) {
     e.stopPropagation();
+
+    if (this.disabled) {
+      return;
+    }
 
     const $key = e.target;
 
@@ -281,6 +307,10 @@ class ScKeyboard extends ScElement {
 
   _onMouseUp(e) {
     e.stopPropagation();
+
+    if (this.disabled) {
+      return;
+    }
 
     // in stateful mode, you need a new mouse down to deactivate the key
     if (this.inputMode === 'stateful') {

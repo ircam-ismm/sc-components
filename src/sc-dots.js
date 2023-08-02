@@ -58,6 +58,10 @@ class ScDots extends LitElement {
         --sc-dots-background-image: none;
       }
 
+      :host([hidden]) {
+        display: none
+      }
+
       :host(.debug) {
         outline: 1px solid yellow;
       }

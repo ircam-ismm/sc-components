@@ -33,6 +33,10 @@ class ScTab extends ScElement {
       --sc-tab-selected: var(--sc-color-secondary-1);
     }
 
+    :host([hidden]) {
+      display: none
+    }
+
     :host([orientation="horizontal"]) {
       height: 30px;
       width: 400px;
@@ -54,6 +58,14 @@ class ScTab extends ScElement {
       --sc-button-selected: var(--sc-tab-selected);
       height: 100%;
       font-size: inherit;
+    }
+
+    :host([orientation="horizontal"]) sc-button:not(:first-child) {
+      border-left: none;
+    }
+
+    :host([orientation="vertical"]) sc-button:not(:first-child) {
+      border-top: none;
     }
   `;
 

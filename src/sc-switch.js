@@ -25,7 +25,7 @@ class ScSwitch extends ScElement {
       vertical-align: top;
       box-sizing: border-box;
       background-color: var(--sc-color-primary-2);
-      border: 1px solid var(--sc-color-primary-4);
+      border: 1px solid var(--sc-color-primary-3);
       font-size: 0;
       line-height: 0;
       border-radius: 1px;
@@ -33,6 +33,19 @@ class ScSwitch extends ScElement {
       --sc-switch-transition-time: 75ms;
       --sc-switch-toggle-color: white;
       --sc-switch-active-color: var(--sc-color-secondary-1);
+    }
+
+    :host([hidden]) {
+      display: none
+    }
+
+    :host([disabled]) {
+      opacity: 0.7;
+    }
+
+    :host(:focus), :host(:focus-visible) {
+      outline: none;
+      border: 1px solid var(--sc-color-primary-4);
     }
 
     :host > svg {
@@ -83,6 +96,10 @@ class ScSwitch extends ScElement {
          <rect x="${this.active ? 5 : 0}" width="5" height="10" />
       </svg>
     `;
+  }
+
+  updated(changedProperties) {
+    this.disabled ? this.removeAttribute('tabindex') : this.setAttribute('tabindex', 0);
   }
 
   _updateValue(e) {

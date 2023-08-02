@@ -256,12 +256,8 @@ class ScSlider extends ScElement {
     `;
   }
 
-  connectedCallback() {
-    super.connectedCallback();
-
-    if (!this.hasAttribute('tabindex')) {
-      this.setAttribute('tabindex', 0);
-    }
+  updated(changedProperties) {
+    this.disabled ? this.removeAttribute('tabindex') : this.setAttribute('tabindex', 0);
   }
 
   _updateScales() {

@@ -1,4 +1,4 @@
-import { html, svg, css } from 'lit';
+  import { html, svg, css } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import ScElement from './ScElement.js';
 
@@ -29,11 +29,11 @@ class ScRadio extends ScElement {
       display: inline-block;
       vertical-align: top;
       box-sizing: border-box;
-      background-color: var(--sc-color-primary-2);
       font-family: var(--sc-font-family);
       font-size: var(--sc-font-size);
       color: #fff;
-      border-radius: 2px;
+      background-color: var(--sc-color-primary-2);
+      border: 1px solid var(--sc-color-primary-2);
       overflow: auto;
     }
 
@@ -59,7 +59,7 @@ class ScRadio extends ScElement {
 
     :host(:focus), :host(:focus-visible) {
       outline: none;
-      box-shadow: 0 0 2px var(--sc-color-primary-5);
+      border: 1px solid var(--sc-color-primary-3);
     }
 
     label {
@@ -85,6 +85,10 @@ class ScRadio extends ScElement {
       vertical-align: middle;
       position: relative;
       top: -1px;
+    }
+
+    input[type="radio"]:focus {
+      outline: none;
     }
   `;
 
@@ -126,6 +130,14 @@ class ScRadio extends ScElement {
         </label>
       `;
     });
+  }
+
+  updated(changedProperties) {
+    // @todo - not completely clean still something that captures the focus
+    const $inputs = this.shadowRoot.querySelectorAll('input');
+    this.disabled
+      ? $inputs.forEach($input => $input.removeAttribute('tabindex'))
+      : $inputs.forEach($input => $input.setAttribute('tabindex', 0));
   }
 
   _dispatchEvent(e) {

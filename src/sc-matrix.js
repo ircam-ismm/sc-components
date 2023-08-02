@@ -35,6 +35,10 @@ class ScMatrix extends ScElement {
       type: Boolean,
       reflect: true,
     },
+    disabled: {
+      type: Boolean,
+      reflect: true,
+    }
   }
 
   static styles = css`
@@ -49,7 +53,20 @@ class ScMatrix extends ScElement {
       border: 1px solid var(--sc-color-primary-3);
 
       --sc-matrix-cell-color: #ffffff;
-      --sc-matrix-cell-border: var(--sc-color-primary-5);
+      --sc-matrix-cell-border: var(--sc-color-primary-4);
+    }
+
+    :host([hidden]) {
+      display: none
+    }
+
+    :host([disabled]) {
+      opacity: 0.7;
+    }
+
+    :host(:focus), :host(:focus-visible) {
+      outline: none;
+      border: 1px solid var(--sc-color-primary-4);
     }
 
     svg {
@@ -225,6 +242,10 @@ class ScMatrix extends ScElement {
     `;
   }
 
+  updated(changedProperties) {
+    this.disabled ? this.removeAttribute('tabindex') : this.setAttribute('tabindex', 0);
+  }
+
   connectedCallback() {
     super.connectedCallback();
 
@@ -282,6 +303,10 @@ class ScMatrix extends ScElement {
   }
 
   _updateCell(e) {
+    if (this.disabled) {
+      return;
+    }
+
     const { rowIndex, columnIndex } = e.target.dataset;
     const currentIndex = this._states.indexOf(this.value[rowIndex][columnIndex]);
     // handle situations where _states as changed in between two interactions

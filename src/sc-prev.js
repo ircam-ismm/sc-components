@@ -7,6 +7,10 @@ class ScPrev extends ScElement {
       type: Boolean,
       state: true,
     },
+    disabled: {
+      type: Boolean,
+      reflect: true,
+    },
   };
 
   static styles = css`
@@ -17,8 +21,21 @@ class ScPrev extends ScElement {
       cursor: pointer;
       width: 30px;
       height: 30px;
+      background-color: var(--sc-color-primary-2);
       border: 1px solid var(--sc-color-primary-3);
-      background-color: var(--sc-color-primary-3);
+    }
+
+    :host([hidden]) {
+      display: none
+    }
+
+    :host([disabled]) {
+      opacity: 0.7;
+    }
+
+    :host(:focus), :host(:focus-visible) {
+      outline: none;
+      border: 1px solid var(--sc-color-primary-4);
     }
 
     svg {
@@ -63,9 +80,16 @@ class ScPrev extends ScElement {
     `;
   }
 
+  updated(changedProperties) {
+    this.disabled ? this.removeAttribute('tabindex') : this.setAttribute('tabindex', 0);
+  }
+
   _dispatchEvent(e) {
-    e.preventDefault();
     e.stopPropagation();
+
+    if (this.disabled) {
+      return;
+    }
 
     this._active = true;
 

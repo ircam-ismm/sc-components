@@ -32,6 +32,12 @@ const template = html\`
     @change=${e => document.querySelector('#test-loop').active = e.detail.value}
   ></sc-toggle>
 </div>
+<div>
+  <sc-text>[?disabled=false]</sc-text>
+  <sc-toggle
+    @change=${e => document.querySelector('#test-loop').disabled = e.detail.value}
+  ></sc-toggle>
+</div>
 
 
 <h3>Styling</h3>

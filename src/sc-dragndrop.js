@@ -36,6 +36,10 @@ class ScDragNDrop extends ScElement {
       --sc-dragndrop-processing-background-color: var(--sc-color-secondary-3);
     }
 
+    :host([hidden]) {
+      display: none
+    }
+
     .drop-zone {
       box-sizing: border-box;
       width: 100%;

@@ -61,14 +61,15 @@ class ScDial extends ScElement {
   static styles = css`
     :host {
       display: inline-block;
+      position: relative;
       width: 50px;
       height: 50px;
       vertical-align: top;
       box-sizing: border-box;
       background-color: var(--sc-color-primary-2);
+      border: 1px solid var(--sc-color-primary-3);
       font-size: 0;
       line-height: 0;
-      position: relative;
 
       --sc-dial-color: var(--sc-color-secondary-1);
     }
@@ -83,7 +84,7 @@ class ScDial extends ScElement {
 
     :host(:focus), :host(:focus-visible) {
       outline: none;
-      box-shadow: 0 0 2px var(--sc-color-primary-5);
+      border: 1px solid var(--sc-color-primary-4);
     }
 
     path.bg {
@@ -217,12 +218,7 @@ class ScDial extends ScElement {
     const position = polarToCartesian(cx, cy, radius + 2, angle); // + 2  is half path stroke-width
 
     return html`
-      <div
-        @contextmenu=${this._preventContextMenu}
-        @dblclick=${this._resetValue}
-        @keydown=${this._onKeypress}
-        @keyup=${this._onKeyup}
-      >
+      <div @dblclick=${this._resetValue}>
         <svg viewbox="0 0 100 100">
           <path
             class="bg"
@@ -234,6 +230,7 @@ class ScDial extends ScElement {
           />
           <line x1=${cx} y1=${cy} x2=${position.x} y2=${position.y} />
         </svg>
+
         ${this.showValue
           ? html`<p>${this.value.toFixed(2)}${this.unit ? ` ${this.unit}` : nothing}</p>`
           : nothing
@@ -244,12 +241,8 @@ class ScDial extends ScElement {
     `;
   }
 
-  connectedCallback() {
-    super.connectedCallback();
-
-    if (!this.hasAttribute('tabindex')) {
-      this.setAttribute('tabindex', 0);
-    }
+  updated(changedProperties) {
+    this.disabled ? this.removeAttribute('tabindex') : this.setAttribute('tabindex', 0);
   }
 
   _updateScales() {
@@ -257,17 +250,8 @@ class ScDial extends ScElement {
     this._pixelToDiffScale = getScale([0, 15], [0, this.max - this.min]);
   }
 
-  _onKeypress(e) {
-    console.log(e.key.code);
-  }
-
-  _onKeyup(e) {
-    console.log(e.key.code);
-  }
-
   _resetValue(e) {
     // stop prepagation of `sc-speed-surface` event
-    e.preventDefault();
     e.stopPropagation();
 
     if (this.disabled) {
@@ -282,7 +266,6 @@ class ScDial extends ScElement {
 
   _updateValue(e) {
     // stop prepagation of `sc-speed-surface` event
-    e.preventDefault();
     e.stopPropagation();
 
     if (this.disabled) {

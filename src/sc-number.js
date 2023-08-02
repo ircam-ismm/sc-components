@@ -65,6 +65,7 @@ class ScNumber extends ScElement {
     :host([readonly]:focus), :host([readonly]:focus-visible) {
       outline: none;
       box-shadow: none;
+      border: 1px solid var(--sc-color-primary-3);
     }
 
     .container {
@@ -300,12 +301,14 @@ class ScNumber extends ScElement {
     `;
   }
 
+  updated(changedProperties) {
+    this.disabled || this.readonly
+      ? this.removeAttribute('tabindex')
+      : this.setAttribute('tabindex', 0);
+  }
+
   connectedCallback() {
     super.connectedCallback();
-
-    if (!this.hasAttribute('tabindex')) {
-      this.setAttribute('tabindex', 0);
-    }
   }
 
   // force focus for touchstart (is prevented by speed-surfaces...)

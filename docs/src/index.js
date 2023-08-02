@@ -7,7 +7,9 @@ import applyStyle from './utils/applyStyle.js';
 // import lib
 import '../../src/index.js';
 // list of pages
-import pages from './components.js'
+import pages from './components.js';
+// debug mode on localhost
+window.SC_DEBUG = window.location.hostname === 'localhost';
 
 function setTheme(name) {
   switch (name) {

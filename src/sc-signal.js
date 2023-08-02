@@ -51,7 +51,7 @@ class ScSignal extends ScElement {
         background-color: white;
         color: var(--sc-color-primary-1);
         position: relative;
-        border: 1px solid var(--sc-color-primary-3);
+        border: 1px solid var(--sc-color-primary-2);
       }
 
       :host > div {

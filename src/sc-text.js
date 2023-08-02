@@ -45,6 +45,8 @@ class ScText extends ScElement {
         background-color: var(--sc-color-primary-1);
         padding: 5px 6px;
         outline: none;
+
+        overflow-y: auto;
       }
 
       :host([disabled]) {
@@ -58,7 +60,6 @@ class ScText extends ScElement {
       :host(:focus), :host(:focus-visible) {
         outline: none;
       }
-
 
       :host([editable]) {
         background-color: var(--sc-color-primary-3);
@@ -101,7 +102,7 @@ class ScText extends ScElement {
     this.disabled = false;
     this.editable = false;
     this.dirty = false;
-    this._value = ''; // value on last change event
+    this._value = null; // value on last change event
 
     this._updateValue = this._updateValue.bind(this);
     this._onKeyDown = this._onKeyDown.bind(this);
@@ -110,14 +111,23 @@ class ScText extends ScElement {
   }
 
   render() {
+    return html`<slot></slot>`;
+  }
+
+  firstUpdated() {
+    this._value = this.textContent;
+  }
+
+  updated() {
     if (this.editable) {
       // for some reason it does not reflect in the DOM
-      this.setAttribute('tabindex', 0);
       this.setAttribute('editable', true);
 
       if (!this.disabled) {
+        this.setAttribute('tabindex', 0);
         this.setAttribute('contenteditable', 'true');
       } else {
+        this.removeAttribute('tabindex');
         this.setAttribute('contenteditable', 'false');
       }
     } else {
@@ -125,16 +135,10 @@ class ScText extends ScElement {
       this.removeAttribute('editable');
       this.removeAttribute('contenteditable');
     }
-
-    return html`<slot></slot>`;
   }
 
   connectedCallback() {
     super.connectedCallback();
-
-    if (!this.hasAttribute('tabindex')) {
-      this.setAttribute('tabindex', 0);
-    }
 
     this.addEventListener('blur', this._updateValue);
     this.addEventListener('keydown', this._onKeyDown);

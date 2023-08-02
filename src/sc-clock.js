@@ -200,11 +200,13 @@ class ScClock extends ScElement {
 
   connectedCallback() {
     super.connectedCallback();
+    // launch request animation frame loop
     this._render();
   }
 
   disconnectedCallback() {
     cancelAnimationFrame(this._timeoutInterval);
+
     super.disconnectedCallback();
   }
 

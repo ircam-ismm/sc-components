@@ -34,6 +34,7 @@ class ScSelect extends ScElement {
       font-family: var(--sc-font-family);
       font-size: var(--sc-font-size);
       color: #fff;
+      border: 1px solid var(--sc-color-primary-5);
       border-radius: 2px;
       overflow: auto;
     }
@@ -42,9 +43,13 @@ class ScSelect extends ScElement {
       display: none
     }
 
+    :host([disabled]) {
+      border: 1px solid var(--sc-color-primary-4);
+    }
+
     :host(:focus), :host(:focus-visible) {
       outline: none;
-      box-shadow: 0 0 2px var(--sc-color-primary-5);
+      border: 1px solid var(--sc-color-primary-4);
     }
 
     select {
@@ -54,6 +59,8 @@ class ScSelect extends ScElement {
       width: 100%;
       height: 100%;
       text-indent: 4px;
+      border-radius: 0;
+      border: none;
     }
 
     select:focus {
@@ -97,6 +104,12 @@ class ScSelect extends ScElement {
         })}
       </select>
     `;
+  }
+
+  updated(changedProperties) {
+    this.disabled
+      ? this.shadowRoot.querySelector('select').removeAttribute('tabindex')
+      : this.shadowRoot.querySelector('select').setAttribute('tabindex', 0);
   }
 
   _dispatchEvent(e) {

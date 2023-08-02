@@ -7,8 +7,9 @@ class ScLoop extends ScElement {
       type: Boolean,
       reflect: true,
     },
-    value: {
+    disabled: {
       type: Boolean,
+      reflect: true,
     },
   };
 
@@ -21,8 +22,20 @@ class ScLoop extends ScElement {
       width: 30px;
       height: 30px;
       border: 1px solid var(--sc-color-primary-3);
-      background-color: var(--sc-color-primary-3);
-      border-radius: 2px;
+      background-color: var(--sc-color-primary-2);
+    }
+
+    :host([hidden]) {
+      display: none
+    }
+
+    :host([disabled]) {
+      opacity: 0.7;
+    }
+
+    :host(:focus), :host(:focus-visible) {
+      outline: none;
+      border: 1px solid var(--sc-color-primary-4);
     }
 
     svg {
@@ -93,9 +106,17 @@ class ScLoop extends ScElement {
     `
   }
 
+  updated(changedProperties) {
+    this.disabled ? this.removeAttribute('tabindex') : this.setAttribute('tabindex', 0);
+  }
+
   _propagateChange(e) {
     e.preventDefault();
     e.stopPropagation();
+
+    if (this.disabled) {
+      return;
+    }
 
     this.active = !this.active;
 

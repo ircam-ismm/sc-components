@@ -10,6 +10,10 @@ class ScTransport extends ScElement {
       type: String,
       reflect: true,
     },
+    disabled: {
+      type: Boolean,
+      reflect: true,
+    }
   };
 
   static styles = css`
@@ -20,24 +24,39 @@ class ScTransport extends ScElement {
       justify-content: space-between;
       width: auto;
       height: 30px;
+      border-radius: 0;
 
-      --sc-transport-background-color: var(--sc-color-primary-3);
+      --sc-transport-background-color: var(--sc-color-primary-2);
       --sc-transport-active-background-color: var(--sc-color-primary-1);
       --sc-transport-active-play-fill: var(--sc-color-secondary-4);
       --sc-transport-active-pause-fill: var(--sc-color-secondary-1);
       --sc-transport-active-stop-fill: var(--sc-color-secondary-3);
     }
 
+    :host([hidden]) {
+      display: none
+    }
+
+    :host([disabled]) {
+      opacity: 0.7;
+    }
+
     svg {
       box-sizing: border-box;
-      border-radius: 2px;
-      border: 1px solid var(--sc-transport-background-color);
+      border-radius: inherit;
+      border: 1px solid var(--sc-color-primary-3);
       background-color: var(--sc-transport-background-color);
       fill:  #ffffff;
       height: 100%;
       width: auto;
       margin-right: 4px;
       cursor: pointer;
+      outline: none;
+    }
+
+    svg:focus, svg:focus-visible {
+      outline: none;
+      border: 1px solid var(--sc-color-primary-4);
     }
 
     svg:last-child {
@@ -123,9 +142,21 @@ class ScTransport extends ScElement {
     `;
   }
 
+  updated(changedProperties) {
+    // @todo - not completely clean still something that captures the focus
+    const $inputs = this.shadowRoot.querySelectorAll('svg');
+    this.disabled
+      ? $inputs.forEach($input => $input.removeAttribute('tabindex'))
+      : $inputs.forEach($input => $input.setAttribute('tabindex', 0));
+  }
+
   _onChange(e, value) {
     e.preventDefault();
     e.stopPropagation();
+
+    if (this.disabled) {
+      return;
+    }
 
     if (this.state !== value) {
       this.state = value;

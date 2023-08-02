@@ -9,10 +9,6 @@ class ScToggle extends ScElement {
       type: Boolean,
       reflect: true,
     },
-    // do not reflect just an alias for the `active` attribute
-    value: {
-      type: Boolean,
-    },
     disabled: {
       type: Boolean,
       reflect: true,
@@ -42,7 +38,7 @@ class ScToggle extends ScElement {
 
     :host(:focus), :host(:focus-visible) {
       outline: none;
-      box-shadow: 0 0 2px var(--sc-color-primary-5);
+      border: 1px solid var(--sc-color-primary-4);
     }
 
     svg {
@@ -113,12 +109,8 @@ class ScToggle extends ScElement {
     `;
   }
 
-  connectedCallback() {
-    super.connectedCallback();
-
-    if (!this.hasAttribute('tabindex')) {
-      this.setAttribute('tabindex', 0);
-    }
+  updated(changedProperties) {
+    this.disabled ? this.removeAttribute('tabindex') : this.setAttribute('tabindex', 0);
   }
 
   // we use touchend on mobile as it is more stable and does not spoil the responsiveness

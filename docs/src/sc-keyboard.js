@@ -63,6 +63,12 @@ const template = html\`
     @change=${e => document.querySelector('#test-keyboard').mode = e.detail.value}
   ></sc-radio>
 </div>
+<div>
+  <sc-text>[?disabled=false]</sc-text>
+  <sc-toggle
+    @change=${e => document.querySelector('#test-keyboard').disabled = e.detail.value}
+  ></sc-toggle>
+</div>
 
 <h3>Styling</h3>
 <sc-editor

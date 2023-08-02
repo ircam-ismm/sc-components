@@ -28,17 +28,17 @@ class ScBang extends ScElement {
       line-height: 0;
     }
 
-    :host([disabled]) {
-      opacity: 0.7;
-    }
-
     :host([hidden]) {
       display: none
     }
 
+    :host([disabled]) {
+      opacity: 0.7;
+    }
+
     :host(:focus), :host(:focus-visible) {
       outline: none;
-      box-shadow: 0 0 2px var(--sc-color-primary-5);
+      border: 1px solid var(--sc-color-primary-4);
     }
 
     svg {
@@ -95,7 +95,6 @@ class ScBang extends ScElement {
           handleEvent: this._triggerEvent,
           passive: false,
         }}"
-        @contextmenu="${this._preventContextMenu}"
       >
         <circle cx="50" cy="50" r="34" ></circle>
         ${this.active
@@ -106,12 +105,8 @@ class ScBang extends ScElement {
     `
   }
 
-  connectedCallback() {
-    super.connectedCallback();
-
-    if (!this.hasAttribute('tabindex')) {
-      this.setAttribute('tabindex', 0);
-    }
+  updated(changedProperties) {
+    this.disabled ? this.removeAttribute('tabindex') : this.setAttribute('tabindex', 0);
   }
 
   _triggerEvent(e) {

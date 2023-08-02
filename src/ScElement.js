@@ -14,8 +14,6 @@ const userSelectNoneOnBodyRegister = new Set();
  * userSelect, ids, etc.
  */
 class ScElement extends LitElement {
-
-
   constructor() {
     super();
 
@@ -24,14 +22,12 @@ class ScElement extends LitElement {
     this._preventContextMenu = this._preventContextMenu.bind(this);
   }
 
-  _preventContextMenu(e) {
-    e.preventDefault();
-  }
-
   connectedCallback() {
     super.connectedCallback();
 
-    this.addEventListener('contextmenu', this._preventContextMenu);
+    if (!('SC_DEBUG' in window) || window.SC_DEBUG !== true) {
+      this.addEventListener('contextmenu', this._preventContextMenu);
+    }
   }
 
   disconnectedCallback() {
@@ -40,6 +36,11 @@ class ScElement extends LitElement {
     this.removeEventListener('contextmenu', this._preventContextMenu);
   }
 
+  _preventContextMenu(e) {
+    e.preventDefault();
+  }
+
+  /* protected method */
   _requestUserSelectNoneOnBody() {
     if (userSelectNoneOnBodyRegister.size === 0) {
       document.body.style.userSelect = 'none';
@@ -50,6 +51,7 @@ class ScElement extends LitElement {
     userSelectNoneOnBodyRegister.add(this._scId);
   }
 
+  /* protected method */
   _cancelUserSelectNoneOnBody() {
     userSelectNoneOnBodyRegister.delete(this._scId);
 

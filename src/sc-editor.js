@@ -45,10 +45,14 @@ class ScEditor extends LitElement {
       box-sizing: boder-box;
       width: 300px;
       height: 200px;
-      border: 1px solid var(--sc-color-primary-3);
       border-left: 2px solid var(--sc-color-primary-3);
       position: relative;
       font-size: var(--sc-font-size);
+    }
+
+    :host(:focus), :host(:focus-visible) {
+      outline: none;
+      border-left: 2px solid var(--sc-color-primary-4);
     }
 
     :host([dirty]) {

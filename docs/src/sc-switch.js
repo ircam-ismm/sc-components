@@ -34,6 +34,12 @@ const template = html\`
     @change=${e => document.querySelector('#test-switch').active = e.detail.value}
   ></sc-switch>
 </div>
+<div>
+  <sc-text>[?disabled=false]</sc-text>
+  <sc-toggle
+    @change=${e => document.querySelector('#test-switch').disabled = e.detail.value}
+  ></sc-toggle>
+</div>
 
 <h3>Styling</h3>
 <sc-editor
