@@ -46,7 +46,6 @@ class ScSlider extends ScElement {
 
   static styles = css`
     :host {
-      /* @todo - use inline flex */
       display: inline-flex;
       box-sizing: border-box;
       vertical-align: top;
