@@ -1,6 +1,8 @@
 import { html, svg, css } from 'lit';
 import ScElement from './ScElement.js';
 
+import midiLearn from './mixins/midi-learn.js';
+
 class ScToggle extends ScElement {
   static properties = {
     active: {
@@ -68,7 +70,7 @@ class ScToggle extends ScElement {
     this.active = active;
   }
 
-  // sc-midi controller interface
+  // midi-learn interface
   set midiValue(value) {
     if (this.disabled) {
       return;
@@ -79,7 +81,7 @@ class ScToggle extends ScElement {
   }
 
   get midiValue() {
-    return this.value ? 127 : 0;
+    return this.active ? 127 : 0;
   }
 
   constructor() {
@@ -144,7 +146,7 @@ class ScToggle extends ScElement {
 }
 
 if (customElements.get('sc-toggle') === undefined) {
-  customElements.define('sc-toggle', ScToggle);
+  customElements.define('sc-toggle', midiLearn('ScToggle', ScToggle));
 }
 
 export default ScToggle;

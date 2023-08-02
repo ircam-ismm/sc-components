@@ -153,15 +153,19 @@ class ScSlider extends ScElement {
     this._updateScales();
   }
 
-  // required by midi-learn mixin
+  // midi-learn interface
   set midiValue(value) {
     const newValue = (this.max - this.min) * value / 127. + this.min;
 
     this.value = this._clipper(newValue);
 
     this._dispatchInputEvent();
-    // should be trigerred after some timeout
-    this._dispatchChangeEvent();
+
+    clearTimeout(this._midiValueTimeout);
+    // triger change after some timeout
+    this._midiValueTimeout = setTimeout(() => {
+      this._dispatchChangeEvent();
+    }, 500);
   }
 
   get midiValue() {
@@ -191,6 +195,8 @@ class ScSlider extends ScElement {
     // for relative interaction
     this._startPointerValue = null;
     this._startSliderValue = null;
+
+    this._midiValueTimeout = null;
   }
 
   render() {

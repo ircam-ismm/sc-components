@@ -56,9 +56,9 @@ function getNodeId(node) {
 // - [x] delete device
 // - [x] use concatenation of name and manufacturer has deviceId
 // - [x] disallow multiple bindings on a single element
+// - [x] highlight element on panel hover
 
 // - [ ] import / export config - trigger @change event
-// - [ ] highlight element on panel hover
 
 class ScMidiLearn extends ScElement {
   static properties = {
@@ -77,7 +77,6 @@ class ScMidiLearn extends ScElement {
 
   static styles = css`
     :host {
-      vertical-align: top;
       display: inline-block;
       box-sizing: border-box;
       overflow: hidden;
@@ -141,6 +140,7 @@ class ScMidiLearn extends ScElement {
       background-color: var(--sc-color-primary-2);
       border: 1px solid var(--sc-color-primary-3);
       z-index: 50;
+      overflow-y: auto;
     }
 
     .control-panel .header {
@@ -409,15 +409,19 @@ class ScMidiLearn extends ScElement {
     }
   }
 
-  // highlight element on mouseover in panel
+  // highlight element on mouseover in panel, note that elemnt might not be in the DOM
   _highlightElement(nodeId) {
-    const $el = this._$nodes.get(nodeId);
-    $el.midiLearnHighlight = true;
+    if (this._$nodes.has(nodeId)) {
+      const $el = this._$nodes.get(nodeId);
+      $el.midiLearnHighlight = true;
+    }
   }
 
   _unhighlightElement(nodeId) {
-    const $el = this._$nodes.get(nodeId);
-    $el.midiLearnHighlight = false;
+    if (this._$nodes.has(nodeId)) {
+      const $el = this._$nodes.get(nodeId);
+      $el.midiLearnHighlight = false;
+    }
   }
 
   _onSelectNode(e) {
@@ -484,8 +488,11 @@ class ScMidiLearn extends ScElement {
       const channelBindings = deviceBindings.get(channel);
 
       channelBindings.forEach(nodeId => {
-        const $el = this._$nodes.get(nodeId);
-        $el.midiValue = value;
+        // bindings might exists from recorded config, but element not in the DOM
+        if (this._$nodes.has(nodeId)) {
+          const $el = this._$nodes.get(nodeId);
+          $el.midiValue = value;
+        }
       });
     }
   }
@@ -493,8 +500,11 @@ class ScMidiLearn extends ScElement {
   _deleteBinding(deviceId, channel, nodeId) {
     this._bindings.get(deviceId).get(channel).delete(nodeId);
 
-    const $node = this._$nodes.get(nodeId);
-    $node.midiLearnInfos = null;
+    if (this._$nodes.has(nodeId)) {
+      const $node = this._$nodes.get(nodeId);
+      $node.midiLearnInfos = null;
+      $node.midiLearnHighlight = null;
+    }
 
     this._persistToLocalStorage();
     this.requestUpdate();

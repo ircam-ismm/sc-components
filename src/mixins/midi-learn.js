@@ -57,14 +57,16 @@ export default (className, parent) => {
         user-select: none;
         webkit-user-select: none;
         webkit-touch-callout: none;
-        border-sizing: border-box;
+        box-sizing: border-box;
       }
 
       .midi-learn-overlay span {
         position: absolute;
         top: 0;
         left: 2px;
-        font-size: 8px;
+        font-size: 9px;
+        height: 12px;
+        line-height: 12px;
       }
 
       .midi-learn-overlay::before {

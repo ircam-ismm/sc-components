@@ -1,6 +1,8 @@
 import { html, css, svg, nothing } from 'lit';
 import ScElement from './ScElement.js';
 
+import midiLearn from './mixins/midi-learn.js';
+
 class ScBang extends ScElement {
   static properties = {
     active: {
@@ -57,6 +59,17 @@ class ScBang extends ScElement {
     }
   `;
 
+  // midi-learn interface
+  set midiValue(value) {
+    // dispatch on any incomming value
+    this.active = true;
+    this._dispatchInputEvent();
+  }
+
+  get midiValue() {
+    return this.active ? 127 : 0;
+  }
+
   constructor() {
     super();
 
@@ -109,19 +122,23 @@ class ScBang extends ScElement {
     e.preventDefault();
     this.focus();
 
+    this.active = true;
+    this._dispatchInputEvent();
+  }
+
+  _dispatchInputEvent() {
     const inputEvent = new CustomEvent('input', {
       bubbles: true,
       composed: true,
       detail: { value: true },
     });
 
-    this.active = true;
     this.dispatchEvent(inputEvent);
   }
 }
 
 if (customElements.get('sc-bang') === undefined) {
-  customElements.define('sc-bang', ScBang);
+  customElements.define('sc-bang', midiLearn('ScBang', ScBang));
 }
 
 export default ScBang;
