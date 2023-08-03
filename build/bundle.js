@@ -59,7 +59,7 @@
             ${this.midiLearnInfos?o.dy`<span>cc ${this.midiLearnInfos.channel} - ${this.midiLearnInfos.deviceString}</span>`:o.Ld}
           </div>
           ${e}
-        `}return this.midiLearnHighlight=!1,e}}return Object.defineProperty(n,"name",{value:e}),n},S=class{constructor(e,t){if(!t.filterCodes)throw new Error("keyboard-controller: filterCodes option is mandatory");if(!t.callback)throw new Error("keyboard-controller: callback option is mandatory");this._host=e,this._filterCodes=t.filterCodes,this._callback=t.callback,this._deduplicateEvents=t.deduplicateEvents||!1,this._debug=t.debug||!1,this._lastEventType=null,e.addController(this),this._onFocus=this._onFocus.bind(this),this._onBlur=this._onBlur.bind(this),this._triggerEvent=this._triggerEvent.bind(this)}hostConnected(){this._host.addEventListener("focus",this._onFocus),this._host.addEventListener("blur",this._onBlur)}hostDisconnect(){this._host.removeEventListener("focus",this._onFocus),this._host.removeEventListener("blur",this._onBlur)}_onFocus(){document.addEventListener("keydown",this._triggerEvent),document.addEventListener("keyup",this._triggerEvent)}_onBlur(){document.removeEventListener("keydown",this._triggerEvent),document.removeEventListener("keyup",this._triggerEvent)}_triggerEvent(e){const t=e.code;if(this.debug&&console.log(t),this._filterCodes.includes(t)){if(e.preventDefault(),this._deduplicateEvents&&e.type===this._lastEventType)return;this._lastEventType=e.type,this._callback(e)}}};class b extends _{static properties={active:{type:Boolean,reflect:!0},disabled:{type:Boolean,reflect:!0}};static styles=o.iv`
+        `}return this.midiLearnHighlight=!1,e}}return Object.defineProperty(n,"name",{value:e}),n},S=class{constructor(e,t){if(!t.filterCodes)throw new Error("keyboard-controller: filterCodes option is mandatory");if(!t.callback)throw new Error("keyboard-controller: callback option is mandatory");this._host=e,this._filterCodes=t.filterCodes,this._callback=t.callback,this._deduplicateEvents=t.deduplicateEvents||!1,this._debug=t.debug||!1,this._lastEventType=null,e.addController(this),this._onFocus=this._onFocus.bind(this),this._onBlur=this._onBlur.bind(this),this._triggerEvent=this._triggerEvent.bind(this)}hostConnected(){this._host.addEventListener("focus",this._onFocus),this._host.addEventListener("blur",this._onBlur)}hostDisconnect(){this._host.removeEventListener("focus",this._onFocus),this._host.removeEventListener("blur",this._onBlur)}_onFocus(){document.addEventListener("keydown",this._triggerEvent),document.addEventListener("keyup",this._triggerEvent)}_onBlur(){document.removeEventListener("keydown",this._triggerEvent),document.removeEventListener("keyup",this._triggerEvent)}_triggerEvent(e){const t=e.code;if(this._debug&&console.log(t),this._filterCodes.includes(t)){if(e.preventDefault(),this._deduplicateEvents&&e.type===this._lastEventType)return;this._lastEventType=e.type,this._callback(e)}}};class b extends _{static properties={active:{type:Boolean,reflect:!0},disabled:{type:Boolean,reflect:!0}};static styles=o.iv`
     :host {
       display: inline-block;
       width: 30px;
@@ -343,7 +343,9 @@
       font-size: 8px;
       margin: 0;
       text-align: center;
-      user-select: none
+      user-select: none;
+      webkit-user-select: none;
+      webkit-touch-callout: none;
     }
   `;get min(){return this._min}set min(e){e===this.max&&(e-=1e-10),this._min=e,this.value=this.value,this._updateScales(),this.requestUpdate()}get max(){return this._max}set max(e){e===this.min&&(e+=1e-10),this._max=e,this.value=this.value,this._updateScales(),this.requestUpdate()}get value(){return this._value}set value(e){this._value=Math.max(this.min,Math.min(this.max,e)),this.requestUpdate()}set midiValue(e){this.value=(this.max-this.min)*e/127+this.min,this._dispatchInputEvent(),clearTimeout(this._midiValueTimeout),this._midiValueTimeout=setTimeout((()=>{this._dispatchChangeEvent()}),500)}get midiValue(){return Math.round((this.value-this.min)/(this.max-this.min)*127)}constructor(){super(),this._min=0,this._max=0,this._value=0,this._minAngle=-140,this._maxAngle=140,this.max=1,this.min=0,this.value=0,this.hideValue=!1,this.disabled=!1,this._midiValueTimeout=null,this.keyboard=new S(this,{filterCodes:["ArrowUp","ArrowRight","ArrowDown","ArrowLeft"],callback:this._onKeyboardEvent.bind(this)})}render(){const e=this.hideValue?54:42,t=this._valueToAngleScale(this.value),n=M(50,e,34,t);return o.dy`
       <div
@@ -472,13 +474,15 @@
       width: 300px;
       height: 150px;
       box-sizing: border-box;
-      user-select: none;
       border: 1px solid var(--sc-color-primary-2);
       background-color: var(--sc-color-primary-1);
       border-radius: 2px;
       font-family: var(--sc-font-family);
       font-size: var(--sc-font-size);
       color: white;
+      user-select: none;
+      webkit-user-select: none;
+      webkit-touch-callout: none;
 
       --sc-dragndrop-dragged-background-color: var(--sc-color-primary-2);
       --sc-dragndrop-processing-background-color: var(--sc-color-secondary-3);
@@ -1515,10 +1519,9 @@ span.CodeMirror-selectedtext { background: none; }
     :host {
       box-sizing: border-box;
       width: 300px;
-      height: 200px;
+      height: 150px;
       vertical-align: top;
       display: inline-block;
-      user-select: none;
       background-color: var(--sc-color-primary-2);
       border: 1px solid var(--sc-color-primary-3);
 
@@ -1554,7 +1557,22 @@ span.CodeMirror-selectedtext { background: none; }
       stroke: var(--sc-matrix-cell-border);
       shape-rendering: crispedges;
     }
-  `;set rows(e){e<1?console.warn("sc-matrix: Invalid value for rows, should be >= 1"):(this._rows=e,this._resizeMatrix())}get rows(){return this._rows}set columns(e){e<1?console.warn("sc-matrix: Invalid value for columns, should be >= 1"):(this._columns=e,this._resizeMatrix())}get columns(){return this._columns}set value(e){this._value=e,this._rows=this._value.length,this._columns=this._value[0].length,this.requestUpdate()}get value(){return this._value}set reset(e){this._value.forEach((e=>{for(let t=0;t<e.length;t++)e[t]=this._states[0]})),this.requestUpdate(),this._emitChange()}get reset(){}set states(e){this._states=e;for(let e=0;e<this._value.length;e++){const t=this._value[e];for(let n=0;n<t.length;n++){const i=t[n];if(-1===this._states.indexOf(i)){const t=this.states.reduce(((e,t)=>Math.abs(t-i)<Math.abs(e-i)?t:e));this._value[e][n]=t}}}this._emitChange(),this.requestUpdate()}get states(){return this._states}constructor(){super(),this._value=[],this._states=[0,1],this._width=300,this._height=200,this._resizeObserver=null,this.columns=8,this.rows=4}render(){const e=this._width/this.columns,t=this._height/this.rows,n=this._states[0],i=this._states[this._states.length-1];return o.dy`
+
+    rect.keyboard-nav-cell {
+      fill: var(--sc-color-secondary-5);
+      shape-rendering: crispedges;
+      pointer-events: none;
+    }
+  `;set rows(e){e<1?console.warn("sc-matrix: Invalid value for rows, should be >= 1"):(this._rows=e,this._resizeMatrix())}get rows(){return this._rows}set columns(e){e<1?console.warn("sc-matrix: Invalid value for columns, should be >= 1"):(this._columns=e,this._resizeMatrix())}get columns(){return this._columns}set value(e){this._value=e,this._rows=this._value.length,this._columns=this._value[0].length,this.requestUpdate()}get value(){return this._value}set reset(e){this._reset()}get reset(){}set states(e){this._states=e;for(let e=0;e<this._value.length;e++){const t=this._value[e];for(let n=0;n<t.length;n++){const i=t[n];if(-1===this._states.indexOf(i)){const t=this.states.reduce(((e,t)=>Math.abs(t-i)<Math.abs(e-i)?t:e));this._value[e][n]=t}}}this._emitChange(),this.requestUpdate()}get states(){return this._states}constructor(){super(),this._value=[],this._states=[0,1],this._width=300,this._height=200,this._resizeObserver=null,this.columns=8,this.rows=4,this.disabled=!1,this._keyboardHighlightCell=null,this._onFocus=this._onFocus.bind(this),this._onBlur=this._onBlur.bind(this),this.keyboard=new S(this,{filterCodes:["ArrowUp","ArrowRight","ArrowDown","ArrowLeft","Space","Enter","Escape","Backspace"],callback:this._onKeyboardEvent.bind(this),deduplicateEvents:!0})}render(){const e=this._width/this.columns,t=this._height/this.rows,n=this._states[0],i=this._states[this._states.length-1];let a=null;return null!==this._keyboardHighlightCell&&(a=o.YP`
+        <rect
+          class="keyboard-nav-cell"
+          width=${e}
+          height=${t}
+          x=${this._keyboardHighlightCell.x*e}
+          y=${this._keyboardHighlightCell.y*t}
+          opacity="0.4"
+        ></rect>
+      `),o.dy`
       <svg
         @mousedown=${e=>e.preventDefault()}
         @touchstart=${e=>e.preventDefault()}
@@ -1569,18 +1587,22 @@ span.CodeMirror-selectedtext { background: none; }
                   style="fill-opacity: ${d}"
                   data-row-index=${a}
                   data-column-index=${l}
-                  @mousedown=${this._updateCell}
+                  @mousedown=${this._onCellEvent}
+                  @touchend=${this._onCellEvent}
                 ></rect>
               `}))}))}
         </g>
+        <!-- keyboard controlled highligth cell -->
+        ${a?o.YP`<g>${a}</g>`:o.Ld}
         <g>
           <!-- horizontal lines -->
           ${r(ce(1,this.value.length),(e=>{const n=e*t;return o.YP`<line x1="0" y1=${n} x2=${this._width} y2=${n}></line>`}))}
+
           <!-- vertical lines -->
           ${r(ce(1,this.value[0].length),(t=>{const n=t*e;return o.YP`<line x1=${n} y1="0" x2=${n} y2=${this._height}></line>`}))}
         <g>
       </svg>
-    `}updated(e){if(e.has("disabled")){const e=this.disabled?-1:this._tabindex;this.setAttribute("tabindex",e),this.disabled&&this.blur()}}connectedCallback(){super.connectedCallback(),this._tabindex=this.getAttribute("tabindex")||0,this._resizeObserver=new ResizeObserver((e=>{const t=this.shadowRoot.querySelector("svg"),{width:n,height:i}=t.getBoundingClientRect();this._width=n,this._height=i,this.requestUpdate()})),this._resizeObserver.observe(this)}disconnectedCallback(){this._resizeObserver.disconnect(),super.disconnectedCallback()}_resizeMatrix(){const e=this.value;for(let t=e.length-1;t>=this.rows;t--)e.splice(t,1);e.forEach((e=>{for(let t=e.length-1;t>=this.columns;t--)e.splice(t,1)}));const t=e.length;for(let n=0;n<this.rows;n++)if(n<t)e.forEach((e=>{for(let t=e.length;t<this.columns;t++)e[t]=this._states[0]}));else{const t=new Array(this.columns).fill(this._states[0]);e[n]=t}this.requestUpdate()}_updateCell(e){if(this.disabled)return;const{rowIndex:t,columnIndex:n}=e.target.dataset,i=this._states.indexOf(this.value[t][n]),r=-1===i?0:(i+1)%this._states.length;this.value[t][n]=this._states[r],this._emitChange(),this.requestUpdate()}_emitChange(){const e=new CustomEvent("change",{bubbles:!0,composed:!0,detail:{value:this.value}});this.dispatchEvent(e)}}void 0===customElements.get("sc-matrix")&&customElements.define("sc-matrix",de);const ue=Symbol.for("sc-midi-learn");function _e(e){return`${e.manufacturer}${e.name}`}function pe(e){return{id:e.id,manufacturer:e.manufacturer,name:e.name}}function me(e){return e.manufacturer?`${e.name} (${e.manufacturer})`:`${e.name}`}function ge(e,t){return{device:pe(e),deviceString:me(e),channel:t}}function he(e){return e.id||e._scId}class Ee extends _{static properties={active:{type:Boolean,reflect:!0},_devices:{state:!0},_connected:{type:Boolean,state:!0}};static styles=o.iv`
+    `}updated(e){if(e.has("disabled")){const e=this.disabled?-1:this._tabindex;this.setAttribute("tabindex",e),this.disabled&&this.blur()}}connectedCallback(){super.connectedCallback(),this._tabindex=this.getAttribute("tabindex")||0,this._resizeObserver=new ResizeObserver((e=>{const t=this.shadowRoot.querySelector("svg"),{width:n,height:i}=t.getBoundingClientRect();this._width=n,this._height=i,this.requestUpdate()})),this._resizeObserver.observe(this),this.addEventListener("focus",this._onFocus),this.addEventListener("blur",this._onBlur)}disconnectedCallback(){this._resizeObserver.disconnect(),this.removeEventListener("focus",this._onFocus),this.removeEventListener("blur",this._onBlur),super.disconnectedCallback()}_resizeMatrix(){const e=this.value;for(let t=e.length-1;t>=this.rows;t--)e.splice(t,1);e.forEach((e=>{for(let t=e.length-1;t>=this.columns;t--)e.splice(t,1)}));const t=e.length;for(let n=0;n<this.rows;n++)if(n<t)e.forEach((e=>{for(let t=e.length;t<this.columns;t++)e[t]=this._states[0]}));else{const t=new Array(this.columns).fill(this._states[0]);e[n]=t}this.requestUpdate()}_onFocus(){this._keyboardHighlightCell=null,this.requestUpdate()}_onBlur(){this._keyboardHighlightCell=null,this.requestUpdate()}_onKeyboardEvent(e){if("keydown"===e.type){if(null===this._keyboardHighlightCell)this._keyboardHighlightCell={x:0,y:this.rows-1};else switch(e.code){case"ArrowUp":this._keyboardHighlightCell.y-=1;break;case"ArrowRight":this._keyboardHighlightCell.x+=1;break;case"ArrowDown":this._keyboardHighlightCell.y+=1;break;case"ArrowLeft":this._keyboardHighlightCell.x-=1;break;case"Space":case"Enter":{const e=this._keyboardHighlightCell.y,t=this._keyboardHighlightCell.x;this._updateCell(e,t);break}case"Escape":case"Backspace":this._reset()}this._keyboardHighlightCell.y<0&&(this._keyboardHighlightCell.y=this.rows-1),this._keyboardHighlightCell.y>=this.rows&&(this._keyboardHighlightCell.y=0),this._keyboardHighlightCell.x<0&&(this._keyboardHighlightCell.x=this.columns-1),this._keyboardHighlightCell.x>=this.columns&&(this._keyboardHighlightCell.x=0),this.requestUpdate()}}_reset(){this._value.forEach((e=>{for(let t=0;t<e.length;t++)e[t]=this._states[0]})),this.requestUpdate(),this._emitChange()}_onCellEvent(e){if(e.preventDefault(),this.disabled)return;this.focus();const{rowIndex:t,columnIndex:n}=e.target.dataset;this._updateCell(t,n)}_updateCell(e,t){const n=this._states.indexOf(this.value[e][t]),i=-1===n?0:(n+1)%this._states.length;this.value[e][t]=this._states[i],this._emitChange(),this.requestUpdate()}_emitChange(){const e=new CustomEvent("change",{bubbles:!0,composed:!0,detail:{value:this.value}});this.dispatchEvent(e)}}void 0===customElements.get("sc-matrix")&&customElements.define("sc-matrix",de);const ue=Symbol.for("sc-midi-learn");function _e(e){return`${e.manufacturer}${e.name}`}function pe(e){return{id:e.id,manufacturer:e.manufacturer,name:e.name}}function me(e){return e.manufacturer?`${e.name} (${e.manufacturer})`:`${e.name}`}function ge(e,t){return{device:pe(e),deviceString:me(e),channel:t}}function he(e){return e.id||e._scId}class Ee extends _{static properties={active:{type:Boolean,reflect:!0},_devices:{state:!0},_connected:{type:Boolean,state:!0}};static styles=o.iv`
     :host {
       display: inline-block;
       box-sizing: border-box;
@@ -1634,6 +1656,8 @@ span.CodeMirror-selectedtext { background: none; }
 
     .button sc-text {
       user-select: none;
+      webkit-user-select: none;
+      webkit-touch-callout: none;
     }
 
     .button sc-text {
@@ -1765,7 +1789,7 @@ span.CodeMirror-selectedtext { background: none; }
             </div>
           </div>
         `:o.Ld}
-    `}async connectedCallback(){super.connectedCallback();const e=await navigator.requestMIDIAccess();e.addEventListener("statechange",(e=>{"input"===e.port.type&&this._updateDeviceList(e.currentTarget.inputs)})),this._updateDeviceList(e.inputs),this._mutationObserver=new MutationObserver(this._updateNodeList),this._mutationObserver.observe(document.body,{subtree:!0,childList:!0}),this._updateNodeList(),this.hasAttribute("tabindex")||this.setAttribute("tabindex",0),setTimeout((()=>this._serialize()),2e3)}disconnectedCallback(){this._mutationObserver.disconnect()}_onKeyboardEvent(e){"keydown"===e.type&&this._toggleActive()}_updateNodeList(){const e=Array.from(globalThis[ue]),t=document.querySelectorAll(e.join(","));this._$nodes.clear(),t.forEach((e=>{const t=he(e);this._$nodes.set(t,e)}));for(let[e,t]of this._bindings.entries()){let n=this._knownDevices.get(e);for(let[e,i]of t.entries())i.forEach((t=>{if(this._$nodes.has(t)){const i=this._$nodes.get(t),r=ge(n,e);i.midiLearnInfos=r}}))}this._toggleLearnableElements()}_updateDeviceList(e){this._devices=new Map;for(let[t,n]of e.entries()){n.removeEventListener("midimessage",this._processMidiMessage),n.addEventListener("midimessage",this._processMidiMessage);const e=_e(n);this._devices.set(e,n),this._knownDevices.set(e,pe(n))}this._persistToLocalStorage()}_toggleActive(){this.active=!this.active,this._toggleLearnableElements()}_toggleLearnableElements(){this.active?this._$nodes.forEach((e=>{e.midiLearnActive=!0,e.addEventListener("click",this._onSelectNode)})):this._$nodes.forEach((e=>{e.midiLearnActive=!1,e.removeEventListener("click",this._onSelectNode)}))}_highlightElement(e){this._$nodes.has(e)&&(this._$nodes.get(e).midiLearnHighlight=!0)}_unhighlightElement(e){this._$nodes.has(e)&&(this._$nodes.get(e).midiLearnHighlight=!1)}_onSelectNode(e){const t=e.currentTarget;this._$nodes.forEach((e=>{e!==t&&(e.midiLearnSelected=!1)})),t.midiLearnSelected?(t.midiLearnSelected=!1,this._$selectedNode=null):(t.midiLearnSelected=!0,this._$selectedNode=t)}_processMidiMessage(e){const t=e.currentTarget,n=_e(t),[i,r,a]=e.data;if(this.active&&null!==this._$selectedNode){this._bindings.has(n)||this._bindings.set(n,new Map);const e=this._bindings.get(n);e.has(r)||e.set(r,new Set);const i=e.get(r),a=he(this._$selectedNode);if(!i.has(a)){if(this._$selectedNode.midiLearnInfos){const{device:e,channel:t}=this._$selectedNode.midiLearnInfos,n=_e(e),i=he(this._$selectedNode);this._deleteBinding(n,t,i)}i.add(a);const e=ge(t,r);this._$selectedNode.midiLearnInfos=e,this._persistToLocalStorage(),this.requestUpdate()}}const o=this._bindings.get(n);o.has(r)&&o.get(r).forEach((e=>{this._$nodes.has(e)&&(this._$nodes.get(e).midiValue=a)}))}_deleteBinding(e,t,n){if(this._bindings.get(e).get(t).delete(n),this._$nodes.has(n)){const e=this._$nodes.get(n);e.midiLearnInfos=null,e.midiLearnHighlight=null}this._persistToLocalStorage(),this.requestUpdate()}_deleteDevice(e){const t=this._devices.has(e),n=[];if(this._bindings.has(e)){const t=this._bindings.get(e);for(let[e,i]of t.entries())i.forEach((e=>n.push(e)))}t||this._knownDevices.delete(e),this._bindings.delete(e),n.forEach((e=>{this._$nodes.get(e).midiLearnInfos=null})),this._persistToLocalStorage(),this.requestUpdate()}_serialize(){const e=Object.fromEntries(this._knownDevices.entries()),t={};for(let[e,n]of this._bindings.entries()){t[e]={};for(let[i,r]of n.entries())t[e][i]=Array.from(r)}return JSON.stringify({knownDevices:e,bindings:t})}_deserialize(e){let t;try{t=JSON.parse(e)}catch(e){console.warn("Malformed stored data for sc-midi-learn")}const n=new Map,i=new Map;if(t){for(let e in t.knownDevices){const i=t.knownDevices[e];n.set(e,i)}for(let e in t.bindings){i.set(e,new Map);const n=t.bindings[e],r=i.get(e);for(let e in n){const t=n[e];r.set(parseInt(e),new Set(t))}}}return{knownDevices:n,bindings:i}}_persistToLocalStorage(){const e=this._serialize();localStorage.setItem("sc-midi-learn-bindings",e)}_loadFromLocalStorage(){const e=localStorage.getItem("sc-midi-learn-bindings"),{knownDevices:t,bindings:n}=this._deserialize(e);this._knownDevices=t,this._bindings=n}}void 0===customElements.get("sc-midi-learn")&&customElements.define("sc-midi-learn",Ee);class fe extends _{static properties={_active:{type:Boolean,state:!0},disabled:{type:Boolean,reflect:!0}};static styles=o.iv`
+    `}async connectedCallback(){super.connectedCallback();const e=await navigator.requestMIDIAccess();e.addEventListener("statechange",(e=>{"input"===e.port.type&&this._updateDeviceList(e.currentTarget.inputs)})),this._updateDeviceList(e.inputs),this._mutationObserver=new MutationObserver(this._updateNodeList),this._mutationObserver.observe(document.body,{subtree:!0,childList:!0}),this._updateNodeList(),this.hasAttribute("tabindex")||this.setAttribute("tabindex",0),setTimeout((()=>this._serialize()),2e3)}disconnectedCallback(){this._mutationObserver.disconnect()}_onKeyboardEvent(e){"keydown"===e.type&&this._toggleActive()}_updateNodeList(){const e=Array.from(globalThis[ue]),t=document.querySelectorAll(e.join(","));this._$nodes.clear(),t.forEach((e=>{const t=he(e);this._$nodes.set(t,e)}));for(let[e,t]of this._bindings.entries()){let n=this._knownDevices.get(e);for(let[e,i]of t.entries())i.forEach((t=>{if(this._$nodes.has(t)){const i=this._$nodes.get(t),r=ge(n,e);i.midiLearnInfos=r}}))}this._toggleLearnableElements()}_updateDeviceList(e){this._devices=new Map;for(let[t,n]of e.entries()){n.removeEventListener("midimessage",this._processMidiMessage),n.addEventListener("midimessage",this._processMidiMessage);const e=_e(n);this._devices.set(e,n),this._knownDevices.set(e,pe(n))}this._persistToLocalStorage()}_toggleActive(){this.active=!this.active,this._toggleLearnableElements()}_toggleLearnableElements(){this.active?this._$nodes.forEach((e=>{e.midiLearnActive=!0,e.addEventListener("click",this._onSelectNode)})):this._$nodes.forEach((e=>{e.midiLearnActive=!1,e.removeEventListener("click",this._onSelectNode)}))}_highlightElement(e){this._$nodes.has(e)&&(this._$nodes.get(e).midiLearnHighlight=!0)}_unhighlightElement(e){this._$nodes.has(e)&&(this._$nodes.get(e).midiLearnHighlight=!1)}_onSelectNode(e){const t=e.currentTarget;this._$nodes.forEach((e=>{e!==t&&(e.midiLearnSelected=!1)})),t.midiLearnSelected?(t.midiLearnSelected=!1,this._$selectedNode=null):(t.midiLearnSelected=!0,this._$selectedNode=t)}_processMidiMessage(e){const t=e.currentTarget,n=_e(t),[i,r,a]=e.data;if(this.active&&null!==this._$selectedNode){this._bindings.has(n)||this._bindings.set(n,new Map);const e=this._bindings.get(n);e.has(r)||e.set(r,new Set);const i=e.get(r),a=he(this._$selectedNode);if(!i.has(a)){if(this._$selectedNode.midiLearnInfos){const{device:e,channel:t}=this._$selectedNode.midiLearnInfos,n=_e(e),i=he(this._$selectedNode);this._deleteBinding(n,t,i)}i.add(a);const e=ge(t,r);this._$selectedNode.midiLearnInfos=e,this._persistToLocalStorage(),this.requestUpdate()}}if(this._bindings.has(n)){const e=this._bindings.get(n);e.has(r)&&e.get(r).forEach((e=>{this._$nodes.has(e)&&(this._$nodes.get(e).midiValue=a)}))}}_deleteBinding(e,t,n){if(this._bindings.get(e).get(t).delete(n),this._$nodes.has(n)){const e=this._$nodes.get(n);e.midiLearnInfos=null,e.midiLearnHighlight=null}this._persistToLocalStorage(),this.requestUpdate()}_deleteDevice(e){const t=this._devices.has(e),n=[];if(this._bindings.has(e)){const t=this._bindings.get(e);for(let[e,i]of t.entries())i.forEach((e=>n.push(e)))}t||this._knownDevices.delete(e),this._bindings.delete(e),n.forEach((e=>{this._$nodes.get(e).midiLearnInfos=null})),this._persistToLocalStorage(),this.requestUpdate()}_serialize(){const e=Object.fromEntries(this._knownDevices.entries()),t={};for(let[e,n]of this._bindings.entries()){t[e]={};for(let[i,r]of n.entries())t[e][i]=Array.from(r)}return JSON.stringify({knownDevices:e,bindings:t})}_deserialize(e){let t;try{t=JSON.parse(e)}catch(e){console.warn("Malformed stored data for sc-midi-learn")}const n=new Map,i=new Map;if(t){for(let e in t.knownDevices){const i=t.knownDevices[e];n.set(e,i)}for(let e in t.bindings){i.set(e,new Map);const n=t.bindings[e],r=i.get(e);for(let e in n){const t=n[e];r.set(parseInt(e),new Set(t))}}}return{knownDevices:n,bindings:i}}_persistToLocalStorage(){const e=this._serialize();localStorage.setItem("sc-midi-learn-bindings",e)}_loadFromLocalStorage(){const e=localStorage.getItem("sc-midi-learn-bindings"),{knownDevices:t,bindings:n}=this._deserialize(e);this._knownDevices=t,this._bindings=n}}void 0===customElements.get("sc-midi-learn")&&customElements.define("sc-midi-learn",Ee);class fe extends _{static properties={_active:{type:Boolean,state:!0},disabled:{type:Boolean,reflect:!0}};static styles=o.iv`
     :host {
       display: inline-block;
       box-sizing: border-box;
@@ -1862,6 +1886,8 @@ span.CodeMirror-selectedtext { background: none; }
       width: 100%;
       height: 100%;
       user-select: none;
+      webkit-user-select: none;
+      webkit-touch-callout: none;
     }
 
     .container:focus {
@@ -2450,6 +2476,7 @@ span.CodeMirror-selectedtext { background: none; }
       vertical-align: middle;
       user-select: none;
       webkit-user-select: none;
+      webkit-touch-callout: none;
     }
 
     :host([orientation="horizontal"]) label {
