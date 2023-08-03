@@ -87,7 +87,7 @@ class ScTab extends ScElement {
     this.orientation = 'horizontal';
 
     this._keyboard = new KeyboardController(this, {
-      filterCodes: ['ArrowUp', 'ArrowRight', 'ArrowDown', 'ArrowLeft', 'Space'],
+      filterCodes: ['ArrowUp', 'ArrowRight', 'ArrowDown', 'ArrowLeft', 'Space', 'Enter'],
       callback: this._onKeyboardEvent.bind(this),
       deduplicateEvents: true,
     });
@@ -100,6 +100,7 @@ class ScTab extends ScElement {
           .value=${value}
           ?selected=${value === this.value}
           @input="${this._onInput}"
+          @focus=${e => e.preventDefault()}
           tabindex="-1"
         >${value}</sc-button>
       `;
@@ -118,7 +119,7 @@ class ScTab extends ScElement {
     if (e.type === 'keydown') {
       let index = this.options.indexOf(this.value);
 
-      if (e.code === 'ArrowUp' || e.code === 'ArrowRight' || e.code === 'Space') {
+      if (e.code === 'ArrowUp' || e.code === 'ArrowRight' || e.code === 'Space' || e.code == 'Enter') {
         index += 1;
       } else if (e.code === 'ArrowDown' || e.code === 'ArrowLeft') {
         index -= 1;
@@ -130,6 +131,7 @@ class ScTab extends ScElement {
         index = 0;
       }
 
+      this.focus(); // @important: do not remove, otherwize we loose the focus somehow
       this.value = this.options[index];
       this._dispatchEvent();
     }
@@ -138,6 +140,7 @@ class ScTab extends ScElement {
   _onInput(e) {
     // do not propagate button input
     e.stopPropagation();
+
     this.value = e.detail.value;
 
     this._dispatchEvent();
