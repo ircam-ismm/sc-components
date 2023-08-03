@@ -3,6 +3,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import ScElement from './ScElement.js';
 
 import midiLearn from './mixins/midi-learn.js';
+import KeyboardController from './controllers/keyboard-controller.js';
 
 class ScButton extends ScElement {
   static properties = {
@@ -133,6 +134,13 @@ class ScButton extends ScElement {
     this._pressed = false;
     // @note: passive: false in event listener declaration lose the binding
     this._onEvent = this._onEvent.bind(this);
+    this._onKeyboardEvent = this._onKeyboardEvent.bind(this);
+
+    this._keyboard = new KeyboardController(this, {
+      filterKeys: ['Enter', 'Space'],
+      callback: this._onKeyboardEvent,
+      deduplicateEvents: true,
+    });
   }
 
   render() {
@@ -161,6 +169,11 @@ class ScButton extends ScElement {
 
   updated(changedProperties) {
     this.disabled ? this.removeAttribute('tabindex') : this.setAttribute('tabindex', 0);
+  }
+
+  _onKeyboardEvent(e) {
+    const eventName = e.type === 'keydown' ? 'press' : 'release';
+    this._dispatchEvent(eventName);
   }
 
   _onEvent(e) {

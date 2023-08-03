@@ -2,6 +2,7 @@ import { html, css, svg, nothing } from 'lit';
 import ScElement from './ScElement.js';
 
 import midiLearn from './mixins/midi-learn.js';
+import KeyboardController from './controllers/keyboard-controller.js';
 
 class ScBang extends ScElement {
   static properties = {
@@ -77,8 +78,16 @@ class ScBang extends ScElement {
     this.disabled = false;
 
     this._timeoutId = null;
+
     // @note: passive: false in event listener declaration lose the binding
     this._triggerEvent = this._triggerEvent.bind(this);
+    this._onKeyboardEvent = this._onKeyboardEvent.bind(this);
+
+    this._keyboard = new KeyboardController(this, {
+      filterKeys: ['Enter', 'Space'],
+      callback: this._onKeyboardEvent,
+      deduplicateEvents: true,
+    });
   }
 
   render() {
@@ -107,6 +116,13 @@ class ScBang extends ScElement {
 
   updated(changedProperties) {
     this.disabled ? this.removeAttribute('tabindex') : this.setAttribute('tabindex', 0);
+  }
+
+  _onKeyboardEvent(e) {
+    if (e.type === 'keydown') {
+      this.active = true;
+      this._dispatchInputEvent();
+    }
   }
 
   _triggerEvent(e) {

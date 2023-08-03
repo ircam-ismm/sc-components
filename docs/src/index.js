@@ -1,4 +1,3 @@
-import '@webcomponents/webcomponentsjs';
 import { html, render } from 'lit/html.js';
 import { map } from 'lit/directives/map.js';
 
