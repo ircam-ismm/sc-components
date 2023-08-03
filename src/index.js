@@ -1,4 +1,3 @@
-import '@webcomponents/webcomponentsjs';
 import { html, render } from 'lit/html.js';
 import { map } from 'lit/directives/map.js';
 
@@ -94,6 +93,7 @@ async function setContent(pages, page) {
   });
 
   setContent(pages, page);
+
   // ligh / dark mode
   document.querySelector('#switch-mode').addEventListener('change', () => {
     const $content = document.querySelector('#main > section');

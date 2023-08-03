@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[376,6],{6376:(e,t,n)=>{n.r(t),n.d(t,{enter:()=>u,exit:()=>d,template:()=>m});var a=n(9392),s=n(4670),c=n(2006),l=n(1142);let i=null,r=null,o=null;function u(){const e=document.querySelector("#test-signal");i=(0,c.default)(1,60,1,((e,t)=>{o={time:e,data:Array.from(t)}})),r=(0,c.default)(2,60,1,((t,n)=>{o.data[1]=.5*n[0],e.value=o})),i.start(),r.start()}function d(){i.stop(),r.stop()}const m=a.dy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[376,6],{6376:(e,t,n)=>{n.r(t),n.d(t,{enter:()=>u,exit:()=>d,template:()=>m});var a=n(182),s=n(4670),c=n(2006),l=n(850);let i=null,r=null,o=null;function u(){const e=document.querySelector("#test-signal");i=(0,c.default)(1,60,1,((e,t)=>{o={time:e,data:Array.from(t)}})),r=(0,c.default)(2,60,1,((t,n)=>{o.data[1]=.5*n[0],e.value=o})),i.start(),r.start()}function d(){i.stop(),r.stop()}const m=a.dy`
 
 <h2>sc-signal</h2>
 

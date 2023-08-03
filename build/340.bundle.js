@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[340],{1340:(e,t,s)=>{s.r(t),s.d(t,{template:()=>d});var c=s(9392),o=s(1142),a=s(4670);const d=c.dy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[340],{1340:(e,t,s)=>{s.r(t),s.d(t,{template:()=>d});var c=s(182),o=s(850),a=s(4670);const d=c.dy`
 
 <h2>sc-dots</h2>
 

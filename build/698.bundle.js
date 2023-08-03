@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[698],{8698:(t,e,c)=>{c.r(e),c.d(e,{template:()=>n});var s=c(4254),o=c(4670);let u,a,l;const n=s.dy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[698],{8698:(t,e,c)=>{c.r(e),c.d(e,{template:()=>n});var s=c(788),o=c(4670);let u,a,l;const n=s.dy`
 
 <h2>sc-button</h2>
 
