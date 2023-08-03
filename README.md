@@ -16,7 +16,7 @@ The library is built with [lit](https://lit.dev/).
 
 ## Goal & Philosophy
 
-This is a (very) opinionated library, which focuses on implementing interfaces that just work in working / performance situations. Hence, it's pretty agressive considering certain default browser's behaviours (which some might consider bad design). 
+This is a (very) opinionated library, which focuses on implementing interfaces that just work in working / performance situations. Hence, it's pretty agressive considering certain default browser's behaviours (which some may consider bad design). 
 
 To make it short: it doesn't care of _not_ evergreen browsers, doesn't care of semantics, doesn't care of breaking regular users expectations, etc. It just aims to be practical, intuitive and robust for devs and practitioners. 
 
