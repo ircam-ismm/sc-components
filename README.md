@@ -86,6 +86,13 @@ The library has not been tested within other frameworks such as React or Vue yet
 
 Any feedback is be welcome!
 
+## Running the doc locally
+
+```js
+npm install
+npm run doc
+```
+
 <!--
   todos
 ## Theming and styling

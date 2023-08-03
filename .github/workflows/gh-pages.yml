@@ -22,16 +22,8 @@ jobs:
       - name: Install lib dependencies
         run: npm install
 
-      - name: Build vendors
-        run: npm run vendors
-
-      - name: Install docs dependencies
-        run: npm install
-        working-directory: ./docs
-
       - name: Build docs
-        run: npm run build:prod
-        working-directory: ./docs
+        run: npm run doc:prod
 
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4
