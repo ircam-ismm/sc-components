@@ -1,7 +1,4 @@
 import { html, css, nothing } from 'lit';
-import './sc-icon.js';
-
-import ScElement from './ScElement.js';
 
 import CodeMirror from 'codemirror';
 import 'codemirror/mode/javascript/javascript.js';
@@ -11,12 +8,13 @@ import 'codemirror/addon/search/searchcursor.js';
 import 'codemirror/addon/search/jump-to-line.js';
 import 'codemirror/addon/dialog/dialog.js';
 import 'codemirror/addon/comment/comment.js';
-
-// css
+// performatted css (cf. .bin/prepare-code-mirror)
 import cmStyles from '../vendors/codemirror-css.js';
 import monokaiTheme from '../vendors/theme-monokai-css.js';
 import addonDialog from '../vendors/addon-dialog-css.js';
 
+import ScElement from './ScElement.js';
+import './sc-icon.js';
 
 CodeMirror.commands.save = function(cm) {
   cm._scComponent._save();

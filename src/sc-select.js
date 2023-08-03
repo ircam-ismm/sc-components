@@ -1,6 +1,7 @@
 import { html, svg, css, nothing } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { isPlainObject } from '@ircam/sc-utils';
+
 import ScElement from './ScElement.js';
 
 let itemId = 0;

@@ -1,7 +1,8 @@
 import { html, css, svg, nothing } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
-import ScElement from './ScElement.js';
 import hljs from 'highlight.js';
+
+import ScElement from './ScElement.js';
 
 class ScCodeExample extends ScElement {
   static properties = {

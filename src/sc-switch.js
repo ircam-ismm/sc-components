@@ -1,4 +1,5 @@
 import { html, svg, css } from 'lit';
+
 import ScElement from './ScElement.js';
 
 class ScSwitch extends ScElement {

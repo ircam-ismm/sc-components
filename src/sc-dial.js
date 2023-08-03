@@ -1,6 +1,7 @@
 import { html, css, svg, nothing } from 'lit';
-import ScElement from './ScElement.js';
 
+import ScElement from './ScElement.js';
+import KeyboardController from './controllers/keyboard-controller.js';
 import midiLearn from './mixins/midi-learn.js';
 import getScale from './utils/get-scale.js';
 import './sc-speed-surface.js';
@@ -207,6 +208,13 @@ class ScDial extends ScElement {
     this.disabled = false;
 
     this._midiValueTimeout = null;
+
+    this._onKeyboardEvent = this._onKeyboardEvent.bind(this);
+
+    this.keyboard = new KeyboardController(this, {
+      filterKeys: ['ArrowUp', 'ArrowRight', 'ArrowDown', 'ArrowLeft'],
+      callback: this._onKeyboardEvent,
+    });
   }
 
   render() {
@@ -248,6 +256,28 @@ class ScDial extends ScElement {
   _updateScales() {
     this._valueToAngleScale = getScale([this.min, this.max], [this._minAngle, this._maxAngle]);
     this._pixelToDiffScale = getScale([0, 15], [0, this.max - this.min]);
+  }
+
+  _onKeyboardEvent(e) {
+    switch (e.type) {
+      case 'keydown': {
+        // arbitrary MIDI like delta increment,
+        const incr = (this.max - this.min) / 127;
+
+        if (e.key === 'ArrowUp' || e.key === 'ArrowRight') {
+          this.value += incr;
+        } else if (e.key === 'ArrowDown' || e.key === 'ArrowLeft') {
+          this.value -= incr;
+        }
+
+        this._dispatchInputEvent();
+        break;
+      }
+      case 'keyup': {
+        this._dispatchChangeEvent();
+        break;
+      }
+    }
   }
 
   _resetValue(e) {

@@ -1,5 +1,7 @@
 import { html, css } from 'lit';
+
 import ScElement from './ScElement.js';
+import KeyboardController from './controllers/keyboard-controller.js'
 import icons from './utils/icons.js';
 
 class ScIcon extends ScElement {
@@ -97,6 +99,13 @@ class ScIcon extends ScElement {
     this._pressed = false;
     // @note: passive: false in event listener declaration lose the binding
     this._onEvent = this._onEvent.bind(this);
+    this._onKeyboardEvent = this._onKeyboardEvent.bind(this);
+
+    this._keyboard = new KeyboardController(this, {
+      filterKeys: ['Enter', 'Space'],
+      callback: this._onKeyboardEvent,
+      deduplicateEvents: true,
+    });
   }
 
   render() {
@@ -131,6 +140,11 @@ class ScIcon extends ScElement {
     this.disabled ? this.removeAttribute('tabindex') : this.setAttribute('tabindex', 0);
   }
 
+  _onKeyboardEvent(e) {
+    const eventName = e.type === 'keydown' ? 'press' : 'release';
+    this._dispatchEvent(eventName);
+  }
+
   _onEvent(e) {
     e.preventDefault();
 
@@ -139,6 +153,11 @@ class ScIcon extends ScElement {
     }
 
     const eventName = (e.type === 'touchend' || e.type === 'mouseup') ? 'release' : 'press';
+
+    this._dispatchEvent(eventName);
+  }
+
+  _dispatchEvent(eventName) {
     // we don't want to trigger a release if no pressed has been recorded
     if (eventName === 'release' && this._pressed === false) {
       return;

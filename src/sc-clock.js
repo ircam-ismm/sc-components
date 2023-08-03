@@ -1,4 +1,5 @@
 import { css, html, svg, nothing } from 'lit';
+
 import ScElement from './ScElement.js';
 
 function padLeft(value, char, length) {

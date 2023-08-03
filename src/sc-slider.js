@@ -1,10 +1,9 @@
 import { html, svg, css, nothing } from 'lit';
-import ScElement from './ScElement.js';
 
+import ScElement from './ScElement.js';
 import midiLearn from './mixins/midi-learn.js';
 import getScale from './utils/get-scale.js';
 import getClipper from './utils/get-clipper.js';
-
 import './sc-position-surface.js';
 import './sc-number.js';
 

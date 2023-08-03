@@ -1,6 +1,6 @@
 import { html, css, svg, nothing } from 'lit';
-import ScElement from './ScElement.js';
 
+import ScElement from './ScElement.js';
 import midiLearn from './mixins/midi-learn.js';
 import KeyboardController from './controllers/keyboard-controller.js';
 

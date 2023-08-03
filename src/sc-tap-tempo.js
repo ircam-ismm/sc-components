@@ -1,7 +1,7 @@
 import { html, css, svg, nothing } from 'lit';
-import ScElement from './ScElement.js';
-import { theme } from './styles.js';
 import { getTime } from '@ircam/sc-gettime';
+
+import ScElement from './ScElement.js';
 
 class ScTapTempo extends ScElement {
   static properties = {

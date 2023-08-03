@@ -1,6 +1,7 @@
 import { LitElement, html, svg, css, nothing } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { repeat } from 'lit/directives/repeat.js';
+
 import ScElement from './ScElement.js';
 
 import './sc-position-surface.js';

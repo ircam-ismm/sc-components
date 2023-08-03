@@ -1,9 +1,7 @@
 import { LitElement, css } from 'lit';
+
 // dynamically insert global stylesheet w/ sc-components variables
 import './styles.js';
-
-// extending lit-element examples :
-// https://github.com/Polymer/lit-element/issues/450
 
 let id = 0;
 

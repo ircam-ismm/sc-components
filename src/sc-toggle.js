@@ -1,6 +1,6 @@
 import { html, svg, css } from 'lit';
-import ScElement from './ScElement.js';
 
+import ScElement from './ScElement.js';
 import midiLearn from './mixins/midi-learn.js';
 
 class ScToggle extends ScElement {

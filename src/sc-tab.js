@@ -1,5 +1,6 @@
 import { html, css } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
+
 import ScElement from './ScElement.js';
 
 let itemId = 0;

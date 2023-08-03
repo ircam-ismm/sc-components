@@ -1,5 +1,7 @@
 import { html, svg, css } from 'lit';
+
 import ScElement from './ScElement.js';
+import KeyboardController from './controllers/keyboard-controller.js';
 
 class ScLoop extends ScElement {
   static properties = {

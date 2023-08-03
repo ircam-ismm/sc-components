@@ -1,7 +1,7 @@
 import { LitElement, html, css } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
+
 import ScElement from './ScElement.js';
-import { fontFamily, fontSize, theme } from './styles.js';
 
 const audioContext = new AudioContext();
 

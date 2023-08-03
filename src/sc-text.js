@@ -1,5 +1,6 @@
 import { html, css, nothing } from 'lit';
 import { keyed } from 'lit/directives/keyed.js';
+
 import ScElement from './ScElement.js';
 
 class ScText extends ScElement {

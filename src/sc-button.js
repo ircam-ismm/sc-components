@@ -1,7 +1,7 @@
 import { html, css } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
-import ScElement from './ScElement.js';
 
+import ScElement from './ScElement.js';
 import midiLearn from './mixins/midi-learn.js';
 import KeyboardController from './controllers/keyboard-controller.js';
 

@@ -1,6 +1,6 @@
 import { html, css, svg, nothing } from 'lit';
+
 import ScElement from './ScElement.js';
-import { theme } from './styles.js';
 
 class ScFlash extends ScElement {
   static properties = {

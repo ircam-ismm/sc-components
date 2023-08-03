@@ -1,5 +1,6 @@
 import { html, css } from 'lit';
 import { getTime } from '@ircam/sc-gettime';
+
 import ScElement from './ScElement.js';
 
 /**

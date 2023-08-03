@@ -2,8 +2,8 @@ import { html, css, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import NP from 'number-precision';
+
 import ScElement from './ScElement.js';
-import { fontFamily, fontSize, theme } from './styles.js';
 import './sc-speed-surface.js';
 
 class ScNumber extends ScElement {

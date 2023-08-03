@@ -1,4 +1,5 @@
 import { html, css } from 'lit';
+
 import ScElement from './ScElement.js';
 
 class ScPositionSurface extends ScElement {

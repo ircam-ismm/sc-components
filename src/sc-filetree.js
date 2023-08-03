@@ -1,10 +1,10 @@
 import { html, css, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
+
 import ScElement from './ScElement.js';
+import './utils/sc-context-menu.js';
 
-import './inner/sc-context-menu.js';
-
-// note, colors in sublime filtree
+// note, colors in sublime filetree
 // bg: #21262a
 // hover: #282d33
 // active: #383f47
