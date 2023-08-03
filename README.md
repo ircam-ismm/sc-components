@@ -14,7 +14,7 @@ The library is built with [lit](https://lit.dev/).
 
 [http://ircam-ismm.github.io/sc-components/](http://ircam-ismm.github.io/sc-components/)
 
-## Philosophy
+## Goal & Philosophy
 
 This is an opinionated library, which focuses on implementing interfaces that just work in working / performance situations. Therefore, it is pretty much agressive concidering certain default browser's behaviours, which some may consider bad design. 
 
