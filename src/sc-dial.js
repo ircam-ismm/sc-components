@@ -48,10 +48,10 @@ class ScDial extends ScElement {
       type: String,
       reflect: true,
     },
-    showValue: {
+    hideValue: {
       type: Boolean,
       reflect: true,
-      attribute: 'show-value',
+      attribute: 'hide-value',
     },
     disabled: {
       type: Boolean,
@@ -204,7 +204,7 @@ class ScDial extends ScElement {
     this.max = 1; // set max before min is important to avoid workaround in setters
     this.min = 0;
     this.value = 0;
-    this.showValue = true;
+    this.hideValue = false;
     this.disabled = false;
 
     this._midiValueTimeout = null;
@@ -218,13 +218,17 @@ class ScDial extends ScElement {
   render() {
     const radius = 32;
     const cx = 50;
-    const cy = this.showValue ? 42 : 50;
+    const cy = this.hideValue ? 54 : 42;
 
     const angle = this._valueToAngleScale(this.value); // computed from value
     const position = polarToCartesian(cx, cy, radius + 2, angle); // + 2  is half path stroke-width
 
+    // prevent default to prevent focus when disabled
     return html`
-      <div @dblclick=${this._resetValue}>
+      <div
+        @mousedown=${e => e.preventDefault()}
+        @touchstart=${e => e.preventDefault()}
+        @dblclick=${this._resetValue}>
         <svg viewbox="0 0 100 100">
           <path
             class="bg"
@@ -237,7 +241,7 @@ class ScDial extends ScElement {
           <line x1=${cx} y1=${cy} x2=${position.x} y2=${position.y} />
         </svg>
 
-        ${this.showValue
+        ${!this.hideValue
           ? html`<p>${this.value.toFixed(2)}${this.unit ? ` ${this.unit}` : nothing}</p>`
           : nothing
         }
@@ -248,7 +252,18 @@ class ScDial extends ScElement {
   }
 
   updated(changedProperties) {
-    this.disabled ? this.removeAttribute('tabindex') : this.setAttribute('tabindex', 0);
+    if (changedProperties.has('disabled')) {
+      const tabindex = this.disabled ? -1 : this._tabindex;
+      this.setAttribute('tabindex', tabindex);
+
+      if (this.disabled) { this.blur(); }
+    }
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    // @note - this is important if the compoent is e.g. embedded in another component
+    this._tabindex = this.getAttribute('tabindex') || 0;
   }
 
   _updateScales() {
@@ -282,21 +297,21 @@ class ScDial extends ScElement {
   }
 
   _resetValue(e) {
-    // stop prepagation of `sc-speed-surface` event
-    e.stopPropagation();
-
+    e.preventDefault(); // important to prevent focus when disabled
     if (this.disabled) { return; }
 
+    this.focus();
     this.value = this.min;
     this._dispatchInputEvent();
     this._dispatchChangeEvent();
   }
 
   _updateValue(e) {
-    // stop prepagation of `sc-speed-surface` event
-    e.stopPropagation();
-
+    e.preventDefault(); // important to prevent focus when disabled
+    e.stopPropagation(); // stop prepagation of `sc-speed-surface` event
     if (this.disabled) { return; }
+
+    this.focus();
 
     if (e.detail.pointerId !== null) {
       // ignore very small movements

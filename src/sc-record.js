@@ -33,6 +33,7 @@ class ScRecord extends ScElement {
 
     :host([disabled]) {
       opacity: 0.7;
+      cursor: default;
     }
 
     :host(:focus), :host(:focus-visible) {
@@ -65,6 +66,7 @@ class ScRecord extends ScElement {
     super();
 
     this.active = false;
+    this.disabled = false;
 
     this._onKeyboardEvent = this._onKeyboardEvent.bind(this);
 
@@ -89,7 +91,18 @@ class ScRecord extends ScElement {
   }
 
   updated(changedProperties) {
-    this.disabled ? this.removeAttribute('tabindex') : this.setAttribute('tabindex', 0);
+    if (changedProperties.has('disabled')) {
+      const tabindex = this.disabled ? -1 : this._tabindex;
+      this.setAttribute('tabindex', tabindex);
+
+      if (this.disabled) { this.blur(); }
+    }
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    // @note - this is important if the compoent is e.g. embedded in another component
+    this._tabindex = this.getAttribute('tabindex') || 0;
   }
 
   _onKeyboardEvent(e) {
@@ -105,6 +118,7 @@ class ScRecord extends ScElement {
     e.preventDefault();
     if (this.disabled) { return; }
 
+    this.focus();
     this.active = !this.active;
     this._dispatchChangeEvent();
   }

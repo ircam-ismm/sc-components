@@ -202,8 +202,12 @@ class ScMatrix extends ScElement {
     const minValue = this._states[0];
     const maxValue = this._states[this._states.length - 1];
 
+    // prevent default to prevent focus when disabled
     return html`
-      <svg>
+      <svg
+        @mousedown=${e => e.preventDefault()}
+        @touchstart=${e => e.preventDefault()}
+      >
         <g>
           ${this.value.map((row, rowIndex) => {
             const y = rowIndex * cellHeight;
@@ -244,11 +248,18 @@ class ScMatrix extends ScElement {
   }
 
   updated(changedProperties) {
-    this.disabled ? this.removeAttribute('tabindex') : this.setAttribute('tabindex', 0);
+    if (changedProperties.has('disabled')) {
+      const tabindex = this.disabled ? -1 : this._tabindex;
+      this.setAttribute('tabindex', tabindex);
+
+      if (this.disabled) { this.blur(); }
+    }
   }
 
   connectedCallback() {
     super.connectedCallback();
+    // @note - this is important if the compoent is e.g. embedded in another component
+    this._tabindex = this.getAttribute('tabindex') || 0;
 
     this._resizeObserver = new ResizeObserver(entries => {
       const $svg = this.shadowRoot.querySelector('svg');

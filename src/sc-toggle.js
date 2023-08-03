@@ -97,6 +97,7 @@ class ScToggle extends ScElement {
   render() {
     const padding = 25;
 
+    // we use touchend on mobile as it is more stable and does not spoil the responsiveness
     return html`
       <svg
         class="${this.active ? 'active' : ''}"
@@ -114,8 +115,20 @@ class ScToggle extends ScElement {
   }
 
   updated(changedProperties) {
-    this.disabled ? this.removeAttribute('tabindex') : this.setAttribute('tabindex', 0);
+    if (changedProperties.has('disabled')) {
+      const tabindex = this.disabled ? -1 : this._tabindex;
+      this.setAttribute('tabindex', tabindex);
+
+      if (this.disabled) { this.blur(); }
+    }
   }
+
+  connectedCallback() {
+    super.connectedCallback();
+    // @note - this is important if the compoent is e.g. embedded in another component
+    this._tabindex = this.getAttribute('tabindex') || 0;
+  }
+
 
   _onKeyboardEvent(e) {
     if (this.disabled) { return; }
@@ -126,12 +139,11 @@ class ScToggle extends ScElement {
     }
   }
 
-  // we use touchend on mobile as it is more stable and does not spoil the responsiveness
   _updateValue(e) {
-    e.preventDefault();
-
+    e.preventDefault(); // important to prevent focus when disabled
     if (this.disabled) { return; }
 
+    this.focus();
     this.active = !this.active;
     this._dispatchEvent();
   }

@@ -15,12 +15,12 @@ class ScRadio extends ScElement {
       type: String,
       reflect: true,
     },
-    disabled: {
-      type: Boolean,
-      reflect: true,
-    },
     orientation: {
       type: String,
+      reflect: true,
+    },
+    disabled: {
+      type: Boolean,
       reflect: true,
     },
   };
@@ -123,7 +123,7 @@ class ScRadio extends ScElement {
             data-index=${index}
             name=${this._name}
             @change=${this._dispatchEvent}
-            @input=${e => e.stopPropagation()}
+            @input=${this._bypassEvent}
             ?checked=${value == this.value}
             ?disabled=${this.disabled && !(value == this.value)}
           />
@@ -134,21 +134,28 @@ class ScRadio extends ScElement {
   }
 
   updated(changedProperties) {
+    // we don't want to check the changed properties because if the value is set
+    // this must be reapplied, seems to contradict with checked somehow...
+    const tabindex = this.disabled ? -1 : this._tabindex;
     const $inputs = this.shadowRoot.querySelectorAll('input');
 
-    if (this.disabled) {
-      $inputs.forEach($input => {
-        $input.removeAttribute('tabindex');
-        // note we loose the visual feedback if one value is selected, but
-        // this bypass focus entirely
-        $input.disabled = true;
-      });
-    } else {
-      $inputs.forEach($input => {
-        $input.setAttribute('tabindex', 0);
-        $input.disabled = false;
-      });
-    }
+    $inputs.forEach($input => {
+      $input.setAttribute('tabindex', tabindex);
+      $input.disabled = this.disabled;
+    });
+
+    if (this.disabled) { this.blur(); }
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    // @note - this is important if the compoent is e.g. embedded in another component
+    this._tabindex = this.getAttribute('tabindex') || 0;
+  }
+
+  _bypassEvent(e) {
+    e.preventDefault();
+    e.stopPropagation();
   }
 
   _dispatchEvent(e) {

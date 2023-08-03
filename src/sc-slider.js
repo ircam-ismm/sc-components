@@ -148,6 +148,11 @@ class ScSlider extends ScElement {
   }
 
   set min(value) {
+    if (value >= this.max) {
+      console.warn('sc-slider: min cannot be >= to max');
+      return;
+    }
+
     this._min = value;
     this._updateScales();
   }
@@ -157,6 +162,11 @@ class ScSlider extends ScElement {
   }
 
   set max(value) {
+    if (value <= this.min) {
+      console.warn('sc-slider: max cannot be <= to min');
+      return;
+    }
+
     this._max = value;
     this._updateScales();
   }
@@ -207,6 +217,7 @@ class ScSlider extends ScElement {
     this.orientation = 'horizontal';
     this.relative = false;
     this.numberBox = false;
+    this.disabled = false;
 
     this._pointerId = null;
     // for relative interaction
@@ -223,8 +234,13 @@ class ScSlider extends ScElement {
   render() {
     const size = Math.max(0, this._scale(this.value));
 
+    // prevent focus when disabled
     return html`
-      <div class="slider">
+      <div
+        @mousedown=${e => e.preventDefault()}
+        @touchstart=${e => e.preventDefault()}
+        class="slider"
+      >
         <svg viewbox="0 0 1000 1000" preserveAspectRatio="none">
           ${this.orientation === 'horizontal'
             ? svg`
@@ -261,7 +277,18 @@ class ScSlider extends ScElement {
   }
 
   updated(changedProperties) {
-    this.disabled ? this.removeAttribute('tabindex') : this.setAttribute('tabindex', 0);
+    if (changedProperties.has('disabled')) {
+      const tabindex = this.disabled ? -1 : this._tabindex;
+      this.setAttribute('tabindex', tabindex);
+
+      if (this.disabled) { this.blur(); }
+    }
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    // @note - this is important if the compoent is e.g. embedded in another component
+    this._tabindex = this.getAttribute('tabindex') || 0;
   }
 
   _updateScales() {
@@ -322,6 +349,10 @@ class ScSlider extends ScElement {
   }
 
   _onPositionChange(e) {
+    // stop propagation of event from sc-position-surface
+    e.stopPropagation();
+    // e.preventDefault();
+
     if (this.disabled) { return; }
 
     if (e.detail.pointerId === this._pointerId) {
@@ -333,10 +364,11 @@ class ScSlider extends ScElement {
   _onPositionInput(e) {
     // stop propagation of event from sc-position-surface
     e.stopPropagation();
+    // e.preventDefault();
 
-    if (this.disabled) {
-      return;
-    }
+    if (this.disabled) { return; }
+
+    this.focus();
 
     if (this.relative) {
       // consider only first pointer in list, we don't want a multitouch slider...

@@ -256,13 +256,18 @@ class ScNumber extends ScElement {
     const characterWidth = 7; // in pixels
     const isEdited = { edited: (this._numKeyPressed !== 0) };
 
+    // @focus and @blur are for desktop / keyboard interactions
+    // @touchstart and @touchend are for special mobile handling
+
+    // @todo - would be probably more consistant and simple by just removing
+    // this div and work on `this` directly
     return html`
       <div
         tabindex="-1"
         class="container"
         @focus="${this._onFocus}"
         @blur="${this._onBlur}"
-        @touchstart="${this._triggerFocus}"
+        @touchstart="${this._handleFocus}"
         @touchend="${this._openVirtualKeyboard}"
       >
         <div class="info ${classMap(isEdited)}"></div>
@@ -308,17 +313,22 @@ class ScNumber extends ScElement {
   }
 
   updated(changedProperties) {
-    this.disabled || this.readonly
-      ? this.removeAttribute('tabindex')
-      : this.setAttribute('tabindex', 0);
+    if (changedProperties.has('disabled') || changedProperties.has('disabled')) {
+      const tabindex = this.disabled || this.readonly ? -1 : this._tabindex;
+      this.setAttribute('tabindex', tabindex);
+
+      if (this.disabled || this.readonly) { this.blur(); }
+    }
   }
 
   connectedCallback() {
     super.connectedCallback();
+    // @note - this is important if the compoent is e.g. embedded in another component
+    this._tabindex = this.getAttribute('tabindex') || 0;
   }
 
-  // force focus for touchstart (is prevented by speed-surfaces...)
-  _triggerFocus(e) {
+  // prevent focus for touch interfaces, we want to have virtual keyboard here
+  _handleFocus(e) {
     e.preventDefault();
     e.stopPropagation();
   }
@@ -379,6 +389,7 @@ class ScNumber extends ScElement {
   }
 
   // keyboard interactions
+  // this
   _onFocus() {
     this._numKeyPressed = 0;
     window.addEventListener('keydown', this._onKeyDown);

@@ -33,6 +33,7 @@ class ScNext extends ScElement {
 
     :host([disabled]) {
       opacity: 0.7;
+      cursor: default;
     }
 
     :host(:focus), :host(:focus-visible) {
@@ -88,22 +89,33 @@ class ScNext extends ScElement {
   }
 
   updated(changedProperties) {
-    this.disabled ? this.removeAttribute('tabindex') : this.setAttribute('tabindex', 0);
+    if (changedProperties.has('disabled')) {
+      const tabindex = this.disabled ? -1 : this._tabindex;
+      this.setAttribute('tabindex', tabindex);
+
+      if (this.disabled) { this.blur(); }
+    }
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    // @note - this is important if the compoent is e.g. embedded in another component
+    this._tabindex = this.getAttribute('tabindex') || 0;
   }
 
   _onKeyboardEvent(e) {
-    if (this.disabled) { return; }
-
     if (e.type === 'keydown') {
-      this._onInput();
+      this._onInput(e);
     } else if (e.type === 'keyup') {
       this._onRelease();
     }
   }
 
   _onInput(e) {
+    e.preventDefault(); // important to prevent focus when disabled
     if (this.disabled) { return; }
 
+    this.focus();
     this._active = true;
     this._dispatchEvent();
   }

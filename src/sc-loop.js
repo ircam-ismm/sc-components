@@ -33,6 +33,7 @@ class ScLoop extends ScElement {
 
     :host([disabled]) {
       opacity: 0.7;
+      cursor: default;
     }
 
     :host(:focus), :host(:focus-visible) {
@@ -91,8 +92,8 @@ class ScLoop extends ScElement {
           height: ${size}px;
         "
         viewbox="-10 -8 120 120"
-        @mousedown="${this._triggerChange}"
-        @touchstart="${this._triggerChange}"
+        @mousedown=${this._onInput}
+        @touchstart=${this._onInput}
       >
         <path
           d="M 30,20
@@ -114,7 +115,18 @@ class ScLoop extends ScElement {
   }
 
   updated(changedProperties) {
-    this.disabled ? this.removeAttribute('tabindex') : this.setAttribute('tabindex', 0);
+    if (changedProperties.has('disabled')) {
+      const tabindex = this.disabled ? -1 : this._tabindex;
+      this.setAttribute('tabindex', tabindex);
+
+      if (this.disabled) { this.blur(); }
+    }
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    // @note - this is important if the compoent is e.g. embedded in another component
+    this._tabindex = this.getAttribute('tabindex') || 0;
   }
 
   _onKeyboardEvent(e) {
@@ -126,10 +138,11 @@ class ScLoop extends ScElement {
     }
   }
 
-  _triggerChange(e) {
-    e.preventDefault();
+  _onInput(e) {
+    e.preventDefault(); // important to prevent focus when disabled
     if (this.disabled) { return; }
 
+    this.focus();
     this.active = !this.active;
     this._dispatchChangeEvent();
   }

@@ -155,7 +155,6 @@ class ScButton extends ScElement {
         class="${classMap(classes)}"
         @mousedown="${this._onEvent}"
         @mouseup="${this._onEvent}"
-
         @touchstart="${{
           handleEvent: this._onEvent,
           passive: false,
@@ -172,18 +171,14 @@ class ScButton extends ScElement {
       const tabindex = this.disabled ? -1 : this._tabindex;
       this.setAttribute('tabindex', tabindex);
 
-      if (this.disabled) {
-        this.blur();
-      }
+      if (this.disabled) { this.blur(); }
     }
   }
 
   connectedCallback() {
     super.connectedCallback();
-
     // @note - this is important if the compoent is e.g. embedded in another component
     this._tabindex = this.getAttribute('tabindex') || 0;
-    this.setAttribute('tabindex', this._tabindex);
   }
 
   _onKeyboardEvent(e) {
@@ -194,10 +189,10 @@ class ScButton extends ScElement {
   }
 
   _onEvent(e) {
+    e.preventDefault(); // important to prevent focus when disabled
     if (this.disabled) { return; }
 
-    e.preventDefault();
-
+    this.focus();
     const eventName = (e.type === 'touchend' || e.type === 'mouseup') ? 'release' : 'press';
     this._dispatchEvent(eventName);
   }

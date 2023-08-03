@@ -114,7 +114,18 @@ class ScBang extends ScElement {
   }
 
   updated(changedProperties) {
-    this.disabled ? this.removeAttribute('tabindex') : this.setAttribute('tabindex', 0);
+    if (changedProperties.has('disabled')) {
+      const tabindex = this.disabled ? -1 : this._tabindex;
+      this.setAttribute('tabindex', tabindex);
+
+      if (this.disabled) { this.blur(); }
+    }
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    // @note - this is important if the compoent is e.g. embedded in another component
+    this._tabindex = this.getAttribute('tabindex') || 0;
   }
 
   _onKeyboardEvent(e) {
@@ -127,10 +138,10 @@ class ScBang extends ScElement {
   }
 
   _triggerEvent(e) {
+    e.preventDefault();  // important to prevent focus when disabled
     if (this.disabled) { return; }
 
-    e.preventDefault();
-
+    this.focus();
     this.active = true;
     this._dispatchInputEvent();
   }

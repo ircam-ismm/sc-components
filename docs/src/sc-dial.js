@@ -51,10 +51,9 @@ const template = html\`
   >0</sc-number>
 </div>
 <div>
-  <sc-text>[show-value=true]</sc-text>
+  <sc-text>[hide-value=false]</sc-text>
   <sc-toggle
-    active
-    @change=${e => document.querySelector('#test-dial').showValue = e.detail.value}
+    @change=${e => document.querySelector('#test-dial').hideValue = e.detail.value}
   >0</sc-toggle>
 </div>
 <div>

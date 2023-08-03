@@ -13,11 +13,11 @@ class ScText extends ScElement {
         type: Boolean,
         reflect: true,
       },
-      disabled: {
+      dirty: {
         type: Boolean,
         reflect: true,
       },
-      dirty: {
+      disabled: {
         type: Boolean,
         reflect: true,
       },
@@ -125,14 +125,14 @@ class ScText extends ScElement {
       this.setAttribute('editable', true);
 
       if (!this.disabled) {
-        this.setAttribute('tabindex', 0);
+        this.setAttribute('tabindex', this._tabindex);
         this.setAttribute('contenteditable', 'true');
       } else {
-        this.removeAttribute('tabindex');
+        this.setAttribute('tabindex', -1);
         this.setAttribute('contenteditable', 'false');
       }
     } else {
-      this.removeAttribute('tabindex');
+      this.setAttribute('tabindex', -1);
       this.removeAttribute('editable');
       this.removeAttribute('contenteditable');
     }
@@ -140,6 +140,9 @@ class ScText extends ScElement {
 
   connectedCallback() {
     super.connectedCallback();
+
+    // @note - this is important if the compoent is e.g. embedded in another component
+    this._tabindex = this.getAttribute('tabindex') || 0;
 
     this.addEventListener('blur', this._updateValue);
     this.addEventListener('keydown', this._onKeyDown);

@@ -27,6 +27,7 @@ class ScTransport extends ScElement {
       width: auto;
       height: 30px;
       border-radius: 0;
+      cursor: pointer;
 
       --sc-transport-background-color: var(--sc-color-primary-2);
       --sc-transport-active-background-color: var(--sc-color-primary-1);
@@ -41,6 +42,11 @@ class ScTransport extends ScElement {
 
     :host([disabled]) {
       opacity: 0.7;
+      cursor: default;
+    }
+
+    :host(:focus), :host(:focus-visible) {
+      outline: none;
     }
 
     svg {
@@ -52,11 +58,10 @@ class ScTransport extends ScElement {
       height: 100%;
       width: auto;
       margin-right: 4px;
-      cursor: pointer;
       outline: none;
     }
 
-    svg:focus, svg:focus-visible {
+    :host(:focus) svg, :host(:focus-visible) svg {
       outline: none;
       border: 1px solid var(--sc-color-primary-4);
     }
@@ -96,6 +101,7 @@ class ScTransport extends ScElement {
 
     this.buttons = ['play', 'pause', 'stop'];
     this.state = null;
+    this.disabled = false;
 
     this._keyboard = new KeyboardController(this, {
       filterCodes: ['ArrowUp', 'ArrowRight', 'ArrowDown', 'ArrowLeft', 'Space'],
@@ -115,6 +121,7 @@ class ScTransport extends ScElement {
                 viewbox="0 0 20 20"
                 @mousedown=${e => this._onChange(e, 'play')}
                 @touchstart=${e => this._onChange(e, 'play')}
+                tabindex="-1"
               >
                 <polygon class="play-shape" points="6, 5, 15, 10, 6, 15"></polygon>
               </svg>
@@ -126,6 +133,7 @@ class ScTransport extends ScElement {
                 viewbox="0 0 20 20"
                 @mousedown=${e => this._onChange(e, 'pause')}
                 @touchstart=${e => this._onChange(e, 'pause')}
+                tabindex="-1"
               >
                 <rect class="left" x="5" y="5" width="3" height="10"></rect>
                 <rect class="right" x="12" y="5" width="3" height="10"></rect>
@@ -138,6 +146,7 @@ class ScTransport extends ScElement {
                 viewbox="0 0 20 20"
                 @mousedown=${e => this._onChange(e, 'stop')}
                 @touchstart=${e => this._onChange(e, 'stop')}
+                tabindex="-1"
               >
                 <rect class="stop-shape" x="6" y="6" width="8" height="8"></rect>
               </svg>
@@ -148,10 +157,18 @@ class ScTransport extends ScElement {
   }
 
   updated(changedProperties) {
-    const $inputs = this.shadowRoot.querySelectorAll('svg');
-    this.disabled
-      ? $inputs.forEach($input => $input.removeAttribute('tabindex'))
-      : $inputs.forEach($input => $input.setAttribute('tabindex', 0));
+    if (changedProperties.has('disabled')) {
+      const tabindex = this.disabled ? -1 : this._tabindex;
+      this.setAttribute('tabindex', tabindex);
+
+      if (this.disabled) { this.blur(); }
+    }
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    // @note - this is important if the compoent is e.g. embedded in another component
+    this._tabindex = this.getAttribute('tabindex') || 0;
   }
 
   _onKeyboardEvent(e) {
@@ -179,10 +196,9 @@ class ScTransport extends ScElement {
     e.preventDefault();
     e.stopPropagation();
 
-    if (this.disabled) {
-      return;
-    }
+    if (this.disabled) { return; }
 
+    this.focus();
     if (this.state !== value) {
       this.state = value;
       this._dispatchEvent();

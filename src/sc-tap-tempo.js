@@ -69,6 +69,7 @@ class ScTapTempo extends ScElement {
     super();
 
     this.value = 60;
+    this.disabled = false;
 
     this._active = false;
     this._timeoutId = null;
@@ -100,7 +101,18 @@ class ScTapTempo extends ScElement {
   }
 
   updated(changedProperties) {
-    this.disabled ? this.removeAttribute('tabindex') : this.setAttribute('tabindex', 0);
+    if (changedProperties.has('disabled')) {
+      const tabindex = this.disabled ? -1 : this._tabindex;
+      this.setAttribute('tabindex', tabindex);
+
+      if (this.disabled) { this.blur(); }
+    }
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    // @note - this is important if the compoent is e.g. embedded in another component
+    this._tabindex = this.getAttribute('tabindex') || 0;
   }
 
   _onKeyboardEvent(e) {
@@ -110,12 +122,11 @@ class ScTapTempo extends ScElement {
   }
 
   _onTap(e) {
-    e.preventDefault();
+    e.preventDefault();  // important to prevent focus when disabled
 
-    if (this.disabled) {
-      return;
-    }
+    if (this.disabled) { return; }
 
+    this.focus();
     clearTimeout(this._timeoutId);
 
     // trigger gui feedback
