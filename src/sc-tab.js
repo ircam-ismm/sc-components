@@ -131,7 +131,10 @@ class ScTab extends ScElement {
         index = 0;
       }
 
-      this.focus(); // @important: do not remove, otherwize we loose the focus somehow
+      // @important: do not remove, otherwize we loose the focus somehow
+      // the prevent default on input is not enought
+      this.focus();
+
       this.value = this.options[index];
       this._dispatchEvent();
     }
