@@ -50,7 +50,7 @@ class KeyboardController {
     // cf. https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code
     const key = e.code;
 
-    if (this.debug) {
+    if (this._debug) {
       console.log(key);
     }
 

@@ -126,7 +126,9 @@ class ScDial extends ScElement {
       font-size: 8px;
       margin: 0;
       text-align: center;
-      user-select: none
+      user-select: none;
+      webkit-user-select: none;
+      webkit-touch-callout: none;
     }
   `;
 

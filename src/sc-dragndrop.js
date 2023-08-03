@@ -24,13 +24,15 @@ class ScDragNDrop extends ScElement {
       width: 300px;
       height: 150px;
       box-sizing: border-box;
-      user-select: none;
       border: 1px solid var(--sc-color-primary-2);
       background-color: var(--sc-color-primary-1);
       border-radius: 2px;
       font-family: var(--sc-font-family);
       font-size: var(--sc-font-size);
       color: white;
+      user-select: none;
+      webkit-user-select: none;
+      webkit-touch-callout: none;
 
       --sc-dragndrop-dragged-background-color: var(--sc-color-primary-2);
       --sc-dragndrop-processing-background-color: var(--sc-color-secondary-3);

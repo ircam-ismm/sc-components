@@ -14,6 +14,14 @@ The library is built with [lit](https://lit.dev/).
 
 [http://ircam-ismm.github.io/sc-components/](http://ircam-ismm.github.io/sc-components/)
 
+## Philosophy
+
+This is an opinionated library, which focuses on implementing interfaces that just work in working / performance situations. Therefore, it is pretty much agressive concidering certain default browser's behaviours, which some may consider bad design. 
+
+To make it short: it doesn't care of _not_ evergreen browsers, doesn't care of semantics, doesn't care of breaking regular users expectations, etc. It just aims to be practical, intuitive and robust interfaces for devs and practitioners. 
+
+If you are ok with that, any PR, issues, monkey testing or feedback of any kind is welcome. If not, but you like the lib anyway, its ok too (but there will probably be more discussions :)
+
 ## Usage
 
 ### With npm and bundlers

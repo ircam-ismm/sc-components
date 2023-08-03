@@ -76,6 +76,8 @@ class ScNumber extends ScElement {
       width: 100%;
       height: 100%;
       user-select: none;
+      webkit-user-select: none;
+      webkit-touch-callout: none;
     }
 
     .container:focus {

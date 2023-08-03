@@ -1,8 +1,9 @@
-import { html, svg, css } from 'lit';
+import { html, svg, css, nothing } from 'lit';
 import { range } from 'lit/directives/range.js';
 import { map } from 'lit/directives/map.js';
 
 import ScElement from './ScElement.js';
+import KeyboardController from './controllers/keyboard-controller.js';
 
 /**
  * Given data follows a row-first convention with the 0 index
@@ -39,17 +40,16 @@ class ScMatrix extends ScElement {
     disabled: {
       type: Boolean,
       reflect: true,
-    }
+    },
   }
 
   static styles = css`
     :host {
       box-sizing: border-box;
       width: 300px;
-      height: 200px;
+      height: 150px;
       vertical-align: top;
       display: inline-block;
-      user-select: none;
       background-color: var(--sc-color-primary-2);
       border: 1px solid var(--sc-color-primary-3);
 
@@ -84,6 +84,12 @@ class ScMatrix extends ScElement {
     line {
       stroke: var(--sc-matrix-cell-border);
       shape-rendering: crispedges;
+    }
+
+    rect.keyboard-nav-cell {
+      fill: var(--sc-color-secondary-5);
+      shape-rendering: crispedges;
+      pointer-events: none;
     }
   `;
 
@@ -130,15 +136,7 @@ class ScMatrix extends ScElement {
   }
 
   set reset(value) {
-    // we actually don't care of the value
-    this._value.forEach(row => {
-      for (let i = 0; i < row.length; i++) {
-        row[i] = this._states[0];
-      }
-    });
-
-    this.requestUpdate();
-    this._emitChange();
+    this._reset();
   }
 
   get reset() {
@@ -186,6 +184,21 @@ class ScMatrix extends ScElement {
 
     this.columns = 8;
     this.rows = 4;
+    this.disabled = false;
+
+    // for keyboard controlled selection of cells
+    this._keyboardHighlightCell = null;
+    this._onFocus = this._onFocus.bind(this);
+    this._onBlur = this._onBlur.bind(this);
+
+    this.keyboard = new KeyboardController(this, {
+      filterCodes: [
+        'ArrowUp', 'ArrowRight', 'ArrowDown', 'ArrowLeft',
+        'Space', 'Enter', 'Escape', 'Backspace',
+      ],
+      callback: this._onKeyboardEvent.bind(this),
+      deduplicateEvents: true,
+    });
   }
 
   render() {
@@ -201,6 +214,22 @@ class ScMatrix extends ScElement {
 
     const minValue = this._states[0];
     const maxValue = this._states[this._states.length - 1];
+
+    // testing
+    let highligthCell = null;
+
+    if (this._keyboardHighlightCell !== null) {
+      highligthCell = svg`
+        <rect
+          class="keyboard-nav-cell"
+          width=${cellWidth}
+          height=${cellHeight}
+          x=${this._keyboardHighlightCell.x * cellWidth}
+          y=${this._keyboardHighlightCell.y * cellHeight}
+          opacity="0.4"
+        ></rect>
+      `;
+    }
 
     // prevent default to prevent focus when disabled
     return html`
@@ -225,18 +254,25 @@ class ScMatrix extends ScElement {
                   style="fill-opacity: ${opacity}"
                   data-row-index=${rowIndex}
                   data-column-index=${columnIndex}
-                  @mousedown=${this._updateCell}
+                  @mousedown=${this._onCellEvent}
+                  @touchend=${this._onCellEvent}
                 ></rect>
               `;
             });
           })}
         </g>
+        <!-- keyboard controlled highligth cell -->
+        ${highligthCell
+          ? svg`<g>${highligthCell}</g>`
+          : nothing
+        }
         <g>
           <!-- horizontal lines -->
           ${map(range(1, this.value.length), i => {
             const y = i * cellHeight;
             return svg`<line x1="0" y1=${y} x2=${this._width} y2=${y}></line>`;
           })}
+
           <!-- vertical lines -->
           ${map(range(1, this.value[0].length), i => {
             const x = i * cellWidth;
@@ -270,10 +306,17 @@ class ScMatrix extends ScElement {
     });
 
     this._resizeObserver.observe(this);
+
+    this.addEventListener('focus', this._onFocus);
+    this.addEventListener('blur', this._onBlur);
   }
 
   disconnectedCallback() {
     this._resizeObserver.disconnect();
+
+    this.removeEventListener('focus', this._onFocus);
+    this.removeEventListener('blur', this._onBlur);
+
     super.disconnectedCallback();
   }
 
@@ -314,12 +357,94 @@ class ScMatrix extends ScElement {
     this.requestUpdate();
   }
 
-  _updateCell(e) {
-    if (this.disabled) {
-      return;
+  _onFocus() {
+    this._keyboardHighlightCell = null;
+    this.requestUpdate();
+  }
+
+  _onBlur() {
+    this._keyboardHighlightCell = null;
+    this.requestUpdate();
+  }
+
+  _onKeyboardEvent(e) {
+    if (e.type === 'keydown') {
+      // first interaction always init the cell
+      if (this._keyboardHighlightCell === null) {
+        this._keyboardHighlightCell = { x: 0, y: this.rows - 1 };
+      } else {
+        switch (e.code) {
+          case 'ArrowUp': {
+            this._keyboardHighlightCell.y -= 1;
+            break;
+          }
+          case 'ArrowRight': {
+            this._keyboardHighlightCell.x += 1;
+            break;
+          }
+          case 'ArrowDown': {
+            this._keyboardHighlightCell.y += 1;
+            break;
+          }
+          case 'ArrowLeft': {
+            this._keyboardHighlightCell.x -= 1;
+            break;
+          }
+          case 'Space':
+          case 'Enter': {
+            const rowIndex = this._keyboardHighlightCell.y;
+            const columnIndex = this._keyboardHighlightCell.x;
+            this._updateCell(rowIndex, columnIndex);
+            break;
+          }
+          case 'Escape':
+          case 'Backspace': {
+            this._reset();
+            break;
+          }
+        }
+      }
+
+      // wrap around
+      if (this._keyboardHighlightCell.y < 0) {
+        this._keyboardHighlightCell.y = this.rows - 1;
+      }
+      if (this._keyboardHighlightCell.y >= this.rows) {
+        this._keyboardHighlightCell.y = 0;
+      }
+      if (this._keyboardHighlightCell.x < 0) {
+        this._keyboardHighlightCell.x = this.columns - 1;
+      }
+      if (this._keyboardHighlightCell.x >= this.columns) {
+        this._keyboardHighlightCell.x = 0;
+      }
+
+      this.requestUpdate();
     }
+  }
+
+  _reset() {
+    this._value.forEach(row => {
+      for (let i = 0; i < row.length; i++) {
+        row[i] = this._states[0];
+      }
+    });
+
+    this.requestUpdate();
+    this._emitChange();
+  }
+
+  _onCellEvent(e) {
+    e.preventDefault(); // important to prevent focus when disabled
+    if (this.disabled) { return; }
+
+    this.focus();
 
     const { rowIndex, columnIndex } = e.target.dataset;
+    this._updateCell(rowIndex, columnIndex);
+  }
+
+  _updateCell(rowIndex, columnIndex) {
     const currentIndex = this._states.indexOf(this.value[rowIndex][columnIndex]);
     // handle situations where _states as changed in between two interactions
     const nextIndex = currentIndex === -1 ? 0 : (currentIndex + 1) % this._states.length;

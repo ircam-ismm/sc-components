@@ -67,6 +67,7 @@ class ScRadio extends ScElement {
       vertical-align: middle;
       user-select: none;
       webkit-user-select: none;
+      webkit-touch-callout: none;
     }
 
     :host([orientation="horizontal"]) label {

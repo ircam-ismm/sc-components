@@ -130,6 +130,8 @@ class ScMidiLearn extends ScElement {
 
     .button sc-text {
       user-select: none;
+      webkit-user-select: none;
+      webkit-touch-callout: none;
     }
 
     .button sc-text {
