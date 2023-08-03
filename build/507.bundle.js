@@ -29,7 +29,6 @@
   ></sc-toggle>
 </div>
 
-
 <h3>Styling</h3>
 <sc-editor
   style="width: 500px;"

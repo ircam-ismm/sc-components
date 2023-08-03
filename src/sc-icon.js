@@ -13,6 +13,10 @@ const icons = [
   'midi',
 ];
 
+let timeoutIdInput = null;
+let timeoutIdPress = null;
+let timeoutIdRelease = null;
+
 export const template = html`
 
 <h2>sc-icon</h2>
@@ -33,13 +37,50 @@ const template = html\`
   id="test-icon"
   value="my-icon"
   type="question"
-  @input=${e => document.querySelector('#icon-input').value = e.detail.value}
+  @input=${e => {
+    document.querySelector('#icon-input').active = true;
+
+    const $value = document.querySelector('#icon-value-input')
+    $value.value = e.detail.value;
+
+    clearTimeout(timeoutIdInput);
+    timeoutIdInput = setTimeout(() => $value.value = '', 500);
+  }}
+  @press=${e => {
+    document.querySelector('#icon-press').active = true;
+
+    const $value = document.querySelector('#icon-value-press');
+    $value.value = e.detail.value;
+
+    clearTimeout(timeoutIdPress);
+    timeoutIdPress = setTimeout(() => $value.value = '', 500);
+  }}
+  @release=${e => {
+    document.querySelector('#icon-release').active = true;
+
+    const $value = document.querySelector('#icon-value-release');
+    $value.value = e.detail.value;
+
+    clearTimeout(timeoutIdRelease);
+    timeoutIdRelease = setTimeout(() => $value.value = '', 500);
+  }}
 ></sc-icon>
 
 <h3>Events</h3>
 <div>
   <sc-text>@input</sc-text>
-  <sc-text id="icon-input"></sc-text>
+  <sc-bang id="icon-input"></sc-bang>
+  <sc-text id="icon-value-input"></sc-text>
+</div>
+<div>
+  <sc-text>@press</sc-text>
+  <sc-bang id="icon-press"></sc-bang>
+  <sc-text id="icon-value-press"></sc-text>
+</div>
+<div>
+  <sc-text>@release</sc-text>
+  <sc-bang id="icon-release"></sc-bang>
+  <sc-text id="icon-value-release"></sc-text>
 </div>
 <sc-code-example language="html">${`
 <sc-icon

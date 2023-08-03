@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[962],{3962:(e,t,c)=>{c.r(t),c.d(t,{template:()=>s});var n=c(182),i=c(4670);const s=n.dy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[962],{3962:(e,t,c)=>{c.r(t),c.d(t,{template:()=>a});var s=c(182),i=c(4670);let n=null,l=null,o=null;const a=s.dy`
 
 <h2>sc-icon</h2>
 
@@ -8,13 +8,26 @@
   id="test-icon"
   value="my-icon"
   type="question"
-  @input=${e=>document.querySelector("#icon-input").value=e.detail.value}
+  @input=${e=>{document.querySelector("#icon-input").active=!0;const t=document.querySelector("#icon-value-input");t.value=e.detail.value,clearTimeout(n),n=setTimeout((()=>t.value=""),500)}}
+  @press=${e=>{document.querySelector("#icon-press").active=!0;const t=document.querySelector("#icon-value-press");t.value=e.detail.value,clearTimeout(l),l=setTimeout((()=>t.value=""),500)}}
+  @release=${e=>{document.querySelector("#icon-release").active=!0;const t=document.querySelector("#icon-value-release");t.value=e.detail.value,clearTimeout(o),o=setTimeout((()=>t.value=""),500)}}
 ></sc-icon>
 
 <h3>Events</h3>
 <div>
   <sc-text>@input</sc-text>
-  <sc-text id="icon-input"></sc-text>
+  <sc-bang id="icon-input"></sc-bang>
+  <sc-text id="icon-value-input"></sc-text>
+</div>
+<div>
+  <sc-text>@press</sc-text>
+  <sc-bang id="icon-press"></sc-bang>
+  <sc-text id="icon-value-press"></sc-text>
+</div>
+<div>
+  <sc-text>@release</sc-text>
+  <sc-bang id="icon-release"></sc-bang>
+  <sc-text id="icon-value-release"></sc-text>
 </div>
 <sc-code-example language="html">${'\n<sc-icon\n  type="burger"\n  value="menu"\n  @input=${e => console.log(e.detail.value)}\n></sc-icon>\n'}</sc-code-example>
 
