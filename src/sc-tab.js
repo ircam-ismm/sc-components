@@ -2,6 +2,7 @@ import { html, css } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 
 import ScElement from './ScElement.js';
+import KeyboardController from './controllers/keyboard-controller.js';
 
 let itemId = 0;
 
@@ -30,6 +31,7 @@ class ScTab extends ScElement {
       font-size: var(--sc-font-size);
       color: #ffffff;
       overflow: auto;
+      border: 1px solid var(--sc-color-primary-3);
 
       --sc-tab-selected: var(--sc-color-secondary-1);
     }
@@ -54,19 +56,25 @@ class ScTab extends ScElement {
       width: 100%;
     }
 
+    :host(:focus), :host(:focus-visible) {
+      outline: none;
+      border: 1px solid var(--sc-color-primary-4);
+    }
+
     sc-button {
       border-radius: 0;
       --sc-button-selected: var(--sc-tab-selected);
       height: 100%;
       font-size: inherit;
+      border: none;
     }
 
     :host([orientation="horizontal"]) sc-button:not(:first-child) {
-      border-left: none;
+      border-left: 1px solid var(--sc-color-primary-3);
     }
 
     :host([orientation="vertical"]) sc-button:not(:first-child) {
-      border-top: none;
+      border-top: 1px solid var(--sc-color-primary-3);
     }
   `;
 
@@ -77,6 +85,12 @@ class ScTab extends ScElement {
     this.value = null;
     // this.disabled = false;
     this.orientation = 'horizontal';
+
+    this._keyboard = new KeyboardController(this, {
+      filterCodes: ['ArrowUp', 'ArrowRight', 'ArrowDown', 'ArrowLeft', 'Space'],
+      callback: this._onKeyboardEvent.bind(this),
+      deduplicateEvents: true,
+    });
   }
 
   render() {
@@ -85,18 +99,51 @@ class ScTab extends ScElement {
         <sc-button
           .value=${value}
           ?selected=${value === this.value}
-          @input="${this._triggerChange}"
+          @input="${this._onInput}"
           tabindex="-1"
         >${value}</sc-button>
       `;
     });
   }
 
-  _triggerChange(e) {
-    e.stopPropagation();
+  connectedCallback() {
+    super.connectedCallback();
 
+    if (!this.hasAttribute('tabindex')) {
+      this.setAttribute('tabindex', 0);
+    }
+  }
+
+  _onKeyboardEvent(e) {
+    if (e.type === 'keydown') {
+      let index = this.options.indexOf(this.value);
+
+      if (e.code === 'ArrowUp' || e.code === 'ArrowRight' || e.code === 'Space') {
+        index += 1;
+      } else if (e.code === 'ArrowDown' || e.code === 'ArrowLeft') {
+        index -= 1;
+      }
+
+      if (index < 0) {
+        index = this.options.length - 1;
+      } else if (index >= this.options.length) {
+        index = 0;
+      }
+
+      this.value = this.options[index];
+      this._dispatchEvent();
+    }
+  }
+
+  _onInput(e) {
+    // do not propagate button input
+    e.stopPropagation();
     this.value = e.detail.value;
 
+    this._dispatchEvent();
+  }
+
+  _dispatchEvent() {
     const changeEvent = new CustomEvent('change', {
       bubbles: true,
       composed: true,

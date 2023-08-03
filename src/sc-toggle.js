@@ -2,6 +2,7 @@ import { html, svg, css } from 'lit';
 
 import ScElement from './ScElement.js';
 import midiLearn from './mixins/midi-learn.js';
+import KeyboardController from './controllers/keyboard-controller.js';
 
 class ScToggle extends ScElement {
   static properties = {
@@ -85,8 +86,12 @@ class ScToggle extends ScElement {
 
     this.active = false;
     this.disabled = false;
-    // @note: passive: false in event listener declaration lose the binding
-    this._updateValue = this._updateValue.bind(this);
+
+    this._keyboard = new KeyboardController(this, {
+      filterCodes: ['Enter', 'Space'],
+      callback: this._onKeyboardEvent.bind(this),
+      deduplicateEvents: true,
+    });
   }
 
   render() {
@@ -98,7 +103,7 @@ class ScToggle extends ScElement {
         viewbox="0 0 100 100"
         @mousedown="${this._updateValue}"
         @touchend="${{
-          handleEvent: this._updateValue,
+          handleEvent: this._updateValue.bind(this),
           passive: false,
         }}"
       >
@@ -112,14 +117,20 @@ class ScToggle extends ScElement {
     this.disabled ? this.removeAttribute('tabindex') : this.setAttribute('tabindex', 0);
   }
 
+  _onKeyboardEvent(e) {
+    if (this.disabled) { return; }
+
+    if (e.type === 'keydown') {
+      this.active = !this.active;
+      this._dispatchEvent();
+    }
+  }
+
   // we use touchend on mobile as it is more stable and does not spoil the responsiveness
   _updateValue(e) {
     e.preventDefault();
-    e.stopPropagation();
 
-    if (this.disabled) {
-      return;
-    }
+    if (this.disabled) { return; }
 
     this.active = !this.active;
     this._dispatchEvent();

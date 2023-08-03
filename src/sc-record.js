@@ -1,6 +1,7 @@
 import { html, svg, css } from 'lit';
 
 import ScElement from './ScElement.js';
+import KeyboardController from './controllers/keyboard-controller.js';
 
 class ScRecord extends ScElement {
   static properties = {
@@ -64,6 +65,14 @@ class ScRecord extends ScElement {
     super();
 
     this.active = false;
+
+    this._onKeyboardEvent = this._onKeyboardEvent.bind(this);
+
+    this._keyboard = new KeyboardController(this, {
+      filterCodes: ['Enter', 'Space'],
+      callback: this._onKeyboardEvent,
+      deduplicateEvents: true,
+    });
   }
 
   render() {
@@ -71,8 +80,8 @@ class ScRecord extends ScElement {
       <svg
         class="${this.active ? 'active' : ''}"
         viewbox="0 0 20 20"
-        @mousedown="${this._propagateChange}"
-        @touchstart="${this._propagateChange}"
+        @mousedown="${this._triggerChange}"
+        @touchstart="${this._triggerChange}"
       >
         <circle cx="10" cy="10" r="5"></circle>
       </svg>
@@ -83,16 +92,24 @@ class ScRecord extends ScElement {
     this.disabled ? this.removeAttribute('tabindex') : this.setAttribute('tabindex', 0);
   }
 
-  _propagateChange(e) {
-    e.preventDefault();
-    e.stopPropagation();
+  _onKeyboardEvent(e) {
+    if (this.disabled) { return; }
 
-    if (this.disabled) {
-      return;
+    if (e.type === 'keydown') {
+      this.active = !this.active;
+      this._dispatchChangeEvent();
     }
+  }
+
+  _triggerChange(e) {
+    e.preventDefault();
+    if (this.disabled) { return; }
 
     this.active = !this.active;
+    this._dispatchChangeEvent();
+  }
 
+  _dispatchChangeEvent() {
     const changeEvent = new CustomEvent('change', {
       bubbles: true,
       composed: true,

@@ -1,6 +1,7 @@
 import { html, svg, css } from 'lit';
 
 import ScElement from './ScElement.js';
+import KeyboardController from './controllers/keyboard-controller.js';
 
 class ScPrev extends ScElement {
   static properties = {
@@ -62,6 +63,14 @@ class ScPrev extends ScElement {
     super();
 
     this._active = false;
+
+    this._onKeyboardEvent = this._onKeyboardEvent.bind(this);
+
+    this._keyboard = new KeyboardController(this, {
+      filterCodes: ['Enter', 'Space'],
+      callback: this._onKeyboardEvent,
+      deduplicateEvents: true,
+    });
   }
 
   render() {
@@ -69,10 +78,10 @@ class ScPrev extends ScElement {
       <svg
         class="${this._active ? 'active' : ''}"
         viewbox="-10 -8 120 120"
-        @mousedown="${this._dispatchEvent}"
-        @touchstart="${this._dispatchEvent}"
-        @mouseup="${this._release}"
-        @touchend="${this._release}"
+        @mousedown="${this._onInput}"
+        @touchstart="${this._onInput}"
+        @mouseup="${this._onRelease}"
+        @touchend="${this._onRelease}"
       >
         <path d="M 20,20L 20,80"></path>
         <polygon points="30,50 80,20 80,80"></polygon>
@@ -84,15 +93,28 @@ class ScPrev extends ScElement {
     this.disabled ? this.removeAttribute('tabindex') : this.setAttribute('tabindex', 0);
   }
 
-  _dispatchEvent(e) {
-    e.stopPropagation();
+  _onKeyboardEvent(e) {
+    if (this.disabled) { return; }
 
-    if (this.disabled) {
-      return;
+    if (e.type === 'keydown') {
+      this._onInput();
+    } else if (e.type === 'keyup') {
+      this._onRelease();
     }
+  }
+
+  _onInput(e) {
+    if (this.disabled) { return; }
 
     this._active = true;
+    this._dispatchEvent();
+  }
 
+  _onRelease(e) {
+    this._active = false;
+  }
+
+  _dispatchEvent() {
     const changeEvent = new CustomEvent('input', {
       bubbles: true,
       composed: true,
@@ -100,13 +122,6 @@ class ScPrev extends ScElement {
     });
 
     this.dispatchEvent(changeEvent);
-  }
-
-  _release(e) {
-    e.preventDefault();
-    e.stopPropagation();
-
-    this._active = false;
   }
 }
 

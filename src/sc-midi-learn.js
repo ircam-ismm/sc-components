@@ -3,7 +3,7 @@ import { repeat } from 'lit/directives/repeat.js';
 import { classMap } from 'lit/directives/class-map.js';
 
 import ScElement from './ScElement.js';
-
+import KeyboardController from './controllers/keyboard-controller.js';
 
 const midiLearnSymbol = Symbol.for('sc-midi-learn');
 
@@ -86,6 +86,9 @@ class ScMidiLearn extends ScElement {
       width: 80px;
       height: 30px;
 
+      background-color: var(--sc-color-primary-3);
+      border: 1px solid var(--sc-color-primary-3);
+
       --sc-midi-learn-panel-position-top: 0;
       --sc-midi-learn-panel-position-right: 0;
       --sc-midi-learn-panel-position-bottom: auto;
@@ -95,11 +98,17 @@ class ScMidiLearn extends ScElement {
     }
 
     :host([hidden]) {
-      display: none
+      display: none;
     }
 
     :host(:focus), :host(:focus-visible) {
       outline: none;
+      border: 1px solid var(--sc-color-primary-4);
+    }
+
+    :host([active]) {
+      background-color: var(--sc-color-secondary-3);
+      border: 1px solid var(--sc-color-secondary-3);
     }
 
     .button {
@@ -108,17 +117,15 @@ class ScMidiLearn extends ScElement {
       display: flex;
       flex-orientation: row;
       justify-content: space-between;
-      background-color: var(--sc-color-primary-3);
+      background-color: transparent;
       cursor: pointer;
-    }
-
-    .button.active {
-      background-color: var(--sc-color-secondary-3);
+      border: none;
     }
 
     .button sc-text, .button sc-icon {
       background: transparent;
       border: none;
+      height: 100%;
     }
 
     .button sc-text {
@@ -233,10 +240,16 @@ class ScMidiLearn extends ScElement {
 
     this.active = false;
 
-    // binsd some callbacks
     this._processMidiMessage = this._processMidiMessage.bind(this);
     this._onSelectNode = this._onSelectNode.bind(this);
     this._updateNodeList = this._updateNodeList.bind(this);
+    this._onKeyboardEvent = this._onKeyboardEvent.bind(this);
+
+    this._keyboard = new KeyboardController(this, {
+      filterCodes: ['Enter', 'Space'],
+      callback: this._onKeyboardEvent,
+      deduplicateEvents: true,
+    });
 
     // retrieve infos from local storage
     this._loadFromLocalStorage();
@@ -247,7 +260,6 @@ class ScMidiLearn extends ScElement {
 
     const btnClasses = {
       button: true,
-      active: this.active,
       connected: hasConnections,
     }
 
@@ -345,12 +357,22 @@ class ScMidiLearn extends ScElement {
 
     this._updateNodeList();
 
+    if (!this.hasAttribute('tabindex')) {
+      console.log('coucou');
+      this.setAttribute('tabindex', 0);
+    }
 
     setTimeout(() => this._serialize(), 2000);
   }
 
   disconnectedCallback() {
     this._mutationObserver.disconnect();
+  }
+
+  _onKeyboardEvent(e) {
+    if (e.type === 'keydown') {
+      this._toggleActive();
+    }
   }
 
   _updateNodeList() {

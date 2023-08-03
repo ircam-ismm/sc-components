@@ -1,8 +1,16 @@
 
 class KeyboardController {
   constructor(host, options) {
+    if (!options.filterCodes) {
+      throw new Error(`keyboard-controller: filterCodes option is mandatory`);
+    }
+
+    if (!options.callback) {
+      throw new Error(`keyboard-controller: callback option is mandatory`);
+    }
+
     this._host = host;
-    this._filterKeys = options.filterKeys;
+    this._filterCodes = options.filterCodes;
     this._callback = options.callback;
     // trigger a new keypress only if keyup has been triggered
     this._deduplicateEvents = options.deduplicateEvents || false;
@@ -46,7 +54,7 @@ class KeyboardController {
       console.log(key);
     }
 
-    if (this._filterKeys.includes(key)) {
+    if (this._filterCodes.includes(key)) {
       // prevent default only if key is one of the requested ones
       e.preventDefault();
 
@@ -55,16 +63,7 @@ class KeyboardController {
       }
 
       this._lastEventType = e.type;
-
-      const event = {
-        type: e.type,
-        key: key,
-        metaKey: e.metaKey,
-        ctrlKey: e.ctrlKey,
-        altKey: e.altKey,
-      };
-
-      this._callback(event);
+      this._callback(e);
     }
   }
 }

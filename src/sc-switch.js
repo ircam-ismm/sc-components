@@ -1,6 +1,7 @@
 import { html, svg, css } from 'lit';
 
 import ScElement from './ScElement.js';
+import KeyboardController from './controllers/keyboard-controller.js';
 
 class ScSwitch extends ScElement {
   static properties = {
@@ -83,6 +84,12 @@ class ScSwitch extends ScElement {
 
     this.active = false;
     this.disabled = false;
+
+    this._keyboard = new KeyboardController(this, {
+      filterCodes: ['Enter', 'Space'],
+      callback: this._onKeyboardEvent.bind(this),
+      deduplicateEvents: true,
+    });
   }
 
   render() {
@@ -103,13 +110,17 @@ class ScSwitch extends ScElement {
     this.disabled ? this.removeAttribute('tabindex') : this.setAttribute('tabindex', 0);
   }
 
-  _updateValue(e) {
-    e.preventDefault();
-    e.stopPropagation();
+  _onKeyboardEvent(e) {
+    if (this.disabled) { return; }
 
-    if (this.disabled) {
-      return;
+    if (e.type === 'keydown') {
+      this.active = !this.active;
+      this._dispatchEvent();
     }
+  }
+
+  _updateValue(e) {
+    if (this.disabled) { return; }
 
     this.active = !this.active;
     this._dispatchEvent();

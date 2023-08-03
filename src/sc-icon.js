@@ -102,7 +102,7 @@ class ScIcon extends ScElement {
     this._onKeyboardEvent = this._onKeyboardEvent.bind(this);
 
     this._keyboard = new KeyboardController(this, {
-      filterKeys: ['Enter', 'Space'],
+      filterCodes: ['Enter', 'Space'],
       callback: this._onKeyboardEvent,
       deduplicateEvents: true,
     });
@@ -141,16 +141,15 @@ class ScIcon extends ScElement {
   }
 
   _onKeyboardEvent(e) {
+    if (this.disabled) { return; }
+
     const eventName = e.type === 'keydown' ? 'press' : 'release';
     this._dispatchEvent(eventName);
   }
 
   _onEvent(e) {
     e.preventDefault();
-
-    if (this.disabled) {
-      return;
-    }
+    if (this.disabled) { return; }
 
     const eventName = (e.type === 'touchend' || e.type === 'mouseup') ? 'release' : 'press';
 

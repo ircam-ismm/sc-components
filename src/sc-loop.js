@@ -72,6 +72,12 @@ class ScLoop extends ScElement {
     super();
 
     this.active = false;
+
+    this._keyboard = new KeyboardController(this, {
+      filterCodes: ['Enter', 'Space'],
+      callback: this._onKeyboardEvent.bind(this),
+      deduplicateEvents: true,
+    });
   }
 
   render() {
@@ -85,8 +91,8 @@ class ScLoop extends ScElement {
           height: ${size}px;
         "
         viewbox="-10 -8 120 120"
-        @mousedown="${this._propagateChange}"
-        @touchstart="${this._propagateChange}"
+        @mousedown="${this._triggerChange}"
+        @touchstart="${this._triggerChange}"
       >
         <path
           d="M 30,20
@@ -111,16 +117,24 @@ class ScLoop extends ScElement {
     this.disabled ? this.removeAttribute('tabindex') : this.setAttribute('tabindex', 0);
   }
 
-  _propagateChange(e) {
-    e.preventDefault();
-    e.stopPropagation();
+  _onKeyboardEvent(e) {
+    if (this.disabled) { return; }
 
-    if (this.disabled) {
-      return;
+    if (e.type === 'keydown') {
+      this.active = !this.active;
+      this._dispatchChangeEvent();
     }
+  }
+
+  _triggerChange(e) {
+    e.preventDefault();
+    if (this.disabled) { return; }
 
     this.active = !this.active;
+    this._dispatchChangeEvent();
+  }
 
+  _dispatchChangeEvent() {
     const changeEvent = new CustomEvent('change', {
       bubbles: true,
       composed: true,

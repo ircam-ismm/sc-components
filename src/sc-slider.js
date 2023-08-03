@@ -1,6 +1,7 @@
 import { html, svg, css, nothing } from 'lit';
 
 import ScElement from './ScElement.js';
+import KeyboardController from './controllers/keyboard-controller.js';
 import midiLearn from './mixins/midi-learn.js';
 import getScale from './utils/get-scale.js';
 import getClipper from './utils/get-clipper.js';
@@ -211,8 +212,12 @@ class ScSlider extends ScElement {
     // for relative interaction
     this._startPointerValue = null;
     this._startSliderValue = null;
-
     this._midiValueTimeout = null;
+
+    this.keyboard = new KeyboardController(this, {
+      filterCodes: ['ArrowUp', 'ArrowRight', 'ArrowDown', 'ArrowLeft'],
+      callback: this._onKeyboardEvent.bind(this),
+    });
   }
 
   render() {
@@ -273,12 +278,35 @@ class ScSlider extends ScElement {
     this.value = this._clipper(this.value);
   }
 
+  _onKeyboardEvent(e) {
+    if (this.disabled) { return; }
+
+    switch (e.type) {
+      case 'keydown': {
+        // arbitrary MIDI like delta increment,
+        const incr = Number.isFinite(this.min) && Number.isFinite(this.max)
+          ? (this.max - this.min) / 100 : 1;
+
+        if (e.code === 'ArrowUp' || e.code === 'ArrowRight') {
+          this.value = this._clipper(this.value + incr);
+        } else if (e.code === 'ArrowDown' || e.code === 'ArrowLeft') {
+          this.value = this._clipper(this.value - incr);
+        }
+
+        this._dispatchInputEvent();
+        break;
+      }
+      case 'keyup': {
+        this._dispatchChangeEvent();
+        break;
+      }
+    }
+  }
+
   _onNumberBoxInput(e) {
     e.stopPropagation();
 
-    if (this.disabled) {
-      return;
-    }
+    if (this.disabled) { return; }
 
     this.value = this._clipper(e.detail.value);
     this._dispatchInputEvent();
@@ -287,18 +315,14 @@ class ScSlider extends ScElement {
   _onNumberBoxChange(e) {
     e.stopPropagation();
 
-    if (this.disabled) {
-      return;
-    }
+    if (this.disabled) { return; }
 
     this.value = this._clipper(e.detail.value);
     this._dispatchChangeEvent();
   }
 
   _onPositionChange(e) {
-    if (this.disabled) {
-      return;
-    }
+    if (this.disabled) { return; }
 
     if (e.detail.pointerId === this._pointerId) {
       this._pointerId = null;

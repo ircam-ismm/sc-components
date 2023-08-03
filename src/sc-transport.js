@@ -1,6 +1,7 @@
 import { html, css, svg, nothing } from 'lit';
 
 import ScElement from './ScElement.js';
+import KeyboardController from './controllers/keyboard-controller.js';
 
 class ScTransport extends ScElement {
   static properties = {
@@ -95,6 +96,12 @@ class ScTransport extends ScElement {
 
     this.buttons = ['play', 'pause', 'stop'];
     this.state = null;
+
+    this._keyboard = new KeyboardController(this, {
+      filterCodes: ['ArrowUp', 'ArrowRight', 'ArrowDown', 'ArrowLeft', 'Space'],
+      callback: this._onKeyboardEvent.bind(this),
+      deduplicateEvents: true,
+    });
   }
 
   render() {
@@ -141,11 +148,31 @@ class ScTransport extends ScElement {
   }
 
   updated(changedProperties) {
-    // @todo - not completely clean still something that captures the focus
     const $inputs = this.shadowRoot.querySelectorAll('svg');
     this.disabled
       ? $inputs.forEach($input => $input.removeAttribute('tabindex'))
       : $inputs.forEach($input => $input.setAttribute('tabindex', 0));
+  }
+
+  _onKeyboardEvent(e) {
+    if (e.type === 'keydown') {
+      let index = this.buttons.indexOf(this.state);
+
+      if (e.code === 'ArrowUp' || e.code === 'ArrowRight' || e.code === 'Space') {
+        index += 1;
+      } else if (e.code === 'ArrowDown' || e.code === 'ArrowLeft') {
+        index -= 1;
+      }
+
+      if (index < 0) {
+        index = this.buttons.length - 1;
+      } else if (index >= this.buttons.length) {
+        index = 0;
+      }
+
+      this.state = this.buttons[index];
+      this._dispatchEvent();
+    }
   }
 
   _onChange(e, value) {
@@ -158,17 +185,19 @@ class ScTransport extends ScElement {
 
     if (this.state !== value) {
       this.state = value;
-
-      const changeEvent = new CustomEvent('change', {
-        bubbles: true,
-        composed: true,
-        detail: { value: this.state },
-      });
-
-      this.dispatchEvent(changeEvent);
+      this._dispatchEvent();
     }
   }
 
+  _dispatchEvent() {
+    const changeEvent = new CustomEvent('change', {
+      bubbles: true,
+      composed: true,
+      detail: { value: this.state },
+    });
+
+    this.dispatchEvent(changeEvent);
+  }
 }
 
 if (customElements.get('sc-transport') === undefined) {

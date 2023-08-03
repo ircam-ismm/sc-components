@@ -134,11 +134,21 @@ class ScRadio extends ScElement {
   }
 
   updated(changedProperties) {
-    // @todo - not completely clean still something that captures the focus
     const $inputs = this.shadowRoot.querySelectorAll('input');
-    this.disabled
-      ? $inputs.forEach($input => $input.removeAttribute('tabindex'))
-      : $inputs.forEach($input => $input.setAttribute('tabindex', 0));
+
+    if (this.disabled) {
+      $inputs.forEach($input => {
+        $input.removeAttribute('tabindex');
+        // note we loose the visual feedback if one value is selected, but
+        // this bypass focus entirely
+        $input.disabled = true;
+      });
+    } else {
+      $inputs.forEach($input => {
+        $input.setAttribute('tabindex', 0);
+        $input.disabled = false;
+      });
+    }
   }
 
   _dispatchEvent(e) {

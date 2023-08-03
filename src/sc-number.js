@@ -4,6 +4,7 @@ import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import NP from 'number-precision';
 
 import ScElement from './ScElement.js';
+import KeyboardController from './controllers/keyboard-controller.js';
 import './sc-speed-surface.js';
 
 class ScNumber extends ScElement {
@@ -236,6 +237,12 @@ class ScNumber extends ScElement {
     this._hasVirtualKeyboard = false;
     this._numKeyPressed = 0;
     this._onKeyDown = this._onKeyDown.bind(this);
+    this._onKeyboardEvent = this._onKeyboardEvent.bind(this);
+
+    this.keyboard = new KeyboardController(this, {
+      filterCodes: ['ArrowUp', 'ArrowDown'],
+      callback: this._onKeyboardEvent,
+    });
   }
 
   render() {
@@ -382,10 +389,24 @@ class ScNumber extends ScElement {
     window.removeEventListener('keydown', this._onKeyDown);
   }
 
-  _onKeyDown(e) {
-    if (this.disabled || this.readonly) {
-      return;
+  // @todo - harmonize component keyboard controls with KeyboardController
+  _onKeyboardEvent(e) {
+    if (this.disabled || this.readonly) { return; }
+
+    if (e.type === 'keydown') {
+      if (e.code === 'ArrowUp') {
+        this.value += 1;
+      } else {
+        this.value -= 1;
+      }
+
+      this._emitInput();
+      this._emitChange();
     }
+  }
+
+  _onKeyDown(e) {
+    if (this.disabled || this.readonly) { return; }
 
     const validSymbols = this.integer
       ? ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '-']

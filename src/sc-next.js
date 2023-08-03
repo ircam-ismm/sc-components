@@ -1,6 +1,7 @@
 import { html, svg, css } from 'lit';
 
 import ScElement from './ScElement.js';
+import KeyboardController from './controllers/keyboard-controller.js';
 
 class ScNext extends ScElement {
   static properties = {
@@ -62,6 +63,12 @@ class ScNext extends ScElement {
     super();
 
     this._active = false;
+
+    this._keyboard = new KeyboardController(this, {
+      filterCodes: ['Enter', 'Space'],
+      callback: this._onKeyboardEvent.bind(this),
+      deduplicateEvents: true,
+    });
   }
 
   render() {
@@ -69,10 +76,10 @@ class ScNext extends ScElement {
       <svg
         class="${this._active ? 'active' : ''}"
         viewbox="-10 -8 120 120"
-        @mousedown="${this._dispatchEvent}"
-        @touchstart="${this._dispatchEvent}"
-        @mouseup="${this._release}"
-        @touchend="${this._release}"
+        @mousedown="${this._onInput}"
+        @touchstart="${this._onInput}"
+        @mouseup="${this._onRelease}"
+        @touchend="${this._onRelease}"
       >
         <path d="M 80,20L 80,80"></path>
         <polygon points="20,20 70,50 20,80"></polygon>
@@ -84,15 +91,28 @@ class ScNext extends ScElement {
     this.disabled ? this.removeAttribute('tabindex') : this.setAttribute('tabindex', 0);
   }
 
-  _dispatchEvent(e) {
-    e.stopPropagation();
+  _onKeyboardEvent(e) {
+    if (this.disabled) { return; }
 
-    if (this.disabled) {
-      return;
+    if (e.type === 'keydown') {
+      this._onInput();
+    } else if (e.type === 'keyup') {
+      this._onRelease();
     }
+  }
+
+  _onInput(e) {
+    if (this.disabled) { return; }
 
     this._active = true;
+    this._dispatchEvent();
+  }
 
+  _onRelease(e) {
+    this._active = false;
+  }
+
+  _dispatchEvent() {
     const changeEvent = new CustomEvent('input', {
       bubbles: true,
       composed: true,
@@ -100,13 +120,6 @@ class ScNext extends ScElement {
     });
 
     this.dispatchEvent(changeEvent);
-  }
-
-  _release(e) {
-    e.preventDefault();
-    e.stopPropagation();
-
-    this._active = false;
   }
 }
 

@@ -2,6 +2,7 @@ import { html, css, svg, nothing } from 'lit';
 import { getTime } from '@ircam/sc-gettime';
 
 import ScElement from './ScElement.js';
+import KeyboardController from './controllers/keyboard-controller.js';
 
 class ScTapTempo extends ScElement {
   static properties = {
@@ -78,15 +79,20 @@ class ScTapTempo extends ScElement {
     this._timer = null;
     this._maxQueueSize = 6;
     this._timeout = 2000;
+
+    this._keyboard = new KeyboardController(this, {
+      filterCodes: ['Enter', 'Space'],
+      callback: this._onKeyboardEvent.bind(this),
+      deduplicateEvents: true,
+    });
   }
 
   render() {
-
     return html`
       <div
         class="${this._active ? 'active' : ''}"
-        @mousedown="${this._tap}"
-        @touchstart="${this._tap}"
+        @mousedown="${this._onTap}"
+        @touchstart="${this._onTap}"
       >
         <slot>tap</slot>
       </div>
@@ -97,7 +103,13 @@ class ScTapTempo extends ScElement {
     this.disabled ? this.removeAttribute('tabindex') : this.setAttribute('tabindex', 0);
   }
 
-  _tap(e) {
+  _onKeyboardEvent(e) {
+    if (e.type === 'keydown') {
+      this._onTap(e);
+    }
+  }
+
+  _onTap(e) {
     e.preventDefault();
 
     if (this.disabled) {

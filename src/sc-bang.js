@@ -81,11 +81,10 @@ class ScBang extends ScElement {
 
     // @note: passive: false in event listener declaration lose the binding
     this._triggerEvent = this._triggerEvent.bind(this);
-    this._onKeyboardEvent = this._onKeyboardEvent.bind(this);
 
     this._keyboard = new KeyboardController(this, {
-      filterKeys: ['Enter', 'Space'],
-      callback: this._onKeyboardEvent,
+      filterCodes: ['Enter', 'Space'],
+      callback: this._onKeyboardEvent.bind(this),
       deduplicateEvents: true,
     });
   }
@@ -119,6 +118,8 @@ class ScBang extends ScElement {
   }
 
   _onKeyboardEvent(e) {
+    if (this.disabled) { return; }
+
     if (e.type === 'keydown') {
       this.active = true;
       this._dispatchInputEvent();
@@ -126,12 +127,9 @@ class ScBang extends ScElement {
   }
 
   _triggerEvent(e) {
-    if (this.disabled) {
-      return;
-    }
+    if (this.disabled) { return; }
 
     e.preventDefault();
-    this.focus();
 
     this.active = true;
     this._dispatchInputEvent();

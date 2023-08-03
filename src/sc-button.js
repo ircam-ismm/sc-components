@@ -137,7 +137,7 @@ class ScButton extends ScElement {
     this._onKeyboardEvent = this._onKeyboardEvent.bind(this);
 
     this._keyboard = new KeyboardController(this, {
-      filterKeys: ['Enter', 'Space'],
+      filterCodes: ['Enter', 'Space'],
       callback: this._onKeyboardEvent,
       deduplicateEvents: true,
     });
@@ -168,23 +168,37 @@ class ScButton extends ScElement {
   }
 
   updated(changedProperties) {
-    this.disabled ? this.removeAttribute('tabindex') : this.setAttribute('tabindex', 0);
+    if (changedProperties.has('disabled')) {
+      const tabindex = this.disabled ? -1 : this._tabindex;
+      this.setAttribute('tabindex', tabindex);
+
+      if (this.disabled) {
+        this.blur();
+      }
+    }
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+
+    // @note - this is important if the compoent is e.g. embedded in another component
+    this._tabindex = this.getAttribute('tabindex') || 0;
+    this.setAttribute('tabindex', this._tabindex);
   }
 
   _onKeyboardEvent(e) {
+    if (this.disabled) { return; }
+
     const eventName = e.type === 'keydown' ? 'press' : 'release';
     this._dispatchEvent(eventName);
   }
 
   _onEvent(e) {
+    if (this.disabled) { return; }
+
     e.preventDefault();
 
-    if (this.disabled) {
-      return;
-    }
-
     const eventName = (e.type === 'touchend' || e.type === 'mouseup') ? 'release' : 'press';
-
     this._dispatchEvent(eventName);
   }
 

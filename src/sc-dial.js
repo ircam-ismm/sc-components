@@ -209,11 +209,9 @@ class ScDial extends ScElement {
 
     this._midiValueTimeout = null;
 
-    this._onKeyboardEvent = this._onKeyboardEvent.bind(this);
-
     this.keyboard = new KeyboardController(this, {
-      filterKeys: ['ArrowUp', 'ArrowRight', 'ArrowDown', 'ArrowLeft'],
-      callback: this._onKeyboardEvent,
+      filterCodes: ['ArrowUp', 'ArrowRight', 'ArrowDown', 'ArrowLeft'],
+      callback: this._onKeyboardEvent.bind(this),
     });
   }
 
@@ -259,14 +257,17 @@ class ScDial extends ScElement {
   }
 
   _onKeyboardEvent(e) {
+    if (this.disabled) { return; }
+
     switch (e.type) {
       case 'keydown': {
         // arbitrary MIDI like delta increment,
-        const incr = (this.max - this.min) / 127;
+        const incr = Number.isFinite(this.min) && Number.isFinite(this.max)
+          ? (this.max - this.min) / 100 : 1;
 
-        if (e.key === 'ArrowUp' || e.key === 'ArrowRight') {
+        if (e.code === 'ArrowUp' || e.code === 'ArrowRight') {
           this.value += incr;
-        } else if (e.key === 'ArrowDown' || e.key === 'ArrowLeft') {
+        } else if (e.code === 'ArrowDown' || e.code === 'ArrowLeft') {
           this.value -= incr;
         }
 
@@ -284,12 +285,9 @@ class ScDial extends ScElement {
     // stop prepagation of `sc-speed-surface` event
     e.stopPropagation();
 
-    if (this.disabled) {
-      return;
-    }
+    if (this.disabled) { return; }
 
     this.value = this.min;
-
     this._dispatchInputEvent();
     this._dispatchChangeEvent();
   }
@@ -298,9 +296,7 @@ class ScDial extends ScElement {
     // stop prepagation of `sc-speed-surface` event
     e.stopPropagation();
 
-    if (this.disabled) {
-      return;
-    }
+    if (this.disabled) { return; }
 
     if (e.detail.pointerId !== null) {
       // ignore very small movements
