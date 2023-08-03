@@ -407,7 +407,11 @@ class ScMidiLearn extends ScElement {
     // listen all devices, a bit brute force but this is not something that should happen frequently
     this._devices = new Map();
 
+    // @todo - clean this, this is confusing
+    // check device.connection === 'open'
+
     for (let [id, device] of inputMap.entries()) {
+      // console.log(id, device);
       device.removeEventListener('midimessage', this._processMidiMessage);
       device.addEventListener('midimessage', this._processMidiMessage);
 
@@ -476,6 +480,16 @@ class ScMidiLearn extends ScElement {
     const deviceId = getDeviceId(device);
     const [_messageType, channel, value] = e.data;
 
+
+    // @todo - handle keyboard
+    // cf. https://fmslogo.sourceforge.io/manual/midi-table.html
+    // 176 -> control message, channel, value
+    // 144 -> note on, pitch, velocity
+    // 128 -> note off, pitch, velocity
+    // 160 -> pressure (let's ignore that)
+
+    // console.log(_messageType, channel, value);
+
     if (this.active && this._$selectedNode !== null) {
       if (!this._bindings.has(deviceId)) {
         this._bindings.set(deviceId, new Map());
@@ -511,18 +525,20 @@ class ScMidiLearn extends ScElement {
     }
 
     // always propagate binded values
-    const deviceBindings = this._bindings.get(deviceId);
+    if (this._bindings.has(deviceId)) {
+      const deviceBindings = this._bindings.get(deviceId);
 
-    if (deviceBindings.has(channel)) {
-      const channelBindings = deviceBindings.get(channel);
+      if (deviceBindings.has(channel)) {
+        const channelBindings = deviceBindings.get(channel);
 
-      channelBindings.forEach(nodeId => {
-        // bindings might exists from recorded config, but element not in the DOM
-        if (this._$nodes.has(nodeId)) {
-          const $el = this._$nodes.get(nodeId);
-          $el.midiValue = value;
-        }
-      });
+        channelBindings.forEach(nodeId => {
+          // bindings might exists from recorded config, but element not in the DOM
+          if (this._$nodes.has(nodeId)) {
+            const $el = this._$nodes.get(nodeId);
+            $el.midiValue = value;
+          }
+        });
+      }
     }
   }
 
