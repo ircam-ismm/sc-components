@@ -237,11 +237,10 @@ class ScNumber extends ScElement {
     this._hasVirtualKeyboard = false;
     this._numKeyPressed = 0;
     this._onKeyDown = this._onKeyDown.bind(this);
-    this._onKeyboardEvent = this._onKeyboardEvent.bind(this);
 
     this.keyboard = new KeyboardController(this, {
       filterCodes: ['ArrowUp', 'ArrowDown'],
-      callback: this._onKeyboardEvent,
+      callback: this._onKeyboardEvent.bind(this),
     });
   }
 

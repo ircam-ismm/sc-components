@@ -99,11 +99,10 @@ class ScIcon extends ScElement {
     this._pressed = false;
     // @note: passive: false in event listener declaration lose the binding
     this._onEvent = this._onEvent.bind(this);
-    this._onKeyboardEvent = this._onKeyboardEvent.bind(this);
 
     this._keyboard = new KeyboardController(this, {
       filterCodes: ['Enter', 'Space'],
-      callback: this._onKeyboardEvent,
+      callback: this._onKeyboardEvent.bind(this),
       deduplicateEvents: true,
     });
   }

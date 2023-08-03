@@ -68,11 +68,9 @@ class ScRecord extends ScElement {
     this.active = false;
     this.disabled = false;
 
-    this._onKeyboardEvent = this._onKeyboardEvent.bind(this);
-
     this._keyboard = new KeyboardController(this, {
       filterCodes: ['Enter', 'Space'],
-      callback: this._onKeyboardEvent,
+      callback: this._onKeyboardEvent.bind(this),
       deduplicateEvents: true,
     });
   }

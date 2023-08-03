@@ -133,12 +133,10 @@ class ScButton extends ScElement {
 
     this._pressed = false;
     // @note: passive: false in event listener declaration lose the binding
-    this._onEvent = this._onEvent.bind(this);
-    this._onKeyboardEvent = this._onKeyboardEvent.bind(this);
 
     this._keyboard = new KeyboardController(this, {
       filterCodes: ['Enter', 'Space'],
-      callback: this._onKeyboardEvent,
+      callback: this._onKeyboardEvent.bind(this),
       deduplicateEvents: true,
     });
   }
@@ -156,7 +154,7 @@ class ScButton extends ScElement {
         @mousedown="${this._onEvent}"
         @mouseup="${this._onEvent}"
         @touchstart="${{
-          handleEvent: this._onEvent,
+          handleEvent: this._onEvent.bind(this),
           passive: false,
         }}"
         @touchend="${this._onEvent}"

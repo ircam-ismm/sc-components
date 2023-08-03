@@ -243,11 +243,10 @@ class ScMidiLearn extends ScElement {
     this._processMidiMessage = this._processMidiMessage.bind(this);
     this._onSelectNode = this._onSelectNode.bind(this);
     this._updateNodeList = this._updateNodeList.bind(this);
-    this._onKeyboardEvent = this._onKeyboardEvent.bind(this);
 
     this._keyboard = new KeyboardController(this, {
       filterCodes: ['Enter', 'Space'],
-      callback: this._onKeyboardEvent,
+      callback: this._onKeyboardEvent.bind(this),
       deduplicateEvents: true,
     });
 
@@ -358,7 +357,6 @@ class ScMidiLearn extends ScElement {
     this._updateNodeList();
 
     if (!this.hasAttribute('tabindex')) {
-      console.log('coucou');
       this.setAttribute('tabindex', 0);
     }
 
