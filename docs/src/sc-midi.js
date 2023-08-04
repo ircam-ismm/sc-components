@@ -25,23 +25,23 @@ export function enter() {
 
 export const template = html`
 
-<h2>sc-midi-learn</h2>
+<h2>sc-midi</h2>
 
 <p style="color: var(--sc-color-secondary-3)">This component is still experimental and subject to change</p>
 
 <sc-code-example language="javascript">${`\
 import { html } from 'lit';
-import '@ircam/sc-components/sc-midi-learn.js';
+import '@ircam/sc-components/sc-midi.js';
 
 const template = html\`
-  <sc-midi-learn></sc-midi-learn>
+  <sc-midi></sc-midi>
 \`;
 `}</sc-code-example>
 
-<sc-midi-learn
+<sc-midi
   active
-  id="test-midi-learn"
-></sc-midi-learn>
+  id="test-midi"
+></sc-midi>
 
 <h3>Compatible elements</h3>
 
@@ -70,7 +70,7 @@ const template = html\`
 <div>
   <sc-text>[?active=false]</sc-text>
   <sc-toggle
-    @change=${e => document.querySelector('#test-midi-learn').active = e.detail.value}
+    @change=${e => document.querySelector('#test-midi').active = e.detail.value}
   ></sc-toggle>
 </div>
 -->
@@ -80,16 +80,16 @@ const template = html\`
   style="width: 500px;"
   save-button
   value="\
-#test-midi-learn {
+#test-midi {
   width: 80px;
   height: 30px;
 
-  --sc-midi-learn-panel-position-top: 0;
-  --sc-midi-learn-panel-position-right: 0;
-  --sc-midi-learn-panel-position-bottom: auto;
-  --sc-midi-learn-panel-position-left: auto;
-  --sc-midi-learn-panel-position-width: 300px;
-  --sc-midi-learn-panel-position-height: auto;
+  --sc-midi-panel-position-top: 0;
+  --sc-midi-panel-position-right: 0;
+  --sc-midi-panel-position-bottom: auto;
+  --sc-midi-panel-position-left: auto;
+  --sc-midi-panel-position-width: 300px;
+  --sc-midi-panel-position-height: auto;
 }
   "
   @change=${e => applyStyle(e.detail.value)}

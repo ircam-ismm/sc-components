@@ -1,7 +1,7 @@
 import { html, svg, css } from 'lit';
 
 import ScElement from './ScElement.js';
-import midiLearn from './mixins/midi-learn.js';
+import midiControlled from './mixins/midi-controlled.js';
 import KeyboardController from './controllers/keyboard-controller.js';
 
 class ScToggleBase extends ScElement {
@@ -68,6 +68,10 @@ class ScToggleBase extends ScElement {
   }
 
   // midi-learn interface
+  get midiType() {
+    return "control";
+  }
+
   set midiValue(value) {
     if (this.disabled) {
       return;
@@ -159,7 +163,7 @@ class ScToggleBase extends ScElement {
   }
 }
 
-const ScToggle = midiLearn('ScToggle', ScToggleBase);
+const ScToggle = midiControlled('ScToggle', ScToggleBase);
 
 if (customElements.get('sc-toggle') === undefined) {
   customElements.define('sc-toggle', ScToggle);

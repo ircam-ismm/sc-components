@@ -2,7 +2,7 @@ import { html, css, svg, nothing } from 'lit';
 
 import ScElement from './ScElement.js';
 import KeyboardController from './controllers/keyboard-controller.js';
-import midiLearn from './mixins/midi-learn.js';
+import midiControlled from './mixins/midi-controlled.js';
 import getScale from './utils/get-scale.js';
 import './sc-speed-surface.js';
 
@@ -178,6 +178,10 @@ class ScDialBase extends ScElement {
   }
 
   // midi-learn interface
+  get midiType() {
+    return "control";
+  }
+
   set midiValue(value) {
     this.value = (this.max - this.min) * value / 127. + this.min;
 
@@ -355,7 +359,7 @@ class ScDialBase extends ScElement {
   }
 }
 
-const ScDial = midiLearn('ScDial', ScDialBase);
+const ScDial = midiControlled('ScDial', ScDialBase);
 
 if (customElements.get('sc-dial') === undefined) {
   customElements.define('sc-dial', ScDial);

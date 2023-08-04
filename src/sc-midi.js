@@ -5,7 +5,11 @@ import { classMap } from 'lit/directives/class-map.js';
 import ScElement from './ScElement.js';
 import KeyboardController from './controllers/keyboard-controller.js';
 
-const midiLearnSymbol = Symbol.for('sc-midi-learn');
+const midiLearnSymbol = Symbol.for('sc-midi');
+
+if (!globalThis[midiLearnSymbol]) {
+  globalThis[midiLearnSymbol] = new Set();
+}
 
 /**
  * Just use a concatenation of "name" and "manufacturer" as device id
@@ -89,12 +93,12 @@ class ScMidiLearn extends ScElement {
       background-color: var(--sc-color-primary-3);
       border: 1px solid var(--sc-color-primary-3);
 
-      --sc-midi-learn-panel-position-top: 0;
-      --sc-midi-learn-panel-position-right: 0;
-      --sc-midi-learn-panel-position-bottom: auto;
-      --sc-midi-learn-panel-position-left: auto;
-      --sc-midi-learn-panel-position-width: 300px;
-      --sc-midi-learn-panel-position-height: auto;
+      --sc-midi-panel-position-top: 0;
+      --sc-midi-panel-position-right: 0;
+      --sc-midi-panel-position-bottom: auto;
+      --sc-midi-panel-position-left: auto;
+      --sc-midi-panel-position-width: 300px;
+      --sc-midi-panel-position-height: auto;
     }
 
     :host([hidden]) {
@@ -148,12 +152,12 @@ class ScMidiLearn extends ScElement {
 
     .control-panel {
       position: fixed;
-      top: var(--sc-midi-learn-panel-position-top);
-      right: var(--sc-midi-learn-panel-position-right);;
-      bottom: var(--sc-midi-learn-panel-position-bottom);;
-      left: var(--sc-midi-learn-panel-position-left);
-      width: var(--sc-midi-learn-panel-position-width);
-      height: var(--sc-midi-learn-panel-position-height);
+      top: var(--sc-midi-panel-position-top);
+      right: var(--sc-midi-panel-position-right);;
+      bottom: var(--sc-midi-panel-position-bottom);;
+      left: var(--sc-midi-panel-position-left);
+      width: var(--sc-midi-panel-position-width);
+      height: var(--sc-midi-panel-position-height);
       box-sizing: border-box;
       background-color: var(--sc-color-primary-2);
       border: 1px solid var(--sc-color-primary-3);
@@ -222,18 +226,21 @@ class ScMidiLearn extends ScElement {
     super();
 
     // list of connected devices
-    // Map<id, MidiInputDevice>
+    // Map<deviceId, MidiInputDevice>
     this._devices = new Map(); // <
     // list of lightweigth devices that have been seen
-    // Map<id, Object<id, name, manufacturer>>
+    // Map<deviceId, Object<deviceId, name, manufacturer>>
     this._knownDevices = new Map();
     // list of elements that are midi learnable
     // the list is live
-    // Map<id, ScElement>
+    // Map<nodeId, ScElement>
     this._$nodes = new Map();
-    // list of bindings
-    // Map<deviceId, Map<channel, Set<id>>
-    this._bindings = new Map();
+    // list of control bindings
+    // Map<deviceId, Map<channel, Set<nodeId>>
+    this._controlBindings = new Map();
+    // list of instrument bindings
+    // Map<deviceId, Set<nodeId>>
+    this._instrumentBindings = new Map();
 
     // currently selected element for learning
     this._$selectedNode = null;
@@ -289,7 +296,7 @@ class ScMidiLearn extends ScElement {
             <div class="select-interface">
               ${repeat(this._knownDevices, ([deviceId, device]) => deviceId, ([deviceId, device]) => {
                 const connected = this._devices.has(deviceId);
-                const bindings = this._bindings.get(deviceId);
+                const bindings = this._controlBindings.get(deviceId);
 
                 const list = [];
                 // a device may have node bindings
@@ -387,7 +394,7 @@ class ScMidiLearn extends ScElement {
     });
 
     // loop though all bindings and send midi learn infos to nodes that are in the live list
-    for (let [deviceId, channelBindings] of this._bindings.entries()) {
+    for (let [deviceId, channelBindings] of this._controlBindings.entries()) {
       let device = this._knownDevices.get(deviceId);
 
       for (let [channel, ids] of channelBindings.entries()) {
@@ -395,7 +402,7 @@ class ScMidiLearn extends ScElement {
           if (this._$nodes.has(id)) {
             const $node = this._$nodes.get(id);
             const bindingInfos = getBindingInfos(device, channel);
-            $node.midiLearnInfos = bindingInfos;
+            $node.midiControlInfos = bindingInfos;
           }
         });
       }
@@ -463,14 +470,14 @@ class ScMidiLearn extends ScElement {
   _highlightElement(nodeId) {
     if (this._$nodes.has(nodeId)) {
       const $el = this._$nodes.get(nodeId);
-      $el.midiLearnHighlight = true;
+      $el.midiControlHighlight = true;
     }
   }
 
   _unhighlightElement(nodeId) {
     if (this._$nodes.has(nodeId)) {
       const $el = this._$nodes.get(nodeId);
-      $el.midiLearnHighlight = false;
+      $el.midiControlHighlight = false;
     }
   }
 
@@ -495,55 +502,101 @@ class ScMidiLearn extends ScElement {
   _processMidiMessage(e) {
     const device = e.currentTarget;
     const deviceId = getDeviceId(device);
-    const [_messageType, channel, value] = e.data;
 
+    // cf. https://www.midi.org/specifications-old/item/table-2-expanded-messages-list-status-bytes
+    // cf. https://www.midi.org/specifications-old/item/table-3-control-change-messages-data-bytes-2
 
-    // @todo - handle keyboard
-    // cf. https://fmslogo.sourceforge.io/manual/midi-table.html
-    // 176 -> control message, channel, value
-    // 144 -> note on, pitch, velocity
-    // 128 -> note off, pitch, velocity
-    // 160 -> pressure (let's ignore that)
+    const statusByte = e.data[0];
 
-    // console.log(_messageType, channel, value);
+    // only handle note-off, note-on and control functions
+    // cf. https://www.midi.org/specifications-old/item/table-2-expanded-messages-list-status-bytes
+    // note-off ∈ [128, 143]
+    // note-on  ∈ [144, 159]
+    // control  ∈ [176, 191]
+
+    let messageType;
+    let channel;
+
+    if (statusByte >= 128 && statusByte < 144) {
+      messageType = 'note-off';
+      // channel = statusByte - 128 + 1; // we dont use that for now
+    } else if (statusByte >= 144 && statusByte < 160) {
+      messageType = 'note-on';
+      // channel = statusByte - 144 + 1; // we dont use that for now
+    } else if (statusByte >= 176 && statusByte < 192) {
+      messageType = 'control';
+      // channel = statusByte - 176 + 1; // we dont use that for now
+    } else {
+      // do not polute the console with this warning
+      console.warn(`sc-midi: unknown message statusByte ${statusByte}, discard`)
+      return;
+    }
 
     if (this.active && this._$selectedNode !== null) {
-      if (!this._bindings.has(deviceId)) {
-        this._bindings.set(deviceId, new Map());
+      if (messageType === 'control' && this._$selectedNode.midiType === 'instrument') {
+        console.warn('sc-midi: cannot bind control to instrument');
+        return;
       }
 
-      const deviceBindings = this._bindings.get(deviceId);
-
-      if (!deviceBindings.has(channel)) {
-        deviceBindings.set(channel, new Set());
+      if (messageType !== 'control' && this._$selectedNode.midiType === 'control') {
+        console.warn('sc-midi: cannot bind instrument to control');
+        return;
       }
 
-      const channelBindings = deviceBindings.get(channel);
-      const nodeId = getNodeId(this._$selectedNode);
+      if (messageType === 'control') {
+        // https://www.midi.org/specifications-old/item/table-3-control-change-messages-data-bytes-2
+        // we use the control function as channel for now, seems a controller (at least a simple one)
+        // will always emit on the same channel but with different control function
+        // @todo - extend _controlBindings to handle that: deviceId -> channel -> function -> [nodeIds]
+        const channel = e.data[1]; // in spec this is the control function
+        const value = e.data[2];
 
-      if (!channelBindings.has(nodeId)) {
-        // remove previous binding if any
-        if (this._$selectedNode.midiLearnInfos) {
-          const { device, channel } = this._$selectedNode.midiLearnInfos;
-          const deviceId = getDeviceId(device);
-          const nodeId = getNodeId(this._$selectedNode);
-
-          this._deleteBinding(deviceId, channel, nodeId);
+        if (!this._controlBindings.has(deviceId)) {
+          this._controlBindings.set(deviceId, new Map());
         }
 
-        channelBindings.add(nodeId);
-        // set midiLearnInfos on _$selectedNode
-        const bindingInfos = getBindingInfos(device, channel);
-        this._$selectedNode.midiLearnInfos = bindingInfos;
+        const deviceBindings = this._controlBindings.get(deviceId);
 
-        this._persistToLocalStorage();
-        this.requestUpdate();
+        if (!deviceBindings.has(channel)) {
+          deviceBindings.set(channel, new Set());
+        }
+
+        const channelBindings = deviceBindings.get(channel);
+        const nodeId = getNodeId(this._$selectedNode);
+
+        if (!channelBindings.has(nodeId)) {
+          // remove previous binding if any
+          if (this._$selectedNode.midiControlInfos) {
+            const { device, channel } = this._$selectedNode.midiControlInfos;
+            const deviceId = getDeviceId(device);
+            const nodeId = getNodeId(this._$selectedNode);
+
+            this._deleteBinding(deviceId, channel, nodeId);
+          }
+
+          channelBindings.add(nodeId);
+          // set midiControlInfos on _$selectedNode
+          const bindingInfos = getBindingInfos(device, channel);
+          this._$selectedNode.midiControlInfos = bindingInfos;
+
+          this._persistToLocalStorage();
+          this.requestUpdate();
+        }
+      } else {
+        // @todo
       }
     }
 
     // always propagate binded values
-    if (this._bindings.has(deviceId)) {
-      const deviceBindings = this._bindings.get(deviceId);
+    if (messageType === 'control' && this._controlBindings.has(deviceId)) {
+      // https://www.midi.org/specifications-old/item/table-3-control-change-messages-data-bytes-2
+      // we use the control function as channel for now, seems a controller (at least a simple one)
+      // will always emit on the same channel but with different control function
+      // @todo - extend _controlBindings to handle that: deviceId -> channel -> function -> [nodeIds]
+      const channel = e.data[1]; // in spec this is the control function
+      const value = e.data[2];
+
+      const deviceBindings = this._controlBindings.get(deviceId);
 
       if (deviceBindings.has(channel)) {
         const channelBindings = deviceBindings.get(channel);
@@ -557,15 +610,20 @@ class ScMidiLearn extends ScElement {
         });
       }
     }
+
+    // handle note-on and note-off messages
+    if (messageType !== 'control' && this._instrumentBindings.has(deviceId)) {
+      // @todo
+    }
   }
 
   _deleteBinding(deviceId, channel, nodeId) {
-    this._bindings.get(deviceId).get(channel).delete(nodeId);
+    this._controlBindings.get(deviceId).get(channel).delete(nodeId);
 
     if (this._$nodes.has(nodeId)) {
       const $node = this._$nodes.get(nodeId);
-      $node.midiLearnInfos = null;
-      $node.midiLearnHighlight = null;
+      $node.midiControlInfos = null;
+      $node.midiControlHighlight = null;
     }
 
     this._persistToLocalStorage();
@@ -578,8 +636,8 @@ class ScMidiLearn extends ScElement {
     // retrieve the list of node associated to this device for cleaning
     const nodeList = [];
 
-    if (this._bindings.has(deviceId)) {
-      const deviceBindings = this._bindings.get(deviceId);
+    if (this._controlBindings.has(deviceId)) {
+      const deviceBindings = this._controlBindings.get(deviceId);
 
       for (let [channel, nodeIds] of deviceBindings.entries()) {
         nodeIds.forEach(id => nodeList.push(id));
@@ -592,24 +650,24 @@ class ScMidiLearn extends ScElement {
     }
 
     // delete all related bindings
-    this._bindings.delete(deviceId);
+    this._controlBindings.delete(deviceId);
     // clean infos on nodes
     nodeList.forEach(id => {
       const $node = this._$nodes.get(id);
-      $node.midiLearnInfos = null;
+      $node.midiControlInfos = null;
     });
 
     this._persistToLocalStorage();
     this.requestUpdate();
   }
 
-  // create POJO data from this._bindings structure
+  // create POJO data from this._controlBindings structure
   _serialize() {
     const knownDevices = Object.fromEntries(this._knownDevices.entries());
     // bindings need more parsing
     const bindings = {};
 
-    for (let [deviceId, channelBindings] of this._bindings.entries()) {
+    for (let [deviceId, channelBindings] of this._controlBindings.entries()) {
       bindings[deviceId] = {};
 
       for (let [channel, nodeIds] of channelBindings.entries()) {
@@ -626,7 +684,7 @@ class ScMidiLearn extends ScElement {
     try {
       data = JSON.parse(json);
     } catch (err) {
-      console.warn('Malformed stored data for sc-midi-learn');
+      console.warn('Malformed stored data for sc-midi');
     }
 
     const knownDevices = new Map();
@@ -656,25 +714,25 @@ class ScMidiLearn extends ScElement {
     return { knownDevices, bindings };
   }
 
-  // create this._bindings structure from POJO data
+  // create this._controlBindings structure from POJO data
   _persistToLocalStorage() {
     const json = this._serialize();
 
-    localStorage.setItem('sc-midi-learn-bindings', json);
+    localStorage.setItem('sc-midi-bindings', json);
   }
 
   _loadFromLocalStorage() {
-    const json = localStorage.getItem('sc-midi-learn-bindings');
+    const json = localStorage.getItem('sc-midi-bindings');
 
     const { knownDevices, bindings } = this._deserialize(json);
 
     this._knownDevices = knownDevices;
-    this._bindings = bindings;
+    this._controlBindings = bindings;
   }
 }
 
-if (customElements.get('sc-midi-learn') === undefined) {
-  customElements.define('sc-midi-learn', ScMidiLearn);
+if (customElements.get('sc-midi') === undefined) {
+  customElements.define('sc-midi', ScMidiLearn);
 }
 
 export default ScMidiLearn;

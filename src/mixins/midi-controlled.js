@@ -10,7 +10,8 @@ import { classMap } from 'lit/directives/class-map.js';
 // a.midiValue = 1;
 // console.log('midiValue', a.midiValue);
 
-const midiLearnSymbol = Symbol.for('sc-midi-learn');
+const midiLearnSymbol = Symbol.for('sc-midi');
+
 if (!globalThis[midiLearnSymbol]) {
   globalThis[midiLearnSymbol] = new Set();
 }
@@ -18,20 +19,22 @@ if (!globalThis[midiLearnSymbol]) {
 export default (className, parent) => {
   class child extends parent {
     static properties = {
-      midiLearnActive: { // true is the sc-midi-learn is active
+      midiLearnActive: { // true is the sc-midi-learn component is active
         type: Boolean,
         reflect: true,
         attribute: 'midi-learn-active',
       },
-      midiLearnSelected: { // true if this element is selected
+      midiLearnSelected: { // true if this element is selected for binding
         type: Boolean,
         reflect: true,
         attribute: 'midi-learn-selected',
       },
-      midiLearnInfos: {
+      // @todo - rename to midiControlInfos
+      midiControlInfos: {
         state: true,
       },
-      midiLearnHighlight: {
+      // @todo - rename to midiControlHighlight
+      midiControlHighlight: {
         type: Boolean,
         state: true,
       },
@@ -44,7 +47,7 @@ export default (className, parent) => {
         position: relative;
       }
 
-      .midi-learn-overlay {
+      .midi-control-overlay {
         position: absolute;
         top: 0;
         left: 0;
@@ -60,7 +63,7 @@ export default (className, parent) => {
         box-sizing: border-box;
       }
 
-      .midi-learn-overlay span {
+      .midi-control-overlay span {
         position: absolute;
         top: 0;
         left: 2px;
@@ -69,7 +72,7 @@ export default (className, parent) => {
         line-height: 12px;
       }
 
-      .midi-learn-overlay::before {
+      .midi-control-overlay::before {
         content: "";
         position: absolute;
         top: 0;
@@ -81,15 +84,15 @@ export default (className, parent) => {
         background-color: var(--sc-color-secondary-2);
       }
 
-      .midi-learn-overlay.learning::before {
+      .midi-control-overlay.learning::before {
         background-color: var(--sc-color-secondary-3);
       }
 
-      .midi-learn-overlay.mapped::before {
+      .midi-control-overlay.mapped::before {
         background-color: var(--sc-color-secondary-4);
       }
 
-      .midi-learn-overlay.highlight {
+      .midi-control-overlay.highlight {
         border: 1px solid var(--sc-color-primary-5);
       }
     `;
@@ -101,18 +104,8 @@ export default (className, parent) => {
       globalThis[midiLearnSymbol].add(tagName);
 
       // note hasOwn Property does not work here because the getter is defined in prototype (?)
-      if (!'midiValue' in this) {
-        console.warn(`[sc-components] no "midiValue" property found in "${className}" (fallback to default [0-1] mapped to [0, 128]). You should probably implement the "midiValue" getter and setters in your components`);
-
-        Object.defineProperty(this, 'midiValue', {
-          get() {
-            return Math.floor(this.value * 127);
-          },
-          set(val) {
-            this.value = val / 127;
-            this.requestUpdate();
-          },
-        });
+      if (!('midiValue' in this) || !('midiType' in this)) {
+        throw new Error(`[sc-components] "${className}" must implement "midiType" getter  ("control" or "instrument") AND "midiValue" getter and setter to map from midi value to component value`);
       }
 
       this.midiLearnState = 'idle';
@@ -124,7 +117,7 @@ export default (className, parent) => {
       if (this.midiLearnActive) {
         let stateClass = 'idle';
 
-        if (this.midiLearnInfos) {
+        if (this.midiControlInfos) {
           stateClass = 'mapped';
         }
 
@@ -133,23 +126,23 @@ export default (className, parent) => {
         }
 
         const classes = {
-          'midi-learn-overlay': true,
-          mapped: (this.midiLearnInfos && !this.midiLearnSelected),
+          'midi-control-overlay': true,
+          mapped: (this.midiControlInfos && !this.midiLearnSelected),
           learning: this.midiLearnSelected,
-          highlight: this.midiLearnHighlight,
+          highlight: this.midiControlHighlight,
         }
 
         return html`
           <div class="${classMap(classes)}">
-            ${this.midiLearnInfos
-              ? html`<span>cc ${this.midiLearnInfos.channel} - ${this.midiLearnInfos.deviceString}</span>`
+            ${this.midiControlInfos
+              ? html`<span>cc ${this.midiControlInfos.channel} - ${this.midiControlInfos.deviceString}</span>`
               : nothing
             }
           </div>
           ${template}
         `
       } else {
-        this.midiLearnHighlight = false;
+        this.midiControlHighlight = false;
         return template;
       }
     }

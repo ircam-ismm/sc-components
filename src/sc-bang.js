@@ -1,7 +1,7 @@
 import { html, css, svg, nothing } from 'lit';
 
 import ScElement from './ScElement.js';
-import midiLearn from './mixins/midi-learn.js';
+import midiControlled from './mixins/midi-controlled.js';
 import KeyboardController from './controllers/keyboard-controller.js';
 
 class ScBangBase extends ScElement {
@@ -61,6 +61,10 @@ class ScBangBase extends ScElement {
   `;
 
   // midi-learn interface
+  get midiType() {
+    return "control";
+  }
+
   set midiValue(value) {
     // dispatch on any incomming value
     this.active = true;
@@ -157,7 +161,7 @@ class ScBangBase extends ScElement {
   }
 }
 
-const ScBang = midiLearn('ScBang', ScBangBase);
+const ScBang = midiControlled('ScBang', ScBangBase);
 
 if (customElements.get('sc-bang') === undefined) {
   customElements.define('sc-bang', ScBang);

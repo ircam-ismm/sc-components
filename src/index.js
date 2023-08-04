@@ -17,7 +17,7 @@ import './sc-keyboard.js';
 import './sc-icon.js';
 import './sc-loop.js';
 import './sc-matrix.js';
-import './sc-midi-learn.js';
+import './sc-midi.js';
 import './sc-next.js';
 import './sc-number.js';
 import './sc-position-surface.js';

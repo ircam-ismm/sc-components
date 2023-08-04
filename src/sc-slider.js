@@ -2,7 +2,7 @@ import { html, svg, css, nothing } from 'lit';
 
 import ScElement from './ScElement.js';
 import KeyboardController from './controllers/keyboard-controller.js';
-import midiLearn from './mixins/midi-learn.js';
+import midiControlled from './mixins/midi-controlled.js';
 import getScale from './utils/get-scale.js';
 import getClipper from './utils/get-clipper.js';
 import './sc-position-surface.js';
@@ -181,6 +181,10 @@ class ScSliderBase extends ScElement {
   }
 
   // midi-learn interface
+  get midiType() {
+    return "control";
+  }
+
   set midiValue(value) {
     const newValue = (this.max - this.min) * value / 127. + this.min;
 
@@ -430,7 +434,7 @@ class ScSliderBase extends ScElement {
 }
 
 // apply midi learn mixin
-const ScSlider = midiLearn('ScSlider', ScSliderBase)
+const ScSlider = midiControlled('ScSlider', ScSliderBase)
 
 if (customElements.get('sc-slider') === undefined) {
   customElements.define('sc-slider', ScSlider);

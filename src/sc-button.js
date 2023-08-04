@@ -2,7 +2,7 @@ import { html, css } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 
 import ScElement from './ScElement.js';
-import midiLearn from './mixins/midi-learn.js';
+import midiControlled from './mixins/midi-controlled.js';
 import KeyboardController from './controllers/keyboard-controller.js';
 
 class ScButtonBase extends ScElement {
@@ -111,6 +111,10 @@ class ScButtonBase extends ScElement {
   `;
 
   // sc-midi controller interface
+  get midiType() {
+    return "control";
+  }
+
   set midiValue(value) {
     if (this.disabled) {
       return;
@@ -224,7 +228,7 @@ class ScButtonBase extends ScElement {
   }
 }
 
-const ScButton = midiLearn('ScButton', ScButtonBase);
+const ScButton = midiControlled('ScButton', ScButtonBase);
 
 if (customElements.get('sc-button') === undefined) {
   customElements.define('sc-button', ScButton);

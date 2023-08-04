@@ -29,5 +29,5 @@ export default [
   'sc-keyboard',
   'sc-dragndrop',
   'sc-filetree',
-  'sc-midi-learn',
+  'sc-midi',
 ].sort();
