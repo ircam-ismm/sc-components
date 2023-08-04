@@ -39,6 +39,7 @@ const template = html\`
 `}</sc-code-example>
 
 <sc-midi-learn
+  active
   id="test-midi-learn"
 ></sc-midi-learn>
 
@@ -50,6 +51,7 @@ const template = html\`
   <sc-toggle @change=${logEvent}></sc-toggle>
   <sc-button @press=${logEvent} @release=${logEvent}>my button</sc-button>
   <sc-dial @input=${logEvent} @change=${logEvent}></sc-dial>
+  <sc-keyboard></sc-keyboard>
 </div>
 
 <p style="margin: 20px 0;">

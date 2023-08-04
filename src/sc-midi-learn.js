@@ -406,23 +406,38 @@ class ScMidiLearn extends ScElement {
   }
 
   _updateDeviceList(inputMap) {
-    // listen all devices, a bit brute force but this is not something that should happen frequently
-    this._devices = new Map();
-
-    // @todo - clean this, this is confusing
-    // check device.connection === 'open'
-
+    // check for new devices
     for (let [id, device] of inputMap.entries()) {
-      // console.log(id, device);
-      device.removeEventListener('midimessage', this._processMidiMessage);
-      device.addEventListener('midimessage', this._processMidiMessage);
-
       const deviceId = getDeviceId(device);
-      this._devices.set(deviceId, device);
-      this._knownDevices.set(deviceId, deviceInfos(device));
+
+      // do not check device.connection here, `connection="open"` is only
+      // trigerred when the listener is registered
+      if (!this._devices.has(deviceId)) {
+        device.addEventListener('midimessage', this._processMidiMessage);
+
+        this._devices.set(deviceId, device);
+        this._knownDevices.set(deviceId, deviceInfos(device));
+      }
+    }
+
+    // remove disconnected devices
+    for (let [deviceId, registeredDevice] of this._devices.entries()) {
+      let keepDevice = false;
+
+      for (let [id, device] of inputMap.entries()) {
+        if (getDeviceId(device) === deviceId) {
+          keepDevice = true;
+        }
+      }
+
+      if (!keepDevice) {
+        registeredDevice.removeEventListener('midimessage', this._processMidiMessage);
+        this._devices.delete(deviceId);
+      }
     }
 
     this._persistToLocalStorage();
+    this.requestUpdate();
   }
 
   _toggleActive() {
@@ -490,7 +505,7 @@ class ScMidiLearn extends ScElement {
     // 128 -> note off, pitch, velocity
     // 160 -> pressure (let's ignore that)
 
-    // console.log(_messageType, channel, value);
+    console.log(_messageType, channel, value);
 
     if (this.active && this._$selectedNode !== null) {
       if (!this._bindings.has(deviceId)) {
