@@ -16,7 +16,7 @@ The library is built with [lit](https://lit.dev/).
 
 ## Goal & Philosophy
 
-This is a quite opinionated library, which aims at creating practical, intuitive and robust for devs and practitioners interfaces in working and performance situations. Hence, it's pretty agressive considering certain default browser's behaviours, such as blocking context menu, etc. 
+This is a quite opinionated library, which aim to propose practical and robust interfaces for practitionners in working and performance situations. Hence, it pretty agressively bypass or override certain default browser's behaviours such as context menus, text-selection, etc. While some may consider this bad design, this is actually a design choice.
 
 ## Usage
 
@@ -90,25 +90,42 @@ The library has not been tested within other frameworks such as React or Vue yet
 
 Any feedback is be welcome!
 
-## Running the doc locally
+## Development notes
 
-```js
+### Run the doc and tests locally
+
+```sh
 npm install
 npm run doc
 ```
 
-<!--
-  todos
+Alongside the docs, which already helps to develop and fix most issues, the `tests` directory allows to isolate test cases that would not fit in the docs.
+
+```sh
+npm install
+npm run test
+```
+
+### Unlock context menu
+
+When developing, having the possibility to right-click on an element to inspect it can be very handy. You can re-enable this behavior by setting the `SC-DEBUG` global variable to `true`:
+
+```js
+window.SC_DEBUG = true;
+```
+
+Note that this is the case when the docs and tests are run locally:
+
+```js
+window.SC_DEBUG = window.location.hostname === 'localhost';
+````
+
+<!-- &todos
 ## Theming and styling
-
 ### Global CSS variables
-
 ### Styling components
-
 ## The sc-* ecosystem
-
 ## Contributing
-
 ## Credits
 -->
 

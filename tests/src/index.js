@@ -4,6 +4,8 @@ import { map } from 'lit/directives/map.js';
 // import lib
 import '../../src/index.js';
 
+window.SC_DEBUG = window.location.hostname === 'localhost';
+
 // current page module
 const DEFAULT_TEST = 'editor-growth';
 // const DEFAULT_TEST = 'sw-header';
