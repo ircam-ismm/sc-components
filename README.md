@@ -122,13 +122,13 @@ window.SC_DEBUG = window.location.hostname === 'localhost';
 
 ## Contributing
 
-Contributions are welcome in the form of suggestions, ideas, bug report, pull requests and feedback.
+Contributions from everyone are welcome in the form of suggestions, ideas, bug report, pull requests and feedback.
 
-For PRs, we follow the "fork-and-pull" workflow:
+For PRs, please follow the "fork-and-pull" workflow:
 
 1. __Fork__ the repo on GitHub
-2. __Clone__ the project to your own machine
-3. __Commit__ changes to your own branch
+2. __Clone__ your fork on your own machine
+3. __Commit__ your changes to your own branch
 4. __Push__ your work back up to your fork
 5. __Submit__ a pull request
 
