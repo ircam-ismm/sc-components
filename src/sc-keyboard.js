@@ -4,12 +4,13 @@ import { map } from 'lit/directives/map.js';
 import { mtof } from '@ircam/sc-utils';
 
 import ScElement from './ScElement.js';
+import midiControlled from './mixins/midi-controlled.js';
 
 const whiteKeys = [0, 2, 4, 5, 7, 9, 11];
 const blackKeys = [1, 3, 6, 8, 10];
 const noteNames = ['c', 'c#', 'd', 'd#', 'e', 'f', 'f#', 'g', 'g#', 'a', 'a#', 'b'];
 
-class ScKeyboard extends ScElement {
+class ScKeyboardBase extends ScElement {
   static properties = {
     offset: {
       type: Number,
@@ -145,11 +146,38 @@ class ScKeyboard extends ScElement {
     // no need to request update, class are added / removed manually
   }
 
+  // midi controlled interface
+  get midiType() {
+    return 'instrument';
+  }
+
+  set midiValue(val) {
+    const [messageType, pitch, velocity] = val;
+    // @todo - review we should not have to do that, all this could simplified
+    const $key = this.shadowRoot.querySelector(`[data-midi-note="${pitch}"]`);
+
+    if (!$key) {
+      return;
+    }
+
+    if (messageType === 128) {
+      this._triggerNoteOff($key);
+    } else if (messageType === 144) {
+      this._dispatchNoteOn($key, pitch, velocity);
+    }
+  }
+
+  get midiValue() {
+    // @todo - define what we should do here
+    return null;
+  }
+
   constructor() {
     super();
 
     this._width = 300;
     this._height = 80;
+    // this should be removed, no need to store DOM nodes
     this._triggeredKeys = new Set();
     this._keyNoteOnEventMap = new Map();
 
@@ -330,9 +358,8 @@ class ScKeyboard extends ScElement {
     });
   }
 
+  // @todo - refactor this is way too complicated for almost nothing
   _triggerNoteOn(e, $key) {
-    $key.classList.add('active');
-    this._triggeredKeys.add($key);
     // get midi note
     const midiNote = parseInt($key.dataset.midiNote);
     const name = noteNames[midiNote % 12];
@@ -340,12 +367,18 @@ class ScKeyboard extends ScElement {
     const { top, height } = $key.getBoundingClientRect();
     const normY = (height - (e.clientY - top)) / height;
     const velocity = Math.round(normY * 127);
-    // compute db and lin (?)
-    // compute frequency
-    const frequency = mtof(midiNote);
 
+    this._dispatchNoteOn($key, midiNote, velocity);
+  }
+
+  _dispatchNoteOn($key, midiNote, velocity) {
+    $key.classList.add('active'); // do this in render
+
+    const frequency = mtof(midiNote);
     // store for reuse in note off
     const eventInfos = { midiNote, velocity, frequency };
+
+    this._triggeredKeys.add($key);
     this._keyNoteOnEventMap.set($key, eventInfos);
 
     const event = new CustomEvent('input', {
@@ -368,6 +401,8 @@ class ScKeyboard extends ScElement {
     const eventInfos = this._keyNoteOnEventMap.get($key);
     this._keyNoteOnEventMap.delete($key);
 
+    eventInfos.velocity = 0;
+
     const event = new CustomEvent('input', {
       bubbles: true,
       composed: true,
@@ -380,6 +415,8 @@ class ScKeyboard extends ScElement {
     this.dispatchEvent(event);
   }
 }
+
+const ScKeyboard = midiControlled('ScKeyboard', ScKeyboardBase);
 
 if (customElements.get('sc-keyboard') === undefined) {
   customElements.define('sc-keyboard', ScKeyboard);

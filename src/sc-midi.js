@@ -40,7 +40,7 @@ function deviceToString(device) {
     : `${device.name}`;
 }
 
-function getBindingInfos(device, channel) {
+function getBindingInfos(device, channel = null) {
   return {
     device: deviceInfos(device),
     deviceString: deviceToString(device),
@@ -212,13 +212,17 @@ class ScMidiLearn extends ScElement {
 
     /* channel */
     .binding-item > sc-text.channel {
-      width: 70px;
+      width: 60px;
       border-right: 1px solid var(--sc-color-primary-4);
     }
 
     /* id */
-    .binding-item > sc-text.node-id {
+    .binding-item.control > sc-text.node-id {
       width: 80%;
+    }
+
+    .binding-item.instrument > sc-text.node-id {
+      width: 100%;
     }
   `;
 
@@ -296,18 +300,19 @@ class ScMidiLearn extends ScElement {
             <div class="select-interface">
               ${repeat(this._knownDevices, ([deviceId, device]) => deviceId, ([deviceId, device]) => {
                 const connected = this._devices.has(deviceId);
-                const bindings = this._controlBindings.get(deviceId);
+                const controlBindings = this._controlBindings.get(deviceId);
+                const instrumentBindings = this._instrumentBindings.get(deviceId);
 
                 const list = [];
                 // a device may have node bindings
-                if (bindings) {
-                  for (let [channel, ids] of bindings.entries()) {
+                if (controlBindings) {
+                  for (let [channel, ids] of controlBindings.entries()) {
                     ids.forEach(nodeId => {
                       const inDOM = this._$nodes.has(nodeId);
 
                       const template = html`
                         <div
-                          class="binding-item ${inDOM ? '' : 'not-in-dom'}"
+                          class="binding-item control ${inDOM ? '' : 'not-in-dom'}"
                           @mouseover=${e => this._highlightElement(nodeId)}
                           @mouseout=${e => this._unhighlightElement(nodeId)}
                         >
@@ -315,14 +320,36 @@ class ScMidiLearn extends ScElement {
                           <sc-text class="node-id">${nodeId}</sc-text>
                           <sc-icon
                             type="delete"
-                            @input=${e => this._deleteBinding(deviceId, channel, nodeId)}
+                            @input=${e => this._deleteControlBinding(deviceId, channel, nodeId)}
                           ></sc-icon>
                         </div>
                       `
 
-                      list.push(template)
+                      list.push(template);
                     });
                   }
+                }
+
+                if (instrumentBindings) {
+                  instrumentBindings.forEach(nodeId => {
+                    const inDOM = this._$nodes.has(nodeId);
+
+                    const template = html`
+                      <div
+                        class="binding-item instrument ${inDOM ? '' : 'not-in-dom'}"
+                        @mouseover=${e => this._highlightElement(nodeId)}
+                        @mouseout=${e => this._unhighlightElement(nodeId)}
+                      >
+                        <sc-text class="node-id">${nodeId}</sc-text>
+                        <sc-icon
+                          type="delete"
+                          @input=${e => this._deleteInstrumentBinding(deviceId, nodeId)}
+                        ></sc-icon>
+                      </div>
+                    `
+
+                    list.push(template);
+                  });
                 }
 
                 return html`
@@ -389,23 +416,35 @@ class ScMidiLearn extends ScElement {
     this._$nodes.clear();
 
     $learnable.forEach($el => {
-      const id = getNodeId($el);
-      this._$nodes.set(id, $el);
+      const nodeId = getNodeId($el);
+      this._$nodes.set(nodeId, $el);
     });
 
     // loop though all bindings and send midi learn infos to nodes that are in the live list
     for (let [deviceId, channelBindings] of this._controlBindings.entries()) {
-      let device = this._knownDevices.get(deviceId);
+      const device = this._knownDevices.get(deviceId);
 
-      for (let [channel, ids] of channelBindings.entries()) {
-        ids.forEach(id => {
-          if (this._$nodes.has(id)) {
-            const $node = this._$nodes.get(id);
+      for (let [channel, nodeIds] of channelBindings.entries()) {
+        nodeIds.forEach(nodeId => {
+          if (this._$nodes.has(nodeId)) {
+            const $node = this._$nodes.get(nodeId);
             const bindingInfos = getBindingInfos(device, channel);
             $node.midiControlInfos = bindingInfos;
           }
         });
       }
+    }
+
+    for (let [deviceId, nodeIds] of this._instrumentBindings.entries()) {
+      const device = this._knownDevices.get(deviceId);
+
+      nodeIds.forEach(nodeId => {
+        if (this._$nodes.has(nodeId)) {
+          const $node = this._$nodes.get(nodeId);
+          const bindingInfos = getBindingInfos(device);
+          $node.midiControlInfos = bindingInfos;
+        }
+      });
     }
 
     // update learnable elements if some new ones appeared
@@ -449,6 +488,12 @@ class ScMidiLearn extends ScElement {
 
   _toggleActive() {
     this.active = !this.active;
+
+    if (this._$selectedNode !== null) {
+      this._$selectedNode.midiLearnSelected = false;
+      this._$selectedNode = null;
+    }
+
     this._toggleLearnableElements();
   }
 
@@ -528,7 +573,7 @@ class ScMidiLearn extends ScElement {
       // channel = statusByte - 176 + 1; // we dont use that for now
     } else {
       // do not polute the console with this warning
-      console.warn(`sc-midi: unknown message statusByte ${statusByte}, discard`)
+      // console.warn(`sc-midi: unknown message statusByte ${statusByte}, discard`)
       return;
     }
 
@@ -549,7 +594,6 @@ class ScMidiLearn extends ScElement {
         // will always emit on the same channel but with different control function
         // @todo - extend _controlBindings to handle that: deviceId -> channel -> function -> [nodeIds]
         const channel = e.data[1]; // in spec this is the control function
-        const value = e.data[2];
 
         if (!this._controlBindings.has(deviceId)) {
           this._controlBindings.set(deviceId, new Map());
@@ -565,13 +609,12 @@ class ScMidiLearn extends ScElement {
         const nodeId = getNodeId(this._$selectedNode);
 
         if (!channelBindings.has(nodeId)) {
-          // remove previous binding if any
+          // remove previous node binding if any
           if (this._$selectedNode.midiControlInfos) {
             const { device, channel } = this._$selectedNode.midiControlInfos;
             const deviceId = getDeviceId(device);
-            const nodeId = getNodeId(this._$selectedNode);
 
-            this._deleteBinding(deviceId, channel, nodeId);
+            this._deleteControlBinding(deviceId, channel, nodeId);
           }
 
           channelBindings.add(nodeId);
@@ -583,7 +626,33 @@ class ScMidiLearn extends ScElement {
           this.requestUpdate();
         }
       } else {
-        // @todo
+        // @todo - handle channel too
+
+        if (!this._instrumentBindings.has(deviceId)) {
+          this._instrumentBindings.set(deviceId, new Set());
+        }
+
+        const deviceBindings = this._instrumentBindings.get(deviceId);
+        const nodeId = getNodeId(this._$selectedNode);
+
+        if (!deviceBindings.has(nodeId)) {
+          // remove
+          if (this._$selectedNode.midiControlInfos) {
+            const { device } = this._$selectedNode.midiControlInfos;
+            const deviceId = getDeviceId(device);
+            const nodeId = getNodeId(this._$selectedNode);
+
+            this._deleteInstrumentBinding(deviceId, nodeId);
+          }
+
+          deviceBindings.add(nodeId);
+          // set midiControlInfos on _$selectedNode
+          const bindingInfos = getBindingInfos(device);
+          this._$selectedNode.midiControlInfos = bindingInfos;
+
+          this._persistToLocalStorage();
+          this.requestUpdate();
+        }
       }
     }
 
@@ -613,13 +682,42 @@ class ScMidiLearn extends ScElement {
 
     // handle note-on and note-off messages
     if (messageType !== 'control' && this._instrumentBindings.has(deviceId)) {
-      // @todo
+      // note-off ∈ [128, 143]
+      // note-on  ∈ [144, 159]
+      // normalize note on and note off message type
+      const type = messageType === 'note-on' ? 144 : 128;
+      const pitch = e.data[1];
+      const velocity = e.data[2];
+      const value = [type, pitch, velocity];
+      const deviceBindings = this._instrumentBindings.get(deviceId);
+
+      deviceBindings.forEach(nodeId => {
+        if (this._$nodes.has(nodeId)) {
+          const $el = this._$nodes.get(nodeId);
+          $el.midiValue = value;
+        }
+      });
     }
   }
 
-  _deleteBinding(deviceId, channel, nodeId) {
+  _deleteControlBinding(deviceId, channel, nodeId) {
     this._controlBindings.get(deviceId).get(channel).delete(nodeId);
 
+    // reset node infos, the node may not be present in the DOM
+    if (this._$nodes.has(nodeId)) {
+      const $node = this._$nodes.get(nodeId);
+      $node.midiControlInfos = null;
+      $node.midiControlHighlight = null;
+    }
+
+    this._persistToLocalStorage();
+    this.requestUpdate();
+  }
+
+  _deleteInstrumentBinding(deviceId, nodeId) {
+    this._instrumentBindings.get(deviceId).delete(nodeId);
+
+    // reset node infos, the node may not be present in the DOM
     if (this._$nodes.has(nodeId)) {
       const $node = this._$nodes.get(nodeId);
       $node.midiControlInfos = null;
@@ -640,8 +738,13 @@ class ScMidiLearn extends ScElement {
       const deviceBindings = this._controlBindings.get(deviceId);
 
       for (let [channel, nodeIds] of deviceBindings.entries()) {
-        nodeIds.forEach(id => nodeList.push(id));
+        nodeIds.forEach(nodeId => nodeList.push(nodeId));
       }
+    }
+
+    if (this._instrumentBindings.has(deviceId)) {
+      const deviceBindings = this._instrumentBindings.get(deviceId);
+      deviceBindings.forEach(nodeId => nodeList.push(nodeId));
     }
 
     // if device is not connected remove from known devices
@@ -651,9 +754,10 @@ class ScMidiLearn extends ScElement {
 
     // delete all related bindings
     this._controlBindings.delete(deviceId);
+    this._instrumentBindings.delete(deviceId);
     // clean infos on nodes
-    nodeList.forEach(id => {
-      const $node = this._$nodes.get(id);
+    nodeList.forEach(nodeId => {
+      const $node = this._$nodes.get(nodeId);
       $node.midiControlInfos = null;
     });
 
@@ -665,17 +769,23 @@ class ScMidiLearn extends ScElement {
   _serialize() {
     const knownDevices = Object.fromEntries(this._knownDevices.entries());
     // bindings need more parsing
-    const bindings = {};
+    const controlBindings = {};
 
     for (let [deviceId, channelBindings] of this._controlBindings.entries()) {
-      bindings[deviceId] = {};
+      controlBindings[deviceId] = {};
 
       for (let [channel, nodeIds] of channelBindings.entries()) {
-        bindings[deviceId][channel] = Array.from(nodeIds);
+        controlBindings[deviceId][channel] = Array.from(nodeIds);
       }
     }
 
-    return JSON.stringify({ knownDevices, bindings });
+    const instrumentBindings = {};
+
+    for (let [deviceId, nodeIds] of this._instrumentBindings.entries()) {
+      instrumentBindings[deviceId] = Array.from(nodeIds);
+    }
+
+    return JSON.stringify({ knownDevices, controlBindings, instrumentBindings });
   }
 
   _deserialize(json) {
@@ -688,7 +798,8 @@ class ScMidiLearn extends ScElement {
     }
 
     const knownDevices = new Map();
-    const bindings = new Map();
+    const controlBindings = new Map();
+    const instrumentBindings = new Map();
 
     if (data) {
       // populate knownDevices
@@ -697,21 +808,27 @@ class ScMidiLearn extends ScElement {
         knownDevices.set(deviceId, device);
       }
 
-      // populate bindings
-      for (let deviceId in data.bindings) {
-        bindings.set(deviceId, new Map());
+      // populate control bindings
+      for (let deviceId in data.controlBindings) {
+        controlBindings.set(deviceId, new Map());
 
-        const channelBindingsRaw = data.bindings[deviceId];
-        const channelBindings = bindings.get(deviceId);
+        const channelBindingsRaw = data.controlBindings[deviceId];
+        const channelBindings = controlBindings.get(deviceId);
 
         for (let channel in channelBindingsRaw) {
           const ids = channelBindingsRaw[channel];
           channelBindings.set(parseInt(channel), new Set(ids));
         }
       }
+
+      // populate instrument bindings
+      for (let deviceId in data.instrumentBindings) {
+        const ids = data.instrumentBindings[deviceId];
+        instrumentBindings.set(deviceId, new Set(ids));
+      }
     }
 
-    return { knownDevices, bindings };
+    return { knownDevices, controlBindings, instrumentBindings };
   }
 
   // create this._controlBindings structure from POJO data
@@ -724,10 +841,15 @@ class ScMidiLearn extends ScElement {
   _loadFromLocalStorage() {
     const json = localStorage.getItem('sc-midi-bindings');
 
-    const { knownDevices, bindings } = this._deserialize(json);
+    const {
+      knownDevices,
+      controlBindings,
+      instrumentBindings,
+    } = this._deserialize(json);
 
     this._knownDevices = knownDevices;
-    this._controlBindings = bindings;
+    this._controlBindings = controlBindings;
+    this._instrumentBindings = instrumentBindings;
   }
 }
 

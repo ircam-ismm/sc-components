@@ -39,7 +39,6 @@ const template = html\`
 `}</sc-code-example>
 
 <sc-midi
-  active
   id="test-midi"
 ></sc-midi>
 

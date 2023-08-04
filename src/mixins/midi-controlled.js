@@ -1,15 +1,6 @@
 import { html, css, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 
-// const A = customElements.get('sc-slider')
-// const a = new A();
-// // console.log(a);
-// console.log('className', a.constructor.name);
-// console.log('tagName', a.tagName.toLowerCase());
-// console.log('midiValue', a.midiValue);
-// a.midiValue = 1;
-// console.log('midiValue', a.midiValue);
-
 const midiLearnSymbol = Symbol.for('sc-midi');
 
 if (!globalThis[midiLearnSymbol]) {
@@ -29,11 +20,9 @@ export default (className, parent) => {
         reflect: true,
         attribute: 'midi-learn-selected',
       },
-      // @todo - rename to midiControlInfos
       midiControlInfos: {
         state: true,
       },
-      // @todo - rename to midiControlHighlight
       midiControlHighlight: {
         type: Boolean,
         state: true,
