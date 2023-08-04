@@ -108,7 +108,7 @@ npm run test
 
 ### Unlock context menu
 
-When developing, having the possibility to right-click on an element to inspect it can be very handy. You can re-enable this behavior by setting the `SC-DEBUG` global variable to `true`:
+When developing, having the possibility to right-click on an element to inspect it can be very handy. You can re-enable this behavior by setting the `SC_DEBUG` global variable to `true`:
 
 ```js
 window.SC_DEBUG = true;
