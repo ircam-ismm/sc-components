@@ -1,6 +1,5 @@
 // list of pages
 export default [
-  'home',
   'sc-bang',
   'sc-button',
   'sc-toggle',

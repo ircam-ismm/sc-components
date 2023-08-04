@@ -84,6 +84,7 @@ class ScMidiLearn extends ScElement {
     :host {
       display: inline-block;
       box-sizing: border-box;
+      vertical-align: top;
       overflow: hidden;
       font-family: var(--sc-font-family);
       font-size: var(--sc-font-size);
