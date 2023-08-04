@@ -6,9 +6,20 @@ import applyStyle from './utils/applyStyle.js';
 // import lib
 import '../../src/index.js';
 // list of pages
-import pages from './components.js';
+import components from './components.js';
 // debug mode on localhost
 window.SC_DEBUG = window.location.hostname === 'localhost';
+
+const pages = {
+  'intro': {
+    'home': 'home',
+    'theming & styling': 'theming-styling',
+  },
+  components: components.reduce((acc, value) => {
+    acc[value] = value;
+    return acc;
+  }, {}),
+};
 
 function setTheme(name) {
   switch (name) {
@@ -30,38 +41,69 @@ let current = null;
 let prefix = null;
 
 async function setContent(pages, page) {
-  // fallback to homepage
-  if (!pages.includes(page)) {
+  // fallback to homepage if page is not found
+  let pageFound = false;
+
+  for (let name in pages) {
+    const pageList = pages[name];
+    for (let [key, value] of Object.entries(pageList)) {
+      if (value === page) {
+        pageFound = true;
+      }
+    }
+  }
+
+  if (!pageFound) {
     page = 'home';
   }
 
-  const title = (page === 'home') ? 'sc-components | documentation' : `${page} | sc-components`;
-  document.title = title;
+  // document title
+  document.title = (page === 'home')
+    ? 'sc-components | documentation'
+    : `${page} | sc-components`;
+
   // reset styles
   applyStyle('');
 
-  // render navbar and close it if it is opened - ordered
+  // render nav bar
   const $nav = document.querySelector('#main > nav');
-
-  render(map(pages, (value) => {
-    return html`<a
-      href="./${value}"
-      class="${value === page ? 'selected' : ''}"
-      @click=${e => {
-        e.preventDefault();
-
-        if (value === page) {
-          return;
-        }
-
-        let url = value === 'home' ? `${prefix}/` : `${prefix}/${value}`;
-        history.pushState({ page: value }, '', url);
-        setContent(pages, value);
-      }}
-    >${value}</a>`;
-  }), $nav);
-
+  // close navbar on small screens
   $nav.classList.remove('active');
+
+  const nav = [];
+
+  for (let name in pages) {
+    const pageList = pages[name];
+
+    // nav section title
+    if (name !== 'intro') {
+      const navTitle = html`<p>${name}</p>`;
+      nav.push(navTitle);
+    }
+
+    // link list
+    const links = map(Object.entries(pageList), ([value, key]) => {
+      return html`<a
+        href="./${key}"
+        class="${page === key ? 'selected' : ''}"
+        @click=${e => {
+          e.preventDefault();
+
+          if (page === key) {
+            return;
+          }
+
+          const url = key === 'home' ? `${prefix}/` : `${prefix}/${key}`;
+          history.pushState({ page: key }, '', url);
+          setContent(pages, key);
+        }}
+      >${value}</a>`;
+    });
+
+    nav.push(links);
+  }
+
+  render(nav, $nav);
 
   // exit current page
   if (current && current.exit) {

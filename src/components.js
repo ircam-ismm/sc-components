@@ -1,6 +1,5 @@
 // list of pages
 export default [
-  'home',
   'sc-bang',
   'sc-button',
   'sc-toggle',
@@ -29,5 +28,5 @@ export default [
   'sc-keyboard',
   'sc-dragndrop',
   'sc-filetree',
-  'sc-midi-learn',
+  'sc-midi',
 ].sort();

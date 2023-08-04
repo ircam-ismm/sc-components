@@ -1,8 +1,16 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[232],{4232:(o,s,i)=>{i.r(s),i.d(s,{template:()=>c});const c=i(182).dy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[232],{4232:(e,t,s)=>{s.r(t),s.d(t,{template:()=>o});const o=s(182).dy`
 <div id="homepage">
   <h2>@ircam/sc-components</h2>
 
-  <p>Simple and robust Web Component library for rapid prototyping audio and creative applications in the browser.</p>
+  <a href="https://badge.fury.io/js/@ircam%2Fsc-components">
+    <img alt="npm version" src="https://badge.fury.io/js/@ircam%2Fsc-components.svg" />
+  </a>
+
+  <div style="margin-top: 40px">
+    <img src="./assets/logo-200x200.png" alt="logo" />
+  </div>
+
+  <p>Simple and robust Web Component library for rapid prototyping of audio and creative applications in the browser.</p>
 
   <div id="demo">
     <sc-bang></sc-bang>
@@ -14,84 +22,59 @@
     <sc-switch></sc-switch>
   </div>
 
-  <a  href="https://badge.fury.io/js/@ircam%2Fsc-components">
-    <img alt="npm version" src="https://badge.fury.io/js/@ircam%2Fsc-components.svg" />
-  </a>
+  <h2 style="margin-top: 60px;">Goal & Philosophy</h2>
 
-  <h3>Install</h3>
-
-  <sc-code-example language="bash">
-npm install --save @ircam/sc-components
-  </sc-code-example>
-
-  <h3>Usage</h3>
-
-  <p>Import components one by one:</p>
-
-  <sc-code-example language="javascript">
-import '@ircam/sc-components/sc-toggle.js';
-import '@ircam/sc-components/sc-button.js';
-// ...
-  </sc-code-example>
-
-
-  <p>
-    Or all components at once:<br >
-    <i>(note that it's best to import only the files you need to keep your bundle size as small as possible)</i>
+  <p style="max-width: 900px;">
+    This is a rather opinionated library, that primarily aims to provide practical and robust interfaces for practitionners in working and performance situations. Hence, it proposes different interaction modalities such as keyboard and MIDI controls where meaningful, and pretty agressively bypasses or overrides certain default browser's behaviours such as context menus, text selection, etc.
   </p>
 
-  <sc-code-example language="javascript">
-import '@ircam/sc-components';
-  </sc-code-example>
+  <h2 style="margin-top: 60px;">Usage</h2>
+
+  <h3>With npm and bundlers</h3>
+
+  <p style="max-width: 900px;">
+    Install the library using npm (or yarn, or whatever)
+  </p>
+
+  <sc-code-example  style="max-width: 900px;" language="shell">${"\nnpm install --save @ircam/sc-components\n  "}</sc-code-example>
+
+  <p>Each components lives in its own file and can be imported separately, e.g.:</p>
+
+  <sc-code-example  style="max-width: 900px;" language="javascript">${"\nimport { html, render } from 'lit';\nimport '@ircam/sc-components/sc-toggle.js';\n\nrender(html`\n  <sc-toggle\n    @change=${e => console.log(e)}\n  ></sc-toggle>\n`, document.body);\n  "}</sc-code-example>
+
+  <p style="max-width: 900px;">
+    For convenience, we also provide a global entry point which imports all components. However, in most cases you should avoid using this shortcut to keep your bundle size as small as possible:
+  </p>
+
+  <sc-code-example  style="max-width: 900px;" language="javascript">${"\nimport '@ircam/sc-components';\n  "}</sc-code-example>
 
 
+  <h3>With unpkg</h3>
 
-  <h3>Theming - global css variables</h3>
+  <p style="max-width: 900px;">
+    If you don't use a bundler or for simple testing, you can also use the library from [https://unpkg.com/](https://unpkg.com/).
+  </p>
 
-  <div style="display: flex; flex-wrap: wrap;">
-    <div style="width: 200px;">
-      <div style="width: 100px; height: 100px; background-color: var(--sc-color-primary-1)"></div>
-      <p style="margin-top: 8px;">--sc-color-primary-1</p>
-    </div>
-    <div style="width: 200px;">
-      <div style="width: 100px; height: 100px; background-color: var(--sc-color-primary-2)"></div>
-      <p style="margin-top: 8px;">--sc-color-primary-2</p>
-    </div>
-    <div style="width: 200px;">
-      <div style="width: 100px; height: 100px; background-color: var(--sc-color-primary-3)"></div>
-      <p style="margin-top: 8px;">--sc-color-primary-3</p>
-    </div>
-    <div style="width: 200px;">
-      <div style="width: 100px; height: 100px; background-color: var(--sc-color-primary-4)"></div>
-      <p style="margin-top: 8px;">--sc-color-primary-4</p>
-    </div>
-    <div style="width: 200px;">
-      <div style="width: 100px; height: 100px; background-color: var(--sc-color-primary-5)"></div>
-      <p style="margin-top: 8px;">--sc-color-primary-5</p>
-    </div>
-  </div>
+  <h4>In HTML file</h4>
 
-  <div style="display: flex; flex-wrap: wrap; margin-top: 30px;">
-    <div style="width: 200px;">
-      <div style="width: 100px; height: 100px; background-color: var(--sc-color-secondary-1)"></div>
-      <p style="margin-top: 8px;">--sc-color-secondary-1</p>
-    </div>
-    <div style="width: 200px;">
-      <div style="width: 100px; height: 100px; background-color: var(--sc-color-secondary-2)"></div>
-      <p style="margin-top: 8px;">--sc-color-secondary-2</p>
-    </div>
-    <div style="width: 200px;">
-      <div style="width: 100px; height: 100px; background-color: var(--sc-color-secondary-3)"></div>
-      <p style="margin-top: 8px;">--sc-color-secondary-3</p>
-    </div>
-    <div style="width: 200px;">
-      <div style="width: 100px; height: 100px; background-color: var(--sc-color-secondary-4)"></div>
-      <p style="margin-top: 8px;">--sc-color-secondary-4</p>
-    </div>
-    <div style="width: 200px;">
-      <div style="width: 100px; height: 100px; background-color: var(--sc-color-secondary-5)"></div>
-      <p style="margin-top: 8px;">--sc-color-secondary-5</p>
-    </div>
-  </div>
-</div>
+  <sc-code-example  style="max-width: 900px;" language="html">${"\n<!DOCTYPE html>\n<html>\n<head>\n  <script type=\"module\" src=\"https://unpkg.com/@ircam/sc-components@latest\"><\/script>\n</head>\n<body>\n  <sc-toggle></sc-toggle>\n  <script>\n    const $toggle = document.querySelector('sc-toggle');\n    $toggle.addEventListener('change', e => console.log('Hello toggle', e.detail.value));\n  <\/script>\n</body>\n<body>\n  "}</sc-code-example>
+
+  <h4>In JS file</h4>
+
+  <sc-code-example  style="max-width: 900px;" language="html">${"\nimport { html, render } from 'https://unpkg.com/lit-html?module';\nimport 'https://unpkg.com/@ircam/sc-components@latest';\n\nrender(html`\n  <sc-toggle\n    @change=${e => console.log('Hello toggle', e.detail.value)}\n  ></sc-toggle>\n`, document.body);\n  "}</sc-code-example>
+
+  <p style="max-width: 900px;">
+    Note that this method will import the whole bundled library which is quite large. You may not want to use this is production._
+  </p>
+
+  <h3>Integration within other frameworks</h3>
+
+  <p>The library has not been tested within other frameworks such as React or Vue yet.</p>
+  <p>Any feedback is welcome!</p>
+
+  <h2 style="margin-top: 60px;">License</h2>
+
+  <a target="_blank" href="https://github.com/ircam-ismm/sc-components/blob/main/LICENSE">BSD-3-Clause</a>
+
+  <div style="height: 120px;"></div>
 `}}]);

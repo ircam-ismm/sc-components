@@ -34,13 +34,19 @@ header h1 {
   margin: 0;
   font-size: 16px;
   line-height: var(--header-height);
-  text-indent: 20px;
   color: #ffffff;
 }
 
 header h1 a {
   color: inherit;
   text-decoration: inherit;
+  display: flex;
+  margin-left: 20px;
+  text-indent: 20px;
+}
+
+header h1 a img {
+  height: calc(var(--header-height) - 1px);
 }
 
 header > div {
@@ -85,7 +91,7 @@ header > div > sc-icon {
   background-color: #343434;
   display: block;
   width: var(--nav-width);
-  min-height: calc(100vh - var(--header-height));
+  height: calc(100vh - var(--header-height));
   overflow-y: auto;
   padding: 16px 0;
   border-right: 1px solid #565656;
@@ -93,7 +99,7 @@ header > div > sc-icon {
 
 #main section {
   display: block;
-  min-height: calc(100vh - var(--header-height));
+  height: calc(100vh - var(--header-height));
   width: calc(100vw - var(--nav-width));
   background-color: black;
   overflow-y: auto;
@@ -130,6 +136,13 @@ header #toggle-menu {
   }
 }
 
+#main nav p {
+  padding-left: 20px;
+  color: white;
+  font-size: 1.4rem;
+  margin-top: 30px;
+}
+
 #main nav a {
   color: white;
   font-size: 1.1rem;
@@ -162,7 +175,7 @@ header #toggle-menu {
   margin: 6px 0 4px;
   font-weight: light;
   font-size: 1.1rem;
-  line-height: 1.6rem;
+  line-height: 1.9rem;
 }
 
 #main section a {
