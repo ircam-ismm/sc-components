@@ -88,7 +88,7 @@ _Note that this method will import the whole bundled library which is quite larg
 
 The library has not been tested within other frameworks such as React or Vue yet.
 
-Any feedback is be welcome!
+Any feedback is welcome!
 
 ## Development notes
 
@@ -119,6 +119,18 @@ Note that this is the case when the docs and tests are run locally:
 ```js
 window.SC_DEBUG = window.location.hostname === 'localhost';
 ````
+
+## Contributing
+
+Contributions are welcome in the form of suggestions, ideas, bug report, pull requests and feedback.
+
+For PRs, we follow the "fork-and-pull" workflow:
+
+1. __Fork__ the repo on GitHub
+2. __Clone__ the project to your own machine
+3. __Commit__ changes to your own branch
+4. __Push__ your work back up to your fork
+5. __Submit__ a pull request
 
 <!-- &todos
 ## Theming and styling
