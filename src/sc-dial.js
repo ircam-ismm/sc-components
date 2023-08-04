@@ -31,7 +31,7 @@ function describeArc(x, y, radius, startAngle, endAngle){
   return d;
 }
 
-class ScDial extends ScElement {
+class ScDialBase extends ScElement {
   static properties = {
     min: {
       type: Number,
@@ -355,8 +355,10 @@ class ScDial extends ScElement {
   }
 }
 
+const ScDial = midiLearn('ScDial', ScDialBase);
+
 if (customElements.get('sc-dial') === undefined) {
-  customElements.define('sc-dial', midiLearn('ScDial', ScDial));
+  customElements.define('sc-dial', ScDial);
 }
 
 export default ScDial;

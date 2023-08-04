@@ -4,7 +4,7 @@ import ScElement from './ScElement.js';
 import midiLearn from './mixins/midi-learn.js';
 import KeyboardController from './controllers/keyboard-controller.js';
 
-class ScBang extends ScElement {
+class ScBangBase extends ScElement {
   static properties = {
     active: {
       type: Boolean,
@@ -157,8 +157,10 @@ class ScBang extends ScElement {
   }
 }
 
+const ScBang = midiLearn('ScBang', ScBangBase);
+
 if (customElements.get('sc-bang') === undefined) {
-  customElements.define('sc-bang', midiLearn('ScBang', ScBang));
+  customElements.define('sc-bang', ScBang);
 }
 
 export default ScBang;

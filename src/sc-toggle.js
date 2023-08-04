@@ -4,7 +4,7 @@ import ScElement from './ScElement.js';
 import midiLearn from './mixins/midi-learn.js';
 import KeyboardController from './controllers/keyboard-controller.js';
 
-class ScToggle extends ScElement {
+class ScToggleBase extends ScElement {
   static properties = {
     active: {
       type: Boolean,
@@ -159,8 +159,10 @@ class ScToggle extends ScElement {
   }
 }
 
+const ScToggle = midiLearn('ScToggle', ScToggleBase);
+
 if (customElements.get('sc-toggle') === undefined) {
-  customElements.define('sc-toggle', midiLearn('ScToggle', ScToggle));
+  customElements.define('sc-toggle', ScToggle);
 }
 
 export default ScToggle;

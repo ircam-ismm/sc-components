@@ -505,7 +505,7 @@ class ScMidiLearn extends ScElement {
     // 128 -> note off, pitch, velocity
     // 160 -> pressure (let's ignore that)
 
-    console.log(_messageType, channel, value);
+    // console.log(_messageType, channel, value);
 
     if (this.active && this._$selectedNode !== null) {
       if (!this._bindings.has(deviceId)) {

@@ -8,7 +8,7 @@ import getClipper from './utils/get-clipper.js';
 import './sc-position-surface.js';
 import './sc-number.js';
 
-class ScSlider extends ScElement {
+class ScSliderBase extends ScElement {
   static properties = {
     min: {
       type: Number,
@@ -429,8 +429,11 @@ class ScSlider extends ScElement {
   }
 }
 
+// apply midi learn mixin
+const ScSlider = midiLearn('ScSlider', ScSliderBase)
+
 if (customElements.get('sc-slider') === undefined) {
-  customElements.define('sc-slider', midiLearn('ScSlider', ScSlider));
+  customElements.define('sc-slider', ScSlider);
 }
 
 export default ScSlider;

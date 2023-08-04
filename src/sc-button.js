@@ -5,7 +5,7 @@ import ScElement from './ScElement.js';
 import midiLearn from './mixins/midi-learn.js';
 import KeyboardController from './controllers/keyboard-controller.js';
 
-class ScButton extends ScElement {
+class ScButtonBase extends ScElement {
   static properties = {
     value: {
       type: String,
@@ -224,8 +224,10 @@ class ScButton extends ScElement {
   }
 }
 
+const ScButton = midiLearn('ScButton', ScButtonBase);
+
 if (customElements.get('sc-button') === undefined) {
-  customElements.define('sc-button', midiLearn('ScButton', ScButton));
+  customElements.define('sc-button', ScButton);
 }
 
 export default ScButton;
