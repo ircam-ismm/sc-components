@@ -4,7 +4,7 @@
 
 ![sc-components logo](./docs/assets/logo-200x200.png)
 
-Simple and robust Web Component library for rapid prototyping audio and creative applications in the browser. 
+Simple and robust Web Component library for rapid prototyping of audio and creative applications in the browser. 
 
 ![banner](./docs/assets/banner.png)
 
