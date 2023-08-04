@@ -73,6 +73,7 @@ class ScLoop extends ScElement {
     super();
 
     this.active = false;
+    this.disabled = false;
 
     this._keyboard = new KeyboardController(this, {
       filterCodes: ['Enter', 'Space'],

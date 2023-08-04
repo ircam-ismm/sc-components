@@ -396,8 +396,6 @@ class ScMidiLearn extends ScElement {
     if (!this.hasAttribute('tabindex')) {
       this.setAttribute('tabindex', 0);
     }
-
-    setTimeout(() => this._serialize(), 2000);
   }
 
   disconnectedCallback() {

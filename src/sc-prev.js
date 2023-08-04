@@ -64,6 +64,7 @@ class ScPrev extends ScElement {
     super();
 
     this._active = false;
+    this.disabled = false;
 
     this._keyboard = new KeyboardController(this, {
       filterCodes: ['Enter', 'Space'],
