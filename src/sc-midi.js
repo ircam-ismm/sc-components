@@ -65,7 +65,7 @@ function getNodeId(node) {
 
 // - [ ] import / export config - trigger @change event
 
-class ScMidiLearn extends ScElement {
+class ScMidi extends ScElement {
   static properties = {
     active: {
       type: Boolean,
@@ -756,8 +756,10 @@ class ScMidiLearn extends ScElement {
     this._instrumentBindings.delete(deviceId);
     // clean infos on nodes
     nodeList.forEach(nodeId => {
-      const $node = this._$nodes.get(nodeId);
-      $node.midiControlInfos = null;
+      if (this._$nodes.has(nodeId)) {
+        const $node = this._$nodes.get(nodeId);
+        $node.midiControlInfos = null;
+      }
     });
 
     this._persistToLocalStorage();
@@ -853,8 +855,8 @@ class ScMidiLearn extends ScElement {
 }
 
 if (customElements.get('sc-midi') === undefined) {
-  customElements.define('sc-midi', ScMidiLearn);
+  customElements.define('sc-midi', ScMidi);
 }
 
-export default ScMidiLearn;
+export default ScMidi;
 
