@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[264],{3264:(t,e,s)=>{s.r(e),s.d(e,{template:()=>r});var a=s(182),c=s(850),o=s(4670);const r=a.dy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[264],{3264:(t,e,s)=>{s.r(e),s.d(e,{template:()=>o});var c=s(182),a=s(850),r=s(4670);const o=c.dy`
 
 <h2>sc-transport</h2>
 
@@ -21,7 +21,7 @@
   <sc-text style="width: 260px;">[buttons=["play", "pause", "stop"]]</sc-text>
   <sc-text
     editable
-    @change=${t=>document.querySelector("#test-transport").buttons=c.parse(t.detail.value)}
+    @change=${t=>document.querySelector("#test-transport").buttons=a.parse(t.detail.value)}
   >["play", "pause", "stop"]</sc-text>
 </div>
 <p>set component state to one of the <code>buttons</code> value, note that "value" and "state" are aliases</p>
@@ -46,6 +46,13 @@
   ></sc-toggle>
 </div>
 
+<h3>Keyboard shortcuts</h3>
+<sc-text class="key large">←</sc-text>
+<sc-text class="key large">↑</sc-text>
+<sc-text class="key large">→</sc-text>
+<sc-text class="key large">↓</sc-text>
+<sc-text class="key">Space</sc-text>
+<sc-text class="key">Enter</sc-text>
 
 <h3>Styling</h3>
 <sc-editor
@@ -63,6 +70,6 @@
   --sc-transport-active-stop-fill: var(--sc-color-secondary-3);
 }
   "
-  @change=${t=>(0,o.default)(t.detail.value)}
+  @change=${t=>(0,r.default)(t.detail.value)}
 ></sc-editor>
 `}}]);

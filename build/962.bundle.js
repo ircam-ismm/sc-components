@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[962],{3962:(e,t,c)=>{c.r(t),c.d(t,{template:()=>a});var s=c(182),i=c(4670);let n=null,l=null,o=null;const a=s.dy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[962],{3962:(e,t,c)=>{c.r(t),c.d(t,{template:()=>o});var s=c(182),i=c(4670);let n=null,l=null,a=null;const o=s.dy`
 
 <h2>sc-icon</h2>
 
@@ -10,7 +10,7 @@
   type="question"
   @input=${e=>{document.querySelector("#icon-input").active=!0;const t=document.querySelector("#icon-value-input");t.value=e.detail.value,clearTimeout(n),n=setTimeout((()=>t.value=""),500)}}
   @press=${e=>{document.querySelector("#icon-press").active=!0;const t=document.querySelector("#icon-value-press");t.value=e.detail.value,clearTimeout(l),l=setTimeout((()=>t.value=""),500)}}
-  @release=${e=>{document.querySelector("#icon-release").active=!0;const t=document.querySelector("#icon-value-release");t.value=e.detail.value,clearTimeout(o),o=setTimeout((()=>t.value=""),500)}}
+  @release=${e=>{document.querySelector("#icon-release").active=!0;const t=document.querySelector("#icon-value-release");t.value=e.detail.value,clearTimeout(a),a=setTimeout((()=>t.value=""),500)}}
 ></sc-icon>
 
 <h3>Events</h3>
@@ -62,6 +62,10 @@
     @change=${e=>document.querySelector("#test-icon").disabled=e.detail.value}
   ></sc-toggle>
 </div>
+
+<h3>Keyboard shortcuts</h3>
+<sc-text class="key">Space</sc-text>
+<sc-text class="key">Enter</sc-text>
 
 <h3>Styling</h3>
 <sc-editor

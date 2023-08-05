@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[639],{9639:(e,t,s)=>{s.r(t),s.d(t,{template:()=>i});var c=s(182),l=s(4670);const a=["a",!0,43,"g"],i=c.dy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[639],{9639:(e,t,s)=>{s.r(t),s.d(t,{template:()=>o});var c=s(182),l=s(4670);const a=["a",!0,43,"g"],o=c.dy`
 
 <h2>sc-select</h2>
 
@@ -50,6 +50,11 @@
     @change=${e=>document.querySelector("#test-select").disabled=e.detail.value}
   ></sc-toggle>
 </div>
+
+<h3>Keyboard shortcuts</h3>
+<sc-text class="key">Space</sc-text>
+<sc-text class="key large">↑</sc-text>
+<sc-text class="key large">↓</sc-text>
 
 <h3>Styling</h3>
 <sc-editor

@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[681],{1681:(e,t,s)=>{s.r(t),s.d(t,{template:()=>l});var c=s(182),i=s(4670);const l=c.dy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[681],{1681:(e,t,s)=>{s.r(t),s.d(t,{template:()=>r});var c=s(182),l=s(4670);const r=c.dy`
 
 <h2>sc-slider</h2>
 
@@ -73,6 +73,12 @@
   ></sc-toggle>
 </div>
 
+<h3>Keyboard shortcuts</h3>
+<sc-text class="key large">←</sc-text>
+<sc-text class="key large">↑</sc-text>
+<sc-text class="key large">→</sc-text>
+<sc-text class="key large">↓</sc-text>
+
 <h3>Styling</h3>
 <sc-editor
   style="width: 500px;"
@@ -85,7 +91,7 @@
   --sc-slider-foreground-color: var(--sc-color-primary-5);
 }
   "
-  @change=${e=>(0,i.default)(e.detail.value)}
+  @change=${e=>(0,l.default)(e.detail.value)}
 ></sc-editor>
 
 `}}]);

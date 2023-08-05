@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[129],{6129:(e,t,c)=>{c.r(t),c.d(t,{template:()=>a});var s=c(182),p=c(4670);const a=s.dy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[129],{6129:(e,t,s)=>{s.r(t),s.d(t,{template:()=>a});var c=s(182),p=s(4670);const a=c.dy`
 
 <h2>sc-prev</h2>
 
@@ -35,6 +35,10 @@
   "
   @change=${e=>(0,p.default)(e.detail.value)}
 ></sc-editor>
+
+<h3>Keyboard shortcuts</h3>
+<sc-text class="key">Space</sc-text>
+<sc-text class="key">Enter</sc-text>
 
 <h3>Example</h3>
 <div>

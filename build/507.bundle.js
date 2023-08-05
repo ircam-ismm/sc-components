@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[507],{2507:(e,t,c)=>{c.r(t),c.d(t,{template:()=>l});var o=c(182),s=c(4670);const l=o.dy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[507],{2507:(e,t,c)=>{c.r(t),c.d(t,{template:()=>l});var s=c(182),o=c(4670);const l=s.dy`
 
 <h2>sc-loop</h2>
 
@@ -29,6 +29,10 @@
   ></sc-toggle>
 </div>
 
+<h3>Keyboard shortcuts</h3>
+<sc-text class="key">Space</sc-text>
+<sc-text class="key">Enter</sc-text>
+
 <h3>Styling</h3>
 <sc-editor
   style="width: 500px;"
@@ -39,6 +43,6 @@
   height: 30px;
 }
   "
-  @change=${e=>(0,s.default)(e.detail.value)}
+  @change=${e=>(0,o.default)(e.detail.value)}
 ></sc-editor>
 `}}]);

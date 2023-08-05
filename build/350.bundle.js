@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[350],{729:(e,t,c)=>{c.r(t),c.d(t,{template:()=>s});var a=c(182),l=c(4670);const s=a.dy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[350],{729:(e,t,c)=>{c.r(t),c.d(t,{template:()=>l});var s=c(182),a=c(4670);const l=s.dy`
 
 <h2>sc-dial</h2>
 
@@ -53,6 +53,12 @@
   ></sc-toggle>
 </div>
 
+<h3>Keyboard shortcuts</h3>
+<sc-text class="key large">←</sc-text>
+<sc-text class="key large">↑</sc-text>
+<sc-text class="key large">→</sc-text>
+<sc-text class="key large">↓</sc-text>
+
 <h3>Styling</h3>
 <sc-editor
   style="width: 500px;"
@@ -65,6 +71,6 @@
   --sc-dial-color: var(--sc-color-secondary-1);
 }
   "
-  @change=${e=>(0,l.default)(e.detail.value)}
+  @change=${e=>(0,a.default)(e.detail.value)}
 ></sc-editor>
 `}}]);

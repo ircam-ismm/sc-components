@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[879],{5879:(e,t,c)=>{c.r(t),c.d(t,{template:()=>s});var n=c(182),a=c(4670);const s=n.dy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[879],{5879:(e,t,c)=>{c.r(t),c.d(t,{template:()=>n});var s=c(182),a=c(4670);const n=s.dy`
 
 <h2>sc-bang</h2>
 
@@ -32,6 +32,10 @@
     @change=${e=>document.querySelector("#test-bang").disabled=e.detail.value}
   ></sc-toggle>
 </div>
+
+<h3>Keyboard shortcuts</h3>
+<sc-text class="key">Space</sc-text>
+<sc-text class="key">Enter</sc-text>
 
 <h3>Styling</h3>
 <sc-editor

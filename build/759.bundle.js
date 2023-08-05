@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[759],{4759:(e,t,a)=>{a.r(t),a.d(t,{template:()=>s});var i=a(182),o=a(4670);const c=["a","b","c","d"],s=i.dy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[759],{4759:(e,t,a)=>{a.r(t),a.d(t,{template:()=>o});var s=a(182),c=a(4670);const i=["a","b","c","d"],o=s.dy`
 
 <h2>sc-radio</h2>
 
@@ -6,7 +6,7 @@
 
 <sc-radio
   id="test-radio"
-  options="${JSON.stringify(c)}"
+  options="${JSON.stringify(i)}"
   @change=${e=>document.querySelector("#options-value").value=e.detail.value}
 ></sc-radio>
 
@@ -23,7 +23,7 @@
   <sc-text>[value=null]</sc-text>
   <sc-radio
     id="radio-change"
-    options="${JSON.stringify(c)}"
+    options="${JSON.stringify(i)}"
     @change=${e=>document.querySelector("#test-radio").value=e.detail.value}
   ></sc-radio>
 </div>
@@ -31,7 +31,7 @@
   <sc-text>options=[]</sc-text>
   <sc-editor
     save-button
-    value="${JSON.stringify(c)}"
+    value="${JSON.stringify(i)}"
     @change=${e=>{document.querySelector("#test-radio").options=JSON.parse(e.detail.value),document.querySelector("#radio-change").options=JSON.parse(e.detail.value)}}
   ></sc-editor>
 </div>
@@ -50,6 +50,11 @@
   ></sc-toggle>
 </div>
 
+<h3>Keyboard shortcuts</h3>
+<sc-text class="key">Space</sc-text>
+<sc-text class="key large">↑</sc-text>
+<sc-text class="key large">↓</sc-text>
+
 <h3>Styling</h3>
 <sc-editor
   style="width: 500px;"
@@ -61,6 +66,6 @@
   font-size: 11px;
 }
   "
-  @change=${e=>(0,o.default)(e.detail.value)}
+  @change=${e=>(0,c.default)(e.detail.value)}
 ></sc-editor>
 `}}]);

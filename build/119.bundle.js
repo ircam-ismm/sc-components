@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[119],{6119:(e,t,c)=>{c.r(t),c.d(t,{template:()=>n});var s=c(182),a=c(4670);const n=s.dy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[119],{6119:(e,t,s)=>{s.r(t),s.d(t,{template:()=>n});var c=s(182),a=s(4670);const n=c.dy`
 
 <h2>sc-text</h2>
 
@@ -41,6 +41,9 @@
 <sc-code-example language="html">
 ${"<sc-text\n  @change=${e => console.log(e.detail.value)}\n></sc-text>"}
 </sc-code-example>
+
+<h3>Keyboard shortcuts</h3>
+<sc-text class="key">Cmd+S</sc-text>
 
 <h3>Styling</h3>
 <sc-editor

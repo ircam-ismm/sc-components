@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[222],{9631:(e,t,s)=>{s.r(t),s.d(t,{template:()=>n});var c=s(182),o=s(4670);const n=c.dy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[222],{9631:(e,t,s)=>{s.r(t),s.d(t,{template:()=>i});var c=s(182),o=s(4670);const i=c.dy`
 
 <h2>sc-editor</h2>
 
@@ -36,7 +36,7 @@ function test() {
   <sc-toggle
     @change=${e=>document.querySelector("#test-editor").saveButton=e.detail.value}
   ></sc-toggle>
-  <pre><code class="language-markdown">Note that the button only appears whens the editor is in "dirty" state</pre></code>
+  <p>note that the button only appears whens the editor is in "dirty" state</p>
 </div>
 <div>
   <sc-text>[dirty=false]</sc-text>
@@ -44,6 +44,10 @@ function test() {
     @change=${e=>document.querySelector("#test-editor").dirty=e.detail.value}
   ></sc-toggle>
 </div>
+
+<h3>Keyboard shortcuts</h3>
+<sc-text class="key">Cmd+S</sc-text>
+<sc-text class="key">Cmd+F</sc-text>
 
 <h3>Styling</h3>
 <sc-editor

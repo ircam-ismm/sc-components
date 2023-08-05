@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[721],{4721:(t,e,c)=>{c.r(e),c.d(e,{template:()=>s});var a=c(182),o=c(4670);const s=a.dy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[721],{4721:(t,e,c)=>{c.r(e),c.d(e,{template:()=>o});var a=c(182),s=c(4670);const o=a.dy`
 
 <h2>sc-tap-tempo</h2>
 
@@ -24,6 +24,10 @@
   ></sc-toggle>
 </div>
 
+<h3>Keyboard shortcuts</h3>
+<sc-text class="key">Space</sc-text>
+<sc-text class="key">Enter</sc-text>
+
 <h3>Styling</h3>
 <sc-editor
   style="width: 500px;"
@@ -37,7 +41,7 @@
   --sc-tap-tempo-background-color: var(--sc-color-secondary-5);
 }
   "
-  @change=${t=>(0,o.default)(t.detail.value)}
+  @change=${t=>(0,s.default)(t.detail.value)}
 ></sc-editor>
 
 `}}]);

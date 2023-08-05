@@ -64,6 +64,9 @@ ${`\
 ></sc-text>`}
 </sc-code-example>
 
+<h3>Keyboard shortcuts</h3>
+<sc-text class="key">Cmd+S</sc-text>
+
 <h3>Styling</h3>
 <sc-editor
   style="width: 500px;"

@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[976],{7976:(e,t,n)=>{n.r(t),n.d(t,{template:()=>u});var c=n(182),s=n(4670);const u=c.dy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[976],{7976:(e,t,c)=>{c.r(t),c.d(t,{template:()=>u});var s=c(182),n=c(4670);const u=s.dy`
 
 <h2>sc-number</h2>
 
@@ -58,6 +58,12 @@
   ></sc-toggle>
 </div>
 
+<h3>Keyboard shortcuts</h3>
+<sc-text class="key large">←</sc-text>
+<sc-text class="key large">↑</sc-text>
+<sc-text class="key large">→</sc-text>
+<sc-text class="key large">↓</sc-text>
+
 <h3>Styling</h3>
 <sc-editor
   style="width: 500px;"
@@ -69,6 +75,6 @@
   font-size: 11px;
 }
   "
-  @change=${e=>(0,s.default)(e.detail.value)}
+  @change=${e=>(0,n.default)(e.detail.value)}
 ></sc-editor>
 `}}]);

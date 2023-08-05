@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[281],{6281:(t,e,a)=>{a.r(e),a.d(e,{template:()=>i});var c=a(182),s=a(4670);const o=["a","b","c","d"],i=c.dy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[281],{6281:(t,e,s)=>{s.r(e),s.d(e,{template:()=>o});var c=s(182),a=s(4670);const l=["a","b","c","d"],o=c.dy`
 
 <h2>sc-tab</h2>
 
@@ -6,7 +6,7 @@
 
 <sc-tab
   id="test-tab"
-  options="${JSON.stringify(o)}"
+  options="${JSON.stringify(l)}"
   @change=${t=>document.querySelector("#options-value").value=t.detail.value}
 ></sc-tab>
 
@@ -23,7 +23,7 @@
   <sc-text>[value=null]</sc-text>
   <sc-tab
     id="tab-change"
-    options="${JSON.stringify(o)}"
+    options="${JSON.stringify(l)}"
     @change=${t=>document.querySelector("#test-tab").value=t.detail.value}
   ></sc-tab>
 </div>
@@ -31,7 +31,7 @@
   <sc-text>options=[]</sc-text>
   <sc-editor
     save-button
-    value="${JSON.stringify(o)}"
+    value="${JSON.stringify(l)}"
     @change=${t=>{document.querySelector("#test-tab").options=JSON.parse(t.detail.value),document.querySelector("#tab-change").options=JSON.parse(t.detail.value)}}
   ></sc-editor>
 </div>
@@ -50,6 +50,14 @@
   ></sc-toggle>
 </div> -->
 
+<h3>Keyboard shortcuts</h3>
+<sc-text class="key">Space</sc-text>
+<sc-text class="key">Enter</sc-text>
+<sc-text class="key large">←</sc-text>
+<sc-text class="key large">↑</sc-text>
+<sc-text class="key large">→</sc-text>
+<sc-text class="key large">↓</sc-text>
+
 <h3>Styling</h3>
 <sc-editor
   style="width: 500px;"
@@ -63,6 +71,6 @@
   --sc-tab-selected: var(--sc-color-secondary-1);
 }
   "
-  @change=${t=>(0,s.default)(t.detail.value)}
+  @change=${t=>(0,a.default)(t.detail.value)}
 ></sc-editor>
 `}}]);

@@ -195,6 +195,18 @@ header #toggle-menu {
   max-width: 900px;
 }
 
+#main section .key {
+  background-color: var(--sc-color-primary-2);
+  width: auto;
+  padding: 4px 16px 6px;
+  border: 1px solid var(--sc-color-primary-3);
+  border-radius: 3px;
+}
+
+#main section .key.large {
+  font-size: 18px;
+}
+
 #main section sc-code-example {
   max-width: 900px;
 }

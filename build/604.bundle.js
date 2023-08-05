@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[604],{604:(e,t,c)=>{c.r(t),c.d(t,{template:()=>a});var s=c(182),n=c(4670);const a=s.dy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[604],{604:(t,e,s)=>{s.r(e),s.d(e,{template:()=>a});var c=s(182),n=s(4670);const a=c.dy`
 
 <h2>sc-next</h2>
 
@@ -6,7 +6,7 @@
 
 <sc-next
   id="test-next"
-  @input=${e=>document.querySelector("#next-input").active=e.detail.value}
+  @input=${t=>document.querySelector("#next-input").active=t.detail.value}
 ></sc-next>
 
 <h3>Events</h3>
@@ -19,9 +19,13 @@
 <div>
   <sc-text>[?disabled=false]</sc-text>
   <sc-toggle
-    @change=${e=>document.querySelector("#test-next").disabled=e.detail.value}
+    @change=${t=>document.querySelector("#test-next").disabled=t.detail.value}
   ></sc-toggle>
 </div>
+
+<h3>Keyboard shortcuts</h3>
+<sc-text class="key">Space</sc-text>
+<sc-text class="key">Enter</sc-text>
 
 <h3>Styling</h3>
 <sc-editor
@@ -33,7 +37,7 @@
   height: 30px;
 }
   "
-  @change=${e=>(0,n.default)(e.detail.value)}
+  @change=${t=>(0,n.default)(t.detail.value)}
 ></sc-editor>
 
 <h3>Example</h3>

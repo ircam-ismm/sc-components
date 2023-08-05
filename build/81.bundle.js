@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[81],{9081:(e,t,c)=>{c.r(t),c.d(t,{template:()=>r});var a=c(182),s=c(850),i=c(4670);const r=a.dy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[81],{9081:(e,t,s)=>{s.r(t),s.d(t,{template:()=>i});var c=s(182),a=s(850),r=s(4670);const i=c.dy`
 
 <h2>sc-matrix</h2>
 
@@ -50,7 +50,7 @@
   <sc-text>[.states=[0, 1]]</sc-text>
   <sc-text
     editable
-    @change=${e=>document.querySelector("#test-matrix").states=s.parse(e.detail.value)}
+    @change=${e=>document.querySelector("#test-matrix").states=a.parse(e.detail.value)}
   >[0, 0.5, 1]</sc-text>
 </div>
 <div>
@@ -59,7 +59,7 @@
   <sc-text
     editable
     style="height: 80px;"
-    @change=${e=>document.querySelector("#test-matrix").value=s.parse(e.detail.value)}
+    @change=${e=>document.querySelector("#test-matrix").value=a.parse(e.detail.value)}
   >[
   [0, 1],
   [1, 0],
@@ -71,6 +71,14 @@
     @change=${e=>document.querySelector("#test-matrix").disabled=e.detail.value}
   ></sc-toggle>
 </div>
+
+<h3>Keyboard shortcuts</h3>
+<sc-text class="key large">←</sc-text>
+<sc-text class="key large">↑</sc-text>
+<sc-text class="key large">→</sc-text>
+<sc-text class="key large">↓</sc-text>
+<sc-text class="key">Space</sc-text>
+<sc-text class="key">Enter</sc-text>
 
 <h3>Styling</h3>
 <sc-editor
@@ -87,7 +95,7 @@
   --sc-matrix-cell-border: var(--sc-color-primary-4);
 }
   "
-  @change=${e=>(0,i.default)(e.detail.value)}
+  @change=${e=>(0,r.default)(e.detail.value)}
 ></sc-editor>
 
 `}}]);
