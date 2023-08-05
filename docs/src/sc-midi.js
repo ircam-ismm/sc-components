@@ -64,15 +64,9 @@ const template = html\`
   <sc-text id="log-events"></sc-text>
 </div>
 
-<!--
-<h3>Attributes</h3>
-<div>
-  <sc-text>[?active=false]</sc-text>
-  <sc-toggle
-    @change=${e => document.querySelector('#test-midi').active = e.detail.value}
-  ></sc-toggle>
-</div>
--->
+<h3>Keyboard shortcuts</h3>
+<sc-text class="key">Space</sc-text>
+<sc-text class="key">Enter</sc-text>
 
 <h3>Styling</h3>
 <sc-editor

@@ -46,6 +46,10 @@ const template = html\`
   @change=${e => applyStyle(e.detail.value)}
 ></sc-editor>
 
+<h3>Keyboard shortcuts</h3>
+<sc-text class="key">Space</sc-text>
+<sc-text class="key">Enter</sc-text>
+
 <h3>Example</h3>
 <div>
   <sc-prev></sc-prev>

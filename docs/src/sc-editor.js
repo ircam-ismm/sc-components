@@ -52,7 +52,7 @@ The "change" event is triggered when:
   <sc-toggle
     @change=${e => document.querySelector('#test-editor').saveButton = e.detail.value}
   ></sc-toggle>
-  <pre><code class="language-markdown">Note that the button only appears whens the editor is in "dirty" state</pre></code>
+  <p>note that the button only appears whens the editor is in "dirty" state</p>
 </div>
 <div>
   <sc-text>[dirty=false]</sc-text>
@@ -60,6 +60,10 @@ The "change" event is triggered when:
     @change=${e => document.querySelector('#test-editor').dirty = e.detail.value}
   ></sc-toggle>
 </div>
+
+<h3>Keyboard shortcuts</h3>
+<sc-text class="key">Cmd+S</sc-text>
+<sc-text class="key">Cmd+F</sc-text>
 
 <h3>Styling</h3>
 <sc-editor
