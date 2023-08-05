@@ -114,6 +114,12 @@ async function setContent(pages, page) {
 
   render(current.template, document.querySelector('#main > section'));
 
+  // focus the example element
+  const $demoEl = document.querySelector(`#main > section ${page}`);
+  if ($demoEl) {
+    setTimeout(() => $demoEl.focus(), 0);
+  }
+
   if (current.enter) {
     current.enter();
   }

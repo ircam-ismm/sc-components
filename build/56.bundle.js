@@ -1,11 +1,6 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[56],{3056:(i,r,o)=>{o.r(r),o.d(r,{template:()=>d});const d=o(182).dy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[56],{3056:(i,r,o)=>{o.r(r),o.d(r,{template:()=>p});const p=o(182).dy`
 
 <h2>Theming & Styling</h2>
-
-The library can be styled and themed at three different levels.
-
-At the most global level you can change the global css variables that are used
-within the whole library:
 
 <h3>Global css variables</h3>
 

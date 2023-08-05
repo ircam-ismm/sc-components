@@ -2,13 +2,13 @@ import { html } from 'lit';
 
 export const template = html`
 <div id="homepage">
-  <h2>@ircam/sc-components</h2>
+  <h1>@ircam/sc-components</h1>
 
   <a href="https://badge.fury.io/js/@ircam%2Fsc-components">
     <img alt="npm version" src="https://badge.fury.io/js/@ircam%2Fsc-components.svg" />
   </a>
 
-  <div style="margin-top: 40px">
+  <div style="margin-top: 20px">
     <img src="./assets/logo-200x200.png" alt="logo" />
   </div>
 
@@ -26,7 +26,7 @@ export const template = html`
 
   <h2 style="margin-top: 60px;">Goal & Philosophy</h2>
 
-  <p style="max-width: 900px;">
+  <p>
     This is a rather opinionated library, that primarily aims to provide practical and robust interfaces for practitionners in working and performance situations. Hence, it proposes different interaction modalities such as keyboard and MIDI controls where meaningful, and pretty agressively bypasses or overrides certain default browser's behaviours such as context menus, text selection, etc.
   </p>
 
@@ -34,17 +34,17 @@ export const template = html`
 
   <h3>With npm and bundlers</h3>
 
-  <p style="max-width: 900px;">
+  <p>
     Install the library using npm (or yarn, or whatever)
   </p>
 
-  <sc-code-example  style="max-width: 900px;" language="shell">${`
+  <sc-code-example language="shell">${`
 npm install --save @ircam/sc-components
   `}</sc-code-example>
 
   <p>Each components lives in its own file and can be imported separately, e.g.:</p>
 
-  <sc-code-example  style="max-width: 900px;" language="javascript">${`
+  <sc-code-example language="javascript">${`
 import { html, render } from 'lit';
 import '@ircam/sc-components/sc-toggle.js';
 
@@ -55,24 +55,24 @@ render(html\`
 \`, document.body);
   `}</sc-code-example>
 
-  <p style="max-width: 900px;">
+  <p>
     For convenience, we also provide a global entry point which imports all components. However, in most cases you should avoid using this shortcut to keep your bundle size as small as possible:
   </p>
 
-  <sc-code-example  style="max-width: 900px;" language="javascript">${`
+  <sc-code-example language="javascript">${`
 import '@ircam/sc-components';
   `}</sc-code-example>
 
 
   <h3>With unpkg</h3>
 
-  <p style="max-width: 900px;">
+  <p>
     If you don't use a bundler or for simple testing, you can also use the library from [https://unpkg.com/](https://unpkg.com/).
   </p>
 
   <h4>In HTML file</h4>
 
-  <sc-code-example  style="max-width: 900px;" language="html">${`
+  <sc-code-example language="html">${`
 <!DOCTYPE html>
 <html>
 <head>
@@ -90,7 +90,7 @@ import '@ircam/sc-components';
 
   <h4>In JS file</h4>
 
-  <sc-code-example  style="max-width: 900px;" language="html">${`
+  <sc-code-example language="html">${`
 import { html, render } from 'https://unpkg.com/lit-html?module';
 import 'https://unpkg.com/@ircam/sc-components@latest';
 
@@ -101,7 +101,7 @@ render(html\`
 \`, document.body);
   `}</sc-code-example>
 
-  <p style="max-width: 900px;">
+  <p>
     Note that this method will import the whole bundled library which is quite large. You may not want to use this is production._
   </p>
 

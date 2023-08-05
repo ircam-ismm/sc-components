@@ -4,11 +4,6 @@ export const template = html`
 
 <h2>Theming & Styling</h2>
 
-The library can be styled and themed at three different levels.
-
-At the most global level you can change the global css variables that are used
-within the whole library:
-
 <h3>Global css variables</h3>
 
 <div style="display: flex; flex-wrap: wrap;">
