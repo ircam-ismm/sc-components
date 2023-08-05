@@ -52,7 +52,6 @@
 <sc-text class="key large">→</sc-text>
 <sc-text class="key large">↓</sc-text>
 <sc-text class="key">Space</sc-text>
-<sc-text class="key">Enter</sc-text>
 
 <h3>Styling</h3>
 <sc-editor
