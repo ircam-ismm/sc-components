@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[678],{4678:(e,t,c)=>{c.r(t),c.d(t,{template:()=>g});var s=c(182),l=c(4670);const g=s.dy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[678],{4678:(e,t,c)=>{c.r(t),c.d(t,{template:()=>o});var s=c(182),l=c(4670);const o=s.dy`
 
 <h2>sc-toggle</h2>
 
@@ -42,6 +42,9 @@
 #test-toggle {
   width: 30px;
   height: 30px;
+  background-color: var(--sc-color-primary-2);
+  --sc-toggle-inactive-color: var(--sc-color-primary-4);
+  --sc-toggle-active-color: var(--sc-color-primary-5);
 }
   "
   @change=${e=>(0,l.default)(e.detail.value)}

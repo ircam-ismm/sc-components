@@ -56,6 +56,9 @@ const template = html\`
 #test-toggle {
   width: 30px;
   height: 30px;
+  background-color: var(--sc-color-primary-2);
+  --sc-toggle-inactive-color: var(--sc-color-primary-4);
+  --sc-toggle-active-color: var(--sc-color-primary-5);
 }
   "
   @change=${e => applyStyle(e.detail.value)}

@@ -13,7 +13,7 @@ window.SC_DEBUG = window.location.hostname === 'localhost';
 const pages = {
   'intro': {
     'home': 'home',
-    'theming & styling': 'theming-styling',
+    'styling': 'misc-styling',
   },
   components: components.reduce((acc, value) => {
     acc[value] = value;
