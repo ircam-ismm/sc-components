@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[712],{8712:(e,t,o)=>{o.r(t),o.d(t,{template:()=>a});var c=o(182),s=o(4670);const a=c.dy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[712],{8712:(e,t,s)=>{s.r(t),s.d(t,{template:()=>i});var c=s(182),a=s(4670);const i=c.dy`
 
 <h2>sc-keyboard</h2>
 
@@ -60,6 +60,37 @@
   ></sc-toggle>
 </div>
 
+<h3>Keyboard shortcuts</h3>
+<p>example in AZERTY but the positions of the keys should be consistent on all keyboard layouts:</p>
+<div>
+  <div style="display: inline-block; width: 20px;">&nbsp;</div>
+  <sc-text class="key">Z</sc-text>
+  <sc-text class="key">E</sc-text>
+  <div style="display: inline-block; width: 40px;">&nbsp;</div>
+  <sc-text class="key">T</sc-text>
+  <sc-text class="key">Y</sc-text>
+  <sc-text class="key">U</sc-text>
+</div>
+<div>
+  <sc-text class="key">Q</sc-text>
+  <sc-text class="key">S</sc-text>
+  <sc-text class="key">D</sc-text>
+  <sc-text class="key">F</sc-text>
+  <sc-text class="key">G</sc-text>
+  <sc-text class="key">H</sc-text>
+  <sc-text class="key">J</sc-text>
+  <sc-text class="key">K</sc-text>
+</div>
+<br >
+<sc-text>up / down octava</sc-text>
+<sc-text class="key large">←</sc-text>
+<sc-text class="key large">↑</sc-text>
+<sc-text class="key large">→</sc-text>
+<sc-text class="key large">↓</sc-text>
+
+<h3>MIDI</h3>
+<sc-midi></sc-midi>
+
 <h3>Styling</h3>
 <sc-editor
   style="width: 500px;"
@@ -72,6 +103,6 @@
   --sc-keyboard-active-key: var(--sc-color-secondary-2);
 }
   "
-  @change=${e=>(0,s.default)(e.detail.value)}
+  @change=${e=>(0,a.default)(e.detail.value)}
 ></sc-editor>
 `}}]);
