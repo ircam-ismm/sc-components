@@ -27,6 +27,9 @@ class ScToggleBase extends ScElement {
       border: 1px solid var(--sc-color-primary-3);
       font-size: 0;
       line-height: 0;
+
+      --sc-toggle-inactive-color: var(--sc-color-primary-4);
+      --sc-toggle-active-color: var(--sc-color-primary-5);
     }
 
     :host([disabled]) {
@@ -50,11 +53,11 @@ class ScToggleBase extends ScElement {
 
     svg line {
       stroke-width: 10px;
-      stroke: var(--sc-color-primary-4);
+      stroke: var(--sc-toggle-inactive-color);
     }
 
     svg.active line {
-      stroke: #ffffff;
+      stroke: var(--sc-toggle-active-color);
     }
   `;
 
