@@ -1,5 +1,5 @@
 // list of pages
-export default [
+export const components = [
   'sc-bang',
   'sc-button',
   'sc-toggle',
@@ -30,3 +30,14 @@ export default [
   'sc-filetree',
   'sc-midi',
 ].sort();
+
+export const pages = {
+  'intro': {
+    'home': 'home',
+    'styling': 'misc-styling',
+  },
+  components: components.reduce((acc, value) => {
+    acc[value] = value;
+    return acc;
+  }, {}),
+};

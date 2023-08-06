@@ -8,7 +8,8 @@ _resources
 
 # doc build artifacts
 docs/build
-docs/sc-*.html
+docs/*.html
+!docs/index.html
 
 build
 tests/build

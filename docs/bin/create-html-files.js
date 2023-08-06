@@ -2,13 +2,26 @@
 // deploying on github
 import fs from 'node:fs';
 
-import pages from '../src/components.js';
+import { pages } from '../src/infos.js';
 
-console.log(process.cwd());
+// flatten pages
+const list = [];
+
+for (let cat in pages) {
+  const subpages = pages[cat];
+
+  for (let title in subpages) {
+    if (subpages[title] === 'home') {
+      continue;
+    }
+
+    list.push(subpages[title]);
+  }
+}
 
 const indexFile = 'index.html';
 
-pages.forEach(page => {
+list.forEach(page => {
   if (page === 'home') {
     return;
   }
