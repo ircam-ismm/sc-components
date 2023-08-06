@@ -6,20 +6,9 @@ import applyStyle from './utils/applyStyle.js';
 // import lib
 import '../../src/index.js';
 // list of pages
-import components from './components.js';
+import { pages } from './infos.js';
 // debug mode on localhost
 window.SC_DEBUG = window.location.hostname === 'localhost';
-
-const pages = {
-  'intro': {
-    'home': 'home',
-    'styling': 'misc-styling',
-  },
-  components: components.reduce((acc, value) => {
-    acc[value] = value;
-    return acc;
-  }, {}),
-};
 
 function setTheme(name) {
   switch (name) {
