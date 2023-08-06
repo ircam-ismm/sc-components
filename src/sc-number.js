@@ -386,8 +386,6 @@ class ScNumber extends ScElement {
 
       this._emitInput();
       this._emitChange();
-
-      // this.blur();
     });
   }
 

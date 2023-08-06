@@ -23,13 +23,15 @@ function test() {
   @change=${e => document.querySelector('#editor-change').value = e.detail.value}
 ></sc-editor>
 
-<sc-code-example language="markdown">${`
-The red line on the left shows if the editor is in dirty state, i.e. if the content has been changed but not saved yet.
+<p>
+The red line on the left shows if the editor is in dirty state.
+</p>
 
-The "change" event is triggered when:
-- "Cmd+S" is pressed
-- on click on the "floppy disc" button if the "saev-button" attribute is set to true
-`}</sc-code-example>
+<p>
+The "change" event is triggered when:<br />
+  - "Cmd+S" is pressed<br />
+  - the "floppy disc" inon is clicked (see the "save-button" attribute)
+<p>
 
 <h3>Events</h3>
 <div>
@@ -52,7 +54,7 @@ The "change" event is triggered when:
   <sc-toggle
     @change=${e => document.querySelector('#test-editor').saveButton = e.detail.value}
   ></sc-toggle>
-  <p>note that the button only appears whens the editor is in "dirty" state</p>
+  <p><i>Note that the button only appears whens the editor is in "dirty" state</i></p>
 </div>
 <div>
   <sc-text>[dirty=false]</sc-text>

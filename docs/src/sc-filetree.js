@@ -70,7 +70,7 @@ const template = html\`
 ></sc-filetree>
 
 <p>
-  the data format used by the component to render the file tree is based on the format proposed by the <a href="https://www.npmjs.com/package/directory-tree" target="_blank">directory-tree</a> library.
+  The data format used by the component to render the file tree is based on the format proposed by the <a href="https://www.npmjs.com/package/directory-tree" target="_blank">directory-tree</a> library.
 </p>
 
 <h3>Events</h3>
@@ -79,24 +79,24 @@ const template = html\`
   <sc-text style="width: 300px; min-height: 150px;" id="filetree-input"></sc-text>
 </div>
 <div>
-  <p>"change" events are only propagated if "editable=true"</p>
   <sc-text>@change</sc-text>
   <sc-text style="width: 300px; height: 104px;" id="filetree-change"></sc-text>
+  <p><i>Note that "change" events are only propagated if "editable=true"</i></p>
 </div>
 
 <h3>Properties</h3>
 <div>
   <p>
-    add "create", "rename", "delete" interfaces on right-click.
+    Add "create", "rename", "delete" interfaces on right-click.
     <br />
-    (be aware that the filetree is not changed by the component itself, it only gives you the interface and commands to forward to another abstraction which should do the real work)
+    <i>Be aware that the filetree is not changed by the component itself, it only gives you the interface and commands to forward to another abstraction which should do the real work</i>
   </p>
   <sc-text>[editable=false]</sc-text>
   <sc-toggle
     @change=${e => document.querySelector('#test-filetree').editable = e.detail.value}
   ></sc-toggle>
 <div>
-  <p>value of the underlying file tree</p>
+  <p>Value of the underlying file tree</p>
   <sc-text>[.value={}]</sc-text>
   <sc-editor
     style="width: 500px; height: 500px;"

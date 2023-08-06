@@ -100,7 +100,7 @@ const template = html\`
   ></sc-radio>
 </div>
 <div>
-  <p>value propagated within the event</p>
+  <p>Value propagated within the event</p>
   <sc-text>[value=null]</sc-text>
   <sc-text
     editable
@@ -108,7 +108,7 @@ const template = html\`
   ></sc-text>
 </div>
 <div>
-  <p>if set, the button will act as a link with <code>target="_blank"</code></p>
+  <p>If set, the button will act as a link with <code>target="_blank"</code></p>
   <sc-text>[href=null]</sc-text>
   <sc-text
     editable

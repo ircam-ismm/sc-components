@@ -50,7 +50,7 @@ const template = html\`
 <h3>Properties</h3>
 
 <div>
-  <p>dot positions must contain the "x" and "y" fields</p>
+  <p>The "dots" positions must contain the "x" and "y" fields</p>
   <sc-text>[.value=[]]</sc-text>
   <sc-text
     editable
@@ -59,7 +59,7 @@ const template = html\`
   >[{ x: 0.5, y: 0.5 }]</sc-text>
 </div>
 <div>
-  <p>an optionnal "color" field can be given</p>
+  <p>An optionnal "color" field can be given</p>
   <sc-text>[.value=[]]</sc-text>
   <sc-text
     editable
@@ -87,7 +87,7 @@ const template = html\`
 </div>
 
 <div>
-  <p>radius of the dots in pixels (if set, takes precedence over "radius-relative")</p>
+  <p>Radius of the dots in pixels (if set, takes precedence over "radius-relative")</p>
   <sc-text>[radius=5]</sc-text>
   <sc-slider
     min="5"
@@ -96,7 +96,7 @@ const template = html\`
   >[0, 1]</sc-slider>
 </div>
 <div>
-  <p>radius relative to the given ranges</p>
+  <p>Radius relative to the given ranges</p>
   <sc-text>[radius-relative=null]</sc-text>
   <sc-slider
     @input=${e => {
@@ -107,14 +107,14 @@ const template = html\`
 </div>
 
 <div style="margin-top: 30px;">
-  <p>use sc-dot component as (multitouch) input interface</p>
+  <p>Use the component as (multitouch) input interface</p>
   <sc-text>[?capture-events=false]</sc-text>
   <sc-toggle
     @change=${e => document.querySelector('#test-dots').captureEvents = e.detail.value}
   ></sc-toggle>
 </div>
 <div>
-  <p>"persist-events" only works if "capture-events" is set</p>
+  <p>If "capture-events" is true, persist the last position(s) on the component</p>
   <sc-text>[?persist-events=false]</sc-text>
   <sc-toggle
     @change=${e => document.querySelector('#test-dots').persistEvents = e.detail.value}
@@ -123,7 +123,7 @@ const template = html\`
 <h3>Events</h3>
 
 <div>
-  <p>set "capture-events" to true to get events from the interface</p>
+  <p>If "capture-events" is true</p>
   <sc-text>@input</sc-text>
   <sc-text id="dots-input" style="height: 200px;"></sc-text>
 
