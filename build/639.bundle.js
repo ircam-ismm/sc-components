@@ -29,7 +29,7 @@
   ></sc-select>
 </div>
 <div>
-  <p>if an object is given, the key will be used as the option text and the value as the value</p>
+  <p>If an object is given, the key will be used as the option text and the value as the value</p>
   <sc-text>options=[]</sc-text>
   <sc-editor
     save-button

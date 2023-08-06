@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[879],{5879:(e,t,c)=>{c.r(t),c.d(t,{template:()=>n});var s=c(182),a=c(4670);const n=s.dy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[879],{5879:(e,t,c)=>{c.r(t),c.d(t,{template:()=>a});var s=c(182),n=c(4670);const a=s.dy`
 
 <h2>sc-bang</h2>
 
@@ -23,8 +23,8 @@
     @input=${e=>document.querySelector("#test-bang").active=!0}
   ></sc-bang>
 </div>
-<p>use the "live" directive to make the element reactive to external events:</p>
-<sc-code-example language="javascript">${"\nimport { html } from 'lit';\nimport { live } from 'lit/directives/live.js';\n\nhtml`\n  <sc-bang\n    ?active=${live(myFlag)}\n  ></sc-bang>\n`;\n"}</sc-code-example>
+<p>Use the "live" directive to make the element reactive to external events:</p>
+<sc-code-example language="javascript">${"\nimport { html } from 'lit';\nimport { live } from 'lit/directives/live.js';\nimport '@ircam/sc-components/sc-bang.js';\n\nhtml`\n  <sc-bang\n    ?active=${live(myFlag)}\n  ></sc-bang>\n`;\n"}</sc-code-example>
 
 <div>
   <sc-text>[?disabled=false]</sc-text>
@@ -47,6 +47,6 @@
   height: 30px;
 }
   "
-  @change=${e=>(0,a.default)(e.detail.value)}
+  @change=${e=>(0,n.default)(e.detail.value)}
 ></sc-editor>
 `}}]);

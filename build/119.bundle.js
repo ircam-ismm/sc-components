@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[119],{6119:(e,t,s)=>{s.r(t),s.d(t,{template:()=>n});var c=s(182),a=s(4670);const n=c.dy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[119],{6119:(e,t,c)=>{c.r(t),c.d(t,{template:()=>l});var s=c(182),a=c(4670);const l=s.dy`
 
 <h2>sc-text</h2>
 
@@ -9,8 +9,6 @@
   @change=${e=>document.querySelector("#text-change").value=e.detail.value}
 >Hello!</sc-text>
 
-  <sc-code-example language="markdown">${'\nWhen editable, the behavior is as follows:\n\n- The red border indicates that the text is in dirty state (content has been changed but not saved)\n- The "change" event is triggered when:\n  + "Cmd+S" is pressed\n  + when the element loose the focus, i.e. on blur\n'}</sc-code-example>
-
 <h3>Attributes</h3>
 <div>
   <sc-text>[value='']</sc-text>
@@ -20,6 +18,7 @@
   >Hello!</sc-text>
 </div>
 <div>
+  <p>If editable, the "change" event is trigerred on Cmd+S and on blur, the red outline indicates dirty state</p>
   <sc-text>[editable=false]</sc-text>
   <sc-toggle
     @change=${e=>document.querySelector("#test-text").editable=e.detail.value}
@@ -34,7 +33,6 @@
 
 <h3>Events</h3>
 <div>
-  <p>if editable, the change event is trigerred on Cmd+S and on blur</p>
   <sc-text>@change</sc-text>
   <sc-text id="text-change"></sc-text>
 </div>

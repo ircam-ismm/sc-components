@@ -28,14 +28,14 @@ const template = html\`
 
 <h3>Attributes</h3>
 <div>
-  <p>define which button(s) should be displayed</p>
+  <p>Define which button(s) should be displayed</p>
   <sc-text style="width: 260px;">[buttons=["play", "pause", "stop"]]</sc-text>
   <sc-text
     editable
     @change=${e => document.querySelector('#test-transport').buttons = JSON5.parse(e.detail.value)}
   >["play", "pause", "stop"]</sc-text>
 </div>
-<p>set component state to one of the <code>buttons</code> value, note that "value" and "state" are aliases</p>
+<p>Set component state to one of the <code>buttons</code> value, note that "value" and "state" are aliases</p>
 <div>
   <sc-text>[state=null]</sc-text>
   <sc-text

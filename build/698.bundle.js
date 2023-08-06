@@ -32,7 +32,7 @@
 
 <h3>Attributes</h3>
 <div>
-  <p>value propagated within the events, defaults to null</p>
+  <p>Value propagated within the events, defaults to null</p>
   <sc-text>[value=null]</sc-text>
   <sc-text
     editable

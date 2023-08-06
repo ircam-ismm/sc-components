@@ -2,13 +2,15 @@
 
 <h2>sc-midi</h2>
 
-<p style="color: var(--sc-color-secondary-3)">This component is still experimental and subject to change</p>
-
 <sc-code-example language="javascript">${"import { html } from 'lit';\nimport '@ircam/sc-components/sc-midi.js';\n\nconst template = html`\n  <sc-midi></sc-midi>\n`;\n"}</sc-code-example>
 
 <sc-midi
   id="test-midi"
 ></sc-midi>
+
+<p style="margin: 20px 0;">
+  Bindings are stored in local storage and retrieved between different sessions of the application and the binded elements are retrieved according to an internal id if not explicit id has been given in the DOM. The downside is that this internal id is generated according to the order of instanciation of the elements and is therefore susceptible to change between two sessions in complex and dynamic interfaces. In such cases, it is best to define stable ids yourself to keep the bindings coherent.
+</p>
 
 <h3>Compatible elements</h3>
 
@@ -20,12 +22,6 @@
   <sc-dial @input=${c} @change=${c}></sc-dial>
   <sc-keyboard></sc-keyboard>
 </div>
-
-<p style="margin: 20px 0;">
-  By default, the bindings are stored in local storage and retrieved between different sessions of the application and the binded elements are retrieved according to an internal id if not explicit id has been given in the DOM. The downside is that this internal id is generated according to the order of instanciation of the elements and is therefore susceptible to change between two sessions in complex and dynamic interfaces. In such cases, it is best to define stable ids yourself to keep the bindings coherent.
-</p>
-
-<p style="font-style: italic;">to implement: sc-keyboard</p>
 
 <div style="margin-top: 20px;">
   <sc-text>Events from binded elements</sc-text>

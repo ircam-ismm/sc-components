@@ -17,14 +17,14 @@
 
 <h3>Attributes</h3>
 <div>
-  <p>define which button(s) should be displayed</p>
+  <p>Define which button(s) should be displayed</p>
   <sc-text style="width: 260px;">[buttons=["play", "pause", "stop"]]</sc-text>
   <sc-text
     editable
     @change=${t=>document.querySelector("#test-transport").buttons=a.parse(t.detail.value)}
   >["play", "pause", "stop"]</sc-text>
 </div>
-<p>set component state to one of the <code>buttons</code> value, note that "value" and "state" are aliases</p>
+<p>Set component state to one of the <code>buttons</code> value, note that "value" and "state" are aliases</p>
 <div>
   <sc-text>[state=null]</sc-text>
   <sc-text

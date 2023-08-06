@@ -202,6 +202,7 @@ header #toggle-menu {
 #main section .key {
   background-color: var(--sc-color-primary-2);
   width: auto;
+  height: auto;
   padding: 4px 16px 6px;
   border: 1px solid var(--sc-color-primary-3);
   border-radius: 3px;
@@ -228,9 +229,17 @@ header #toggle-menu {
   background-color: #fff;
 }
 
+#main section.light p {
+  color: var(--sc-color-primary-2);
+}
+
 #main section.dark {
   color: #fff;
   background-color: #000;
+}
+
+#main section.dark p {
+  color: #adacac
 }
 
 #main section #homepage #demo {

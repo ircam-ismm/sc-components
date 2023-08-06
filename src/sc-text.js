@@ -21,15 +21,6 @@ const template = html\`
   @change=${e => document.querySelector('#text-change').value = e.detail.value}
 >Hello!</sc-text>
 
-  <sc-code-example language="markdown">${`
-When editable, the behavior is as follows:
-
-- The red border indicates that the text is in dirty state (content has been changed but not saved)
-- The "change" event is triggered when:
-  + "Cmd+S" is pressed
-  + when the element loose the focus, i.e. on blur
-`}</sc-code-example>
-
 <h3>Attributes</h3>
 <div>
   <sc-text>[value='']</sc-text>
@@ -39,6 +30,7 @@ When editable, the behavior is as follows:
   >Hello!</sc-text>
 </div>
 <div>
+  <p>If editable, the "change" event is trigerred on Cmd+S and on blur, the red outline indicates dirty state</p>
   <sc-text>[editable=false]</sc-text>
   <sc-toggle
     @change=${e => document.querySelector('#test-text').editable = e.detail.value}
@@ -53,7 +45,6 @@ When editable, the behavior is as follows:
 
 <h3>Events</h3>
 <div>
-  <p>if editable, the change event is trigerred on Cmd+S and on blur</p>
   <sc-text>@change</sc-text>
   <sc-text id="text-change"></sc-text>
 </div>

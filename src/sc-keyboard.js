@@ -55,7 +55,6 @@ const template = html\`
   ></sc-radio>
 </div>
 <div>
-  <p>For now "mode=polyphonic" only works if "input-mode=stateful"</p>
   <sc-text>[mode="monophonic"]</sc-text>
   <sc-radio
     options="${JSON.stringify(['monophonic', 'polyphonic'])}"
@@ -71,7 +70,7 @@ const template = html\`
 </div>
 
 <h3>Keyboard shortcuts</h3>
-<p>example in AZERTY but the positions of the keys should be consistent on all keyboard layouts:</p>
+<p>Example with an AZERTY layout, but the positions of the keys should be consistent on all keyboard layouts:</p>
 <div>
   <div style="display: inline-block; width: 20px;">&nbsp;</div>
   <sc-text class="key">Z</sc-text>

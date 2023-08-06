@@ -33,7 +33,7 @@ const template = html\`
 
 <h3>Properties</h3>
 <div>
-  <p>by default, the time is retrieved from the locale date/time</p>
+  <p>By default, the time is retrieved from the locale date/time</p>
   <sc-text>[.getTimeFunction]</sc-text>
   <sc-editor
     save-button

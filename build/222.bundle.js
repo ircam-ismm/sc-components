@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[222],{9631:(e,t,s)=>{s.r(t),s.d(t,{template:()=>i});var c=s(182),o=s(4670);const i=c.dy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[222],{9631:(e,t,s)=>{s.r(t),s.d(t,{template:()=>o});var c=s(182),i=s(4670);const o=c.dy`
 
 <h2>sc-editor</h2>
 
@@ -13,7 +13,15 @@ function test() {
   @change=${e=>document.querySelector("#editor-change").value=e.detail.value}
 ></sc-editor>
 
-<sc-code-example language="markdown">${'\nThe red line on the left shows if the editor is in dirty state, i.e. if the content has been changed but not saved yet.\n\nThe "change" event is triggered when:\n- "Cmd+S" is pressed\n- on click on the "floppy disc" button if the "saev-button" attribute is set to true\n'}</sc-code-example>
+<p>
+The red line on the left shows if the editor is in dirty state.
+</p>
+
+<p>
+The "change" event is triggered when:<br />
+  - "Cmd+S" is pressed<br />
+  - the "floppy disc" inon is clicked (see the "save-button" attribute)
+<p>
 
 <h3>Events</h3>
 <div>
@@ -36,7 +44,7 @@ function test() {
   <sc-toggle
     @change=${e=>document.querySelector("#test-editor").saveButton=e.detail.value}
   ></sc-toggle>
-  <p>note that the button only appears whens the editor is in "dirty" state</p>
+  <p><i>Note that the button only appears whens the editor is in "dirty" state</i></p>
 </div>
 <div>
   <sc-text>[dirty=false]</sc-text>
@@ -60,6 +68,6 @@ function test() {
   font-size: 11px;
 }
   "
-  @change=${e=>(0,o.default)(e.detail.value)}
+  @change=${e=>(0,i.default)(e.detail.value)}
 ></sc-editor>
 `}}]);

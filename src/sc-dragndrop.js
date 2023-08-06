@@ -31,25 +31,25 @@ const template = html\`
 
 <h3>Events</h3>
 <div>
-  <p>open the console to see more infos about loaded files</p>
   <sc-text>@change</sc-text>
   <sc-text id="dragndrop-change"></sc-text>
+  <p><i>Open the console to see more infos about loaded files)</i></p>
 </div>
 
 <h3>Attributes</h3>
 <div>
-  <sc-code-example language="markdown">
-Format can be:
-- "load": do its best to load and decode the asset (e.g. AudioBuffer, Image, json, text or midi files),
-  Most suited for interactive usage directly in the context of the page.
-- "raw": return File instances which is better suited for uploading assets to a server.
-  </sc-code-example>
   <sc-text>[format="load"]</sc-text>
   <sc-radio
     options=${JSON.stringify(['load', 'raw'])}
     value="load"
     @change=${e => document.querySelector('#test-dragndrop').format = e.detail.value}
   ></sc-radio>
+  <p>
+    - "load": does its best to load and decode the asset (e.g. AudioBuffer, Image, json, text or midi files).<br > Most suited for interactive usage directly in the context of the page.
+  </p>
+  <p style="margin-top: 8px;">
+    - "raw": return File instances which is better suited for uploading assets to a server.
+  </p>
 </div>
 
 <h3>Styles</h3>

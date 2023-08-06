@@ -46,7 +46,7 @@
 
 <h3>Properties</h3>
 <div>
-  <p>the different values a cell can take</p>
+  <p>The different values a cell can take (in order)</p>
   <sc-text>[.states=[0, 1]]</sc-text>
   <sc-text
     editable
@@ -54,7 +54,7 @@
   >[0, 0.5, 1]</sc-text>
 </div>
 <div>
-  <p>changes the whole matrix state at once</p>
+  <p>Setting value changes the whole matrix state</p>
   <sc-text>[.value=[]]</sc-text>
   <sc-text
     editable
