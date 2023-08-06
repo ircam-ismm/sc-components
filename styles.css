@@ -137,6 +137,10 @@ header #toggle-menu {
     width: 100%;
     padding: 20px 26px;
   }
+
+  #main section * {
+    max-width: 100%;
+  }
 }
 
 #main nav p {
