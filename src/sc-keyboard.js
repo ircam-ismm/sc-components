@@ -5,10 +5,11 @@ import { mtof } from '@ircam/sc-utils';
 
 import ScElement from './ScElement.js';
 import midiControlled from './mixins/midi-controlled.js';
+import KeyboardController from './controllers/keyboard-controller.js';
 
 const whiteKeys = [0, 2, 4, 5, 7, 9, 11];
 const blackKeys = [1, 3, 6, 8, 10];
-const noteNames = ['c', 'c#', 'd', 'd#', 'e', 'f', 'f#', 'g', 'g#', 'a', 'a#', 'b'];
+const noteNames = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 
 class ScKeyboardBase extends ScElement {
   static properties = {
@@ -121,11 +122,9 @@ class ScKeyboardBase extends ScElement {
     }
 
     this._inputMode = value;
-    // clear any active notes
-    this._triggeredKeys.forEach($prevKey => {
-      this._triggerNoteOff($prevKey);
-    });
-    // no need to request update, class are added / removed manually
+    // clear current state
+    this._clear();
+    this.requestUpdate();
   }
 
   get mode() {
@@ -139,11 +138,9 @@ class ScKeyboardBase extends ScElement {
     }
 
     this._mode = value;
-    // clear any active notes
-    this._triggeredKeys.forEach($prevKey => {
-      this._triggerNoteOff($prevKey);
-    });
-    // no need to request update, class are added / removed manually
+    // clear current state
+    this._clear();
+    this.requestUpdate();
   }
 
   // midi controlled interface
@@ -160,10 +157,10 @@ class ScKeyboardBase extends ScElement {
       return;
     }
 
-    if (messageType === 128) {
-      this._triggerNoteOff($key);
-    } else if (messageType === 144) {
-      this._dispatchNoteOn($key, pitch, velocity);
+    if (messageType === 128) { // note-off code
+      this._handleKeyRelease(pitch, 0);
+    } else if (messageType === 144) { // note-on code
+      this._handleKeyPress(pitch, velocity);
     }
   }
 
@@ -177,9 +174,7 @@ class ScKeyboardBase extends ScElement {
 
     this._width = 300;
     this._height = 80;
-    // this should be removed, no need to store DOM nodes
-    this._triggeredKeys = new Set();
-    this._keyNoteOnEventMap = new Map();
+    this._currentNotes = new Map(); // Map<midiNote, velocity>
 
     this.offset = 48;
     this.range = 24;
@@ -187,6 +182,34 @@ class ScKeyboardBase extends ScElement {
     // @todo - properly handle touch events to fix that
     this.mode = 'monophonic';
     this.inputMode = 'reactive'; // stateful
+
+    this.disabled = false;
+
+    this._keyboardOctava = null;
+    // we can use use the code position in the array to compute the midi note
+    this._keyboardKeys = [
+      'KeyA', // C
+      'KeyW', // C#
+      'KeyS', // D
+      'KeyE', // D#
+      'KeyD', // E
+      'KeyF', // F
+      'KeyT', // F#
+      'KeyG', // G
+      'KeyY', // G#
+      'KeyH', // A
+      'KeyU', // A#
+      'KeyJ', // B
+      'KeyK', // C
+    ];
+    this._keyboard = new KeyboardController(this, {
+      filterCodes: [
+        ...this._keyboardKeys,
+        'ArrowUp', 'ArrowRight', 'ArrowBottom', 'ArrowLeft',
+      ],
+      callback: this._onKeyboardEvent.bind(this),
+      deduplicateEvents: true,
+    });
   }
 
   render() {
@@ -234,7 +257,7 @@ class ScKeyboardBase extends ScElement {
         whiteKeyRects.push(svg`
           <rect
             data-midi-note=${i}
-            class="white"
+            class="white ${this._currentNotes.has(i) ? 'active' : ''}"
             x=${pos * keyWidth}
             y=0
             width=${keyWidth}
@@ -246,7 +269,7 @@ class ScKeyboardBase extends ScElement {
         blackKeyRects.push(svg`
           <rect
             data-midi-note=${i}
-            class="black"
+            class="black ${this._currentNotes.has(i) ? 'active' : ''}"
             x=${(pos * keyWidth)}
             y=0
             width=${keyWidth * 0.7}
@@ -258,8 +281,10 @@ class ScKeyboardBase extends ScElement {
 
     return html`
       <svg
-        @mousedown=${this._onMouseDown}
-        @mouseup=${this._onMouseUp}
+        @mousedown=${this._onPointerDown}
+        @touchstart=${this._onPointerDown}
+        @mouseup=${this._onPointerUp}
+        @touchend=${this._onPointerUp}
       >
         ${whiteKeyRects}
         ${blackKeyRects}
@@ -297,7 +322,60 @@ class ScKeyboardBase extends ScElement {
     super.disconnectedCallback();
   }
 
-  _onMouseDown(e) {
+  _onKeyboardEvent(e) {
+    // find closest octava in range:
+    // midiNote 0 -> octava 0
+    // midiNote 12 -> octava 1
+    // etc.
+    if (this._keyboardOctava === null) {
+      let octava = 0;
+
+      while (true) {
+        const note = octava * 12;
+
+        if (note >= this.offset) {
+          this._keyboardOctava = octava;
+          break;
+        }
+
+        // don't run forever
+        if (note > 127) {
+          break;
+        }
+
+        octava += 1;
+      }
+    }
+
+    // handle control keys
+    if (e.code === 'ArrowUp' || e.code === 'ArrowRight') {
+      if (e.type === 'keydown') {
+        this._keyboardOctava += 1;
+      }
+
+      return;
+    }
+
+    if (e.code === 'ArrowDown' || e.code === 'ArrowLeft') {
+      if (e.type === 'keydown') {
+        this._keyboardOctava -= 1;
+      }
+
+      return;
+    }
+
+    // handle "virtual" keyboard keys
+    const codeIndex = this._keyboardKeys.indexOf(e.code);
+    const midiNote = this._keyboardOctava * 12 + codeIndex;
+
+    if (e.type === 'keydown') {
+      this._handleKeyPress(midiNote, 127);
+    } else {
+      this._handleKeyRelease(midiNote, 0);
+    }
+  }
+
+  _onPointerDown(e) {
     e.stopPropagation();
 
     if (this.disabled) {
@@ -305,31 +383,66 @@ class ScKeyboardBase extends ScElement {
     }
 
     const $key = e.target;
+    const midiNote = parseInt($key.dataset.midiNote);
+    // use y position as velocity
+    const { top, height } = $key.getBoundingClientRect();
+    const normY = (height - (e.clientY - top)) / height;
+    const velocity = Math.round(normY * 127);
 
+    this._handleKeyPress(midiNote, velocity);
+  }
+
+  _onPointerUp(e) {
+    e.stopPropagation();
+
+    if (this.disabled) {
+      return;
+    }
+
+    const $key = e.target;
+    const midiNote = parseInt($key.dataset.midiNote);
+
+    this._handleKeyRelease(midiNote, 0);
+  }
+
+  _clear() {
+    for (let [midiNote, _velocity] of this._currentNotes.entries()) {
+      this._triggerNoteOff(midiNote, 0);
+    }
+
+    this._currentNotes.clear();
+  }
+
+  // handle logic when a key is pressed for all interfaces (mouse keyboard, midi)
+  _handleKeyPress(midiNote, velocity) {
     switch (this.inputMode) {
       case 'reactive': {
-        this._triggerNoteOn(e, $key);
+        // clear all previous note on when monophonic
+        if (this.mode === 'monophonic') {
+          this._clear();
+        }
+
+        this._triggerNoteOn(midiNote, velocity);
         break;
       }
       case 'stateful': {
         switch (this.mode) {
           case 'monophonic': {
-            const isActive = this._triggeredKeys.has($key);
+            // we activate the key only if the key was inactive
+            const triggerNoteOn = !this._currentNotes.has(midiNote);
             // deactive all active keys
-            this._triggeredKeys.forEach($prevKey => {
-              this._triggerNoteOff($prevKey);
-            });
-            // if the key was not active, activate it
-            if (!isActive) {
-              this._triggerNoteOn(e, $key);
+            this._clear();
+
+            if (triggerNoteOn) {
+              this._triggerNoteOn(midiNote, velocity);
             }
             break;
           }
           case 'polyphonic': {
-            if (this._triggeredKeys.has($key)) {
-              this._triggerNoteOff($key);
+            if (this._currentNotes.has(midiNote)) {
+              this._triggerNoteOff(midiNote, 0);
             } else {
-              this._triggerNoteOn(e, $key);
+              this._triggerNoteOn(midiNote, velocity);
             }
             break;
           }
@@ -339,80 +452,60 @@ class ScKeyboardBase extends ScElement {
     }
   }
 
-  _onMouseUp(e) {
-    e.stopPropagation();
-
-    if (this.disabled) {
-      return;
-    }
-
+  // handle logic when a key is released for all interfaces (mouse keyboard, midi)
+  _handleKeyRelease(midiNote, velocity) {
     // in stateful mode, you need a new mouse down to deactivate the key
     if (this.inputMode === 'stateful') {
       return;
     }
 
-    // for now "input-mode=reactive" only works has if "mode=monophonic"
-    // @todo - implement "reactive" mode for multitouch devices
-    this._triggeredKeys.forEach($prevKey => {
-      this._triggerNoteOff($prevKey);
-    });
+    // in reactive mode, we just trigger the note-off on the key, works for
+    // both monophonic and polyphonic modes.
+    this._triggerNoteOff(midiNote, velocity);
   }
 
-  // @todo - refactor this is way too complicated for almost nothing
-  _triggerNoteOn(e, $key) {
-    // get midi note
-    const midiNote = parseInt($key.dataset.midiNote);
+  _triggerNoteOn(midiNote, velocity) {
     const name = noteNames[midiNote % 12];
-    // use y position as velocity
-    const { top, height } = $key.getBoundingClientRect();
-    const normY = (height - (e.clientY - top)) / height;
-    const velocity = Math.round(normY * 127);
-
-    this._dispatchNoteOn($key, midiNote, velocity);
-  }
-
-  _dispatchNoteOn($key, midiNote, velocity) {
-    $key.classList.add('active'); // do this in render
-
     const frequency = mtof(midiNote);
-    // store for reuse in note off
-    const eventInfos = { midiNote, velocity, frequency };
-
-    this._triggeredKeys.add($key);
-    this._keyNoteOnEventMap.set($key, eventInfos);
 
     const event = new CustomEvent('input', {
       bubbles: true,
       composed: true,
       detail: { value: {
         type: 'note-on',
-        ...eventInfos
+        midiNote,
+        velocity,
+        name,
+        frequency,
       }},
     });
 
     this.dispatchEvent(event);
+
+    this._currentNotes.set(midiNote, velocity);
     this.requestUpdate();
   }
 
-  _triggerNoteOff($key) {
-    $key.classList.remove('active');
-    this._triggeredKeys.delete($key);
-
-    const eventInfos = this._keyNoteOnEventMap.get($key);
-    this._keyNoteOnEventMap.delete($key);
-
-    eventInfos.velocity = 0;
+  _triggerNoteOff(midiNote, velocity) {
+    const name = noteNames[midiNote % 12];
+    const frequency = mtof(midiNote);
 
     const event = new CustomEvent('input', {
       bubbles: true,
       composed: true,
       detail: { value: {
         type: 'note-off',
-        ...eventInfos
+        midiNote,
+        velocity,
+        name,
+        frequency,
       }},
     });
 
     this.dispatchEvent(event);
+
+    this._currentNotes.delete(midiNote);
+    this.requestUpdate();
   }
 }
 

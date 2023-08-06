@@ -70,6 +70,37 @@ const template = html\`
   ></sc-toggle>
 </div>
 
+<h3>Keyboard shortcuts</h3>
+<p>example in AZERTY but the positions of the keys should be consistent on all keyboard layouts:</p>
+<div>
+  <div style="display: inline-block; width: 20px;">&nbsp;</div>
+  <sc-text class="key">Z</sc-text>
+  <sc-text class="key">E</sc-text>
+  <div style="display: inline-block; width: 40px;">&nbsp;</div>
+  <sc-text class="key">T</sc-text>
+  <sc-text class="key">Y</sc-text>
+  <sc-text class="key">U</sc-text>
+</div>
+<div>
+  <sc-text class="key">Q</sc-text>
+  <sc-text class="key">S</sc-text>
+  <sc-text class="key">D</sc-text>
+  <sc-text class="key">F</sc-text>
+  <sc-text class="key">G</sc-text>
+  <sc-text class="key">H</sc-text>
+  <sc-text class="key">J</sc-text>
+  <sc-text class="key">K</sc-text>
+</div>
+<br >
+<sc-text>up / down octava</sc-text>
+<sc-text class="key large">←</sc-text>
+<sc-text class="key large">↑</sc-text>
+<sc-text class="key large">→</sc-text>
+<sc-text class="key large">↓</sc-text>
+
+<h3>MIDI</h3>
+<sc-midi></sc-midi>
+
 <h3>Styling</h3>
 <sc-editor
   style="width: 500px;"

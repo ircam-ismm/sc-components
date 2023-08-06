@@ -15,7 +15,7 @@ class KeyboardController {
     // trigger a new keypress only if keyup has been triggered
     this._deduplicateEvents = options.deduplicateEvents || false;
     this._debug = options.debug || false;
-    this._lastEventType = null;
+    this._codeLastEventTypeMap = new Map(); // Map<code, eventType>
 
     host.addController(this);
 
@@ -58,11 +58,15 @@ class KeyboardController {
       // prevent default only if key is one of the requested ones
       e.preventDefault();
 
-      if (this._deduplicateEvents && e.type === this._lastEventType) {
-        return;
+      if (this._deduplicateEvents) {
+        const lastEventType = this._codeLastEventTypeMap.get(e.code);
+
+        if (lastEventType === e.type) {
+          return;
+        }
       }
 
-      this._lastEventType = e.type;
+      this._codeLastEventTypeMap.set(e.code, e.type);
       this._callback(e);
     }
   }
