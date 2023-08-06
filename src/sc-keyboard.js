@@ -178,9 +178,7 @@ class ScKeyboardBase extends ScElement {
 
     this.offset = 48;
     this.range = 24;
-    // for now polyphonic mode only works when input-mode is stateful
-    // @todo - properly handle touch events to fix that
-    this.mode = 'monophonic';
+    this.mode = 'polyphonic'; // this is what we expect by default
     this.inputMode = 'reactive'; // stateful
 
     this.disabled = false;
