@@ -17,7 +17,7 @@ import ScElement from './ScElement.js';
 import './sc-icon.js';
 
 CodeMirror.commands.save = function(cm) {
-  cm._scComponent._save();
+  cm._scComponent.save();
 };
 
 
@@ -120,7 +120,7 @@ class ScEditor extends ScElement {
     return html`
       <div @keydown="${this._onKeydown}" class="container"></div>
       ${this.dirty && this.saveButton
-        ? html`<sc-icon type="save" @input=${this._save}></sc-icon>`
+        ? html`<sc-icon type="save" @input=${this.save}></sc-icon>`
         : nothing
       }
     `;
@@ -157,7 +157,7 @@ class ScEditor extends ScElement {
       keyMap: 'sublime',
     });
 
-    // monkey patch component in _codeMirror to propagate _save from keyboard
+    // monkey patch component in _codeMirror to propagate save from keyboard
     this._codeMirror._scComponent = this;
 
     // replace tabs with 2 spaces
