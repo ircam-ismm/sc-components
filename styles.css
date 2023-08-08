@@ -221,7 +221,8 @@ header #toggle-menu {
 }
 
 #main section div {
-  margin: 4px 0;
+  padding: 6px 0;
+  max-width: 900px;
 }
 
 #main section.light {
@@ -233,6 +234,10 @@ header #toggle-menu {
   color: var(--sc-color-primary-2);
 }
 
+#main section.light div {
+  border-top: 1px dotted #cdcdcd;
+}
+
 #main section.dark {
   color: #fff;
   background-color: #000;
@@ -240,6 +245,10 @@ header #toggle-menu {
 
 #main section.dark p {
   color: #adacac
+}
+
+#main section.dark div {
+  border-top: 1px dotted #232323;
 }
 
 #main section #homepage #demo {

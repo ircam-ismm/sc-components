@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[222],{9631:(e,t,s)=>{s.r(t),s.d(t,{template:()=>o});var c=s(182),i=s(4670);const o=c.dy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[222],{9631:(e,t,s)=>{s.r(t),s.d(t,{template:()=>d});var o=s(182),c=s(4670);const d=o.dy`
 
 <h2>sc-editor</h2>
 
@@ -6,11 +6,12 @@
 
 <sc-editor
   id="test-editor"
+  as-module
   value="\
 function test() {
   return 42;
 }"
-  @change=${e=>document.querySelector("#editor-change").value=e.detail.value}
+  @change=${e=>{document.querySelector("#editor-change").value=e.detail.value,e.detail.module&&console.log(e.detail.module)}}
 ></sc-editor>
 
 <p>
@@ -52,6 +53,13 @@ The "change" event is triggered when:<br />
     @change=${e=>document.querySelector("#test-editor").dirty=e.detail.value}
   ></sc-toggle>
 </div>
+<div>
+  <p>If true, use <code>import()</code> to create a javascript module from the source code. The module will be available in <code>e.detail.module</code>. Open the console to see the logs.</p>
+  <sc-text>[as-module=false]</sc-text>
+  <sc-toggle
+    @change=${e=>document.querySelector("#test-editor").asModule=e.detail.value}
+  ></sc-toggle>
+</div>
 
 <h3>Keyboard shortcuts</h3>
 <sc-text class="key">Cmd+S</sc-text>
@@ -68,6 +76,6 @@ The "change" event is triggered when:<br />
   font-size: 11px;
 }
   "
-  @change=${e=>(0,i.default)(e.detail.value)}
+  @change=${e=>(0,c.default)(e.detail.value)}
 ></sc-editor>
 `}}]);
