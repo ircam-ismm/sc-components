@@ -68,6 +68,7 @@ The "change" event is triggered when:<br />
     @change=${e => document.querySelector('#test-editor').dirty = e.detail.value}
   ></sc-toggle>
 </div>
+<!-- do not document, not sure this is a good idea
 <div>
   <p>If true, use <code>import()</code> to create a javascript module from the source code. The module will be available in <code>e.detail.module</code>. Open the console to see the logs.</p>
   <sc-text>[as-module=false]</sc-text>
@@ -75,6 +76,7 @@ The "change" event is triggered when:<br />
     @change=${e => document.querySelector('#test-editor').asModule = e.detail.value}
   ></sc-toggle>
 </div>
+-->
 
 <h3>Keyboard shortcuts</h3>
 <sc-text class="key">Cmd+S</sc-text>
