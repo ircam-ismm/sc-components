@@ -95,6 +95,7 @@ const template = html\`
   <sc-toggle
     @change=${e => document.querySelector('#test-filetree').editable = e.detail.value}
   ></sc-toggle>
+</div>
 <div>
   <p>Value of the underlying file tree</p>
   <sc-text>[.value={}]</sc-text>

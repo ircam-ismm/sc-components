@@ -35,6 +35,11 @@ class ScEditor extends ScElement {
       type: Boolean,
       reflect: true,
     },
+    asModule: {
+      type: Boolean,
+      reflect: true,
+      attribute: 'as-module',
+    },
   };
 
   static styles = css`
@@ -100,6 +105,7 @@ class ScEditor extends ScElement {
     this.value = ``;
     this.saveButton = false;
     this.dirty = false;
+    this.asModule = false;
   }
 
   /**
@@ -189,13 +195,21 @@ class ScEditor extends ScElement {
   }
 
   // need to copy same logic as for cmd + s / ctrl + s
-  _save(e) {
+  async _save(e) {
     this._value = this._codeMirror.getValue();
+    const detail = { value: this._value };
+
+    if (this.asModule) {
+      const file = new File([this._value], 'editor.js', { type: 'text/javascript' });
+      const url = URL.createObjectURL(file);
+      // the webpack ignore comment is here for the build
+      detail.module = await import(/* webpackIgnore: true */url);
+    }
 
     const event = new CustomEvent('change', {
       bubbles: true,
       composed: true,
-      detail: { value: this._value },
+      detail: detail,
     });
 
     this._cleanDoc();

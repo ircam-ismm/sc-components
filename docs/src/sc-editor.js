@@ -16,11 +16,17 @@ const template = html\`
 
 <sc-editor
   id="test-editor"
+  as-module
   value="\
 function test() {
   return 42;
 }"
-  @change=${e => document.querySelector('#editor-change').value = e.detail.value}
+  @change=${e => {
+    document.querySelector('#editor-change').value = e.detail.value
+    if (e.detail.module) {
+      console.log(e.detail.module);
+    }
+  }}
 ></sc-editor>
 
 <p>
@@ -60,6 +66,13 @@ The "change" event is triggered when:<br />
   <sc-text>[dirty=false]</sc-text>
   <sc-toggle
     @change=${e => document.querySelector('#test-editor').dirty = e.detail.value}
+  ></sc-toggle>
+</div>
+<div>
+  <p>If true, use <code>import()</code> to create a javascript module from the source code. The module will be available in <code>e.detail.module</code>. Open the console to see the logs.</p>
+  <sc-text>[as-module=false]</sc-text>
+  <sc-toggle
+    @change=${e => document.querySelector('#test-editor').asModule = e.detail.value}
   ></sc-toggle>
 </div>
 
