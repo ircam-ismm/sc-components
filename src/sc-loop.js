@@ -9,6 +9,9 @@ class ScLoop extends ScElement {
       type: Boolean,
       reflect: true,
     },
+    value: {
+      type: Boolean,
+    },
     disabled: {
       type: Boolean,
       reflect: true,

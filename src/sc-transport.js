@@ -12,6 +12,9 @@ class ScTransport extends ScElement {
       type: String,
       reflect: true,
     },
+    value: {
+      type: Boolean,
+    },
     disabled: {
       type: Boolean,
       reflect: true,
