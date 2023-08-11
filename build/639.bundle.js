@@ -21,7 +21,7 @@
 
 <h3>Attributes</h3>
 <div>
-  <sc-text>[value=null]</sc-text>
+  <sc-text>value=null</sc-text>
   <sc-select
     id="radio-change"
     options="${JSON.stringify(a)}"
@@ -38,14 +38,14 @@
   ></sc-editor>
 </div>
 <div>
-  <sc-text>[placeholder='']</sc-text>
+  <sc-text>placeholder=''</sc-text>
   <sc-text
     editable
     @change=${e=>document.querySelector("#test-select").placeholder=e.detail.value}
   ></sc-text>
 </div>
 <div>
-  <sc-text>[?disabled=false]</sc-text>
+  <sc-text>?disabled=false</sc-text>
   <sc-toggle
     @change=${e=>document.querySelector("#test-select").disabled=e.detail.value}
   ></sc-toggle>

@@ -75,20 +75,20 @@ const template = html\`
 <h3>Attributes</h3>
 <div>
   <p>Value propagated within the events, defaults to null</p>
-  <sc-text>[value=null]</sc-text>
+  <sc-text>value=null</sc-text>
   <sc-text
     editable
     @change=${e => document.querySelector('#test-button').value = e.detail.value}
   >my-value</sc-text>
 </div>
 <div>
-  <sc-text>[?selected=false]</sc-text>
+  <sc-text>?selected=false</sc-text>
   <sc-toggle
     @change=${e => document.querySelector('#test-button').selected = e.detail.value}
   ></sc-toggle>
 </div>
 <div>
-  <sc-text>[?disabled=false]</sc-text>
+  <sc-text>?disabled=false</sc-text>
   <sc-toggle
     @change=${e => document.querySelector('#test-button').disabled = e.detail.value}
   ></sc-toggle>

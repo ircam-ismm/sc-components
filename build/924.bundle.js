@@ -8,23 +8,23 @@
 
 <h3>Attributes</h3>
 <div>
-  <sc-text>[?twinkle=false]</sc-text>
-  <sc-toggle
-    @change=${e=>document.querySelector("#test-clock").twinkle=e.detail.value}
-  ></sc-toggle>
-</div>
-<div>
-  <sc-text>[format='hh:mm:ss:ms']</sc-text>
+  <sc-text>format='hh:mm:ss:ms'</sc-text>
   <sc-text
     editable
     @change=${e=>document.querySelector("#test-clock").format=e.detail.value}
   >hh:mm:ss:ms</sc-text>
 </div>
+<div>
+  <sc-text>?twinkle=false</sc-text>
+  <sc-toggle
+    @change=${e=>document.querySelector("#test-clock").twinkle=e.detail.value}
+  ></sc-toggle>
+</div>
 
 <h3>Properties</h3>
 <div>
   <p>By default, the time is retrieved from the locale date/time</p>
-  <sc-text>[.getTimeFunction]</sc-text>
+  <sc-text>.getTimeFunction</sc-text>
   <sc-editor
     save-button
     style="width: 420px;"

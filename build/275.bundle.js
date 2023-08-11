@@ -28,24 +28,26 @@
 
 <h3>Properties</h3>
 <div>
+  <p>Value of the underlying file tree</p>
+  <sc-text>.value={}</sc-text>
+  <sc-editor
+    style="width: 500px; height: 500px;"
+    .value=${JSON.stringify(n,null,2)}
+    @change=${e=>document.querySelector("#test-filetree").value=c.parse(e.detail.value)}
+  ></sc-editor>
+</div>
+
+<h3>Attributes</h3>
+<div>
   <p>
     Add "create", "rename", "delete" interfaces on right-click.
-    <br />
+    <br /><br />
     <i>Be aware that the filetree is not changed by the component itself, it only gives you the interface and commands to forward to another abstraction which should do the real work</i>
   </p>
   <sc-text>[editable=false]</sc-text>
   <sc-toggle
     @change=${e=>document.querySelector("#test-filetree").editable=e.detail.value}
   ></sc-toggle>
-</div>
-<div>
-  <p>Value of the underlying file tree</p>
-  <sc-text>[.value={}]</sc-text>
-  <sc-editor
-    style="width: 500px; height: 500px;"
-    .value=${JSON.stringify(n,null,2)}
-    @change=${e=>document.querySelector("#test-filetree").value=c.parse(e.detail.value)}
-  ></sc-editor>
 </div>
 
 <h3>Styling</h3>

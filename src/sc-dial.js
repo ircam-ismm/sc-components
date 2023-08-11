@@ -32,32 +32,32 @@ const template = html\`
 
 <h3>Attributes</h3>
 <div>
-  <sc-text>[min=0]</sc-text>
+  <sc-text>min=0</sc-text>
   <sc-number
     @change=${e => document.querySelector('#test-dial').min = e.detail.value}
   >0</sc-number>
 </div>
 <div>
-  <sc-text>[max=1]</sc-text>
+  <sc-text>max=1</sc-text>
   <sc-number
     value="1"
     @change=${e => document.querySelector('#test-dial').max = e.detail.value}
   >1</sc-number>
 </div>
 <div>
-  <sc-text>[value=0]</sc-text>
+  <sc-text>value=0</sc-text>
   <sc-number
     @input=${e => document.querySelector('#test-dial').value = e.detail.value}
   >0</sc-number>
 </div>
 <div>
-  <sc-text>[hide-value=false]</sc-text>
+  <sc-text>hide-value=false</sc-text>
   <sc-toggle
     @change=${e => document.querySelector('#test-dial').hideValue = e.detail.value}
   >0</sc-toggle>
 </div>
 <div>
-  <sc-text>[?disabled=false]</sc-text>
+  <sc-text>?disabled=false</sc-text>
   <sc-toggle
     @change=${e => document.querySelector('#test-dial').disabled = e.detail.value}
   ></sc-toggle>

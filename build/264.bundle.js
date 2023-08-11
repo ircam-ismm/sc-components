@@ -1,5 +1,4 @@
 "use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[264],{3264:(t,e,s)=>{s.r(e),s.d(e,{template:()=>o});var c=s(182),a=s(850),r=s(4670);const o=c.dy`
-
 <h2>sc-transport</h2>
 
 <sc-code-example language="javascript">${"import { html } from 'lit';\nimport '@ircam/sc-components/sc-transport.js';\n\nconst template = html`\n  <sc-transport></sc-transport>\n`;\n"}</sc-code-example>
@@ -15,32 +14,27 @@
   <sc-text id="transport-input"></sc-text>
 </p>
 
-<h3>Attributes</h3>
+<h3>Properties</h3>
 <div>
   <p>Define which button(s) should be displayed</p>
-  <sc-text style="width: 260px;">[buttons=["play", "pause", "stop"]]</sc-text>
+  <sc-text style="width: 260px;">.buttons=["play", "pause", "stop"]</sc-text>
   <sc-text
     editable
     @change=${t=>document.querySelector("#test-transport").buttons=a.parse(t.detail.value)}
   >["play", "pause", "stop"]</sc-text>
 </div>
-<p>Set component state to one of the <code>buttons</code> value, note that "value" and "state" are aliases</p>
+
+<h3>Attributes</h3>
 <div>
-  <sc-text>[state=null]</sc-text>
-  <sc-text
-    editable
-    @change=${t=>document.querySelector("#test-transport").state=t.detail.value}
-  ></sc-text>
-</div>
-<div>
-  <sc-text>[value=null]</sc-text>
+  <p>Set component state to one of the <code>buttons</code> value</p>
+  <sc-text>value=null</sc-text>
   <sc-text
     editable
     @change=${t=>document.querySelector("#test-transport").value=t.detail.value}
   ></sc-text>
 </div>
 <div>
-  <sc-text>[?disabled=false]</sc-text>
+  <sc-text>?disabled=false</sc-text>
   <sc-toggle
     @change=${t=>document.querySelector("#test-transport").disabled=t.detail.value}
   ></sc-toggle>
