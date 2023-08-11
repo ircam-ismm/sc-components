@@ -27,7 +27,7 @@ const template = html\`
 
 <h3>Attributes</h3>
 <div>
-  <sc-text>[offset=48]</sc-text>
+  <sc-text>offset=48</sc-text>
   <sc-number
     integer
     min="0"
@@ -37,7 +37,7 @@ const template = html\`
   ></sc-number>
 </div>
 <div>
-  <sc-text>[range=24]</sc-text>
+  <sc-text>range=24</sc-text>
   <sc-number
     integer
     min="1"
@@ -47,7 +47,7 @@ const template = html\`
   ></sc-number>
 </div>
 <div>
-  <sc-text>[input-mode="reactive"]</sc-text>
+  <sc-text>input-mode="reactive"</sc-text>
   <sc-radio
     options="${JSON.stringify(['reactive', 'stateful'])}"
     value="reactive"
@@ -55,7 +55,7 @@ const template = html\`
   ></sc-radio>
 </div>
 <div>
-  <sc-text>[mode="monophonic"]</sc-text>
+  <sc-text>mode="monophonic"</sc-text>
   <sc-radio
     options="${JSON.stringify(['monophonic', 'polyphonic'])}"
     value="monophonic"
@@ -63,7 +63,7 @@ const template = html\`
   ></sc-radio>
 </div>
 <div>
-  <sc-text>[?disabled=false]</sc-text>
+  <sc-text>?disabled=false</sc-text>
   <sc-toggle
     @change=${e => document.querySelector('#test-keyboard').disabled = e.detail.value}
   ></sc-toggle>

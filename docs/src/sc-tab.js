@@ -37,7 +37,7 @@ const template = html\`
 
 <h3>Attributes</h3>
 <div>
-  <sc-text>[value=null]</sc-text>
+  <sc-text>value=null</sc-text>
   <sc-tab
     id="tab-change"
     options="${JSON.stringify(testArray)}"
@@ -56,7 +56,7 @@ const template = html\`
   ></sc-editor>
 </div>
 <div>
-  <sc-text>[orientation="vertical"]</sc-text>
+  <sc-text>orientation="vertical"</sc-text>
   <sc-tab
     options="${JSON.stringify(['vertical', 'horizontal'])}"
     value="horizontal"

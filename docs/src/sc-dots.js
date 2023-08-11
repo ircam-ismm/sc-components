@@ -51,7 +51,7 @@ const template = html\`
 
 <div>
   <p>The "dots" positions must contain the "x" and "y" fields</p>
-  <sc-text>[.value=[]]</sc-text>
+  <sc-text>.value=[]</sc-text>
   <sc-text
     editable
     style="width: 300px;"
@@ -60,7 +60,7 @@ const template = html\`
 </div>
 <div>
   <p>An optionnal "color" field can be given</p>
-  <sc-text>[.value=[]]</sc-text>
+  <sc-text style="background-color: transparent"></sc-text>
   <sc-text
     editable
     style="width: 300px;"
@@ -71,7 +71,7 @@ const template = html\`
 <h3>Attributes</h3>
 
 <div>
-  <sc-text>[x-range=[0, 1]]</sc-text>
+  <sc-text>x-range=[0, 1]</sc-text>
   <sc-text
     editable
     @change=${e => document.querySelector('#test-dots').xRange = JSON5.parse(e.detail.value)}
@@ -79,7 +79,7 @@ const template = html\`
 </div>
 
 <div>
-  <sc-text>[y-range=[0, 1]]</sc-text>
+  <sc-text>y-range=[0, 1]</sc-text>
   <sc-text
     editable
     @change=${e => document.querySelector('#test-dots').yRange = JSON5.parse(e.detail.value)}
@@ -88,7 +88,7 @@ const template = html\`
 
 <div>
   <p>Radius of the dots in pixels (if set, takes precedence over "radius-relative")</p>
-  <sc-text>[radius=5]</sc-text>
+  <sc-text>radius=5</sc-text>
   <sc-slider
     min="5"
     max="100"
@@ -97,7 +97,7 @@ const template = html\`
 </div>
 <div>
   <p>Radius relative to the given ranges</p>
-  <sc-text>[radius-relative=null]</sc-text>
+  <sc-text>radius-relative=null</sc-text>
   <sc-slider
     @input=${e => {
       document.querySelector('#test-dots').radius = null;
@@ -108,14 +108,14 @@ const template = html\`
 
 <div style="margin-top: 30px;">
   <p>Use the component as (multitouch) input interface</p>
-  <sc-text>[?capture-events=false]</sc-text>
+  <sc-text>?capture-events=false</sc-text>
   <sc-toggle
     @change=${e => document.querySelector('#test-dots').captureEvents = e.detail.value}
   ></sc-toggle>
 </div>
 <div>
   <p>If "capture-events" is true, persist the last position(s) on the component</p>
-  <sc-text>[?persist-events=false]</sc-text>
+  <sc-text>?persist-events=false</sc-text>
   <sc-toggle
     @change=${e => document.querySelector('#test-dots').persistEvents = e.detail.value}
   ></sc-toggle>

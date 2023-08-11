@@ -2,8 +2,8 @@ import { html } from 'lit';
 import JSON5 from 'json5';
 import applyStyle from './utils/applyStyle.js';
 
-export const template = html`
 
+export const template = html`
 <h2>sc-transport</h2>
 
 <sc-code-example language="javascript">${`\
@@ -26,32 +26,27 @@ const template = html\`
   <sc-text id="transport-input"></sc-text>
 </p>
 
-<h3>Attributes</h3>
+<h3>Properties</h3>
 <div>
   <p>Define which button(s) should be displayed</p>
-  <sc-text style="width: 260px;">[buttons=["play", "pause", "stop"]]</sc-text>
+  <sc-text style="width: 260px;">.buttons=["play", "pause", "stop"]</sc-text>
   <sc-text
     editable
     @change=${e => document.querySelector('#test-transport').buttons = JSON5.parse(e.detail.value)}
   >["play", "pause", "stop"]</sc-text>
 </div>
-<p>Set component state to one of the <code>buttons</code> value, note that "value" and "state" are aliases</p>
+
+<h3>Attributes</h3>
 <div>
-  <sc-text>[state=null]</sc-text>
-  <sc-text
-    editable
-    @change=${e => document.querySelector('#test-transport').state = e.detail.value}
-  ></sc-text>
-</div>
-<div>
-  <sc-text>[value=null]</sc-text>
+  <p>Set component state to one of the <code>buttons</code> value</p>
+  <sc-text>value=null</sc-text>
   <sc-text
     editable
     @change=${e => document.querySelector('#test-transport').value = e.detail.value}
   ></sc-text>
 </div>
 <div>
-  <sc-text>[?disabled=false]</sc-text>
+  <sc-text>?disabled=false</sc-text>
   <sc-toggle
     @change=${e => document.querySelector('#test-transport').disabled = e.detail.value}
   ></sc-toggle>
@@ -83,4 +78,5 @@ const template = html\`
   @change=${e => applyStyle(e.detail.value)}
 ></sc-editor>
 `;
+
 

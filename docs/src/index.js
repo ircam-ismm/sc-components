@@ -1,5 +1,6 @@
 import { html, render } from 'lit/html.js';
 import { map } from 'lit/directives/map.js';
+import { isFunction } from '@ircam/sc-utils';
 
 import applyStyle from './utils/applyStyle.js';
 
@@ -114,7 +115,8 @@ async function setContent(pages, page) {
   // grab new page
   current = await import(`./${page}.js`);
 
-  render(current.template, document.querySelector('#main > section'));
+  const template = isFunction(current.template) ? current.template() : current.template;
+  render(template, document.querySelector('#main > section'));
 
   // focus the example element
   const $demoEl = document.querySelector(`#main > section ${page}`);

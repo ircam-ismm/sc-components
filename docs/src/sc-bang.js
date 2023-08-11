@@ -32,7 +32,7 @@ const template = html\`
 
 <h3>Attributes</h3>
 <div>
-  <sc-text>[active=false]</sc-text>
+  <sc-text>?active=false</sc-text>
   <sc-bang
     @input=${e => document.querySelector('#test-bang').active = true}
   ></sc-bang>
@@ -51,7 +51,7 @@ html\`
 `}</sc-code-example>
 
 <div>
-  <sc-text>[?disabled=false]</sc-text>
+  <sc-text>?disabled=false</sc-text>
   <sc-toggle
     @change=${e => document.querySelector('#test-bang').disabled = e.detail.value}
   ></sc-toggle>

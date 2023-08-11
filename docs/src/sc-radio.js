@@ -39,7 +39,7 @@ const template = html\`
 
 <h3>Attributes</h3>
 <div>
-  <sc-text>[value=null]</sc-text>
+  <sc-text>value=null</sc-text>
   <sc-radio
     id="radio-change"
     options="${JSON.stringify(testArray)}"
@@ -58,7 +58,7 @@ const template = html\`
   ></sc-editor>
 </div>
 <div>
-  <sc-text>[orientation="vertical"]</sc-text>
+  <sc-text>orientation="vertical"</sc-text>
   <sc-radio
     options="${JSON.stringify(['vertical', 'horizontal'])}"
     value="vertical"
@@ -66,7 +66,7 @@ const template = html\`
   ></sc-radio>
 </div>
 <div>
-  <sc-text>[?disabled=false]</sc-text>
+  <sc-text>?disabled=false</sc-text>
   <sc-toggle
     @change=${e => document.querySelector('#test-radio').disabled = e.detail.value}
   ></sc-toggle>
