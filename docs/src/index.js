@@ -12,7 +12,7 @@ import '../../src/index.js';
 // list of pages
 import { pages } from './infos.js';
 // debug mode on localhost
-window.SC_DEBUG = window.location.hostname === 'localhost';
+window.SC_DEBUG = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
 
 function setTheme(name) {
   switch (name) {

@@ -31,6 +31,7 @@ import './sc-radio.js';
 import './sc-record.js';
 import './sc-signal.js';
 import './sc-speed-surface.js';
+import './sc-status.js';
 import './sc-switch.js';
 import './sc-transport.js';
 import './sc-tap-tempo.js';
