@@ -8,12 +8,9 @@ class ScTransport extends ScElement {
     buttons: {
       type: Array,
     },
-    state: {
+    value: {
       type: String,
       reflect: true,
-    },
-    value: {
-      type: Boolean,
     },
     disabled: {
       type: Boolean,
@@ -90,20 +87,11 @@ class ScTransport extends ScElement {
     }
   `;
 
-  // alias state
-  get value() {
-    return this.state;
-  }
-
-  set value(value) {
-    this.state = value;
-  }
-
   constructor() {
     super();
 
     this.buttons = ['play', 'pause', 'stop'];
-    this.state = null;
+    this.value = null;
     this.disabled = false;
 
     this._keyboard = new KeyboardController(this, {
@@ -120,7 +108,7 @@ class ScTransport extends ScElement {
           case 'play':
             return html`
               <svg
-                class="play ${this.state === 'play' ? 'active' : ''}"
+                class="play ${this.value === 'play' ? 'active' : ''}"
                 viewbox="0 0 20 20"
                 @mousedown=${e => this._onChange(e, 'play')}
                 @touchstart=${e => this._onChange(e, 'play')}
@@ -132,7 +120,7 @@ class ScTransport extends ScElement {
           case 'pause':
             return html`
               <svg
-                class="pause ${this.state === 'pause' ? 'active' : ''}"
+                class="pause ${this.value === 'pause' ? 'active' : ''}"
                 viewbox="0 0 20 20"
                 @mousedown=${e => this._onChange(e, 'pause')}
                 @touchstart=${e => this._onChange(e, 'pause')}
@@ -145,7 +133,7 @@ class ScTransport extends ScElement {
           case 'stop':
             return html`
               <svg
-                class="stop ${this.state === 'stop' ? 'active' : ''}"
+                class="stop ${this.value === 'stop' ? 'active' : ''}"
                 viewbox="0 0 20 20"
                 @mousedown=${e => this._onChange(e, 'stop')}
                 @touchstart=${e => this._onChange(e, 'stop')}
@@ -176,7 +164,7 @@ class ScTransport extends ScElement {
 
   _onKeyboardEvent(e) {
     if (e.type === 'keydown') {
-      let index = this.buttons.indexOf(this.state);
+      let index = this.buttons.indexOf(this.value);
 
       if (e.code === 'ArrowUp' || e.code === 'ArrowRight' || e.code === 'Space') {
         index += 1;
@@ -190,7 +178,7 @@ class ScTransport extends ScElement {
         index = 0;
       }
 
-      this.state = this.buttons[index];
+      this.value = this.buttons[index];
       this._dispatchEvent();
     }
   }
@@ -202,8 +190,8 @@ class ScTransport extends ScElement {
     if (this.disabled) { return; }
 
     this.focus();
-    if (this.state !== value) {
-      this.state = value;
+    if (this.value !== value) {
+      this.value = value;
       this._dispatchEvent();
     }
   }
@@ -212,7 +200,7 @@ class ScTransport extends ScElement {
     const changeEvent = new CustomEvent('change', {
       bubbles: true,
       composed: true,
-      detail: { value: this.state },
+      detail: { value: this.value },
     });
 
     this.dispatchEvent(changeEvent);
