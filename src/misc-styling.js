@@ -8,46 +8,46 @@ export const template = html`
 <h3>Default theme colors</h3>
 
 <div style="display: flex; flex-wrap: wrap;">
-  <div style="width: 200px;">
+  <div style="width: 180px;">
     <div style="width: 100px; height: 100px; background-color: var(--sc-color-primary-1)"></div>
     <p style="margin-top: 8px;">--sc-color-primary-1</p>
   </div>
-  <div style="width: 200px;">
+  <div style="width: 180px;">
     <div style="width: 100px; height: 100px; background-color: var(--sc-color-primary-2)"></div>
     <p style="margin-top: 8px;">--sc-color-primary-2</p>
   </div>
-  <div style="width: 200px;">
+  <div style="width: 180px;">
     <div style="width: 100px; height: 100px; background-color: var(--sc-color-primary-3)"></div>
     <p style="margin-top: 8px;">--sc-color-primary-3</p>
   </div>
-  <div style="width: 200px;">
+  <div style="width: 180px;">
     <div style="width: 100px; height: 100px; background-color: var(--sc-color-primary-4)"></div>
     <p style="margin-top: 8px;">--sc-color-primary-4</p>
   </div>
-  <div style="width: 200px;">
+  <div style="width: 180px;">
     <div style="width: 100px; height: 100px; background-color: var(--sc-color-primary-5)"></div>
     <p style="margin-top: 8px;">--sc-color-primary-5</p>
   </div>
 </div>
 
 <div style="display: flex; flex-wrap: wrap; margin-top: 30px;">
-  <div style="width: 200px;">
+  <div style="width: 180px;">
     <div style="width: 100px; height: 100px; background-color: var(--sc-color-secondary-1)"></div>
     <p style="margin-top: 8px;">--sc-color-secondary-1</p>
   </div>
-  <div style="width: 200px;">
+  <div style="width: 180px;">
     <div style="width: 100px; height: 100px; background-color: var(--sc-color-secondary-2)"></div>
     <p style="margin-top: 8px;">--sc-color-secondary-2</p>
   </div>
-  <div style="width: 200px;">
+  <div style="width: 180px;">
     <div style="width: 100px; height: 100px; background-color: var(--sc-color-secondary-3)"></div>
     <p style="margin-top: 8px;">--sc-color-secondary-3</p>
   </div>
-  <div style="width: 200px;">
+  <div style="width: 180px;">
     <div style="width: 100px; height: 100px; background-color: var(--sc-color-secondary-4)"></div>
     <p style="margin-top: 8px;">--sc-color-secondary-4</p>
   </div>
-  <div style="width: 200px;">
+  <div style="width: 180px;">
     <div style="width: 100px; height: 100px; background-color: var(--sc-color-secondary-5)"></div>
     <p style="margin-top: 8px;">--sc-color-secondary-5</p>
   </div>
@@ -105,7 +105,7 @@ sc-toggle {
   save-button
   value="\
 #my-slider {
-  width: 200px;
+  width: 180px;
   height: 30px;
   --sc-slider-background-color: var(--sc-color-primary-2);
   --sc-slider-foreground-color: var(--sc-color-primary-5);

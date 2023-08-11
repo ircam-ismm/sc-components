@@ -234,7 +234,7 @@ header #toggle-menu {
   color: var(--sc-color-primary-2);
 }
 
-#main section.light div {
+#main section.light > div {
   border-top: 1px dotted #cdcdcd;
 }
 
@@ -247,7 +247,7 @@ header #toggle-menu {
   color: #adacac
 }
 
-#main section.dark div {
+#main section.dark > div {
   border-top: 1px dotted #232323;
 }
 
