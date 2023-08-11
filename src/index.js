@@ -3,12 +3,16 @@ import { map } from 'lit/directives/map.js';
 
 import applyStyle from './utils/applyStyle.js';
 
+// for display in title and generating url
+const libName = 'sc-components';
+
 // import lib
 import '../../src/index.js';
+
 // list of pages
 import { pages } from './infos.js';
 // debug mode on localhost
-window.SC_DEBUG = window.location.hostname === 'localhost';
+window.SC_DEBUG = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
 
 function setTheme(name) {
   switch (name) {
@@ -46,12 +50,21 @@ async function setContent(pages, page) {
     page = 'home';
   }
 
+  let pageName = null;
+
+  for (let subNav in pages) {
+    for (let name in pages[subNav]) {
+      if (pages[subNav][name] === page) {
+        pageName = name;
+      }
+    }
+  }
   // document title
   document.title = (page === 'home')
-    ? 'sc-components | documentation'
-    : `${page} | sc-components`;
+    ? `${libName} | documentation`
+    : `${pageName} | ${libName}`;
 
-  // reset styles
+  // // reset styles
   applyStyle('');
 
   // render nav bar
@@ -117,8 +130,8 @@ async function setContent(pages, page) {
 (async function main() {
   // init on rigth page
   const pathname = window.location.pathname;
-  const isProd = pathname.startsWith('/sc-components');
-  prefix = isProd ? '/sc-components' : '';
+  const isProd = pathname.startsWith(`/${libName}`);
+  prefix = isProd ? `/${libName}` : '';
 
   const page = pathname.replace(new RegExp(`^${prefix}/`), '');
 

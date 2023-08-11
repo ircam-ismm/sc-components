@@ -29,6 +29,7 @@ export const components = [
   'sc-dragndrop',
   'sc-filetree',
   'sc-midi',
+  'sc-status',
 ].sort();
 
 export const pages = {
