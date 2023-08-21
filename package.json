@@ -1,7 +1,7 @@
 {
   "name": "@ircam/sc-components",
   "version": "3.0.0-alpha.33",
-  "description": "Simple and robust Web Component library for rapid prototyping of audio and creative applications in the browser. ",
+  "description": "Web Component library for audio applications",
   "authors": [
     "Benjamin Matuszewski",
     "Aliénor Golvet",
@@ -27,11 +27,13 @@
   },
   "homepage": "https://ircam-ismm.github.io/sc-components/",
   "keywords": [
-    "lit",
-    "components",
-    "GUI",
-    "prototyping",
+    "web components",
     "web audio",
+    "lit",
+    "prototyping",
+    "interface",
+    "ui",
+    "webaudio",
     "creative coding"
   ],
   "scripts": {
