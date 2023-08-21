@@ -12,7 +12,7 @@ export const template = html`
     <img src="./assets/logo-200x200.png" alt="logo" />
   </div>
 
-  <p>Simple and robust Web Component library for rapid prototyping of audio and creative applications in the browser.</p>
+  <p>Simple and robust Web Component library for audio and creative applications in the browser.</p>
 
   <div id="demo">
     <sc-bang></sc-bang>
@@ -27,7 +27,7 @@ export const template = html`
   <h2 style="margin-top: 60px;">Goal & Philosophy</h2>
 
   <p>
-    This is a rather opinionated library, that primarily aims to provide practical and robust interfaces for practitionners in working and performance situations. Hence, it proposes different interaction modalities such as keyboard and MIDI controls where meaningful, and pretty agressively bypasses or overrides certain default browser's behaviours such as context menus, text selection, etc.
+    This is a rather opinionated library, that primarily aims at providing practical and robust interfaces for practitionners in working and performance situations. Hence, it proposes different interaction modalities such as keyboard and MIDI controls where meaningful, and pretty agressively bypasses or overrides certain default browser's behaviours such as context menus, text selection, etc.
   </p>
 
   <h2 style="margin-top: 60px;">Usage</h2>
