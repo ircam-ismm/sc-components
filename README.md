@@ -4,7 +4,7 @@
 
 ![sc-components logo](./docs/assets/logo-200x200.png)
 
-Simple and robust Web Component library for rapid prototyping of audio and creative applications in the browser. 
+Simple and robust Web Component library for audio and creative applications in the browser. 
 
 ![banner](./docs/assets/banner.png)
 
@@ -16,7 +16,7 @@ The library is built with [lit](https://lit.dev/).
 
 ## Goal & Philosophy
 
-This is a rather opinionated library, that primarily aims to provide practical and robust interfaces for practitionners in working and performance situations. Hence, it proposes different interaction modalities such as keyboard and MIDI controls where meaningful, and pretty agressively bypasses or overrides certain default browser's behaviours such as context menus, text selection, etc.
+This is a rather opinionated library, that primarily aims at providing practical and robust interfaces for practitionners in working and performance situations. Hence, it proposes different interaction modalities such as keyboard and MIDI controls where meaningful, and pretty agressively bypasses or overrides certain default browser's behaviours such as context menus, text selection, etc.
 
 ## Usage
 
