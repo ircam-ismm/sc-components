@@ -7,8 +7,8 @@ import '../../src/index.js';
 window.SC_DEBUG = window.location.hostname === 'localhost';
 
 // current page module
-const DEFAULT_TEST = 'editor-growth';
-// const DEFAULT_TEST = 'sw-header';
+// const DEFAULT_TEST = 'raw-style';
+const DEFAULT_TEST = 'sc-text';
 let current = null;
 
 async function setContent(page) {
