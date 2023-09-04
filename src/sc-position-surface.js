@@ -28,11 +28,31 @@ class ScPositionSurface extends ScElement {
     }
   `;
 
+  get xRange() {
+    return this._xRange;
+  }
+
+  set xRange(value) {
+    this._xRange = value;
+    this._updateScales();
+  }
+
+  get yRange() {
+    return this._yRange;
+  }
+
+  set yRange(value) {
+    this._yRange = value;
+    this._updateScales();
+  }
+
   constructor() {
     super();
 
-    this.xRange = [0, 1];
-    this.yRange = [0, 1];
+    this._xRange = [0, 1];
+    this._yRange = [0, 1];
+    this._width = 1;
+    this._height = 1;
 
     this._activePointers = new Map();
     this._pointerIds = []; // we want to keep the order of appearance consistant
@@ -67,11 +87,11 @@ class ScPositionSurface extends ScElement {
     this._resizeObserver = new ResizeObserver(entries => {
       const entry = entries[0];
       const { width, height } = entry.contentRect;
-      const xDelta = this.xRange[1] - this.xRange[0];
-      const yDelta = this.yRange[1] - this.yRange[0];
 
-      this._px2x = px => px / width * xDelta + this.xRange[0];
-      this._px2y = px => px / height * yDelta + this.yRange[0];
+      this._width = width;
+      this._height = height;
+
+      this._updateScales();
     });
 
     this._resizeObserver.observe(this);
@@ -80,6 +100,14 @@ class ScPositionSurface extends ScElement {
   disconnectedCallback() {
     this._resizeObserver.disconnect();
     super.disconnectedCallback();
+  }
+
+  _updateScales() {
+    const xDelta = this.xRange[1] - this.xRange[0];
+    const yDelta = this.yRange[1] - this.yRange[0];
+
+    this._px2x = px => px / this._width * xDelta + this.xRange[0];
+    this._px2y = px => px / this._height * yDelta + this.yRange[0];
   }
 
   _mouseDown(e) {

@@ -153,8 +153,11 @@ class ScSliderBase extends ScElement {
       return;
     }
 
+    const oldValue = this._min;
     this._min = value;
+
     this._updateScales();
+    this.requestUpdate('min', oldValue);
   }
 
   get max() {
@@ -167,8 +170,11 @@ class ScSliderBase extends ScElement {
       return;
     }
 
+    const oldValue = this._max;
     this._max = value;
+
     this._updateScales();
+    this.requestUpdate('max', oldValue);
   }
 
   get step() {
@@ -176,8 +182,11 @@ class ScSliderBase extends ScElement {
   }
 
   set step(value) {
+    const oldValue = this._step;
     this._step = value;
+
     this._updateScales();
+    this.requestUpdate('step', oldValue);
   }
 
   // midi-learn interface
