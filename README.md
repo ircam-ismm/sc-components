@@ -99,7 +99,7 @@ npm install
 npm run doc
 ```
 
-Alongside the docs, which already helps to develop and fix most issues, the `tests` directory allows to isolate test cases that would not fit in the docs.
+Alongside the docs, which already helps in development, the `tests` directory allows to isolate edge-cases that would not fit into the docs.
 
 ```sh
 npm install
@@ -108,7 +108,7 @@ npm run test
 
 ### Unlock context menu
 
-When developing, having the possibility to right-click on an element to inspect it can be very handy. You can re-enable this behavior by defining the `SC_DEBUG` global variable setting it to `true`:
+In development, having the possibility to right-click on an element to inspect it can be quite handy. You can re-enable this behavior by defining the `SC_DEBUG` global variable and setting it to `true`:
 
 ```js
 window.SC_DEBUG = true;
