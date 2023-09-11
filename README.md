@@ -114,7 +114,7 @@ In development, having the possibility to right-click on an element to inspect i
 window.SC_DEBUG = true;
 ```
 
-Note that this is the case when the docs and tests are launched locally:
+Note that this is done when the docs and tests are launched locally:
 
 ```js
 window.SC_DEBUG = window.location.hostname === 'localhost';
