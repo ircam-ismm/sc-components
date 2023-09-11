@@ -87,7 +87,7 @@ const template = html\`
 <h3>Properties</h3>
 <div>
   <p>Value of the underlying file tree</p>
-  <sc-text>.value={}</sc-text>
+  <sc-text>.value [={}]</sc-text>
   <sc-editor
     style="width: 500px; height: 500px;"
     .value=${JSON.stringify(tree, null, 2)}
@@ -100,9 +100,9 @@ const template = html\`
   <p>
     Add "create", "rename", "delete" interfaces on right-click.
     <br /><br />
-    <i>Be aware that the filetree is not changed by the component itself, it only gives you the interface and commands to forward to another abstraction which should do the real work</i>
+    <i>Be aware that the filetree is not changed by the component itself, it only gives you the commands and informations to be forwarded to another abstraction which should do the real job</i>
   </p>
-  <sc-text>[editable=false]</sc-text>
+  <sc-text>?editable [=false]</sc-text>
   <sc-toggle
     @change=${e => document.querySelector('#test-filetree').editable = e.detail.value}
   ></sc-toggle>

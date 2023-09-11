@@ -33,7 +33,7 @@ const template = html\`
 
 <h3>Attributes</h3>
 <div>
-  <sc-text>rows=4</sc-text>
+  <sc-text>rows [=4]</sc-text>
   <sc-number
     integer
     min="1"
@@ -43,7 +43,7 @@ const template = html\`
   ></sc-number>
 </div>
 <div>
-  <sc-text>columns=8</sc-text>
+  <sc-text>columns [=8]</sc-text>
   <sc-number
     integer
     min="1"
@@ -53,13 +53,13 @@ const template = html\`
   ></sc-number>
 </div>
 <div>
-  <sc-text>?reset=false</sc-text>
+  <sc-text>?reset [=false]</sc-text>
   <sc-bang
     @input=${e => document.querySelector('#test-matrix').reset = e.detail.value}
   ></sc-bang>
 </div>
 <div>
-  <sc-text>?disabled=false</sc-text>
+  <sc-text>?disabled [=false]</sc-text>
   <sc-toggle
     @change=${e => document.querySelector('#test-matrix').disabled = e.detail.value}
   ></sc-toggle>
@@ -68,7 +68,7 @@ const template = html\`
 <h3>Properties</h3>
 <div>
   <p>The different values a cell can take (in order)</p>
-  <sc-text>.states=[0, 1]</sc-text>
+  <sc-text>.states [=[0, 1]]</sc-text>
   <sc-text
     editable
     @change=${e => document.querySelector('#test-matrix').states = JSON5.parse(e.detail.value)}
@@ -76,7 +76,7 @@ const template = html\`
 </div>
 <div>
   <p>Setting value changes the whole matrix state</p>
-  <sc-text>.value=[]</sc-text>
+  <sc-text>.value [=[]]</sc-text>
   <sc-text
     editable
     style="height: 80px;"

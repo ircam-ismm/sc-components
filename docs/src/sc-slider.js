@@ -33,37 +33,37 @@ const template = html\`
 
 <h3>Attributes</h3>
 <div>
-  <sc-text>min=0</sc-text>
+  <sc-text>min [=0]</sc-text>
   <sc-number value="0" integer
     @input=${e => document.querySelector('#test-slider').min = e.detail.value}
   ></sc-number>
 </div>
 <div>
-  <sc-text>max=1</sc-text>
+  <sc-text>max [=1]</sc-text>
   <sc-number value="1" integer
     @input=${e => document.querySelector('#test-slider').max = e.detail.value}
   ></sc-number>
 </div>
 <div>
-  <sc-text>value=0.5</sc-text>
+  <sc-text>value [=0.5]</sc-text>
   <sc-number value="0.5"
     @input=${e => document.querySelector('#test-slider').value = e.detail.value}
   ></sc-number>
 </div>
 <div>
-  <sc-text>step=0.001</sc-text>
+  <sc-text>step [=0.001]</sc-text>
   <sc-number value="0.001"
     @input=${e => document.querySelector('#test-slider').step = e.detail.value}
   ></sc-number>
 </div>
 <div>
-  <sc-text>?number-box=false</sc-text>
+  <sc-text>?number-box [=false]</sc-text>
   <sc-toggle
     @change=${e => document.querySelector('#test-slider').numberBox = e.detail.value}
   ></sc-toggle>
 </div>
 <div>
-  <sc-text>orientation="horizontal"</sc-text>
+  <sc-text>orientation [="horizontal"]</sc-text>
   <sc-radio
     options=${JSON.stringify(['horizontal', 'vertical'])}
     value="horizontal"
@@ -71,13 +71,13 @@ const template = html\`
   ></sc-radio>
 </div>
 <div>
-  <sc-text>?relative=false</sc-text>
+  <sc-text>?relative [=false]</sc-text>
   <sc-toggle
     @change=${e => document.querySelector('#test-slider').relative = e.detail.value}
   ></sc-toggle>
 </div>
 <div>
-  <sc-text>?disabled=false</sc-text>
+  <sc-text>?disabled [=false]</sc-text>
   <sc-toggle
     @change=${e => document.querySelector('#test-slider').disabled = e.detail.value}
   ></sc-toggle>

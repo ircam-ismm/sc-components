@@ -133,11 +133,7 @@ For PRs, please follow the "fork-and-pull" workflow:
 5. __Submit__ a pull request
 
 <!-- &todos
-## Theming and styling
-### Global CSS variables
-### Styling components
 ## The sc-* ecosystem
-## Contributing
 ## Credits
 -->
 

@@ -40,6 +40,11 @@ class ScTab extends ScElement {
       display: none
     }
 
+    :host(:focus), :host(:focus-visible), :host(:focus-within) {
+      outline: none;
+      border: 1px solid var(--sc-color-primary-4);
+    }
+
     :host([orientation="horizontal"]) {
       height: 30px;
       width: 400px;
@@ -54,11 +59,6 @@ class ScTab extends ScElement {
 
     :host([orientation="vertical"]) sc-button {
       width: 100%;
-    }
-
-    :host(:focus), :host(:focus-visible) {
-      outline: none;
-      border: 1px solid var(--sc-color-primary-4);
     }
 
     sc-button {
