@@ -241,7 +241,7 @@ class ScNumber extends ScElement {
     this._onKeyDown = this._onKeyDown.bind(this);
 
     this.keyboard = new KeyboardController(this, {
-      filterCodes: ['ArrowUp', 'ArrowDown'],
+      filterCodes: ['ArrowUp', 'ArrowRight', 'ArrowDown', 'ArrowLeft'],
       callback: this._onKeyboardEvent.bind(this),
     });
   }
@@ -401,12 +401,13 @@ class ScNumber extends ScElement {
     window.removeEventListener('keydown', this._onKeyDown);
   }
 
-  // @todo - harmonize component keyboard controls with KeyboardController
+  // Keyboard controller callback,
+  // @todo - harmonize with other keyboard controls (?)
   _onKeyboardEvent(e) {
     if (this.disabled || this.readonly) { return; }
 
     if (e.type === 'keydown') {
-      if (e.code === 'ArrowUp') {
+      if (e.code === 'ArrowUp' || e.code === 'ArrowRight') {
         this.value += 1;
       } else {
         this.value -= 1;
