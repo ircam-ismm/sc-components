@@ -29,7 +29,7 @@ const template = html\`
 
 <h3>Attributes</h3>
 <div>
-  <sc-text>?disabled=false</sc-text>
+  <sc-text>?disabled [=false]</sc-text>
   <sc-toggle
     @change=${e => document.querySelector('#test-tap-tempo').disabled = e.detail.value}
   ></sc-toggle>

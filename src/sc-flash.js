@@ -21,7 +21,7 @@ const template = html\`
 
 <h3>Attributes</h3>
 <div>
-  <sc-text>?active=false</sc-text>
+  <sc-text>?active [=false]</sc-text>
   <sc-bang
     @input=${e => document.querySelector('#test-flash').active = true}
   ></sc-bang>
@@ -40,7 +40,7 @@ html\`
 
 <div>
   <p>Duration of the flash, in seconds:</p>
-  <sc-text>duration=0.05</sc-text>
+  <sc-text>duration [=0.05]</sc-text>
   <sc-number
     value="0.05"
     min="0.01"

@@ -18,7 +18,7 @@
 
 <h3>Attributes</h3>
 <div>
-  <sc-text>?active=false</sc-text>
+  <sc-text>?active [=false]</sc-text>
   <sc-bang
     @input=${e=>document.querySelector("#test-bang").active=!0}
   ></sc-bang>
@@ -27,7 +27,7 @@
 <sc-code-example language="javascript">${"\nimport { html } from 'lit';\nimport { live } from 'lit/directives/live.js';\nimport '@ircam/sc-components/sc-bang.js';\n\nhtml`\n  <sc-bang\n    ?active=${live(myFlag)}\n  ></sc-bang>\n`;\n"}</sc-code-example>
 
 <div>
-  <sc-text>?disabled=false</sc-text>
+  <sc-text>?disabled [=false]</sc-text>
   <sc-toggle
     @change=${e=>document.querySelector("#test-bang").disabled=e.detail.value}
   ></sc-toggle>

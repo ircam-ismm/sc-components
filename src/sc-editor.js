@@ -48,7 +48,7 @@ The "change" event is triggered when:<br />
 <h3>Attributes</h3>
 
 <div>
-  <sc-text>value=''</sc-text>
+  <sc-text>value [=""]</sc-text>
   <sc-editor
     save-button
     value="const myValue = true;"
@@ -56,14 +56,14 @@ The "change" event is triggered when:<br />
   ></sc-editor>
 </div>
 <div>
-  <sc-text>?save-button=false</sc-text>
+  <sc-text>?save-button [=false]</sc-text>
   <sc-toggle
     @change=${e => document.querySelector('#test-editor').saveButton = e.detail.value}
   ></sc-toggle>
   <p><i>Note that the button only appears whens the editor is in "dirty" state</i></p>
 </div>
 <div>
-  <sc-text>?dirty=false</sc-text>
+  <sc-text>?dirty [=false]</sc-text>
   <sc-toggle
     @change=${e => document.querySelector('#test-editor').dirty = e.detail.value}
   ></sc-toggle>

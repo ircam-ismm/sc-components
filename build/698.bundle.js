@@ -32,21 +32,21 @@
 
 <h3>Attributes</h3>
 <div>
-  <p>Value propagated within the events, defaults to null</p>
-  <sc-text>value=null</sc-text>
+  <sc-text>value [=null]</sc-text>
   <sc-text
     editable
     @change=${t=>document.querySelector("#test-button").value=t.detail.value}
   >my-value</sc-text>
+  <p>The value propagated within the events, defaults to null</p>
 </div>
 <div>
-  <sc-text>?selected=false</sc-text>
+  <sc-text>?selected [=false]</sc-text>
   <sc-toggle
     @change=${t=>document.querySelector("#test-button").selected=t.detail.value}
   ></sc-toggle>
 </div>
 <div>
-  <sc-text>?disabled=false</sc-text>
+  <sc-text>?disabled [=false]</sc-text>
   <sc-toggle
     @change=${t=>document.querySelector("#test-button").disabled=t.detail.value}
   ></sc-toggle>

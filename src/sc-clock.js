@@ -18,14 +18,14 @@ const template = html\`
 
 <h3>Attributes</h3>
 <div>
-  <sc-text>format='hh:mm:ss:ms'</sc-text>
+  <sc-text>format [="hh:mm:ss:ms"]</sc-text>
   <sc-text
     editable
     @change=${e => document.querySelector('#test-clock').format = e.detail.value}
   >hh:mm:ss:ms</sc-text>
 </div>
 <div>
-  <sc-text>?twinkle=false</sc-text>
+  <sc-text>?twinkle [=false]</sc-text>
   <sc-toggle
     @change=${e => document.querySelector('#test-clock').twinkle = e.detail.value}
   ></sc-toggle>
@@ -33,7 +33,6 @@ const template = html\`
 
 <h3>Properties</h3>
 <div>
-  <p>By default, the time is retrieved from the locale date/time</p>
   <sc-text>.getTimeFunction</sc-text>
   <sc-editor
     save-button
@@ -49,6 +48,7 @@ $clock.getTimeFunction = () => {
 "
     @change=${e => eval(e.detail.value)}
   ></sc-editor>
+  <p>By default, retrieves the time from the locale date/time</p>
 </div>
 
 <h3>Styling</h3>

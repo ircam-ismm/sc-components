@@ -67,7 +67,7 @@ setInterval(() => {
 
 <h3>Attributes</h3>
 <div>
-  <sc-text>duration=1</sc-text>
+  <sc-text>duration [=1]</sc-text>
   <sc-number
     min="0.5"
     max="10"
@@ -76,7 +76,7 @@ setInterval(() => {
   ></sc-number>
 </div>
 <div>
-  <sc-text>min=-1</sc-text>
+  <sc-text>min [=-1]</sc-text>
   <sc-number
     min="-10"
     max="0"
@@ -85,7 +85,7 @@ setInterval(() => {
   ></sc-number>
 </div>
 <div>
-  <sc-text>max=1</sc-text>
+  <sc-text>max [=1]</sc-text>
   <sc-number
     min="0"
     max="10"
@@ -94,7 +94,7 @@ setInterval(() => {
   ></sc-number>
 </div>
 <div>
-  <sc-text>line-width=1</sc-text>
+  <sc-text>line-width [=1]</sc-text>
   <sc-number
     min="1"
     max="10"
@@ -103,7 +103,7 @@ setInterval(() => {
   ></sc-number>
 </div>
 <div>
-  <sc-text>colors=[]</sc-text>
+  <sc-text>colors [=[]]</sc-text>
   <sc-text
     editable
     style="width: 500px;"
@@ -111,7 +111,7 @@ setInterval(() => {
   >['#4682B4', '#ffa500', '#00e600', '#ff0000', '#800080', '#224153']</sc-text>
 </div>
 <div>
-  <sc-text>?min-max=true</sc-text>
+  <sc-text>?min-max [=false]</sc-text>
   <sc-toggle
     @change=${e => document.querySelector('#test-signal').minMax = e.detail.value}
   ></sc-toggle>

@@ -38,7 +38,7 @@ const template = html\`
 
 <h3>Attributes</h3>
 <div>
-  <sc-text>format="load"</sc-text>
+  <sc-text>format [="load"]</sc-text>
   <sc-radio
     options=${JSON.stringify(['load', 'raw'])}
     value="load"

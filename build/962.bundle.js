@@ -33,7 +33,7 @@
 
 <h3>Attributes</h3>
 <div>
-  <sc-text>type="question"</sc-text>
+  <sc-text>type [="question"]</sc-text>
   <sc-radio
     options="${JSON.stringify(["question","info","github","burger","gear","save","delete","close","midi"])}"
     value="question"
@@ -42,7 +42,7 @@
 </div>
 <div>
   <p>Value propagated within the event</p>
-  <sc-text>value=null</sc-text>
+  <sc-text>value [=null]</sc-text>
   <sc-text
     editable
     @change=${e=>document.querySelector("#test-icon").value=e.detail.value}
@@ -50,14 +50,14 @@
 </div>
 <div>
   <p>If set, the button will act as a link with <code>target="_blank"</code></p>
-  <sc-text>href=null</sc-text>
+  <sc-text>href [=null]</sc-text>
   <sc-text
     editable
     @change=${e=>document.querySelector("#test-icon").href=e.detail.value}
   >https://soundworks.dev</sc-text>
 </div>
 <div>
-  <sc-text>?disabled=false</sc-text>
+  <sc-text>?disabled [=false]</sc-text>
   <sc-toggle
     @change=${e=>document.querySelector("#test-icon").disabled=e.detail.value}
   ></sc-toggle>

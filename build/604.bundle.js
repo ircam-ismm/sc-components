@@ -17,7 +17,7 @@
 
 <h3>Attributes</h3>
 <div>
-  <sc-text>?disabled=false</sc-text>
+  <sc-text>?disabled [=false]</sc-text>
   <sc-toggle
     @change=${t=>document.querySelector("#test-next").disabled=t.detail.value}
   ></sc-toggle>

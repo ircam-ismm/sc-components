@@ -22,37 +22,37 @@
 
 <h3>Attributes</h3>
 <div>
-  <sc-text>min=-Infinity</sc-text>
+  <sc-text>min [=-Infinity]</sc-text>
   <sc-number max="0" value="-9999" integer
     @input=${e=>document.querySelector("#test-number").min=e.detail.value}
   ></sc-number>
 </div>
 <div>
-  <sc-text>max=+Infinity</sc-text>
+  <sc-text>max [=+Infinity]</sc-text>
   <sc-number min="1" value="9999" integer
     @input=${e=>document.querySelector("#test-number").max=e.detail.value}
   ></sc-number>
 </div>
 <div>
-  <sc-text>value=0</sc-text>
+  <sc-text>value [=0]</sc-text>
   <sc-number
     @input=${e=>document.querySelector("#test-number").value=e.detail.value}
   ></sc-number>
 </div>
 <div>
-  <sc-text>?integer=false</sc-text>
+  <sc-text>?integer [=false]</sc-text>
   <sc-toggle
     @change=${e=>document.querySelector("#test-number").integer=e.detail.value}
   ></sc-toggle>
 </div>
 <div>
-  <sc-text>?readonly=false</sc-text>
+  <sc-text>?readonly [=false]</sc-text>
   <sc-toggle
     @change=${e=>document.querySelector("#test-number").readonly=e.detail.value}
   ></sc-toggle>
 </div>
 <div>
-  <sc-text>?disabled=false</sc-text>
+  <sc-text>?disabled [=false]</sc-text>
   <sc-toggle
     @change=${e=>document.querySelector("#test-number").disabled=e.detail.value}
   ></sc-toggle>

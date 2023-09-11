@@ -21,7 +21,7 @@
 
 <h3>Attributes</h3>
 <div>
-  <sc-text>value=null</sc-text>
+  <sc-text>value [=null]</sc-text>
   <sc-select
     id="radio-change"
     options="${JSON.stringify(a)}"
@@ -29,8 +29,8 @@
   ></sc-select>
 </div>
 <div>
-  <p>If an object is given, the key will be used as the option text and the value as the value</p>
-  <sc-text>options=[]</sc-text>
+  <p>Values of the different options. If an object is given, the key is used as option's text and the value as the option's value</p>
+  <sc-text>options [=[]|{}]</sc-text>
   <sc-editor
     save-button
     value="${JSON.stringify({a:!0,b:42},null,2)}"
@@ -38,14 +38,14 @@
   ></sc-editor>
 </div>
 <div>
-  <sc-text>placeholder=''</sc-text>
+  <sc-text>placeholder [=""]</sc-text>
   <sc-text
     editable
     @change=${e=>document.querySelector("#test-select").placeholder=e.detail.value}
   ></sc-text>
 </div>
 <div>
-  <sc-text>?disabled=false</sc-text>
+  <sc-text>?disabled [=false]</sc-text>
   <sc-toggle
     @change=${e=>document.querySelector("#test-select").disabled=e.detail.value}
   ></sc-toggle>

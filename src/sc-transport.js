@@ -28,8 +28,8 @@ const template = html\`
 
 <h3>Properties</h3>
 <div>
-  <p>Define which button(s) should be displayed</p>
-  <sc-text style="width: 260px;">.buttons=["play", "pause", "stop"]</sc-text>
+  <p>Define which button(s) should be displayed amongst "play", "pause" and "stop"</p>
+  <sc-text style="width: 260px;">.buttons [=["play", "pause", "stop"]]</sc-text>
   <sc-text
     editable
     @change=${e => document.querySelector('#test-transport').buttons = JSON5.parse(e.detail.value)}
@@ -39,14 +39,14 @@ const template = html\`
 <h3>Attributes</h3>
 <div>
   <p>Set component state to one of the <code>buttons</code> value</p>
-  <sc-text>value=null</sc-text>
+  <sc-text>value [=null]</sc-text>
   <sc-text
     editable
     @change=${e => document.querySelector('#test-transport').value = e.detail.value}
   ></sc-text>
 </div>
 <div>
-  <sc-text>?disabled=false</sc-text>
+  <sc-text>?disabled [=false]</sc-text>
   <sc-toggle
     @change=${e => document.querySelector('#test-transport').disabled = e.detail.value}
   ></sc-toggle>

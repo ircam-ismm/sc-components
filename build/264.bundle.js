@@ -16,8 +16,8 @@
 
 <h3>Properties</h3>
 <div>
-  <p>Define which button(s) should be displayed</p>
-  <sc-text style="width: 260px;">.buttons=["play", "pause", "stop"]</sc-text>
+  <p>Define which button(s) should be displayed amongst "play", "pause" and "stop"</p>
+  <sc-text style="width: 260px;">.buttons [=["play", "pause", "stop"]]</sc-text>
   <sc-text
     editable
     @change=${t=>document.querySelector("#test-transport").buttons=a.parse(t.detail.value)}
@@ -27,14 +27,14 @@
 <h3>Attributes</h3>
 <div>
   <p>Set component state to one of the <code>buttons</code> value</p>
-  <sc-text>value=null</sc-text>
+  <sc-text>value [=null]</sc-text>
   <sc-text
     editable
     @change=${t=>document.querySelector("#test-transport").value=t.detail.value}
   ></sc-text>
 </div>
 <div>
-  <sc-text>?disabled=false</sc-text>
+  <sc-text>?disabled [=false]</sc-text>
   <sc-toggle
     @change=${t=>document.querySelector("#test-transport").disabled=t.detail.value}
   ></sc-toggle>

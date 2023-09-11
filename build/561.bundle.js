@@ -10,7 +10,7 @@
 <h3>Attributes</h3>
 
 <div>
-  <sc-text>language="javascript"</sc-text>
+  <sc-text>language [="javascript"]</sc-text>
   <sc-text
     editable
     @change=${e=>document.querySelector("#test-code-example").language=e.detail.value}

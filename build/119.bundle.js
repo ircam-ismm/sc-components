@@ -11,7 +11,7 @@
 
 <h3>Attributes</h3>
 <div>
-  <sc-text>value=''</sc-text>
+  <sc-text>value [=""]</sc-text>
   <sc-text
     editable
     @change=${e=>document.querySelector("#test-text").value=e.detail.value}
@@ -19,13 +19,13 @@
 </div>
 <div>
   <p>If editable, the "change" event is trigerred on Cmd+S and on blur, the red outline indicates dirty state</p>
-  <sc-text>?editable=false</sc-text>
+  <sc-text>?editable [=false]</sc-text>
   <sc-toggle
     @change=${e=>document.querySelector("#test-text").editable=e.detail.value}
   ></sc-toggle>
 </div>
 <div>
-  <sc-text>?disabled=false</sc-text>
+  <sc-text>?disabled [=false]</sc-text>
   <sc-toggle
     @change=${e=>document.querySelector("#test-text").disabled=e.detail.value}
   ></sc-toggle>
