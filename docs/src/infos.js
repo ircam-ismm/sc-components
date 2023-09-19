@@ -30,6 +30,7 @@ export const components = [
   'sc-filetree',
   'sc-midi',
   'sc-status',
+  'sc-filter',
 ].sort();
 
 export const pages = {

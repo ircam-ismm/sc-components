@@ -12,6 +12,7 @@ import './sc-dots.js';
 import './sc-dragndrop.js';
 import './sc-editor.js';
 import './sc-filetree.js';
+import './sc-filter.js';
 import './sc-flash.js';
 import './sc-keyboard.js';
 import './sc-icon.js';
