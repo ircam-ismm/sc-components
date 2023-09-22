@@ -1,5 +1,7 @@
 import { html } from 'lit';
 
+import '../../src/sc-editor.js';
+
 // see https://github.com/ircam-ismm/sc-components/issues/15
 // did not find a way to reproduce yet...
 

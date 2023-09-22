@@ -3,6 +3,7 @@ import { repeat } from 'lit/directives/repeat.js';
 
 import ScElement from './ScElement.js';
 import KeyboardController from './controllers/keyboard-controller.js';
+import './sc-button.js';
 
 let itemId = 0;
 

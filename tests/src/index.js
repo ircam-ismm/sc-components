@@ -2,13 +2,11 @@ import { html, render } from 'lit/html.js';
 import { map } from 'lit/directives/map.js';
 
 // import lib
-import '../../src/index.js';
-
 window.SC_DEBUG = window.location.hostname === 'localhost';
 
 // current page module
 // const DEFAULT_TEST = 'raw-style';
-const DEFAULT_TEST = 'sc-text';
+const DEFAULT_TEST = 'sc-midi';
 let current = null;
 
 async function setContent(page) {

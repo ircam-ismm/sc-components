@@ -1,5 +1,7 @@
 import { html } from 'lit';
 
+import '../../src/sc-text.js';
+
 const value = "toto";
 
 export const template = html`
