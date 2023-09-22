@@ -14,6 +14,19 @@ const template = html\`
 \`;
 `}</sc-code-example>
 
-<sc-filter></sc-filter>
+<sc-filter
+  id="test-filter"
+></sc-filter>
+
+<h3>Properties</h3>
+<div>
+  <sc-text>edit-filter-index</sc-text>
+  <sc-number
+    min="0"
+    max="1"
+    integer
+    @change=${e => document.querySelector('#test-filter').editFilterIndex = e.detail.value}
+  ></sc-number>
+</div>
 
 `;

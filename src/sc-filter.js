@@ -3,6 +3,13 @@ import { html, svg, css, nothing } from 'lit';
 import ScElement from './ScElement.js';
 import { atodb, linearScale } from '@ircam/sc-utils';
 
+// @todo
+// - Q control
+//   + cf. http://www.sengpielaudio.com/calculator-bandwidth.htm for convertion formulas
+// - edit should be position relative
+// - compute display according to real width / height, so lines are not stretched
+// - define API for several
+
 // rely on native `getFrequencyResponse`
 const defaultSampleRate = 48000;
 const audioContext = new OfflineAudioContext(1, 1, defaultSampleRate);
@@ -12,6 +19,16 @@ class ScFilter extends ScElement {
     mode: {
       type: String,
       reflect: true,
+    },
+    numFilters: {
+      type: Number,
+      reflect: true,
+      attribute: 'num-filters',
+    },
+    editFilterIndex: {
+      type: Number,
+      reflect: true,
+      attribute: 'edit-filter-index',
     },
     // numFilters
     // sampleRate
@@ -33,6 +50,30 @@ class ScFilter extends ScElement {
       height: 100%;
     }
 
+    .ruler {
+      stroke: var(--sc-color-secondary-1);
+      stroke-opacity: 0.5;
+      stroke-width: 1px;
+    }
+
+    .filter-control {
+      stroke: var(--sc-color-secondary-2);
+      stroke-opacity: 1;
+      stroke-width: 3;
+    }
+
+    .accumulated-filter {
+      fill: var(--sc-color-primary-5);
+      stroke: none;
+      fill-opacity: 0.15;
+    }
+
+    .selected-filter {
+      fill: none;
+      stroke: var(--sc-color-primary-5);
+      stroke-width: 3;
+    }
+
     sc-position-surface {
       width: 100%;
       height: 100%;
@@ -45,8 +86,8 @@ class ScFilter extends ScElement {
   constructor() {
     super();
 
-    this.numFilters = 1;
-    this.selectedFilterIndex = 0;
+    this.numFilters = 2;
+    this.editFilterIndex = 0;
     this.mode = 'log';
 
     // @todo - this should be dynamic too
@@ -56,6 +97,15 @@ class ScFilter extends ScElement {
       this._filterNodes[i] = audioContext.createBiquadFilter();;
     }
 
+    this._filterNodes[0].type = 'peaking';
+    this._filterNodes[0].frequency.value = 200;
+    this._filterNodes[0].gain.value = +6;
+    this._filterNodes[0].Q.value = 0.2;
+
+    this._filterNodes[1].type = 'highshelf';
+    this._filterNodes[1].frequency.value = 2000;
+    this._filterNodes[1].gain.value = -12;
+    this._filterNodes[1].Q.value = 0.3;
     // @todo - this should dynamic according to sample rate
 
     // number of computed points to display the reponse curve
@@ -109,7 +159,7 @@ class ScFilter extends ScElement {
       for (let i = 0; i < freqs.length; i++) {
         const db = atodb(this._magResponse[i]);
 
-        if (filterIndex === this.selectedFilterIndex) {
+        if (filterIndex === this.editFilterIndex) {
           this._selectedFilterDbResponse[i] = db;
         }
 
@@ -145,11 +195,16 @@ class ScFilter extends ScElement {
     // close the path
     accumulatedFilterPath += `1000,1010, 0,1010`;
 
-    const node = this._filterNodes[this.selectedFilterIndex];
+    const node = this._filterNodes[this.editFilterIndex];
     const type = node.type;
     const freq = node.frequency.value;
     const gain = node.gain.value; // this is in dB
     const Q = node.Q.value;
+
+    // find f1 and f2 from f0 and Q
+    // http://www.sengpielaudio.com/calculator-cutoffFrequencies.htm
+    const f1 = freq * (Math.sqrt(1 + 1 / (4 * Q **2)) - 1 / (2 * Q));
+    const f2 = freq * (Math.sqrt(1 + 1 / (4 * Q **2)) + 1 / (2 * Q));
 
     return html`
       <svg viewbox="0 0 1000 1000"  preserveAspectRatio="none">
@@ -158,15 +213,15 @@ class ScFilter extends ScElement {
           ${[100, 1000, 10000].map(freq => {
             return svg`
               <line
+                class="ruler"
                 x1=${this._freqToNorm(freq) * 1000}
                 x2=${this._freqToNorm(freq) * 1000}
                 y1="0"
                 y2="1000"
-                stroke="steelblue"
-                stroke-width="1"
               />`;
           })}
           <line
+            class="ruler"
             x1="0"
             x2="1000"
             y1="500"
@@ -176,29 +231,41 @@ class ScFilter extends ScElement {
           />
         </g>
 
-        <polyline points="${accumulatedFilterPath}" fill="red" stroke="none" style="fill-opacity: 0.2" />
-        <polyline points="${selectedFilterPath}" fill="none" stroke="white" stroke-width="3" />
+        <polyline class="accumulated-filter" points="${accumulatedFilterPath}" />
+        <polyline class="selected-filter" points="${selectedFilterPath}" />
 
         <g>
           <!-- freq line -->
           <line
+            class="filter-control"
             x1=${this._freqToNorm(freq) * 1000}
             x2=${this._freqToNorm(freq) * 1000}
             y1="0"
             y2="1000"
-            stroke="yellow"
-            stroke-width="2"
           />
+
+          <!-- bandwidth lines -->
+          ${[f1, f2].map(freq => {
+            return svg`
+            <line
+              class="filter-control"
+              x1=${this._freqToNorm(freq) * 1000}
+              x2=${this._freqToNorm(freq) * 1000}
+              y1="0"
+              y2="1000"
+            />`;
+          })}
 
           <!-- gain line -->
           ${type === 'lowshelf' || type === 'highshelf' || type === 'peaking'
-            ? svg`<line
+            ? svg`
+              <line
+                class="filter-control"
                 x1="0"
                 x2="1000"
                 y1=${yScale(gain) - 1}
                 y2=${yScale(gain) - 1}
-                stroke="yellow"
-                stroke-width="2" />`
+              />`
             : nothing
           }
         </g>
@@ -266,8 +333,8 @@ class ScFilter extends ScElement {
     gain = Math.min(24, Math.max(gain, -24));
 
 
-    this._filterNodes[0].frequency.value = frequency;
-    this._filterNodes[0].gain.value = gain;
+    this._filterNodes[this.editFilterIndex].frequency.value = frequency;
+    this._filterNodes[this.editFilterIndex].gain.value = gain;
 
     this.requestUpdate();
 
