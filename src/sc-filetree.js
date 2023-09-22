@@ -3,6 +3,7 @@ import { classMap } from 'lit/directives/class-map.js';
 
 import ScElement from './ScElement.js';
 import './utils/sc-context-menu.js';
+import './sc-text.js';
 
 // note, colors in sublime filetree
 // bg: #21262a

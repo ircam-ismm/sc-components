@@ -1,5 +1,8 @@
 import { LitElement, html, render, css } from 'lit';
 
+import '../../src/sc-tab.js';
+import '../../src/sc-button.js';
+
 class ControllerLayout extends LitElement {
   static get styles() {
     return css`

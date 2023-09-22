@@ -2,6 +2,9 @@ import { html } from 'lit';
 import { keyed } from 'lit/directives/keyed.js';
 import { repeat } from 'lit/directives/repeat.js';
 
+import '../../src/sc-slider.js';
+import '../../src/sc-select.js';
+
 const stuff = ['a', 'b', 'c'];
 
 export const template = html`

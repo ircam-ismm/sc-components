@@ -4,6 +4,8 @@ import { classMap } from 'lit/directives/class-map.js';
 
 import ScElement from './ScElement.js';
 import KeyboardController from './controllers/keyboard-controller.js';
+import './sc-icon.js';
+import './sc-text.js';
 
 const midiLearnSymbol = Symbol.for('sc-midi');
 
