@@ -25,6 +25,7 @@
 #test-code-example {
   width: 100%;
   height: auto;
+  --sc-code-example-padding: 1em;
 }
   "
   @change=${e=>(0,s.default)(e.detail.value)}
