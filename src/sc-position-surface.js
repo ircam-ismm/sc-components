@@ -78,7 +78,7 @@ class ScPositionSurface extends ScElement {
           passive: false,
         }}"
       ></div>
-    `
+    `;
   }
 
   connectedCallback() {

@@ -25,6 +25,10 @@ class ScCodeExample extends ScElement {
       background-color: #23241f;
     }
 
+    pre {
+      margin: 0;
+    }
+
     pre, code {
       border-radius: inherit;
     }
