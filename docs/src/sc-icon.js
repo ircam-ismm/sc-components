@@ -11,6 +11,9 @@ const icons = [
   'delete',
   'close',
   'midi',
+  'network',
+  'internet',
+  'prompt',
 ];
 
 let timeoutIdInput = null;
@@ -36,7 +39,7 @@ const template = html\`
 <sc-icon
   id="test-icon"
   value="my-icon"
-  type="question"
+  type="prompt"
   @input=${e => {
     document.querySelector('#icon-input').active = true;
 
