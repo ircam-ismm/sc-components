@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[962],{3962:(e,t,c)=>{c.r(t),c.d(t,{template:()=>o});var s=c(182),i=c(4670);let n=null,l=null,a=null;const o=s.dy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[962],{3962:(e,t,c)=>{c.r(t),c.d(t,{template:()=>a});var s=c(182),n=c(4670);let i=null,o=null,l=null;const a=s.dy`
 
 <h2>sc-icon</h2>
 
@@ -7,10 +7,10 @@
 <sc-icon
   id="test-icon"
   value="my-icon"
-  type="question"
-  @input=${e=>{document.querySelector("#icon-input").active=!0;const t=document.querySelector("#icon-value-input");t.value=e.detail.value,clearTimeout(n),n=setTimeout((()=>t.value=""),500)}}
-  @press=${e=>{document.querySelector("#icon-press").active=!0;const t=document.querySelector("#icon-value-press");t.value=e.detail.value,clearTimeout(l),l=setTimeout((()=>t.value=""),500)}}
-  @release=${e=>{document.querySelector("#icon-release").active=!0;const t=document.querySelector("#icon-value-release");t.value=e.detail.value,clearTimeout(a),a=setTimeout((()=>t.value=""),500)}}
+  type="prompt"
+  @input=${e=>{document.querySelector("#icon-input").active=!0;const t=document.querySelector("#icon-value-input");t.value=e.detail.value,clearTimeout(i),i=setTimeout((()=>t.value=""),500)}}
+  @press=${e=>{document.querySelector("#icon-press").active=!0;const t=document.querySelector("#icon-value-press");t.value=e.detail.value,clearTimeout(o),o=setTimeout((()=>t.value=""),500)}}
+  @release=${e=>{document.querySelector("#icon-release").active=!0;const t=document.querySelector("#icon-value-release");t.value=e.detail.value,clearTimeout(l),l=setTimeout((()=>t.value=""),500)}}
 ></sc-icon>
 
 <h3>Events</h3>
@@ -35,7 +35,7 @@
 <div>
   <sc-text>type [="question"]</sc-text>
   <sc-radio
-    options="${JSON.stringify(["question","info","github","burger","gear","save","delete","close","midi"])}"
+    options="${JSON.stringify(["question","info","github","burger","gear","save","delete","close","midi","network","internet","prompt"])}"
     value="question"
     @change=${e=>document.querySelector("#test-icon").type=e.detail.value}
   ></sc-radio>
@@ -77,6 +77,6 @@
   height: 30px;
 }
   "
-  @change=${e=>(0,i.default)(e.detail.value)}
+  @change=${e=>(0,n.default)(e.detail.value)}
 ></sc-editor>
 `}}]);
