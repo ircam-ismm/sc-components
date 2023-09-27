@@ -269,3 +269,7 @@ header #toggle-menu {
   height: 100px;
   outline: 1px solid red;
 }
+
+sc-code-example {
+  margin-bottom: 20px;
+}
