@@ -40,6 +40,7 @@
     "build": "webpack --config webpack.config.js",
     "clean": "rm -Rf vendors",
     "preversion": "npm run vendors && npm run build",
+    "dev": "npm run doc",
     "doc": "npm run vendors && cd docs && npm run dev",
     "doc:prod": "npm run vendors && cd docs && npm run build:prod",
     "test": "npm run vendors && cd tests && npm run dev",
