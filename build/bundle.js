@@ -1067,6 +1067,11 @@ span.CodeMirror-selectedtext { background: none; }
 <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M12 19H21M3 5L11 12L3 19" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
+`,re.upload=u.dy`
+<svg viewBox="2 1 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M5 12V18C5 18.5523 5.44772 19 6 19H18C18.5523 19 19 18.5523 19 18V12" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M12 15L12 3M12 3L8 7M12 3L16 7" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
 `;const ae=re;class oe extends E{static properties={type:{type:String,reflect:!0},href:{type:String,reflect:!0},value:{type:String,reflect:!0},disabled:{type:Boolean,reflect:!0}};static styles=u.iv`
     :host {
       vertical-align: top;

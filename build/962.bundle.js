@@ -7,7 +7,7 @@
 <sc-icon
   id="test-icon"
   value="my-icon"
-  type="prompt"
+  type="question"
   @input=${e=>{document.querySelector("#icon-input").active=!0;const t=document.querySelector("#icon-value-input");t.value=e.detail.value,clearTimeout(i),i=setTimeout((()=>t.value=""),500)}}
   @press=${e=>{document.querySelector("#icon-press").active=!0;const t=document.querySelector("#icon-value-press");t.value=e.detail.value,clearTimeout(o),o=setTimeout((()=>t.value=""),500)}}
   @release=${e=>{document.querySelector("#icon-release").active=!0;const t=document.querySelector("#icon-value-release");t.value=e.detail.value,clearTimeout(l),l=setTimeout((()=>t.value=""),500)}}
@@ -35,7 +35,7 @@
 <div>
   <sc-text>type [="question"]</sc-text>
   <sc-radio
-    options="${JSON.stringify(["question","info","github","burger","gear","save","delete","close","midi","network","internet","prompt"])}"
+    options="${JSON.stringify(["question","info","github","burger","gear","save","delete","close","midi","network","internet","prompt","upload"])}"
     value="question"
     @change=${e=>document.querySelector("#test-icon").type=e.detail.value}
   ></sc-radio>
