@@ -15,6 +15,9 @@ const icons = [
   'internet',
   'prompt',
   'upload',
+  'redo',
+  'shutdown',
+  'sync',
 ];
 
 let timeoutIdInput = null;

@@ -35,7 +35,7 @@
 <div>
   <sc-text>type [="question"]</sc-text>
   <sc-radio
-    options="${JSON.stringify(["question","info","github","burger","gear","save","delete","close","midi","network","internet","prompt","upload"])}"
+    options="${JSON.stringify(["question","info","github","burger","gear","save","delete","close","midi","network","internet","prompt","upload","redo","shutdown","sync"])}"
     value="question"
     @change=${e=>document.querySelector("#test-icon").type=e.detail.value}
   ></sc-radio>
