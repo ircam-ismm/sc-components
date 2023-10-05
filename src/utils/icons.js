@@ -152,5 +152,34 @@ icons.upload = html`
 </svg>
 `;
 
+icons.redo = html`
+<svg viewBox="1 1 29 29" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill="none" stroke="#ffffff" stroke-width="2" stroke-miterlimit="10" d="M21.3,5.2c4,2,6.7,6,6.7,10.8c0,6.6-5.4,12-12,12
+  S4,22.6,4,16"/>
+<path fill="none" stroke="#ffffff" stroke-width="2" stroke-miterlimit="10" d="M4,16c0-0.3,0-0.7,0-1"/>
+<path fill="none" stroke="#ffffff" stroke-width="2" stroke-miterlimit="10" stroke-dasharray="1.8716,1.8716" d="M4.3,13.2
+  c1.1-4.6,5-8.2,9.7-9"/>
+<path fill="none" stroke="#ffffff" stroke-width="2" stroke-miterlimit="10" d="M15,4c0.3,0,0.7,0,1,0"/>
+<polyline fill="none" stroke="#ffffff" stroke-width="2" stroke-miterlimit="10" points="21,12 21,5 28,5 "/>
+</svg>
+`
+
+icons.shutdown = html`
+<svg viewBox="2 2 27 27" fill="none" xmlns="http://www.w3.org/2000/svg">
+<line fill="none" stroke="#ffffff" stroke-width="2" stroke-miterlimit="10" x1="16" y1="16" x2="16" y2="4"/>
+<path fill="#ffffff" stroke="none" d="M20,4.703v2.141c3.526,1.547,6,5.064,6,9.155c0,5.514-4.486,10-10,10S6,21.514,6,16c0-4.091,2.474-7.609,6-9.155V4.703C7.346,6.354,4,10.787,4,16c0,6.617,5.383,12,12,12s12-5.383,12-12C28,10.787,24.654,6.354,20,4.703z"/>
+</svg>
+`;
+
+icons.sync = html`
+<svg viewBox="1 1 29 29" xmlns="http://www.w3.org/2000/svg">
+<path fill="none" stroke="#ffffff" stroke-width="2" stroke-miterlimit="10" d="M25.7,10.9C23.9,7.4,20.2,5,16,5
+  c-4.7,0-8.6,2.9-10.2,7"/>
+<path fill="none" stroke="#ffffff" stroke-width="2" stroke-miterlimit="10" d="M6.2,21c1.8,3.5,5.5,6,9.8,6c4.7,0,8.6-2.9,10.2-7"
+  />
+<polyline fill="none" stroke="#ffffff" stroke-width="2" stroke-miterlimit="10" points="26,5 26,11 20,11 "/>
+<polyline fill="none" stroke="#ffffff" stroke-width="2" stroke-miterlimit="10" points="6,27 6,21 12,21 "/>
+`
+
 export default icons;
 
