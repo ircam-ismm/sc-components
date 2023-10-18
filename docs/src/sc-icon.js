@@ -1,24 +1,10 @@
 import { html } from 'lit';
 import applyStyle from './utils/applyStyle.js';
 
-const icons = [
-  'question',
-  'info',
-  'github',
-  'burger',
-  'gear',
-  'save',
-  'delete',
-  'close',
-  'midi',
-  'network',
-  'internet',
-  'prompt',
-  'upload',
-  'redo',
-  'shutdown',
-  'sync',
-];
+import iconsList from '../../src/utils/icons.js';
+
+const icons = Object.keys(iconsList);
+const defaultIcon = 'question';
 
 let timeoutIdInput = null;
 let timeoutIdPress = null;
@@ -43,7 +29,7 @@ const template = html\`
 <sc-icon
   id="test-icon"
   value="my-icon"
-  type="question"
+  type="${defaultIcon}"
   @input=${e => {
     document.querySelector('#icon-input').active = true;
 
@@ -102,7 +88,7 @@ const template = html\`
   <sc-text>type [="question"]</sc-text>
   <sc-radio
     options="${JSON.stringify(icons)}"
-    value="question"
+    value="${defaultIcon}"
     @change=${e => document.querySelector('#test-icon').type = e.detail.value}
   ></sc-radio>
 </div>
