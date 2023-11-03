@@ -37,6 +37,7 @@ const template = html\`
 #test-code-example {
   width: 100%;
   height: auto;
+  --sc-code-example-padding: 1em;
 }
   "
   @change=${e => applyStyle(e.detail.value)}

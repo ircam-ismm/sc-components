@@ -1,6 +1,6 @@
 {
   "name": "@ircam/sc-components",
-  "version": "3.0.0-alpha.38",
+  "version": "3.0.0-alpha.44",
   "description": "Web Component library for audio applications",
   "authors": [
     "Benjamin Matuszewski",
@@ -40,6 +40,7 @@
     "build": "webpack --config webpack.config.js",
     "clean": "rm -Rf vendors",
     "preversion": "npm run vendors && npm run build",
+    "dev": "npm run doc",
     "doc": "npm run vendors && cd docs && npm run dev",
     "doc:prod": "npm run vendors && cd docs && npm run build:prod",
     "test": "npm run vendors && cd tests && npm run dev",
