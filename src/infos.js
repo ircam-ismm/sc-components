@@ -36,6 +36,7 @@ export const pages = {
   'intro': {
     'home': 'home',
     'styling': 'misc-styling',
+    'examples': 'misc-examples',
   },
   components: components.reduce((acc, value) => {
     acc[value] = value;
