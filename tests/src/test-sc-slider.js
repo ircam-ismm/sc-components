@@ -26,4 +26,10 @@ export const template = html`
     value="100"
     number-box
   ></sc-slider>
+  <sc-slider
+    max="50"
+    min="50"
+    value="100"
+    number-box
+  ></sc-slider>
 `;
