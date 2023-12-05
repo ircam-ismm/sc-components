@@ -148,15 +148,8 @@ class ScSliderBase extends ScElement {
   }
 
   set min(value) {
-    if (value >= this.max) {
-      console.warn('sc-slider: min cannot be >= to max');
-      return;
-    }
-
     const oldValue = this._min;
     this._min = value;
-
-    this._updateScales();
     this.requestUpdate('min', oldValue);
   }
 
@@ -165,15 +158,8 @@ class ScSliderBase extends ScElement {
   }
 
   set max(value) {
-    if (value <= this.min) {
-      console.warn('sc-slider: max cannot be <= to min');
-      return;
-    }
-
     const oldValue = this._max;
     this._max = value;
-
-    this._updateScales();
     this.requestUpdate('max', oldValue);
   }
 
@@ -184,8 +170,6 @@ class ScSliderBase extends ScElement {
   set step(value) {
     const oldValue = this._step;
     this._step = value;
-
-    this._updateScales();
     this.requestUpdate('step', oldValue);
   }
 
@@ -242,6 +226,31 @@ class ScSliderBase extends ScElement {
       filterCodes: ['ArrowUp', 'ArrowRight', 'ArrowDown', 'ArrowLeft'],
       callback: this._onKeyboardEvent.bind(this),
     });
+  }
+
+  // https://lit.dev/docs/v1/components/lifecycle/#update
+  // Property changes inside this method do not trigger an element update.
+  // we could probably get rid of this._min and this._max
+  update(changedProperties) {
+    if (changedProperties.has('min') || changedProperties.has('max')) {
+      if (this.min > this.max) {
+        console.warn('sc-slider - min > max, inverting values');
+
+        const tmp = this._max;
+        this._max = this._min;
+        this._min = tmp;
+      }
+    }
+
+    if (changedProperties.has('min')
+      || changedProperties.has('max')
+      || changedProperties.has('step')
+    ) {
+      console.log('heiho');
+      this._updateScales();
+    }
+
+    super.update(changedProperties);
   }
 
   render() {
@@ -305,12 +314,6 @@ class ScSliderBase extends ScElement {
   }
 
   _updateScales() {
-    if (this._max < this._min) {
-      const tmp = this._max;
-      this._max = this._min;
-      this._min = tmp;
-    }
-
     // define transfert functions and scales
     this._scale = getScale([this._min, this._max], [0, 1000]); // 0 1000 is the svg viewport
     this._clipper = getClipper(this._min, this._max, this._step);
