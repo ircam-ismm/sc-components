@@ -226,6 +226,8 @@ class ScSliderBase extends ScElement {
       filterCodes: ['ArrowUp', 'ArrowRight', 'ArrowDown', 'ArrowLeft'],
       callback: this._onKeyboardEvent.bind(this),
     });
+
+    this._updateScales();
   }
 
   // https://lit.dev/docs/v1/components/lifecycle/#update
