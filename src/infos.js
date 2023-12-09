@@ -23,7 +23,6 @@ export const components = [
   'sc-prev',
   'sc-next',
   'sc-loop',
-  'sc-separator',
   'sc-tab',
   'sc-transport',
   'sc-keyboard',
