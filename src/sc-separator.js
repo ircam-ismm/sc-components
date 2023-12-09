@@ -111,7 +111,7 @@ class ScSeparator extends ScElement {
     const $next = e.currentTarget.nextElementSibling;
 
     document.body.style.userSelect = 'none';
-    document.body.style.cursor = this.direction === 'row' ? 'ns-resize' : 'ex-resize';
+    document.body.style.cursor = this.direction === 'row' ? 'ew-resize' : 'ns-resize';
 
     const resize = e => {
       switch (this.direction) {
