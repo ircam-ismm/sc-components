@@ -198,5 +198,14 @@ icons.muted = html`
 </svg>
 `;
 
+icons.fullscreen = html`
+<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" stroke-width="3" stroke="#ffffff" fill="none">
+  <polyline points="7.49 26 7.49 7.5 25.99 7.5"/>
+  <polyline points="56.51 26 56.51 7.5 38.01 7.5"/>
+  <polyline points="7.53 38 7.53 56.5 26.02 56.5"/>
+  <polyline points="56.51 38 56.51 56.5 38.01 56.5"/>
+</svg>
+`
+
 export default icons;
 

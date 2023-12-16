@@ -13,6 +13,7 @@ import './sc-dragndrop.js';
 import './sc-editor.js';
 import './sc-filetree.js';
 import './sc-flash.js';
+import './sc-fullscreen.js';
 import './sc-keyboard.js';
 import './sc-icon.js';
 import './sc-loop.js';

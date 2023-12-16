@@ -29,6 +29,7 @@ export const components = [
   'sc-keyboard',
   'sc-dragndrop',
   'sc-filetree',
+  'sc-fullscreen',
   'sc-midi',
   'sc-status',
 ].sort();
