@@ -20,7 +20,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ircam-ismm/sc-components"
+    "url": "git+https://github.com/ircam-ismm/sc-components.git"
   },
   "bugs": {
     "url": "https://github.com/ircam-ismm/sc-components/issues"
