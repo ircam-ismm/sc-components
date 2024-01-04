@@ -137,6 +137,10 @@ For PRs, please follow the "fork-and-pull" workflow:
 ## Credits
 -->
 
+## Credits
+
+Vectors and icons by [SVG Repo](https://www.svgrepo.com)
+
 ## License
 
 [BSD-3-Clause](./LICENSE)

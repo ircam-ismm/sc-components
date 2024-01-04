@@ -67,7 +67,6 @@ class ScFullscreen extends ScElement {
 }
 
 if (customElements.get('sc-fullscreen') === undefined) {
-  console.log('define sc-fullscreen');
   customElements.define('sc-fullscreen', ScFullscreen);
 }
 
