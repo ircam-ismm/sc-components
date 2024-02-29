@@ -13,6 +13,10 @@ class ScText extends ScElement {
         type: Boolean,
         reflect: true,
       },
+      multiline: {
+        type: Boolean,
+        reflect: true,
+      },
       dirty: {
         type: Boolean,
         reflect: true,
@@ -39,12 +43,12 @@ class ScText extends ScElement {
         font-family: var(--sc-font-family);
         color: white;
         line-height: 20px;
+        padding: 5px 6px;
         /* white-space: pre; is important to keep the new lines
            cf. https://stackoverflow.com/a/33052216
         */
         white-space: pre;
         background-color: var(--sc-color-primary-1);
-        padding: 5px 6px;
         outline: none;
 
         overflow-y: auto;
@@ -64,12 +68,12 @@ class ScText extends ScElement {
 
       :host([editable]) {
         background-color: var(--sc-color-primary-3);
-        border: 1px dotted var(--sc-color-primary-5);
+        border: 1px dotted var(--sc-color-primary-4);
       }
 
       :host([editable]:focus),
       :host([editable]:focus-visible) {
-        border: 1px solid var(--sc-color-primary-5);
+        border: 1px solid var(--sc-color-primary-4);
       }
 
       :host([editable][dirty]:focus),
@@ -102,10 +106,11 @@ class ScText extends ScElement {
 
     this.disabled = false;
     this.editable = false;
+    this.multiline = false;
     this.dirty = false;
     this._value = null; // value on last change event
 
-    this._updateValue = this._updateValue.bind(this);
+    this._triggerChange = this._triggerChange.bind(this);
     this._onKeyDown = this._onKeyDown.bind(this);
     this._onKeyUp = this._onKeyUp.bind(this);
     this._preventContextMenu = this._preventContextMenu.bind(this);
@@ -141,10 +146,10 @@ class ScText extends ScElement {
   connectedCallback() {
     super.connectedCallback();
 
-    // @note - this is important if the compoent is e.g. embedded in another component
+    // @note - this is important if the component is e.g. embedded in another component
     this._tabindex = this.getAttribute('tabindex') || 0;
 
-    this.addEventListener('blur', this._updateValue);
+    this.addEventListener('blur', this._triggerChange);
     this.addEventListener('keydown', this._onKeyDown);
     this.addEventListener('keyup', this._onKeyUp);
     this.addEventListener('contextmenu', this._preventContextMenu);
@@ -153,16 +158,24 @@ class ScText extends ScElement {
   disconnectedCallback() {
     super.disconnectedCallback();
 
-    this.removeEventListener('blur', this._updateValue);
+    this.removeEventListener('blur', this._triggerChange);
     this.removeEventListener('keydown', this._onKeyDown);
     this.removeEventListener('keyup', this._onKeyUp);
     this.removeEventListener('contextmenu', this._preventContextMenu);
   }
 
   _onKeyDown(e) {
-    if (e.metaKey && e.key === 's') {
+    e.stopPropagation();
+
+    // we want to trigger change in key down
+    if (e.metaKey && e.code === 'KeyS') {
       e.preventDefault();
-      this._updateValue(e, true);
+      this._triggerChange(e, true);
+    }
+
+    if (!this.multiline && e.code === 'Enter') {
+      e.preventDefault();
+      this._triggerChange(e, true);
     }
   }
 
@@ -174,9 +187,22 @@ class ScText extends ScElement {
     }
   }
 
-  _updateValue(e, forceUpdate = false) {
+  // @note - this requires full refactor of the component because the native
+  // input event cannot be bypassed and replaced
+  // _triggerInput(e) {
+  //   if (this.dirty) {
+  //     const event = new CustomEvent('input', {
+  //       bubbles: true,
+  //       composed: true,
+  //       detail: { value: e.target.textContent },
+  //     });
+
+  //     this.dispatchEvent(event);
+  //   }
+  // }
+
+  _triggerChange(e, forceUpdate = false) {
     e.preventDefault();
-    e.stopPropagation();
 
     if (this.dirty || forceUpdate) {
       this._value = e.target.textContent;

@@ -18,6 +18,7 @@ const template = html\`
 
 <sc-text
   id="test-text"
+  editable
   @change=${e => document.querySelector('#text-change').value = e.detail.value}
 >Hello!</sc-text>
 
@@ -30,16 +31,24 @@ const template = html\`
   >Hello!</sc-text>
 </div>
 <div>
-  <p>If editable, the "change" event is trigerred on Cmd+S and on blur, the red outline indicates dirty state</p>
+  <sc-text>?disabled [=false]</sc-text>
+  <sc-toggle
+    @change=${e => document.querySelector('#test-text').disabled = e.detail.value}
+  ></sc-toggle>
+</div>
+<div>
+  <p>If editable, the "change" event is trigerred on Cmd+S, Enter and on blur, the red outline indicates dirty state.</p>
   <sc-text>?editable [=false]</sc-text>
   <sc-toggle
     @change=${e => document.querySelector('#test-text').editable = e.detail.value}
   ></sc-toggle>
 </div>
+
 <div>
-  <sc-text>?disabled [=false]</sc-text>
+  <p>Only applies if editable. If multiline, the "change" event is trigerred only on Cmd+S and on blur.</p>
+  <sc-text>?multiline [=false]</sc-text>
   <sc-toggle
-    @change=${e => document.querySelector('#test-text').disabled = e.detail.value}
+    @change=${e => document.querySelector('#test-text').multiline = e.detail.value}
   ></sc-toggle>
 </div>
 
@@ -54,9 +63,22 @@ ${`\
   @change=\${e => console.log(e.detail.value)}
 ></sc-text>`}
 </sc-code-example>
+<!--
+<div>
+  <sc-text>@input</sc-text>
+  <sc-text id="text-input"></sc-text>
+</div>
+<sc-code-example language="html">
+${`\
+<sc-text
+  @input=\${e => console.log(e.detail.value)}
+></sc-text>`}
+</sc-code-example>
+-->
 
 <h3>Keyboard shortcuts</h3>
 <sc-text class="key">Cmd+S</sc-text>
+<sc-text class="key">Enter</sc-text>
 
 <h3>Styling</h3>
 <sc-editor
