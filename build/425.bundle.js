@@ -1,30 +1,12 @@
-import { html } from 'lit';
-import JSON5 from 'json5';
-import applyStyle from './utils/applyStyle.js';
-
-function prettify(value) {
-  return `[\n${value.map(row => `  [${row.join(', ')}],`).join('\n')}\n]`;
-}
-
-export const template = html`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[425],{6425:(e,t,c)=>{c.r(t),c.d(t,{template:()=>r});var s=c(2182),a=c(1967),i=c(1630);const r=s.qy`
 
 <h2>sc-matrix</h2>
 
-<sc-code-example language="javascript">${`
-import { html } from 'lit';
-import '@ircam/sc-components/sc-matrix.js';
-
-const template = html\`
-  <sc-matrix></sc-matrix>
-\`;
-`}</sc-code-example>
+<sc-code-example language="javascript">${"\nimport { html } from 'lit';\nimport '@ircam/sc-components/sc-matrix.js';\n\nconst template = html`\n  <sc-matrix></sc-matrix>\n`;\n"}</sc-code-example>
 
 <sc-matrix
   id="test-matrix"
-  @change=${e => {
-    document.querySelector('#matrix-change-value').value = prettify(e.detail.value);
-    document.querySelector('#matrix-change-update').value = JSON.stringify(e.detail.update, null, 2);
-  }}
+  @change=${e=>{document.querySelector("#matrix-change-value").value=`[\n${e.detail.value.map((e=>`  [${e.join(", ")}],`)).join("\n")}\n]`,document.querySelector("#matrix-change-update").value=JSON.stringify(e.detail.update,null,2)}}
 ></sc-matrix>
 
 <h3>Events</h3>
@@ -49,7 +31,7 @@ const template = html\`
     min="1"
     max="32"
     value="4"
-    @input=${e => document.querySelector('#test-matrix').rows = e.detail.value}
+    @input=${e=>document.querySelector("#test-matrix").rows=e.detail.value}
   ></sc-number>
 </div>
 <div>
@@ -59,19 +41,19 @@ const template = html\`
     min="1"
     max="32"
     value="8"
-    @input=${e => document.querySelector('#test-matrix').columns = e.detail.value}
+    @input=${e=>document.querySelector("#test-matrix").columns=e.detail.value}
   ></sc-number>
 </div>
 <div>
   <sc-text>?reset [=false]</sc-text>
   <sc-bang
-    @input=${e => document.querySelector('#test-matrix').reset = e.detail.value}
+    @input=${e=>document.querySelector("#test-matrix").reset=e.detail.value}
   ></sc-bang>
 </div>
 <div>
   <sc-text>?disabled [=false]</sc-text>
   <sc-toggle
-    @change=${e => document.querySelector('#test-matrix').disabled = e.detail.value}
+    @change=${e=>document.querySelector("#test-matrix").disabled=e.detail.value}
   ></sc-toggle>
 </div>
 
@@ -81,7 +63,7 @@ const template = html\`
   <sc-text>.states [=[0, 1]]</sc-text>
   <sc-text
     editable
-    @change=${e => document.querySelector('#test-matrix').states = JSON5.parse(e.detail.value)}
+    @change=${e=>document.querySelector("#test-matrix").states=a.parse(e.detail.value)}
   >[0, 0.5, 1]</sc-text>
 </div>
 <div>
@@ -90,7 +72,7 @@ const template = html\`
   <sc-text
     editable
     style="height: 80px;"
-    @change=${e => document.querySelector('#test-matrix').value = JSON5.parse(e.detail.value)}
+    @change=${e=>document.querySelector("#test-matrix").value=a.parse(e.detail.value)}
   >[
   [0, 1],
   [1, 0],
@@ -120,7 +102,7 @@ const template = html\`
   --sc-matrix-cell-border: var(--sc-color-primary-4);
 }
   "
-  @change=${e => applyStyle(e.detail.value)}
+  @change=${e=>(0,i.default)(e.detail.value)}
 ></sc-editor>
 
-`;
+`}}]);

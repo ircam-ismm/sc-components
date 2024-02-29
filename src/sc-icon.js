@@ -59,6 +59,10 @@ const template = html\`
   }}
 ></sc-icon>
 
+<p>
+  <i>Vectors and icons by <a href="https://www.svgrepo.com" target="_blank">SVG Repo</a></i>
+</p>
+
 <h3>Events</h3>
 <div>
   <sc-text>@input</sc-text>

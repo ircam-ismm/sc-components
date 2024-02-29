@@ -1,6 +1,4 @@
-import { html } from 'lit';
-
-export const template = html`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[650],{8650:(e,t,o)=>{o.r(t),o.d(t,{template:()=>s});const s=o(2182).qy`
 <div id="homepage">
   <h1>@ircam/sc-components</h1>
 
@@ -38,30 +36,17 @@ export const template = html`
     Install the library using npm (or yarn, or whatever)
   </p>
 
-  <sc-code-example language="shell">${`
-npm install --save @ircam/sc-components
-  `}</sc-code-example>
+  <sc-code-example language="shell">${"\nnpm install --save @ircam/sc-components\n  "}</sc-code-example>
 
   <p>Each components lives in its own file and can be imported separately, e.g.:</p>
 
-  <sc-code-example language="javascript">${`
-import { html, render } from 'lit';
-import '@ircam/sc-components/sc-toggle.js';
-
-render(html\`
-  <sc-toggle
-    @change=\${e => console.log(e)}
-  ></sc-toggle>
-\`, document.body);
-  `}</sc-code-example>
+  <sc-code-example language="javascript">${"\nimport { html, render } from 'lit';\nimport '@ircam/sc-components/sc-toggle.js';\n\nrender(html`\n  <sc-toggle\n    @change=${e => console.log(e)}\n  ></sc-toggle>\n`, document.body);\n  "}</sc-code-example>
 
   <p>
     For convenience, we also provide a global entry point which imports all components. However, in most cases you should avoid using this shortcut to keep your bundle size as small as possible:
   </p>
 
-  <sc-code-example language="javascript">${`
-import '@ircam/sc-components';
-  `}</sc-code-example>
+  <sc-code-example language="javascript">${"\nimport '@ircam/sc-components';\n  "}</sc-code-example>
 
 
   <h3>With unpkg</h3>
@@ -72,34 +57,11 @@ import '@ircam/sc-components';
 
   <h4>In HTML file</h4>
 
-  <sc-code-example language="html">${`
-<!DOCTYPE html>
-<html>
-<head>
-  <script type="module" src="https://unpkg.com/@ircam/sc-components@latest"></script>
-</head>
-<body>
-  <sc-toggle></sc-toggle>
-  <script>
-    const $toggle = document.querySelector('sc-toggle');
-    $toggle.addEventListener('change', e => console.log('Hello toggle', e.detail.value));
-  </script>
-</body>
-<body>
-  `}</sc-code-example>
+  <sc-code-example language="html">${"\n<!DOCTYPE html>\n<html>\n<head>\n  <script type=\"module\" src=\"https://unpkg.com/@ircam/sc-components@latest\"><\/script>\n</head>\n<body>\n  <sc-toggle></sc-toggle>\n  <script>\n    const $toggle = document.querySelector('sc-toggle');\n    $toggle.addEventListener('change', e => console.log('Hello toggle', e.detail.value));\n  <\/script>\n</body>\n<body>\n  "}</sc-code-example>
 
   <h4>In JS file</h4>
 
-  <sc-code-example language="html">${`
-import { html, render } from 'https://unpkg.com/lit-html?module';
-import 'https://unpkg.com/@ircam/sc-components@latest';
-
-render(html\`
-  <sc-toggle
-    @change=\${e => console.log('Hello toggle', e.detail.value)}
-  ></sc-toggle>
-\`, document.body);
-  `}</sc-code-example>
+  <sc-code-example language="html">${"\nimport { html, render } from 'https://unpkg.com/lit-html?module';\nimport 'https://unpkg.com/@ircam/sc-components@latest';\n\nrender(html`\n  <sc-toggle\n    @change=${e => console.log('Hello toggle', e.detail.value)}\n  ></sc-toggle>\n`, document.body);\n  "}</sc-code-example>
 
   <p>
     Note that this method will import the whole bundled library which is quite large. You may not want to use this is production._
@@ -121,4 +83,4 @@ render(html\`
   <a target="_blank" href="https://github.com/ircam-ismm/sc-components/blob/main/LICENSE">BSD-3-Clause</a>
 
   <div style="height: 120px;"></div>
-`;
+`}}]);
