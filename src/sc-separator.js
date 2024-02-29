@@ -84,7 +84,16 @@ class ScSeparator extends ScElement {
 
     this.direction = 'row';
 
+    this._onMouseDown = this._onMouseDown.bind(this);
+    this._onMouseUp = this._onMouseUp.bind(this);
     this._resize = this._resize.bind(this);
+    this._mouseDown = false;
+
+    this._ratio = null;
+    this._$prev = null;
+    this._$next = null;
+    this._parentBoundingClientRect = null;
+    this._storageKey = null;
   }
 
   render() {
@@ -94,55 +103,101 @@ class ScSeparator extends ScElement {
   connectedCallback() {
     super.connectedCallback();
 
-    this.addEventListener('mousedown', this._resize);
+    this._$prev = this.previousElementSibling;
+    this._$next = this.nextElementSibling;
+    this._parentBoundingClientRect = this.parentElement.getBoundingClientRect();
+    this._storageKey = `sc-separator:${this.id || this._scId}`;
+
+    this._loadFromLocalStorage();
+    this.addEventListener('mousedown', this._onMouseDown);
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
 
-    this.removeEventListener('mousedown', this._resize);
+    this.removeEventListener('mousedown', this._onMouseDown);
+
+    if (this._mouseDown) {
+      this._onMouseUp();
+    }
   }
 
-  _resize(e) {
+  _onMouseDown(e) {
+    this._mouseDown = true;
     this._requestUserSelectNoneOnBody();
-
-    const { width, height, left, top } = e.currentTarget.parentElement.getBoundingClientRect();
-    const $prev = e.currentTarget.previousElementSibling;
-    const $next = e.currentTarget.nextElementSibling;
 
     document.body.style.userSelect = 'none';
     document.body.style.cursor = this.direction === 'row' ? 'ew-resize' : 'ns-resize';
 
-    const resize = e => {
-      switch (this.direction) {
-        case 'row': {
-          const relX = e.clientX - left;
-          const ratio = Math.max(0.02, Math.min(0.98, relX / width));
-          $prev.style.width = `${ratio * 100}%`;
-          $next.style.width = `${(1 - ratio) * 100}%`;
-          break;
-        }
-        case 'column': {
-          const relY = e.clientY - top;
-          const ratio = Math.max(0.02, Math.min(0.98, relY / height));
-          $prev.style.height = `${ratio * 100}%`;
-          $next.style.height = `${(1 - ratio) * 100}%`;
-          break;
-        }
-        default: {
-          console.warn('sc-seprator: Unknonw direction: ', this.direction);
-          break;
-        }
+    this._parentBoundingClientRect = this.parentElement.getBoundingClientRect();
+
+    window.addEventListener('mousemove', this._resize);
+    window.addEventListener('mouseup', this._onMouseUp);
+  }
+
+  _onMouseUp() {
+    this._cancelUserSelectNoneOnBody();
+    document.body.style.cursor = 'auto';
+
+    window.removeEventListener('mousemove', this._resize);
+    window.removeEventListener('mouseup', this._onMouseUp);
+
+    this._persistToLocalStorage();
+    this._mouseDown = false;
+  }
+
+  _resize(e) {
+    const { width, height, left, top } = this._parentBoundingClientRect;
+
+    switch (this.direction) {
+      case 'row': {
+        const relX = e.clientX - left;
+        this._ratio = Math.max(0.02, Math.min(0.98, relX / width));
+        break;
+      }
+      case 'column': {
+        const relY = e.clientY - top;
+        this._ratio = Math.max(0.02, Math.min(0.98, relY / height));
+        break;
+      }
+      default: {
+        console.warn('sc-seprator: Unknonw direction: ', this.direction);
+        break;
       }
     }
 
-    window.addEventListener('mousemove', resize);
-    window.addEventListener('mouseup', () => {
-      this._cancelUserSelectNoneOnBody();
-      document.body.style.cursor = 'auto';
+    this._applyRatio();
+  }
 
-      window.removeEventListener('mousemove', resize);
-    });
+  _applyRatio() {
+    switch (this.direction) {
+      case 'row': {
+        this._$prev.style.width = `${this._ratio * 100}%`;
+        this._$next.style.width = `${(1 - this._ratio) * 100}%`;
+        break;
+      }
+      case 'column': {
+        this._$prev.style.height = `${this._ratio * 100}%`;
+        this._$next.style.height = `${(1 - this._ratio) * 100}%`;
+        break;
+      }
+      default: {
+        console.warn('sc-seprator: Unknonw direction: ', this.direction);
+        break;
+      }
+    }
+  }
+
+  _loadFromLocalStorage() {
+    this._ratio = localStorage.getItem(this._storageKey);
+
+    if (this._ratio !== null) {
+      this._applyRatio();
+    }
+  }
+
+  _persistToLocalStorage() {
+    localStorage.setItem(this._storageKey, this._ratio);
   }
 }
 
