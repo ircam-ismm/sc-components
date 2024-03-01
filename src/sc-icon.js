@@ -35,6 +35,8 @@ class ScIcon extends ScElement {
       border: 1px solid var(--sc-color-primary-3);
       background-color: var(--sc-color-primary-2);
       cursor: pointer;
+
+      --sc-icon-color: white;
     }
 
     :host([hidden]) {
@@ -77,6 +79,9 @@ class ScIcon extends ScElement {
       padding: 3px;
       width: 100%;
       height: 100%;
+
+      fill: var(--sc-icon-color);
+      stroke: var(--sc-icon-color);
     }
 
     :host([disabled]:hover) {
