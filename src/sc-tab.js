@@ -32,7 +32,7 @@ class ScTab extends ScElement {
       font-size: var(--sc-font-size);
       color: #ffffff;
       overflow: auto;
-      border: 1px solid var(--sc-color-primary-3);
+      border: 1px dotted var(--sc-color-primary-3);
 
       --sc-tab-selected: var(--sc-color-secondary-1);
     }
@@ -43,7 +43,7 @@ class ScTab extends ScElement {
 
     :host(:focus), :host(:focus-visible), :host(:focus-within) {
       outline: none;
-      border: 1px solid var(--sc-color-primary-4);
+      border: 1px solid var(--sc-color-primary-3);
     }
 
     :host([orientation="horizontal"]) {
@@ -120,10 +120,19 @@ class ScTab extends ScElement {
     if (e.type === 'keydown') {
       let index = this.options.indexOf(this.value);
 
-      if (e.code === 'ArrowUp' || e.code === 'ArrowRight' || e.code === 'Space' || e.code == 'Enter') {
-        index += 1;
-      } else if (e.code === 'ArrowDown' || e.code === 'ArrowLeft') {
-        index -= 1;
+      // ArrowUp / ArrowDown do not behave the same regarding direction
+      if (this.orientation === 'horizontal') {
+        if (e.code === 'ArrowUp' || e.code === 'ArrowRight' || e.code === 'Space' || e.code == 'Enter') {
+          index += 1;
+        } else if (e.code === 'ArrowDown' || e.code === 'ArrowLeft') {
+          index -= 1;
+        }
+      } else {
+        if (e.code === 'ArrowDown' || e.code === 'ArrowRight' || e.code === 'Space' || e.code == 'Enter') {
+          index += 1;
+        } else if (e.code === 'ArrowUp' || e.code === 'ArrowLeft') {
+          index -= 1;
+        }
       }
 
       if (index < 0) {
