@@ -7,6 +7,7 @@ import './sc-bang.js';
 import './sc-button.js';
 import './sc-clock.js';
 import './sc-code-example.js';
+import './sc-color-picker.js';
 import './sc-dial.js';
 import './sc-dots.js';
 import './sc-dragndrop.js';

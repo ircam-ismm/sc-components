@@ -12,6 +12,7 @@ export const components = [
   'sc-clock',
   'sc-editor',
   'sc-code-example',
+  'sc-color-picker',
   'sc-select',
   'sc-dots',
   'sc-matrix',
