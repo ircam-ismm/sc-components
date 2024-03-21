@@ -7,6 +7,7 @@
 import './sc-position-surface.js';
 import './sc-speed-surface.js';
 
+import './sc-audio-recorder.js';
 import './sc-bang.js';
 import './sc-button.js';
 // import './sc-chenillard.js';

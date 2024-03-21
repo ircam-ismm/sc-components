@@ -1,6 +1,7 @@
 // list of pages
 export default [
   'home',
+  'sc-audio-recorder',
   'sc-bang',
   'sc-button',
   'sc-toggle',
