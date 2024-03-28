@@ -131,6 +131,7 @@ const template = html\`
 #test-icon {
   width: 30px;
   height: 30px;
+  --sc-icon-color: white;
 }
   "
   @change=${e => applyStyle(e.detail.value)}

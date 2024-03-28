@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[245],{9245:(e,t,c)=>{c.r(t),c.d(t,{template:()=>r});var s=c(2182),n=c(1630),i=c(2247);const a=Object.keys(i.A),o="question";let l=null,u=null,d=null;const r=s.qy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[245],{9245:(e,t,c)=>{c.r(t),c.d(t,{template:()=>r});var s=c(2182),n=c(1630),i=c(2247);const o=Object.keys(i.A),a="question";let l=null,u=null,d=null;const r=s.qy`
 
 <h2>sc-icon</h2>
 
@@ -7,7 +7,7 @@
 <sc-icon
   id="test-icon"
   value="my-icon"
-  type="${o}"
+  type="${a}"
   @input=${e=>{document.querySelector("#icon-input").active=!0;const t=document.querySelector("#icon-value-input");t.value=e.detail.value,clearTimeout(l),l=setTimeout((()=>t.value=""),500)}}
   @press=${e=>{document.querySelector("#icon-press").active=!0;const t=document.querySelector("#icon-value-press");t.value=e.detail.value,clearTimeout(u),u=setTimeout((()=>t.value=""),500)}}
   @release=${e=>{document.querySelector("#icon-release").active=!0;const t=document.querySelector("#icon-value-release");t.value=e.detail.value,clearTimeout(d),d=setTimeout((()=>t.value=""),500)}}
@@ -39,8 +39,8 @@
 <div>
   <sc-text>type [="question"]</sc-text>
   <sc-radio
-    options="${JSON.stringify(a)}"
-    value="${o}"
+    options="${JSON.stringify(o)}"
+    value="${a}"
     @change=${e=>document.querySelector("#test-icon").type=e.detail.value}
   ></sc-radio>
 </div>
@@ -79,6 +79,7 @@
 #test-icon {
   width: 30px;
   height: 30px;
+  --sc-icon-color: white;
 }
   "
   @change=${e=>(0,n.default)(e.detail.value)}
