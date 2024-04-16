@@ -33,6 +33,7 @@ export const components = [
   'sc-fullscreen',
   'sc-midi',
   'sc-status',
+  'sc-waveform',
 ].sort();
 
 export const pages = {

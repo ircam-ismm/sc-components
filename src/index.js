@@ -38,3 +38,4 @@ import './sc-status.js';
 import './sc-switch.js';
 import './sc-transport.js';
 import './sc-tap-tempo.js';
+import './sc-waveform.js';

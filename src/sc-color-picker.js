@@ -72,7 +72,7 @@ class ScColorPicker extends ScElement {
   constructor() {
     super();
 
-    this.value = null;
+    this.value = "#000000";
     this.disabled = false;
   }
 
@@ -105,6 +105,8 @@ class ScColorPicker extends ScElement {
   }
 
   _dispatchInputEvent(e) {
+    e.stopPropagation();
+
     if (this.disabled) { return; }
 
     this.value = e.target.value;
@@ -121,6 +123,8 @@ class ScColorPicker extends ScElement {
   }
 
   _dispatchChangeEvent(e) {
+    e.stopPropagation();
+
     if (this.disabled) { return; }
 
     this.value = e.target.value;

@@ -39,9 +39,10 @@ const template = html\`
 
 <h3>Attributes</h3>
 <div>
-  <sc-text>value [=null]</sc-text>
+  <sc-text>value [=""]</sc-text>
   <sc-text
     editable
+    value="#000000"
     @change=${e => document.querySelector('#test-color-picker').value = e.detail.value}
   ></sc-text>
 </div>
