@@ -408,9 +408,9 @@ class ScNumber extends ScElement {
 
     if (e.type === 'keydown') {
       if (e.code === 'ArrowUp' || e.code === 'ArrowRight') {
-        this.value += 1;
+        this.value += e.shiftKey ? 10 : 1;
       } else {
-        this.value -= 1;
+        this.value -= e.shiftKey ? 10 : 1;
       }
 
       this._emitInput();
