@@ -1,3 +1,6 @@
+window.SC_DEBUG = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+console.log(window.SC_DEBUG);
+
 import { html, render } from 'lit/html.js';
 import { map } from 'lit/directives/map.js';
 import { isFunction } from '@ircam/sc-utils';
@@ -7,13 +10,14 @@ import applyStyle from './utils/applyStyle.js';
 // for display in title and generating url
 const libName = 'sc-components';
 
+// debug mode on localhost
+
+
 // import lib
 import '../../src/index.js';
 
 // list of pages
 import { pages } from './infos.js';
-// debug mode on localhost
-window.SC_DEBUG = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
 
 function setTheme(name) {
   switch (name) {

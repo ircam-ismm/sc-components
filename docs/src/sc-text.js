@@ -18,7 +18,6 @@ const template = html\`
 
 <sc-text
   id="test-text"
-  editable
   @change=${e => document.querySelector('#text-change').value = e.detail.value}
 >Hello!</sc-text>
 
@@ -55,7 +54,7 @@ const template = html\`
 <h3>Events</h3>
 <div>
   <sc-text>@change</sc-text>
-  <sc-text id="text-change"></sc-text>
+  <sc-text id="text-change" multiline></sc-text>
 </div>
 <sc-code-example language="html">
 ${`\
@@ -63,8 +62,8 @@ ${`\
   @change=\${e => console.log(e.detail.value)}
 ></sc-text>`}
 </sc-code-example>
-<!--
-<div>
+
+<!-- <div>
   <sc-text>@input</sc-text>
   <sc-text id="text-input"></sc-text>
 </div>
@@ -73,8 +72,8 @@ ${`\
 <sc-text
   @input=\${e => console.log(e.detail.value)}
 ></sc-text>`}
-</sc-code-example>
--->
+</sc-code-example> -->
+
 
 <h3>Keyboard shortcuts</h3>
 <sc-text class="key">Cmd+S</sc-text>

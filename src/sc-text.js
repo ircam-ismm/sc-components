@@ -44,12 +44,9 @@ class ScText extends ScElement {
         color: white;
         line-height: 18px; /* 18 + 2 * 5 (padding) + 2 * 1 (border) === 30 */
         padding: 5px 6px;
-        /* white-space: pre; is important to keep the new lines
-           cf. https://stackoverflow.com/a/33052216
-        */
-        white-space: pre;
         background-color: var(--sc-color-primary-1);
         outline: none;
+        border: 1px dotted var(--sc-color-primary-1);
 
         overflow-y: auto;
       }
@@ -79,6 +76,15 @@ class ScText extends ScElement {
       :host([editable][dirty]:focus),
       :host([editable][dirty]:focus-visible) {
         border: 1px solid var(--sc-color-secondary-3);
+      }
+
+      :host([multiline]) {
+        height: auto;
+      }
+
+      :host > div {
+        display: inline-block;
+        white-space: pre;
       }
     `;
   }
@@ -117,7 +123,9 @@ class ScText extends ScElement {
   }
 
   render() {
-    return html`<slot></slot>`;
+    return html`
+      <div><slot></slot></div>
+    `;
   }
 
   firstUpdated() {
@@ -148,11 +156,14 @@ class ScText extends ScElement {
 
     // @note - this is important if the component is e.g. embedded in another component
     this._tabindex = this.getAttribute('tabindex') || 0;
+  }
+
+  firstUpdated() {
+    super.firstUpdated();
 
     this.addEventListener('blur', this._triggerChange);
     this.addEventListener('keydown', this._onKeyDown);
     this.addEventListener('keyup', this._onKeyUp);
-    this.addEventListener('contextmenu', this._preventContextMenu);
   }
 
   disconnectedCallback() {
@@ -161,7 +172,6 @@ class ScText extends ScElement {
     this.removeEventListener('blur', this._triggerChange);
     this.removeEventListener('keydown', this._onKeyDown);
     this.removeEventListener('keyup', this._onKeyUp);
-    this.removeEventListener('contextmenu', this._preventContextMenu);
   }
 
   _onKeyDown(e) {
@@ -185,16 +195,18 @@ class ScText extends ScElement {
     } else if (e.target.textContent === this._value && this.dirty === true) {
       this.dirty = false;
     }
+
+    this._triggerInput();
   }
 
   // @note - this requires full refactor of the component because the native
   // input event cannot be bypassed and replaced
-  // _triggerInput(e) {
+  // _triggerInput() {
   //   if (this.dirty) {
   //     const event = new CustomEvent('input', {
   //       bubbles: true,
   //       composed: true,
-  //       detail: { value: e.target.textContent },
+  //       detail: { value: this.textContent },
   //     });
 
   //     this.dispatchEvent(event);
