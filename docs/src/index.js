@@ -1,6 +1,3 @@
-window.SC_DEBUG = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-console.log(window.SC_DEBUG);
-
 import { html, render } from 'lit/html.js';
 import { map } from 'lit/directives/map.js';
 import { isFunction } from '@ircam/sc-utils';
@@ -11,7 +8,7 @@ import applyStyle from './utils/applyStyle.js';
 const libName = 'sc-components';
 
 // debug mode on localhost
-
+window.SC_DEBUG = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
 
 // import lib
 import '../../src/index.js';

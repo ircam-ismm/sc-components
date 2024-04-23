@@ -25,6 +25,14 @@ class ScText extends ScElement {
         type: Boolean,
         reflect: true,
       },
+      placeholder: {
+        type: String,
+        reflect: true,
+      },
+      _showPlaceholder: {
+        type: Boolean,
+        state: true,
+      },
     };
   }
 
@@ -49,6 +57,7 @@ class ScText extends ScElement {
         border: 1px dotted var(--sc-color-primary-1);
 
         overflow-y: auto;
+        position: relative;
       }
 
       :host([disabled]) {
@@ -86,6 +95,14 @@ class ScText extends ScElement {
         display: inline-block;
         white-space: pre;
       }
+
+      :host > div.placeholder {
+        position: absolute;
+        top: 6px;
+        left: 7px;
+        font-style: italic;
+        opacity: 0.6;
+      }
     `;
   }
 
@@ -115,6 +132,7 @@ class ScText extends ScElement {
     this.multiline = false;
     this.dirty = false;
     this._value = null; // value on last change event
+    this._showPlaceholder = false;
 
     this._triggerChange = this._triggerChange.bind(this);
     this._onKeyDown = this._onKeyDown.bind(this);
@@ -125,11 +143,16 @@ class ScText extends ScElement {
   render() {
     return html`
       <div><slot></slot></div>
+      ${this._showPlaceholder
+        ? html`<div class="placeholder">${this.placeholder}</div>`
+        : nothing
+      }
     `;
   }
 
   firstUpdated() {
     this._value = this.textContent;
+    this._showPlaceholder = this.editable && this._value === '';
   }
 
   updated() {
@@ -154,22 +177,19 @@ class ScText extends ScElement {
   connectedCallback() {
     super.connectedCallback();
 
-    // @note - this is important if the component is e.g. embedded in another component
-    this._tabindex = this.getAttribute('tabindex') || 0;
-  }
-
-  firstUpdated() {
-    super.firstUpdated();
-
-    this.addEventListener('blur', this._triggerChange);
+    this.addEventListener('focus', this._onFocus);
+    this.addEventListener('blur', this._onBlur);
     this.addEventListener('keydown', this._onKeyDown);
     this.addEventListener('keyup', this._onKeyUp);
+    // @note - this is important if the component is e.g. embedded in another component
+    this._tabindex = this.getAttribute('tabindex') || 0;
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
 
-    this.removeEventListener('blur', this._triggerChange);
+    this.removeEventListener('focus', this._onFocus);
+    this.removeEventListener('blur', this._onBlur);
     this.removeEventListener('keydown', this._onKeyDown);
     this.removeEventListener('keyup', this._onKeyUp);
   }
@@ -195,8 +215,37 @@ class ScText extends ScElement {
     } else if (e.target.textContent === this._value && this.dirty === true) {
       this.dirty = false;
     }
+  }
 
-    this._triggerInput();
+  _onFocus() {
+    if (this._showPlaceholder) {
+      this._showPlaceholder = false;
+    }
+  }
+
+  _onBlur(e) {
+    this._triggerChange(e);
+  }
+
+  _triggerChange(e, forceUpdate = false) {
+    e.preventDefault();
+
+    if (this.dirty || forceUpdate) {
+      this._value = e.target.textContent.trim();
+      this.dirty = false;
+
+      const event = new CustomEvent('change', {
+        bubbles: true,
+        composed: true,
+        detail: { value: this._value },
+      });
+
+      this.dispatchEvent(event);
+    }
+
+    if (this.editable && this._value === '') {
+      this._showPlaceholder = true;
+    }
   }
 
   // @note - this requires full refactor of the component because the native
@@ -212,23 +261,6 @@ class ScText extends ScElement {
   //     this.dispatchEvent(event);
   //   }
   // }
-
-  _triggerChange(e, forceUpdate = false) {
-    e.preventDefault();
-
-    if (this.dirty || forceUpdate) {
-      this._value = e.target.textContent;
-      this.dirty = false;
-
-      const event = new CustomEvent('change', {
-        bubbles: true,
-        composed: true,
-        detail: { value: this._value },
-      });
-
-      this.dispatchEvent(event);
-    }
-  }
 }
 
 if (customElements.get('sc-text') === undefined) {

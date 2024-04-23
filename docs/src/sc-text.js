@@ -36,19 +36,25 @@ const template = html\`
   ></sc-toggle>
 </div>
 <div>
-  <p>If editable, the "change" event is trigerred on Cmd+S, Enter and on blur, the red outline indicates dirty state.</p>
   <sc-text>?editable [=false]</sc-text>
   <sc-toggle
     @change=${e => document.querySelector('#test-text').editable = e.detail.value}
   ></sc-toggle>
+  <p>If editable, the "change" event is trigerred on Cmd+S, Enter and on blur, the red outline indicates dirty state.</p>
 </div>
-
 <div>
-  <p>Only applies if editable. If multiline, the "change" event is trigerred only on Cmd+S and on blur.</p>
   <sc-text>?multiline [=false]</sc-text>
   <sc-toggle
     @change=${e => document.querySelector('#test-text').multiline = e.detail.value}
   ></sc-toggle>
+  <p>If multiline and editable, the "change" event is not triggered on Enter</p>
+</div>
+<div>
+  <sc-text>placeholder [=""]</sc-text>
+  <sc-text
+    @change=${e => document.querySelector('#test-text').placeholder = e.detail.value}
+    editable
+  ></sc-text>
 </div>
 
 <h3>Events</h3>
