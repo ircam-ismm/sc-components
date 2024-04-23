@@ -1178,7 +1178,7 @@ span.CodeMirror-selectedtext { background: none; }
         <li @click="${t=>this._triggerEvent(t,e.action)}">${e.label}</li>
       `))}
       </ul>
-    `}connectedCallback(){super.connectedCallback(),document.addEventListener("click",this._triggerClose),document.addEventListener("contextmenu",this._triggerClose),this.style.left=`${this.event.clientX}px`,this.style.top=`${this.event.clientY}px`}disconnectedCallback(){super.disconnectedCallback(),document.removeEventListener("click",this._triggerClose),document.removeEventListener("contextmenu",this._triggerClose)}_triggerEvent(e,t){const n=new CustomEvent("input",{bubbles:!0,composed:!0,detail:{value:t}});this.dispatchEvent(n),this._triggerClose(e)}_triggerClose(e){e.preventDefault();const t=new CustomEvent("close",{bubbles:!0,composed:!0,detail:null});this.dispatchEvent(t)}}),S(class extends b{constructor(){super(...arguments),this.key=E.s6}render(e,t){return this.key=e,t}update(e,[t,n]){return t!==this.key&&(W(e),this.key=t),n}});void 0===customElements.get("sc-text")&&customElements.define("sc-text",class extends f{static get properties(){return{value:{type:String},editable:{type:Boolean,reflect:!0},multiline:{type:Boolean,reflect:!0},dirty:{type:Boolean,reflect:!0},disabled:{type:Boolean,reflect:!0}}}static get styles(){return u.AH`
+    `}connectedCallback(){super.connectedCallback(),document.addEventListener("click",this._triggerClose),document.addEventListener("contextmenu",this._triggerClose),this.style.left=`${this.event.clientX}px`,this.style.top=`${this.event.clientY}px`}disconnectedCallback(){super.disconnectedCallback(),document.removeEventListener("click",this._triggerClose),document.removeEventListener("contextmenu",this._triggerClose)}_triggerEvent(e,t){const n=new CustomEvent("input",{bubbles:!0,composed:!0,detail:{value:t}});this.dispatchEvent(n),this._triggerClose(e)}_triggerClose(e){e.preventDefault();const t=new CustomEvent("close",{bubbles:!0,composed:!0,detail:null});this.dispatchEvent(t)}}),S(class extends b{constructor(){super(...arguments),this.key=E.s6}render(e,t){return this.key=e,t}update(e,[t,n]){return t!==this.key&&(W(e),this.key=t),n}});void 0===customElements.get("sc-text")&&customElements.define("sc-text",class extends f{static get properties(){return{value:{type:String},editable:{type:Boolean,reflect:!0},multiline:{type:Boolean,reflect:!0},dirty:{type:Boolean,reflect:!0},disabled:{type:Boolean,reflect:!0},placeholder:{type:String,reflect:!0},_showPlaceholder:{type:Boolean,state:!0}}}static get styles(){return u.AH`
       :host {
         vertical-align: top;
         display: inline-block;
@@ -1193,14 +1193,12 @@ span.CodeMirror-selectedtext { background: none; }
         color: white;
         line-height: 18px; /* 18 + 2 * 5 (padding) + 2 * 1 (border) === 30 */
         padding: 5px 6px;
-        /* white-space: pre; is important to keep the new lines
-           cf. https://stackoverflow.com/a/33052216
-        */
-        white-space: pre;
         background-color: var(--sc-color-primary-1);
         outline: none;
+        border: 1px dotted var(--sc-color-primary-1);
 
         overflow-y: auto;
+        position: relative;
       }
 
       :host([disabled]) {
@@ -1229,7 +1227,27 @@ span.CodeMirror-selectedtext { background: none; }
       :host([editable][dirty]:focus-visible) {
         border: 1px solid var(--sc-color-secondary-3);
       }
-    `}get value(){return this.textContent}set value(e){this._editable&&this.setAttribute("contenteditable","false"),this.textContent=e,this._editable&&this.setAttribute("contenteditable","true")}constructor(){super(),this.disabled=!1,this.editable=!1,this.multiline=!1,this.dirty=!1,this._value=null,this._triggerChange=this._triggerChange.bind(this),this._onKeyDown=this._onKeyDown.bind(this),this._onKeyUp=this._onKeyUp.bind(this),this._preventContextMenu=this._preventContextMenu.bind(this)}render(){return u.qy`<slot></slot>`}firstUpdated(){this._value=this.textContent}updated(){this.editable?(this.setAttribute("editable",!0),this.disabled?(this.setAttribute("tabindex",-1),this.setAttribute("contenteditable","false")):(this.setAttribute("tabindex",this._tabindex),this.setAttribute("contenteditable","true"))):(this.setAttribute("tabindex",-1),this.removeAttribute("editable"),this.removeAttribute("contenteditable"))}connectedCallback(){super.connectedCallback(),this._tabindex=this.getAttribute("tabindex")||0,this.addEventListener("blur",this._triggerChange),this.addEventListener("keydown",this._onKeyDown),this.addEventListener("keyup",this._onKeyUp),this.addEventListener("contextmenu",this._preventContextMenu)}disconnectedCallback(){super.disconnectedCallback(),this.removeEventListener("blur",this._triggerChange),this.removeEventListener("keydown",this._onKeyDown),this.removeEventListener("keyup",this._onKeyUp),this.removeEventListener("contextmenu",this._preventContextMenu)}_onKeyDown(e){e.stopPropagation(),e.metaKey&&"KeyS"===e.code&&(e.preventDefault(),this._triggerChange(e,!0)),this.multiline||"Enter"!==e.code||(e.preventDefault(),this._triggerChange(e,!0))}_onKeyUp(e){e.target.textContent!==this._value&&!1===this.dirty?this.dirty=!0:e.target.textContent===this._value&&!0===this.dirty&&(this.dirty=!1)}_triggerChange(e,t=!1){if(e.preventDefault(),this.dirty||t){this._value=e.target.textContent,this.dirty=!1;const t=new CustomEvent("change",{bubbles:!0,composed:!0,detail:{value:this._value}});this.dispatchEvent(t)}}});class le extends f{static properties={value:{type:Object},editable:{type:Boolean,reflect:!0},_contextMenuInfos:{type:Object,state:!0},_updateTreeInfos:{type:Object,state:!0}};static styles=u.AH`
+
+      :host([multiline]) {
+        height: auto;
+      }
+
+      :host > div {
+        display: inline-block;
+        white-space: pre;
+      }
+
+      :host > div.placeholder {
+        position: absolute;
+        top: 6px;
+        left: 7px;
+        font-style: italic;
+        opacity: 0.6;
+      }
+    `}get value(){return this.textContent}set value(e){this._editable&&this.setAttribute("contenteditable","false"),this.textContent=e,this._editable&&this.setAttribute("contenteditable","true")}constructor(){super(),this.disabled=!1,this.editable=!1,this.multiline=!1,this.dirty=!1,this._value=null,this._showPlaceholder=!1,this._triggerChange=this._triggerChange.bind(this),this._onKeyDown=this._onKeyDown.bind(this),this._onKeyUp=this._onKeyUp.bind(this),this._preventContextMenu=this._preventContextMenu.bind(this)}render(){return u.qy`
+      <div><slot></slot></div>
+      ${this._showPlaceholder?u.qy`<div class="placeholder">${this.placeholder}</div>`:u.s6}
+    `}firstUpdated(){this._value=this.textContent,this._showPlaceholder=this.editable&&""===this._value}updated(){this.editable?(this.setAttribute("editable",!0),this.disabled?(this.setAttribute("tabindex",-1),this.setAttribute("contenteditable","false")):(this.setAttribute("tabindex",this._tabindex),this.setAttribute("contenteditable","true"))):(this.setAttribute("tabindex",-1),this.removeAttribute("editable"),this.removeAttribute("contenteditable"))}connectedCallback(){super.connectedCallback(),this.addEventListener("focus",this._onFocus),this.addEventListener("blur",this._onBlur),this.addEventListener("keydown",this._onKeyDown),this.addEventListener("keyup",this._onKeyUp),this._tabindex=this.getAttribute("tabindex")||0}disconnectedCallback(){super.disconnectedCallback(),this.removeEventListener("focus",this._onFocus),this.removeEventListener("blur",this._onBlur),this.removeEventListener("keydown",this._onKeyDown),this.removeEventListener("keyup",this._onKeyUp)}_onKeyDown(e){e.stopPropagation(),e.metaKey&&"KeyS"===e.code&&(e.preventDefault(),this._triggerChange(e,!0)),this.multiline||"Enter"!==e.code||(e.preventDefault(),this._triggerChange(e,!0))}_onKeyUp(e){e.target.textContent!==this._value&&!1===this.dirty?this.dirty=!0:e.target.textContent===this._value&&!0===this.dirty&&(this.dirty=!1)}_onFocus(){this._showPlaceholder&&(this._showPlaceholder=!1)}_onBlur(e){this._triggerChange(e)}_triggerChange(e,t=!1){if(e.preventDefault(),this.dirty||t){this._value=e.target.textContent.trim(),this.dirty=!1;const t=new CustomEvent("change",{bubbles:!0,composed:!0,detail:{value:this._value}});this.dispatchEvent(t)}this.editable&&""===this._value&&(this._showPlaceholder=!0)}});class le extends f{static properties={value:{type:Object},editable:{type:Boolean,reflect:!0},_contextMenuInfos:{type:Object,state:!0},_updateTreeInfos:{type:Object,state:!0}};static styles=u.AH`
     :host {
       display: flex;
       box-sizing: border-box;

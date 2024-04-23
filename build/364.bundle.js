@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[364],{7364:(t,e,s)=>{s.r(e),s.d(e,{template:()=>d});var c=s(2182),o=s(1967),a=s(1630);const d=c.qy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[364],{7364:(t,e,s)=>{s.r(e),s.d(e,{template:()=>i});var c=s(2182),o=s(1967),a=s(1630);const i=c.qy`
 
 <h2>sc-dots</h2>
 
@@ -16,6 +16,7 @@
   <sc-text>.value [=[]]</sc-text>
   <sc-text
     editable
+    multiline
     style="width: 300px;"
     @change=${t=>document.querySelector("#test-dots").value=o.parse(t.detail.value)}
   >[{ x: 0.5, y: 0.5 }]</sc-text>
@@ -24,6 +25,7 @@
   <sc-text style="background-color: transparent"></sc-text>
   <sc-text
     editable
+    multiline
     style="width: 300px;"
     @change=${t=>document.querySelector("#test-dots").value=o.parse(t.detail.value)}
   >[{ x: 0.5, y: 0.5, color: 'red' }]</sc-text>
