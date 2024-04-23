@@ -18,6 +18,8 @@
   <sc-slider @input=${c} @change=${c}></sc-slider>
   <sc-bang @input=${c}></sc-bang>
   <sc-toggle @change=${c}></sc-toggle>
+  <sc-record @change=${c}></sc-record>
+  <sc-transport @change=${c}></sc-transport>
   <sc-button @press=${c} @release=${c}>my button</sc-button>
   <sc-dial @input=${c} @change=${c}></sc-dial>
   <sc-keyboard></sc-keyboard>
