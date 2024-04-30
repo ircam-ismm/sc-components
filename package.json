@@ -8,13 +8,12 @@
     "Etienne Démoulin"
   ],
   "license": "BSD-3-Clause",
-  "main": "src/index.js",
-  "unpkg": "./build/bundle.js",
-  "exports": {
-    ".": "src/index.js",
-    "./": "src/"
-  },
   "type": "module",
+  "exports": {
+    ".": "./src/index.js",
+    "./": "./src/"
+  },
+  "unpkg": "./build/bundle.js",
   "publishConfig": {
     "access": "public"
   },
