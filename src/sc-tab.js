@@ -99,6 +99,7 @@ class ScTab extends ScElement {
       return html`
         <sc-button
           .value=${value}
+          disable-keyboard
           ?selected=${value === this.value}
           @input="${this._onInput}"
           @focus=${e => e.preventDefault()}
@@ -120,19 +121,10 @@ class ScTab extends ScElement {
     if (e.type === 'keydown') {
       let index = this.options.indexOf(this.value);
 
-      // ArrowUp / ArrowDown do not behave the same regarding direction
-      if (this.orientation === 'horizontal') {
-        if (e.code === 'ArrowUp' || e.code === 'ArrowRight' || e.code === 'Space' || e.code == 'Enter') {
-          index += 1;
-        } else if (e.code === 'ArrowDown' || e.code === 'ArrowLeft') {
-          index -= 1;
-        }
-      } else {
-        if (e.code === 'ArrowDown' || e.code === 'ArrowRight' || e.code === 'Space' || e.code == 'Enter') {
-          index += 1;
-        } else if (e.code === 'ArrowUp' || e.code === 'ArrowLeft') {
-          index -= 1;
-        }
+      if (e.code === 'ArrowDown' || e.code === 'ArrowRight' || e.code === 'Space' || e.code === 'Enter') {
+        index += 1;
+      } else if (e.code === 'ArrowUp' || e.code === 'ArrowLeft') {
+        index -= 1;
       }
 
       if (index < 0) {

@@ -22,6 +22,11 @@ class ScButtonBase extends ScElement {
       type: Boolean,
       reflect: true,
     },
+    disableKeyboard: {
+      type: Boolean,
+      reflect: true,
+      attribute: 'disable-keyboard',
+    },
     _pressed: {
       type: Boolean,
       state: true,
@@ -184,7 +189,7 @@ class ScButtonBase extends ScElement {
   }
 
   _onKeyboardEvent(e) {
-    if (this.disabled) { return; }
+    if (this.disabled || this.disableKeyboard) { return; }
 
     const eventName = e.type === 'keydown' ? 'press' : 'release';
     this._dispatchEvent(eventName);
@@ -200,7 +205,7 @@ class ScButtonBase extends ScElement {
   }
 
   _dispatchEvent(eventName) {
-        // we don't want to trigger a release if no pressed has been recorded
+    // we don't want to trigger a release if no pressed has been recorded
     if (eventName === 'release' && this._pressed === false) {
       return;
     }
