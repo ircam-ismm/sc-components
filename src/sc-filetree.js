@@ -260,19 +260,9 @@ class ScFileTree extends ScElement {
   updated() {
     super.updated();
 
-    // this does not work... to be fixed
     if (this._updateTreeInfos) {
-      const $scText = this.shadowRoot.querySelector('sc-text');
-      // this is odd, but required
-      setTimeout(() => {
-        $scText.focus();
-        // select content of sc-text
-        const selection = window.getSelection();
-        const range = document.createRange();
-        range.selectNodeContents($scText);
-        selection.removeAllRanges();
-        selection.addRange(range);
-      }, 0);
+      // we need to wait for the input to be rendered
+      setTimeout(() => this.shadowRoot.querySelector('sc-text').focus(), 0);
     }
   }
 

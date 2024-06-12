@@ -65,6 +65,7 @@ const template = html\`
 <sc-filetree
   id="test-filetree"
   .value=${tree}
+  editable
   @input=${e => document.querySelector('#filetree-input').value = JSON.stringify(e.detail.value, null, 2)}
   @change=${e => document.querySelector('#filetree-change').value = JSON.stringify(e.detail.value, null, 2)}
 ></sc-filetree>

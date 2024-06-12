@@ -1,5 +1,8 @@
-import { html, css, nothing } from 'lit';
-import { keyed } from 'lit/directives/keyed.js';
+import {
+  html,
+  css,
+  nothing,
+} from 'lit';
 
 import ScElement from './ScElement.js';
 
@@ -10,10 +13,6 @@ class ScText extends ScElement {
         type: String,
       },
       editable: {
-        type: Boolean,
-        reflect: true,
-      },
-      multiline: {
         type: Boolean,
         reflect: true,
       },
@@ -28,10 +27,6 @@ class ScText extends ScElement {
       placeholder: {
         type: String,
         reflect: true,
-      },
-      _showPlaceholder: {
-        type: Boolean,
-        state: true,
       },
     };
   }
@@ -73,7 +68,7 @@ class ScText extends ScElement {
       }
 
       :host([editable]) {
-        background-color: var(--sc-color-primary-3);
+        background-color: var(--sc-color-primary-2);
         border: 1px dotted var(--sc-color-primary-4);
       }
 
@@ -87,41 +82,43 @@ class ScText extends ScElement {
         border: 1px solid var(--sc-color-secondary-3);
       }
 
-      :host([multiline]) {
-        height: auto;
-      }
-
       :host > div {
         display: inline-block;
         white-space: pre;
       }
 
-      :host > div.placeholder {
+      :host.editable {
+        padding:
+      }
+
+      :host input[type=text] {
+        display: block;
         position: absolute;
-        top: 6px;
-        left: 7px;
-        font-style: italic;
-        opacity: 0.6;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: transparent;
+        color: inherit;
+        border: none;
+        text-indent: 6px;
+        font-family: inherit;
+        font-size: inherit;
+        outline: none;
+        box-sizing: border-box;
+        padding: 0;
       }
     `;
   }
 
   get value() {
-    return this.textContent;
+    return this._value;
   }
 
   set value(value) {
-    // content only updates if contenteditable is set to false
-    // note that `contenteditable` is an enumerated attribute
-    if (this._editable) {
-      this.setAttribute('contenteditable', 'false');
-    }
-
-    this.textContent = value;
-
-    if (this._editable) {
-      this.setAttribute('contenteditable', 'true');
-    }
+    this.textContent = value; // not editable
+    this._value = value; // editable
+    this.requestUpdate();
   }
 
   constructor() {
@@ -129,58 +126,41 @@ class ScText extends ScElement {
 
     this.disabled = false;
     this.editable = false;
-    this.multiline = false;
     this.dirty = false;
     this._value = null; // value on last change event
-    this._showPlaceholder = false;
 
-    this._triggerChange = this._triggerChange.bind(this);
-    this._onKeyDown = this._onKeyDown.bind(this);
-    this._onKeyUp = this._onKeyUp.bind(this);
-    this._preventContextMenu = this._preventContextMenu.bind(this);
+    this._onSlotChange = this._onSlotChange.bind(this);
   }
 
   render() {
-    return html`
-      <div><slot></slot></div>
-      ${this._showPlaceholder
-        ? html`<div class="placeholder">${this.placeholder}</div>`
-        : nothing
-      }
-    `;
+    if (this.editable) {
+      return html`
+        <input
+          type="text"
+          placeholder=${this.placeholder}
+          .value=${this._value}
+          ?disabled=${this.disabled}
+          @keydown=${this._onKeyDown}
+          @keyup=${this._onKeyUp}
+          @input=${this._triggerInput}
+          @change=${this._triggerChange}
+        />
+      `;
+      //
+    } else {
+      return html`<div><slot></slot></div>`
+    }
   }
 
   firstUpdated() {
     this._value = this.textContent;
-    this._showPlaceholder = this.editable && this._value === '';
-  }
-
-  updated() {
-    if (this.editable) {
-      // for some reason it does not reflect in the DOM
-      this.setAttribute('editable', true);
-
-      if (!this.disabled) {
-        this.setAttribute('tabindex', this._tabindex);
-        this.setAttribute('contenteditable', 'true');
-      } else {
-        this.setAttribute('tabindex', -1);
-        this.setAttribute('contenteditable', 'false');
-      }
-    } else {
-      this.setAttribute('tabindex', -1);
-      this.removeAttribute('editable');
-      this.removeAttribute('contenteditable');
-    }
+    this.requestUpdate();
   }
 
   connectedCallback() {
     super.connectedCallback();
 
-    this.addEventListener('focus', this._onFocus);
-    this.addEventListener('blur', this._onBlur);
-    this.addEventListener('keydown', this._onKeyDown);
-    this.addEventListener('keyup', this._onKeyUp);
+    this.shadowRoot.addEventListener('slotchange', this._onSlotChange);
     // @note - this is important if the component is e.g. embedded in another component
     this._tabindex = this.getAttribute('tabindex') || 0;
   }
@@ -188,50 +168,47 @@ class ScText extends ScElement {
   disconnectedCallback() {
     super.disconnectedCallback();
 
-    this.removeEventListener('focus', this._onFocus);
-    this.removeEventListener('blur', this._onBlur);
-    this.removeEventListener('keydown', this._onKeyDown);
-    this.removeEventListener('keyup', this._onKeyUp);
+    this.shadowRoot.removeEventListener('slotchange', this._onSlotChange);
+  }
+
+  focus() {
+    if (this.editable) {
+      this.shadowRoot.querySelector('input')?.focus();
+    } else {
+      super.focus();
+    }
+  }
+
+  _onSlotChange(_) {
+    this._value = this.textContent;
+
+    if (this.editable) {
+      this.requestUpdate();
+    }
   }
 
   _onKeyDown(e) {
     e.stopPropagation();
-
     // we want to trigger change in key down
-    if (e.metaKey && e.code === 'KeyS') {
-      e.preventDefault();
-      this._triggerChange(e, true);
-    }
-
-    if (!this.multiline && e.code === 'Enter') {
+    if ((e.metaKey && e.code === 'KeyS') || e.code === 'Enter') {
       e.preventDefault();
       this._triggerChange(e, true);
     }
   }
 
   _onKeyUp(e) {
-    if (e.target.textContent !== this._value && this.dirty === false) {
+    if (e.target.value !== this._value && this.dirty === false) {
       this.dirty = true;
-    } else if (e.target.textContent === this._value && this.dirty === true) {
+    } else if (e.target.value === this._value && this.dirty === true) {
       this.dirty = false;
     }
-  }
-
-  _onFocus() {
-    if (this._showPlaceholder) {
-      this._showPlaceholder = false;
-    }
-  }
-
-  _onBlur(e) {
-    this._triggerChange(e);
   }
 
   _triggerChange(e, forceUpdate = false) {
     e.preventDefault();
 
     if (this.dirty || forceUpdate) {
-      this._value = e.target.textContent.trim();
+      this._value = e.target.value.trim();
       this.dirty = false;
 
       const event = new CustomEvent('change', {
@@ -242,25 +219,19 @@ class ScText extends ScElement {
 
       this.dispatchEvent(event);
     }
-
-    if (this.editable && this._value === '') {
-      this._showPlaceholder = true;
-    }
   }
 
-  // @note - this requires full refactor of the component because the native
-  // input event cannot be bypassed and replaced
-  // _triggerInput() {
-  //   if (this.dirty) {
-  //     const event = new CustomEvent('input', {
-  //       bubbles: true,
-  //       composed: true,
-  //       detail: { value: this.textContent },
-  //     });
+  _triggerInput(e) {
+    e.stopPropagation();
 
-  //     this.dispatchEvent(event);
-  //   }
-  // }
+    const event = new CustomEvent('input', {
+      bubbles: true,
+      composed: true,
+      detail: { value: e.target.value.trim() },
+    });
+
+    this.dispatchEvent(event);
+  }
 }
 
 if (customElements.get('sc-text') === undefined) {

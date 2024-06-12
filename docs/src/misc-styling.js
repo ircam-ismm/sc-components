@@ -64,7 +64,7 @@ export const template = html`
   --sc-color-primary-1: #121212ff;
   --sc-color-primary-2: #272822ff;
   --sc-color-primary-3: #3d3e39ff;
-  --sc-color-primary-4: #6a6a69ff;
+  --sc-color-primary-4: #878585ff;
   --sc-color-primary-5: #dededeff;
   --sc-color-secondary-1: #f4b43eff;
   --sc-color-secondary-2: #1c78c0ff;
