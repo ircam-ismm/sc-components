@@ -16,7 +16,7 @@
 
 <h3>Properties</h3>
 <div>
-  <p>Define which button(s) should be displayed amongst "play", "pause" and "stop"</p>
+  <p>Define which button(s) should be displayed amongst "play" (or "start"), "pause" and "stop"</p>
   <sc-text style="width: 260px;">.buttons [=["play", "pause", "stop"]]</sc-text>
   <sc-text
     editable

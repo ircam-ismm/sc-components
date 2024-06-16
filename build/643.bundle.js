@@ -7,12 +7,17 @@
 <sc-text
   id="test-text"
   @change=${e=>document.querySelector("#text-change").value=e.detail.value}
+  @input=${e=>document.querySelector("#text-input").value=e.detail.value}
 >Hello!</sc-text>
 
 <h3>Attributes</h3>
+<sc-bang
+  @input=${e=>document.querySelector("#test-text").focus()}
+></sc-bang>
 <div>
   <sc-text>value [=""]</sc-text>
   <sc-text
+    id="stuff"
     editable
     @change=${e=>document.querySelector("#test-text").value=e.detail.value}
   >Hello!</sc-text>
@@ -30,13 +35,13 @@
   ></sc-toggle>
   <p>If editable, the "change" event is trigerred on Cmd+S, Enter and on blur, the red outline indicates dirty state.</p>
 </div>
-<div>
+<!-- <div>
   <sc-text>?multiline [=false]</sc-text>
   <sc-toggle
     @change=${e=>document.querySelector("#test-text").multiline=e.detail.value}
   ></sc-toggle>
   <p>If multiline and editable, the "change" event is not triggered on Enter</p>
-</div>
+</div> -->
 <div>
   <sc-text>placeholder [=""]</sc-text>
   <sc-text
@@ -50,17 +55,13 @@
   <sc-text>@change</sc-text>
   <sc-text id="text-change" multiline></sc-text>
 </div>
-<sc-code-example language="html">
-${"<sc-text\n  @change=${e => console.log(e.detail.value)}\n></sc-text>"}
-</sc-code-example>
-
-<!-- <div>
+<div>
   <sc-text>@input</sc-text>
   <sc-text id="text-input"></sc-text>
 </div>
-<sc-code-example language="html">
-${"<sc-text\n  @input=${e => console.log(e.detail.value)}\n></sc-text>"}
-</sc-code-example> -->
+<sc-code-example language="javascript">
+${"<sc-text\n  @change=${e => console.log(e.detail.value)}\n  @input=${e => console.log(e.detail.value)}\n></sc-text>"}
+</sc-code-example>
 
 
 <h3>Keyboard shortcuts</h3>
