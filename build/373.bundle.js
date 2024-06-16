@@ -23,13 +23,13 @@
 <h3>Attributes</h3>
 <div>
   <sc-text>min [=-Infinity]</sc-text>
-  <sc-number max="0" value="-9999" integer
+  <sc-number value="-9999" integer
     @input=${e=>document.querySelector("#test-number").min=e.detail.value}
   ></sc-number>
 </div>
 <div>
   <sc-text>max [=+Infinity]</sc-text>
-  <sc-number min="1" value="9999" integer
+  <sc-number value="9999" integer
     @input=${e=>document.querySelector("#test-number").max=e.detail.value}
   ></sc-number>
 </div>
