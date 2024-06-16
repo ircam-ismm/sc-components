@@ -137,12 +137,13 @@ class ScTransportBase extends ScElement {
       ${this.buttons.map(type => {
         switch (type) {
           case 'play':
+          case 'start': // allow start as an alias for play
             return html`
               <svg
-                class="play ${this.value === 'play' ? 'active' : ''}"
+                class="play ${this.value === type ? 'active' : ''}"
                 viewbox="0 0 20 20"
-                @mousedown=${e => this._onChange(e, 'play')}
-                @touchstart=${e => this._onChange(e, 'play')}
+                @mousedown=${e => this._onChange(e, type)}
+                @touchstart=${e => this._onChange(e, type)}
                 tabindex="-1"
               >
                 <polygon class="play-shape" points="6, 5, 15, 10, 6, 15"></polygon>
