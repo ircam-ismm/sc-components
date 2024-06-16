@@ -2919,12 +2919,12 @@ span.CodeMirror-selectedtext { background: none; }
       fill: var(--sc-transport-active-stop-fill);
     }
   `;get midiType(){return"control"}set midiValue(e){if(!this.disabled&&e>0){let e=this.buttons.indexOf(this.value);e+=1,e<0?e=this.buttons.length-1:e>=this.buttons.length&&(e=0),this.value=this.buttons[e],this._dispatchEvent()}}get midiValue(){return null}constructor(){super(),this.buttons=["play","pause","stop"],this.value=null,this.disabled=!1,this._keyboard=new y(this,{filterCodes:["ArrowUp","ArrowRight","ArrowDown","ArrowLeft","Space"],callback:this._onKeyboardEvent.bind(this),deduplicateEvents:!0})}render(){return u.qy`
-      ${this.buttons.map((e=>{switch(e){case"play":case"start":return u.qy`
+      ${this.buttons.map((e=>{switch(e){case"play":return u.qy`
               <svg
-                class="play ${this.value===e?"active":""}"
+                class="play ${"play"===this.value?"active":""}"
                 viewbox="0 0 20 20"
-                @mousedown=${t=>this._onChange(t,e)}
-                @touchstart=${t=>this._onChange(t,e)}
+                @mousedown=${e=>this._onChange(e,"play")}
+                @touchstart=${e=>this._onChange(e,"play")}
                 tabindex="-1"
               >
                 <polygon class="play-shape" points="6, 5, 15, 10, 6, 15"></polygon>
