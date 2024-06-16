@@ -238,7 +238,8 @@ class ScNumber extends ScElement {
     this._hasVirtualKeyboard = false;
     this._numKeyPressed = 0;
     this._onKeyDown = this._onKeyDown.bind(this);
-    this._onComponentFocus = this._onComponentFocus.bind(this);
+    this._onFocus = this._onFocus.bind(this);
+    this._onBlur = this._onBlur.bind(this);
 
     this.keyboard = new KeyboardController(this, {
       filterCodes: ['ArrowUp', 'ArrowRight', 'ArrowDown', 'ArrowLeft'],
@@ -266,10 +267,8 @@ class ScNumber extends ScElement {
       <div
         tabindex="-1"
         class="container"
-        @focus="${this._onFocus}"
-        @blur="${this._onBlur}"
-        @touchstart="${this._onTouchFocus}"
-        @touchend="${this._openVirtualKeyboard}"
+        @touchstart=${this._onTouchStart}
+        @touchend=${this._openVirtualKeyboard}
       >
         <div class="info ${classMap(isEdited)}"></div>
 
@@ -327,21 +326,33 @@ class ScNumber extends ScElement {
     // @note - this is important if the compoent is e.g. embedded in another component
     this._tabindex = this.getAttribute('tabindex') || 0;
 
-    this.addEventListener('focus', this._onComponentFocus);
+    this.addEventListener('focus', this._onFocus);
+    this.addEventListener('blur', this._onBlur);
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
 
-    this.removeEventListener('focus', this._onComponentFocus);
+    this.removeEventListener('focus', this._onFocus);
+    this.removeEventListener('blur', this._onBlur);
   }
 
-  _onComponentFocus() {
-    this.shadowRoot.querySelector('.container').focus();
+  // TAB keyboard interactions
+  _onFocus() {
+    this._numKeyPressed = 0;
+    window.addEventListener('keydown', this._onKeyDown);
+    this.shadowRoot.querySelector('.container').focus(); // container holds the focus
   }
 
-  // prevent focus for touch interfaces, we want to have virtual keyboard here
-  _onTouchFocus(e) {
+  // blur does not work perperly on `Shift+Tab`
+  // cf. https://javascript.info/focus-blur for possible fix?
+  _onBlur() {
+    this._updateValueFromDisplayValue();
+    window.removeEventListener('keydown', this._onKeyDown);
+  }
+
+  // prevent focus for touch interfaces, we want to use a virtual keyboard in this case
+  _onTouchStart(e) {
     e.preventDefault();
     e.stopPropagation();
   }
@@ -399,18 +410,6 @@ class ScNumber extends ScElement {
       this._emitInput();
       this._emitChange();
     });
-  }
-
-  // keyboard interactions
-  // this
-  _onFocus() {
-    this._numKeyPressed = 0;
-    window.addEventListener('keydown', this._onKeyDown);
-  }
-
-  _onBlur() {
-    this._updateValueFromDisplayValue();
-    window.removeEventListener('keydown', this._onKeyDown);
   }
 
   // Keyboard controller callback,
