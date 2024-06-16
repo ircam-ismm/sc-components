@@ -235,10 +235,10 @@ class ScNumber extends ScElement {
     this._updateValue000001 = this._updateValueFromPointer(0.00001);
     this._updateValue0000001 = this._updateValueFromPointer(0.000001);
 
-
     this._hasVirtualKeyboard = false;
     this._numKeyPressed = 0;
     this._onKeyDown = this._onKeyDown.bind(this);
+    this._onComponentFocus = this._onComponentFocus.bind(this);
 
     this.keyboard = new KeyboardController(this, {
       filterCodes: ['ArrowUp', 'ArrowRight', 'ArrowDown', 'ArrowLeft'],
@@ -268,7 +268,7 @@ class ScNumber extends ScElement {
         class="container"
         @focus="${this._onFocus}"
         @blur="${this._onBlur}"
-        @touchstart="${this._handleFocus}"
+        @touchstart="${this._onTouchFocus}"
         @touchend="${this._openVirtualKeyboard}"
       >
         <div class="info ${classMap(isEdited)}"></div>
@@ -326,10 +326,22 @@ class ScNumber extends ScElement {
     super.connectedCallback();
     // @note - this is important if the compoent is e.g. embedded in another component
     this._tabindex = this.getAttribute('tabindex') || 0;
+
+    this.addEventListener('focus', this._onComponentFocus);
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+
+    this.removeEventListener('focus', this._onComponentFocus);
+  }
+
+  _onComponentFocus() {
+    this.shadowRoot.querySelector('.container').focus();
   }
 
   // prevent focus for touch interfaces, we want to have virtual keyboard here
-  _handleFocus(e) {
+  _onTouchFocus(e) {
     e.preventDefault();
     e.stopPropagation();
   }
