@@ -357,7 +357,7 @@ class ScNumber extends ScElement {
     e.stopPropagation();
   }
 
-  // this only works on touchend
+  // only works on touchend
   _openVirtualKeyboard(e) {
     e.preventDefault(); // go to end of page
     e.stopPropagation();
