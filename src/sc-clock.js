@@ -93,7 +93,6 @@ class ScClock extends ScElement {
     this.getTimeFunction = () => Date.now() / 1000 - offsetInSec;
     this.twinkle = false;
     this.format = 'hh:mm:ss:ms';
-
   }
 
   render() {

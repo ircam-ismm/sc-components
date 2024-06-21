@@ -128,13 +128,13 @@ class ScPrev extends ScElement {
   }
 
   _dispatchEvent() {
-    const changeEvent = new CustomEvent('input', {
+    const inputEvent = new CustomEvent('input', {
       bubbles: true,
       composed: true,
       detail: { value: this._active },
     });
 
-    this.dispatchEvent(changeEvent);
+    this.dispatchEvent(inputEvent);
   }
 }
 
