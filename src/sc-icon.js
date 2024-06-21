@@ -136,6 +136,16 @@ const template = html\`
   "
   @change=${e => applyStyle(e.detail.value)}
 ></sc-editor>
+
+<h3>With inner value</h3>
+<sc-icon
+  @input=${e => console.log('coucou asco')}
+>
+  <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1792 1792" xml:space="preserve">
+    <path d="M187.8,1659L896,200.9L1604.2,1659L896,1285.5L187.8,1659z"/>
+  </svg>
+</sc-icon>
+
 `;
 
 
