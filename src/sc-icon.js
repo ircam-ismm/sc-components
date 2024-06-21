@@ -1,4 +1,5 @@
 import { html, css } from 'lit';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 
 import ScElement from './ScElement.js';
 import KeyboardController from './controllers/keyboard-controller.js'
@@ -115,7 +116,9 @@ class ScIcon extends ScElement {
   render() {
     let include;
 
-    if (this.href !== null && this.href !== '' && !this.disabled) {
+    if (this.innerHTML) {
+      include = unsafeHTML(this.innerHTML);
+    } else if (this.href !== null && this.href !== '' && !this.disabled) {
       include = html`
         <a href="${this.href}" target="_blank">
           ${icons[this.type]}
