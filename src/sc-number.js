@@ -7,6 +7,12 @@ import ScElement from './ScElement.js';
 import KeyboardController from './controllers/keyboard-controller.js';
 import './sc-speed-surface.js';
 
+function isTouchDevice() {
+  return (('ontouchstart' in window) ||
+     (navigator.maxTouchPoints > 0) ||
+     (navigator.msMaxTouchPoints > 0));
+}
+
 class ScNumber extends ScElement {
   static properties = {
     min: {
@@ -158,19 +164,20 @@ class ScNumber extends ScElement {
       height: 100%;
     }
 
-    input[type="number"] {
-      position: absolute;
-      top: 1px;
-      left: 1px;
-      width: 1px;
-      height: 1px;
-      padding: 0;
+    input {
+      box-sizing: border-box;
+      width: 100%;
+      height: 100%;
+      color: white;
+      width: 100%;
+      height: 100%;
       border: none;
-      background-color: var(--sc-color-primary-3);
-    }
-
-    input[type="number"]:focus {
+      background-color: transparent;
+      border-left: 15px solid var(--sc-color-primary-3);
+      text-indent: 4px;
+      font-family: var(--sc-font-family);
       outline: none;
+      border-radius: 0;
     }
   `;
 
@@ -226,7 +233,7 @@ class ScNumber extends ScElement {
     this.readonly = false;
 
     this._valueChanged = false;
-    this._isTouchScreen = false;
+    this._isTouchDevice = isTouchDevice();
 
     this._updateValue1 = this._updateValueFromPointer(1);
     this._updateValue01 = this._updateValueFromPointer(0.1);
@@ -264,15 +271,24 @@ class ScNumber extends ScElement {
 
     // @todo - would be probably more consistant and simple by just removing
     // this div and work on `this` directly
-    if (this._istouchScreen) {
-      return html`<input type="number" />`
+    if (this._isTouchDevice === true) {
+      return html`
+        <input
+          type="text"
+          inputmode="decimal"
+          value=${this._displayValue}
+          ?disabled=${this.disabled}
+          ?readonly=${this.readonly}
+          @change=${this._onTouchChange}
+          @input=${this._onTouchInput}
+        />`
     } else {
       return html`
         <div
           tabindex="-1"
           class="container"
-          @touchstart=${this._onTouchStart}
-          @touchend=${this._openVirtualKeyboard}
+          @focus=${this._onFocus}
+          @blur=${this._onBlur}
         >
           <div class="info ${classMap(isEdited)}"></div>
 
@@ -330,20 +346,15 @@ class ScNumber extends ScElement {
     super.connectedCallback();
     // @note - this is important if the compoent is e.g. embedded in another component
     this._tabindex = this.getAttribute('tabindex') || 0;
-
-    this.addEventListener('focus', this._onFocus);
-    this.addEventListener('blur', this._onBlur);
-  }
-
-  disconnectedCallback() {
-    super.disconnectedCallback();
-
-    this.removeEventListener('focus', this._onFocus);
-    this.removeEventListener('blur', this._onBlur);
   }
 
   // TAB keyboard interactions
   _onFocus() {
+    // doesn't seem to be called
+    if (this._isTouchDevice) {
+      return;
+    }
+
     this._numKeyPressed = 0;
     window.addEventListener('keydown', this._onKeyDown);
     this.shadowRoot.querySelector('.container').focus(); // container holds the focus
@@ -352,74 +363,67 @@ class ScNumber extends ScElement {
   // blur does not work perperly on `Shift+Tab`
   // cf. https://javascript.info/focus-blur for possible fix?
   _onBlur() {
+    if (this._isTouchDevice) {
+      console.log('blur');
+      return;
+    }
+
     this._updateValueFromDisplayValue();
     window.removeEventListener('keydown', this._onKeyDown);
   }
 
-  // prevent focus for touch interfaces, we want to use a virtual keyboard in this case
+  // replace with simple input number for touch screens
   async _onTouchStart(e) {
     e.preventDefault();
     e.stopPropagation();
-
-    this._istouchScreen = true;
-    await this.requestUpdate();
-    const $input = this.shadowRoot.querySelector('input');
-    $input.focus();
-  }
-
-  // only works on touchend
-  _openVirtualKeyboard(e) {
-    e.preventDefault(); // go to end of page
-    e.stopPropagation();
-
-    if (this._hasVirtualKeyboard) {
-      return;
-    }
 
     if (this.disabled || this.readonly) {
       return;
     }
 
-    // lock speed surface events
-    this._hasVirtualKeyboard = true;
+    this._isTouchDevice = true;
+    await this.requestUpdate();
+    // const $input = this.shadowRoot.querySelector('input');
+    this.focus();
+  }
 
-    const $number = document.createElement('input');
-    $number.type = 'number';
+  async _onMouseDown(e) {
+    e.preventDefault();
+    e.stopPropagation();
 
-    this.shadowRoot.appendChild($number);
-    $number.focus();
-    $number.click();
+    if (this.disabled || this.readonly) {
+      return;
+    }
 
-    $number.addEventListener('input', e => {
-      e.preventDefault();
-      e.stopPropagation();
-      // when "." or "," is pressed e.target.value is empty in chrome
-      // @todo - check firefox and safari
-      if (e.target.value) {
-        this.value = parseFloat(e.target.value);
-        this._emitInput();
-      }
-    });
+    this._isTouchDevice = false;
+    await this.requestUpdate();
+    this.focus();
+  }
 
-    $number.addEventListener('change', e => {
-      e.preventDefault(); // go to end of page
-      e.stopPropagation();
+  _onTouchInput(e) {
+    e.stopPropagation();
 
-      // when "." or "," is pressed e.target.value is empty in chrome
-      // @todo - check firefox and safari
-      if (e.target.value) {
-        this.value = parseFloat(e.target.value);
-      }
+    if (e.target.value === '') {
+      return;
+    }
 
-      // this prevents the focus to go to the next focusable element
-      this.focus();
-      // clean the box
-      $number.remove();
-      this._hasVirtualKeyboard = false;
+    // allow ',' and '.' as separator
+    const parsedValue = e.target.value.replace(',', '.');
+    this.value = parseFloat(parsedValue);
+    this._emitInput();
+  }
 
-      this._emitInput();
-      this._emitChange();
-    });
+  _onTouchChange(e) {
+    e.stopPropagation();
+
+    if (e.target.value === '') {
+      return;
+    }
+
+    // allow ',' and '.' as separator
+    const parsedValue = e.target.value.replace(',', '.');
+    this.value = parseFloat(parsedValue);
+    this._emitChange();
   }
 
   // Keyboard controller callback,
