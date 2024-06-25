@@ -226,6 +226,7 @@ class ScNumber extends ScElement {
     this.readonly = false;
 
     this._valueChanged = false;
+    this._isTouchScreen = false;
 
     this._updateValue1 = this._updateValueFromPointer(1);
     this._updateValue01 = this._updateValueFromPointer(0.1);
@@ -263,53 +264,57 @@ class ScNumber extends ScElement {
 
     // @todo - would be probably more consistant and simple by just removing
     // this div and work on `this` directly
-    return html`
-      <div
-        tabindex="-1"
-        class="container"
-        @touchstart=${this._onTouchStart}
-        @touchend=${this._openVirtualKeyboard}
-      >
-        <div class="info ${classMap(isEdited)}"></div>
+    if (this._istouchScreen) {
+      return html`<input type="number" />`
+    } else {
+      return html`
+        <div
+          tabindex="-1"
+          class="container"
+          @touchstart=${this._onTouchStart}
+          @touchend=${this._openVirtualKeyboard}
+        >
+          <div class="info ${classMap(isEdited)}"></div>
 
-        <div class="content">
-          <span class="z">
-            ${parts[0]}
-            <sc-speed-surface @input="${this._updateValue1}"></sc-speed-surface>
-          </span>
-          ${!this.integer
-            ? html`
-              <span class="z">
-                .
-              </span>
-              <span class="z">
-                ${parts[1][0] || emptySpace}
-                <sc-speed-surface @input="${this._updateValue01}"></sc-speed-surface>
-              </span>
-              <span class="z">
-                ${parts[1][1] || emptySpace}
-                <sc-speed-surface @input="${this._updateValue001}"></sc-speed-surface>
-              </span>
-              <span class="z">
-                ${parts[1][2] || emptySpace}
-                <sc-speed-surface @input="${this._updateValue0001}"></sc-speed-surface>
-              </span>
-              <span class="z">
-                ${parts[1][3] || emptySpace}
-                <sc-speed-surface @input="${this._updateValue00001}"></sc-speed-surface>
-              </span>
-              <span class="z">
-                ${parts[1][4] || emptySpace}
-                <sc-speed-surface @input="${this._updateValue000001}"></sc-speed-surface>
-              </span>
-              <span class="z">
-                ${parts[1][5] || emptySpace}
-                <sc-speed-surface @input="${this._updateValue0000001}"></sc-speed-surface>
-              </span>`
-            : nothing}
+          <div class="content">
+            <span class="z">
+              ${parts[0]}
+              <sc-speed-surface @input="${this._updateValue1}"></sc-speed-surface>
+            </span>
+            ${!this.integer
+              ? html`
+                <span class="z">
+                  .
+                </span>
+                <span class="z">
+                  ${parts[1][0] || emptySpace}
+                  <sc-speed-surface @input="${this._updateValue01}"></sc-speed-surface>
+                </span>
+                <span class="z">
+                  ${parts[1][1] || emptySpace}
+                  <sc-speed-surface @input="${this._updateValue001}"></sc-speed-surface>
+                </span>
+                <span class="z">
+                  ${parts[1][2] || emptySpace}
+                  <sc-speed-surface @input="${this._updateValue0001}"></sc-speed-surface>
+                </span>
+                <span class="z">
+                  ${parts[1][3] || emptySpace}
+                  <sc-speed-surface @input="${this._updateValue00001}"></sc-speed-surface>
+                </span>
+                <span class="z">
+                  ${parts[1][4] || emptySpace}
+                  <sc-speed-surface @input="${this._updateValue000001}"></sc-speed-surface>
+                </span>
+                <span class="z">
+                  ${parts[1][5] || emptySpace}
+                  <sc-speed-surface @input="${this._updateValue0000001}"></sc-speed-surface>
+                </span>`
+              : nothing}
+          </div>
         </div>
-      </div>
-    `;
+      `;
+    }
   }
 
   updated(changedProperties) {
@@ -352,9 +357,14 @@ class ScNumber extends ScElement {
   }
 
   // prevent focus for touch interfaces, we want to use a virtual keyboard in this case
-  _onTouchStart(e) {
+  async _onTouchStart(e) {
     e.preventDefault();
     e.stopPropagation();
+
+    this._istouchScreen = true;
+    await this.requestUpdate();
+    const $input = this.shadowRoot.querySelector('input');
+    $input.focus();
   }
 
   // only works on touchend
