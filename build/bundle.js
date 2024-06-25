@@ -2099,65 +2099,75 @@ span.CodeMirror-selectedtext { background: none; }
       height: 100%;
     }
 
-    input[type="number"] {
-      position: absolute;
-      top: 1px;
-      left: 1px;
-      width: 1px;
-      height: 1px;
-      padding: 0;
+    input {
+      box-sizing: border-box;
+      width: 100%;
+      height: 100%;
+      color: white;
+      width: 100%;
+      height: 100%;
       border: none;
-      background-color: var(--sc-color-primary-3);
-    }
-
-    input[type="number"]:focus {
+      background-color: transparent;
+      border-left: 15px solid var(--sc-color-primary-3);
+      text-indent: 4px;
+      font-family: var(--sc-font-family);
       outline: none;
+      border-radius: 0;
     }
-  `;set min(e){this._min=Math.min(e,this._max),this._value<this._min&&(this.value=this._min,this._emitChange())}get min(){return this._min}set max(e){this._max=Math.max(e,this._min),this._value>this._max&&(this.value=this._max,this._emitChange())}get max(){return this._max}set value(e){(e=Math.min(this._max,Math.max(this._min,e)))!==this._value&&(this._value=e,this._displayValue=e.toString(),this.requestUpdate())}get value(){return this._value}constructor(){super(),this._min=-1/0,this._max=1/0,this._value=0,this._displayValue="0",this.integer=!1,this.disabled=!1,this.readonly=!1,this._valueChanged=!1,this._updateValue1=this._updateValueFromPointer(1),this._updateValue01=this._updateValueFromPointer(.1),this._updateValue001=this._updateValueFromPointer(.01),this._updateValue0001=this._updateValueFromPointer(.001),this._updateValue00001=this._updateValueFromPointer(1e-4),this._updateValue000001=this._updateValueFromPointer(1e-5),this._updateValue0000001=this._updateValueFromPointer(1e-6),this._hasVirtualKeyboard=!1,this._numKeyPressed=0,this._onKeyDown=this._onKeyDown.bind(this),this._onFocus=this._onFocus.bind(this),this._onBlur=this._onBlur.bind(this),this.keyboard=new y(this,{filterCodes:["ArrowUp","ArrowRight","ArrowDown","ArrowLeft"],callback:this._onKeyboardEvent.bind(this)})}render(){const e=this._displayValue.split(".");e[1]||(e[1]=[]);const t=D("&nbsp;"),n={edited:0!==this._numKeyPressed};return u.qy`
-      <div
-        tabindex="-1"
-        class="container"
-        @touchstart=${this._onTouchStart}
-        @touchend=${this._openVirtualKeyboard}
-      >
-        <div class="info ${v(n)}"></div>
+  `;set min(e){this._min=Math.min(e,this._max),this._value<this._min&&(this.value=this._min,this._emitChange())}get min(){return this._min}set max(e){this._max=Math.max(e,this._min),this._value>this._max&&(this.value=this._max,this._emitChange())}get max(){return this._max}set value(e){(e=Math.min(this._max,Math.max(this._min,e)))!==this._value&&(this._value=e,this._displayValue=e.toString(),this.requestUpdate())}get value(){return this._value}constructor(){super(),this._min=-1/0,this._max=1/0,this._value=0,this._displayValue="0",this.integer=!1,this.disabled=!1,this.readonly=!1,this._valueChanged=!1,this._isTouchDevice="ontouchstart"in window||navigator.maxTouchPoints>0||navigator.msMaxTouchPoints>0,this._updateValue1=this._updateValueFromPointer(1),this._updateValue01=this._updateValueFromPointer(.1),this._updateValue001=this._updateValueFromPointer(.01),this._updateValue0001=this._updateValueFromPointer(.001),this._updateValue00001=this._updateValueFromPointer(1e-4),this._updateValue000001=this._updateValueFromPointer(1e-5),this._updateValue0000001=this._updateValueFromPointer(1e-6),this._hasVirtualKeyboard=!1,this._numKeyPressed=0,this._onKeyDown=this._onKeyDown.bind(this),this._onFocus=this._onFocus.bind(this),this._onBlur=this._onBlur.bind(this),this.keyboard=new y(this,{filterCodes:["ArrowUp","ArrowRight","ArrowDown","ArrowLeft"],callback:this._onKeyboardEvent.bind(this)})}render(){const e=this._displayValue.split(".");e[1]||(e[1]=[]);const t=D("&nbsp;"),n={edited:0!==this._numKeyPressed};return!0===this._isTouchDevice?u.qy`
+        <input
+          type="text"
+          inputmode="decimal"
+          value=${this._displayValue}
+          ?disabled=${this.disabled}
+          ?readonly=${this.readonly}
+          @change=${this._onTouchChange}
+          @input=${this._onTouchInput}
+        />`:u.qy`
+        <div
+          tabindex="-1"
+          class="container"
+          @focus=${this._onFocus}
+          @blur=${this._onBlur}
+        >
+          <div class="info ${v(n)}"></div>
 
-        <div class="content">
-          <span class="z">
-            ${e[0]}
-            <sc-speed-surface @input="${this._updateValue1}"></sc-speed-surface>
-          </span>
-          ${this.integer?u.s6:u.qy`
-              <span class="z">
-                .
-              </span>
-              <span class="z">
-                ${e[1][0]||t}
-                <sc-speed-surface @input="${this._updateValue01}"></sc-speed-surface>
-              </span>
-              <span class="z">
-                ${e[1][1]||t}
-                <sc-speed-surface @input="${this._updateValue001}"></sc-speed-surface>
-              </span>
-              <span class="z">
-                ${e[1][2]||t}
-                <sc-speed-surface @input="${this._updateValue0001}"></sc-speed-surface>
-              </span>
-              <span class="z">
-                ${e[1][3]||t}
-                <sc-speed-surface @input="${this._updateValue00001}"></sc-speed-surface>
-              </span>
-              <span class="z">
-                ${e[1][4]||t}
-                <sc-speed-surface @input="${this._updateValue000001}"></sc-speed-surface>
-              </span>
-              <span class="z">
-                ${e[1][5]||t}
-                <sc-speed-surface @input="${this._updateValue0000001}"></sc-speed-surface>
-              </span>`}
+          <div class="content">
+            <span class="z">
+              ${e[0]}
+              <sc-speed-surface @input="${this._updateValue1}"></sc-speed-surface>
+            </span>
+            ${this.integer?u.s6:u.qy`
+                <span class="z">
+                  .
+                </span>
+                <span class="z">
+                  ${e[1][0]||t}
+                  <sc-speed-surface @input="${this._updateValue01}"></sc-speed-surface>
+                </span>
+                <span class="z">
+                  ${e[1][1]||t}
+                  <sc-speed-surface @input="${this._updateValue001}"></sc-speed-surface>
+                </span>
+                <span class="z">
+                  ${e[1][2]||t}
+                  <sc-speed-surface @input="${this._updateValue0001}"></sc-speed-surface>
+                </span>
+                <span class="z">
+                  ${e[1][3]||t}
+                  <sc-speed-surface @input="${this._updateValue00001}"></sc-speed-surface>
+                </span>
+                <span class="z">
+                  ${e[1][4]||t}
+                  <sc-speed-surface @input="${this._updateValue000001}"></sc-speed-surface>
+                </span>
+                <span class="z">
+                  ${e[1][5]||t}
+                  <sc-speed-surface @input="${this._updateValue0000001}"></sc-speed-surface>
+                </span>`}
+          </div>
         </div>
-      </div>
-    `}updated(e){if(e.has("disabled")||e.has("disabled")){const e=this.disabled||this.readonly?-1:this._tabindex;this.setAttribute("tabindex",e),(this.disabled||this.readonly)&&this.blur()}}connectedCallback(){super.connectedCallback(),this._tabindex=this.getAttribute("tabindex")||0,this.addEventListener("focus",this._onFocus),this.addEventListener("blur",this._onBlur)}disconnectedCallback(){super.disconnectedCallback(),this.removeEventListener("focus",this._onFocus),this.removeEventListener("blur",this._onBlur)}_onFocus(){this._numKeyPressed=0,window.addEventListener("keydown",this._onKeyDown),this.shadowRoot.querySelector(".container").focus()}_onBlur(){this._updateValueFromDisplayValue(),window.removeEventListener("keydown",this._onKeyDown)}_onTouchStart(e){e.preventDefault(),e.stopPropagation()}_openVirtualKeyboard(e){if(e.preventDefault(),e.stopPropagation(),this._hasVirtualKeyboard)return;if(this.disabled||this.readonly)return;this._hasVirtualKeyboard=!0;const t=document.createElement("input");t.type="number",this.shadowRoot.appendChild(t),t.focus(),t.click(),t.addEventListener("input",(e=>{e.preventDefault(),e.stopPropagation(),e.target.value&&(this.value=parseFloat(e.target.value),this._emitInput())})),t.addEventListener("change",(e=>{e.preventDefault(),e.stopPropagation(),e.target.value&&(this.value=parseFloat(e.target.value)),this.focus(),t.remove(),this._hasVirtualKeyboard=!1,this._emitInput(),this._emitChange()}))}_onKeyboardEvent(e){this.disabled||this.readonly||"keydown"===e.type&&("ArrowUp"===e.code||"ArrowRight"===e.code?this.value+=e.shiftKey?10:1:this.value-=e.shiftKey?10:1,this._emitInput(),this._emitChange())}_onKeyDown(e){if(!this.disabled&&!this.readonly){if(-1!==(this.integer?["0","1","2","3","4","5","6","7","8","9","-"]:["0","1","2","3","4","5","6","7","8","9","-",".",","]).indexOf(e.key)){e.preventDefault(),e.stopPropagation(),0===this._numKeyPressed&&(this._displayValue="");let t=e.key;","===t&&(t="."),this._displayValue+=t,this._numKeyPressed+=1,this.requestUpdate()}"Backspace"!==e.key&&8!==e.which||(e.preventDefault(),e.stopPropagation(),"."===this._displayValue[this._displayValue.length-1]&&(this._displayValue=this._displayValue.substring(0,this._displayValue.length-1)),this._displayValue=this._displayValue.substring(0,this._displayValue.length-1),this._numKeyPressed+=1,this.requestUpdate()),"Enter"!==e.key&&13!==e.which||(e.preventDefault(),e.stopPropagation(),this._updateValueFromDisplayValue())}}_updateValueFromPointer(e){return t=>{if(t.stopPropagation(),!this.disabled&&!this.readonly&&!this._hasVirtualKeyboard){if(null!==t.detail.pointerId){if(Math.abs(t.detail.dy)<.02)return;const n=this._value,i=t.detail.dy<0?-1:1,r=8,a=1.2;let o=Math.pow(Math.abs(t.detail.dy*r),a);o=Math.max(1,o),o*=i,this._value+=e*o,this._value=ke.times(Math.round(this._value/e),e),this._value=Math.max(this._min,Math.min(this._max,this._value));const s=this._value.toString().toString().split("."),l=e.toString().split(".")[1];if(l)for(s[1]||(s[1]=[]);s[1].length<l.length;)s[1]+="0";this._displayValue=s.join("."),this._value!==n&&(this._valueChanged=!0,this._emitInput())}else!0===this._valueChanged&&(this._valueChanged=!1,this._emitChange());this.requestUpdate()}}}_updateValueFromDisplayValue(){this._numKeyPressed>0&&(this._value=this.integer?parseInt(this._displayValue):parseFloat(this._displayValue),(this._value<this._min||this._value>this._max)&&(this._value=Math.max(this._min,Math.min(this._max,this._value)),this._displayValue=this._value.toString()),this._numKeyPressed=0,this._emitInput(),this._emitChange(),this.requestUpdate())}_emitInput(){const e=new CustomEvent("input",{bubbles:!0,composed:!0,detail:{value:this._value}});this.dispatchEvent(e)}_emitChange(){const e=new CustomEvent("change",{bubbles:!0,composed:!0,detail:{value:this._value}});this.dispatchEvent(e)}}void 0===customElements.get("sc-number")&&customElements.define("sc-number",Pe);class Fe extends f{static properties={_active:{type:Boolean,state:!0},disabled:{type:Boolean,reflect:!0}};static styles=u.AH`
+      `}updated(e){if(e.has("disabled")||e.has("disabled")){const e=this.disabled||this.readonly?-1:this._tabindex;this.setAttribute("tabindex",e),(this.disabled||this.readonly)&&this.blur()}}connectedCallback(){super.connectedCallback(),this._tabindex=this.getAttribute("tabindex")||0}_onFocus(){this._isTouchDevice||(this._numKeyPressed=0,window.addEventListener("keydown",this._onKeyDown),this.shadowRoot.querySelector(".container").focus())}_onBlur(){this._isTouchDevice?console.log("blur"):(this._updateValueFromDisplayValue(),window.removeEventListener("keydown",this._onKeyDown))}async _onTouchStart(e){e.preventDefault(),e.stopPropagation(),this.disabled||this.readonly||(this._isTouchDevice=!0,await this.requestUpdate(),this.focus())}async _onMouseDown(e){e.preventDefault(),e.stopPropagation(),this.disabled||this.readonly||(this._isTouchDevice=!1,await this.requestUpdate(),this.focus())}_onTouchInput(e){if(e.stopPropagation(),""===e.target.value)return;const t=e.target.value.replace(",",".");this.value=parseFloat(t),this._emitInput()}_onTouchChange(e){if(e.stopPropagation(),""===e.target.value)return;const t=e.target.value.replace(",",".");this.value=parseFloat(t),this._emitChange()}_onKeyboardEvent(e){this.disabled||this.readonly||"keydown"===e.type&&("ArrowUp"===e.code||"ArrowRight"===e.code?this.value+=e.shiftKey?10:1:this.value-=e.shiftKey?10:1,this._emitInput(),this._emitChange())}_onKeyDown(e){if(!this.disabled&&!this.readonly){if(-1!==(this.integer?["0","1","2","3","4","5","6","7","8","9","-"]:["0","1","2","3","4","5","6","7","8","9","-",".",","]).indexOf(e.key)){e.preventDefault(),e.stopPropagation(),0===this._numKeyPressed&&(this._displayValue="");let t=e.key;","===t&&(t="."),this._displayValue+=t,this._numKeyPressed+=1,this.requestUpdate()}"Backspace"!==e.key&&8!==e.which||(e.preventDefault(),e.stopPropagation(),"."===this._displayValue[this._displayValue.length-1]&&(this._displayValue=this._displayValue.substring(0,this._displayValue.length-1)),this._displayValue=this._displayValue.substring(0,this._displayValue.length-1),this._numKeyPressed+=1,this.requestUpdate()),"Enter"!==e.key&&13!==e.which||(e.preventDefault(),e.stopPropagation(),this._updateValueFromDisplayValue())}}_updateValueFromPointer(e){return t=>{if(t.stopPropagation(),!this.disabled&&!this.readonly&&!this._hasVirtualKeyboard){if(null!==t.detail.pointerId){if(Math.abs(t.detail.dy)<.02)return;const n=this._value,i=t.detail.dy<0?-1:1,r=8,a=1.2;let o=Math.pow(Math.abs(t.detail.dy*r),a);o=Math.max(1,o),o*=i,this._value+=e*o,this._value=ke.times(Math.round(this._value/e),e),this._value=Math.max(this._min,Math.min(this._max,this._value));const s=this._value.toString().toString().split("."),l=e.toString().split(".")[1];if(l)for(s[1]||(s[1]=[]);s[1].length<l.length;)s[1]+="0";this._displayValue=s.join("."),this._value!==n&&(this._valueChanged=!0,this._emitInput())}else!0===this._valueChanged&&(this._valueChanged=!1,this._emitChange());this.requestUpdate()}}}_updateValueFromDisplayValue(){this._numKeyPressed>0&&(this._value=this.integer?parseInt(this._displayValue):parseFloat(this._displayValue),(this._value<this._min||this._value>this._max)&&(this._value=Math.max(this._min,Math.min(this._max,this._value)),this._displayValue=this._value.toString()),this._numKeyPressed=0,this._emitInput(),this._emitChange(),this.requestUpdate())}_emitInput(){const e=new CustomEvent("input",{bubbles:!0,composed:!0,detail:{value:this._value}});this.dispatchEvent(e)}_emitChange(){const e=new CustomEvent("change",{bubbles:!0,composed:!0,detail:{value:this._value}});this.dispatchEvent(e)}}void 0===customElements.get("sc-number")&&customElements.define("sc-number",Pe);class Fe extends f{static properties={_active:{type:Boolean,state:!0},disabled:{type:Boolean,reflect:!0}};static styles=u.AH`
     :host {
       display: inline-block;
       box-sizing: border-box;
