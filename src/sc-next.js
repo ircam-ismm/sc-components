@@ -136,7 +136,9 @@ class ScNext extends ScElement {
   }
 }
 
-customElements.define('sc-next', ScNext);
+if (customElements.get('sc-next') === undefined) {
+  customElements.define('sc-next', ScNext);
+}
 
 export default ScNext;
 

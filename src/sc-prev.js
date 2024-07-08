@@ -138,6 +138,8 @@ class ScPrev extends ScElement {
   }
 }
 
-customElements.define('sc-prev', ScPrev);
+if (customElements.get('sc-prev') === undefined) {
+  customElements.define('sc-prev', ScPrev);
+}
 
 export default ScPrev;
