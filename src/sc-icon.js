@@ -23,6 +23,10 @@ class ScIcon extends ScElement {
       type: Boolean,
       reflect: true,
     },
+    active: {
+      type: Boolean,
+      reflect: true,
+    },
   };
 
   static styles = css`
@@ -38,10 +42,15 @@ class ScIcon extends ScElement {
       cursor: pointer;
 
       --sc-icon-color: white;
+      --sc-icon-active: var(--sc-color-secondary-3);
     }
 
     :host([hidden]) {
       display: none;
+    }
+
+    :host([active]) {
+      background-color: var(--sc-icon-active);
     }
 
     :host([disabled]) {

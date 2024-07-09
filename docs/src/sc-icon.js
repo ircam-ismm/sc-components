@@ -97,6 +97,12 @@ const template = html\`
   ></sc-radio>
 </div>
 <div>
+  <sc-text>?active [=false]</sc-text>
+  <sc-toggle
+    @change=${e =>  document.querySelector('#test-icon').active = e.detail.value}
+  ></sc-toggle>
+</div>
+<div>
   <p>Value propagated within the event</p>
   <sc-text>value [=null]</sc-text>
   <sc-text
@@ -132,6 +138,7 @@ const template = html\`
   width: 30px;
   height: 30px;
   --sc-icon-color: white;
+  --sc-icon-active: var(--sc-color-secondary-3);
 }
   "
   @change=${e => applyStyle(e.detail.value)}
