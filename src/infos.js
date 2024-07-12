@@ -34,6 +34,7 @@ export const components = [
   'sc-midi',
   'sc-status',
   'sc-waveform',
+  'sc-table',
 ].sort();
 
 export const pages = {
