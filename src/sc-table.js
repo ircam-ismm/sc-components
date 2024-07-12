@@ -9,13 +9,13 @@ class ScTable extends ScElement {
   #range = null;
   #mode = null;
   #value = null;
-  #rawValue = null;
 
   #canvas = null;
   #ctx = null;
   #width = null;
   #height = null;
   #resizeObserver = null;
+  #animFrameId = null;
 
   static properties = {
     range: {
@@ -53,8 +53,8 @@ class ScTable extends ScElement {
   constructor() {
     super();
 
-    this.mode = 'line';
-    this.size = 128;
+    this.mode = 'cursor';
+    this.size = 32;
     this.range = [0, 1];
   }
 
@@ -78,22 +78,19 @@ class ScTable extends ScElement {
     const oldValue = this.size;
     this.#size = value;
 
-    // update underlying buffers
-    const newRawValue = new Array(this.size).fill(0);
+    // update underlying buffer
     const newValue = new Array(this.size).fill(0);
 
-    if (this.#rawValue !== null) {
-      const maxIndex = Math.min(newRawValue.length, this.#rawValue.length);
+    if (this.#value !== null) {
+      const maxIndex = Math.min(newValue.length, this.#value.length);
 
       for (let i = 0; i < maxIndex; i++) {
-        newRawValue[i] = this.#rawValue[i];
         newValue[i] = this.#value[i];
       }
     }
 
-    this.#rawValue = newRawValue;
     this.#value = newValue;
-    this.#renderCanvas();
+    this.#requestCanvasUpdate();
 
     if (oldValue !== null) {
       this.#triggerChange();
@@ -135,18 +132,14 @@ class ScTable extends ScElement {
     }
 
     this.#range = value;
-
-    // apply new range on current values
-    for (let i = 0; i < this.#rawValue.length; i++) {
-      this.#value[i] = newMin + (newMax - newMin) * this.#rawValue[i];
+    // clamp values to new range
+    for (let i = 0; i < this.#value.length; i++) {
+      let min = newMin < newMax ? newMin : newMax;
+      let max = newMin < newMax ? newMax : newMin;
+      this.#value[i] = Math.max(min, Math.min(max, this.#value[i]));
     }
 
-    this.#renderCanvas();
-
-    if (oldValue !== null) {
-      this.#triggerChange();
-    }
-
+    this.#requestCanvasUpdate();
     this.requestUpdate('range', oldValue);
   }
 
@@ -155,8 +148,8 @@ class ScTable extends ScElement {
   }
 
   set mode(value) {
-    if (!['line', 'slider'].includes(value)) {
-      throw new TypeError(`Cannot set property 'mode' on sc-table: value is not 'line' or 'slider'`);
+    if (!['cursor', 'slider'].includes(value)) {
+      throw new TypeError(`Cannot set property 'mode' on sc-table: value is not 'cursor' or 'slider'`);
     }
 
     if (value === this.#mode) {
@@ -165,7 +158,7 @@ class ScTable extends ScElement {
 
     const oldValue = this.#mode;
     this.#mode = value;
-    this.#renderCanvas();
+    this.#requestCanvasUpdate();
     this.requestUpdate('mode', oldValue);
   }
 
@@ -178,18 +171,9 @@ class ScTable extends ScElement {
       throw new TypeError(`Cannot set property 'value' on sc-table: value is not an array`);
     }
 
-    this.#value = Array.from(value);
+    this.#value = Array.from(value); // accept typed arrays
     this.#size = value.length;
-    this.#rawValue = new Array(this.size);
-    const [min, max] = this.range;
-
-    for (let i = 0; i < this.#value.length; i++) {
-      const value = Math.min(max, Math.max(min, this.#value[i]));
-      const norm = (value - min) / (max - min);
-      this.#rawValue[i] = norm;
-    }
-
-    this.#renderCanvas();
+    this.#requestCanvasUpdate();
     this.#triggerChange();
   }
 
@@ -219,13 +203,13 @@ class ScTable extends ScElement {
       const entry = entries[0];
       const { width, height } = entry.contentRect;
 
-      this.#width = width;
-      this.#height = height;
+      this.#width = width * window.devicePixelRatio;
+      this.#height = height * window.devicePixelRatio;
 
       if (this.#ctx) {
         this.#canvas.width = this.#width;
         this.#canvas.height = this.#height;
-        this.#renderCanvas();
+        this.#requestCanvasUpdate();
       }
     });
 
@@ -242,6 +226,7 @@ class ScTable extends ScElement {
 
     if (e.detail.value.length === 0) {
       this.#triggerChange();
+      this.#requestCanvasUpdate();
       return;
     }
 
@@ -251,30 +236,42 @@ class ScTable extends ScElement {
     const [min, max] = this.range;
     const scaledValue = min + (max - min) * clampedNorm;
 
-    this.#rawValue[index] = clampedNorm;
     this.#value[index] = scaledValue;
-
     this.#triggerInput(index, scaledValue);
-    this.#renderCanvas();
+    this.#requestCanvasUpdate(index);
   }
 
-  #renderCanvas() {
+  #requestCanvasUpdate(index) {
     if (this.#ctx === null) {
       return;
     }
 
+    cancelAnimationFrame(this.#animFrameId);
+    this.#animFrameId = requestAnimationFrame(() => this.#renderCanvas(index));
+  }
+
+  #renderCanvas(index = null) {
     const width = this.#width / this.size;
+    const [min, max] = this.range;
 
     this.#ctx.clearRect(0, 0, this.#width, this.#height);
 
-    switch (this.mode) {
-      case 'line': {
-        this.#rawValue.forEach((value, index) => {
-          const x = index * width;
-          const y = this.#height - (value * this.#height);
+    if (index !== null) {
+      const x = index * width;
+      this.#ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
+      this.#ctx.fillRect(x, 0, width, this.#height);
+    }
 
-          this.#ctx.fillStyle = 'white';
-          this.#ctx.fillRect(x, y, width, 1)
+    switch (this.mode) {
+      case 'cursor': {
+        this.#ctx.fillStyle = 'white';
+
+        this.#value.forEach((value, index) => {
+          const x = index * width;
+          const norm = (value - min) / (max - min);
+          const y = this.#height - (norm * this.#height);
+
+          this.#ctx.fillRect(x, y, width, 1);
         });
         break;
       }
@@ -283,9 +280,10 @@ class ScTable extends ScElement {
         const zeroNorm = Math.max(0, Math.min(1, (0 - min) / (max - min)));
         const yZero = this.#height - (zeroNorm * this.#height)
 
-        this.#rawValue.forEach((value, index) => {
+        this.#value.forEach((value, index) => {
           const x = index * width;
-          const y = this.#height - (value * this.#height);
+          const norm = (value - min) / (max - min);
+          const y = this.#height - (norm * this.#height);
 
           this.#ctx.fillStyle = 'rgba(244, 180, 62, 0.6)';
           this.#ctx.fillRect(x + 1, y, width - 1, yZero - y);

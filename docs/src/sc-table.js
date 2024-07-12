@@ -26,6 +26,7 @@ const template = html\`
 `}</sc-code-example>
 
 <sc-table
+  id="test-table"
   @change=${e => {
     if (document.querySelector('#table-change')) {
       document.querySelector('#table-change').active = true;
@@ -36,10 +37,6 @@ const template = html\`
     document.querySelector('#table-input').active = true;
     document.querySelector('#table-value-input').value = JSON.stringify(e.detail);
   }}
-  id="test-table"
-  mode="slider"
-  .range=${[-1, 1]}
-  size="12"
 ></sc-table>
 
 <h3>Events</h3>
@@ -62,20 +59,20 @@ const template = html\`
 
 <h3>Attributes</h3>
 <div>
-  <sc-text>size [=128]</sc-text>
+  <sc-text>size [=32]</sc-text>
   <sc-number
     min="1"
     max="1024"
     step="1"
-    value="128"
+    value="32"
     @change=${e => document.querySelector('#test-table').size = e.detail.value}
   ></sc-text>
 </div>
 <div>
-  <sc-text>mode [='line']</sc-text>
+  <sc-text>mode [='cursor']</sc-text>
   <sc-tab
-    .options=${['line', 'slider']}
-    value="line"
+    .options=${['cursor', 'slider']}
+    value="cursor"
     @change=${e => document.querySelector('#test-table').mode = e.detail.value}
   ></sc-tab>
 </div>
