@@ -13,6 +13,7 @@ docs/*.html
 
 build
 tests/build
+demos
 
 TODOS.md
 

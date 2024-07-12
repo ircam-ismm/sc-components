@@ -12,6 +12,7 @@ export const components = [
   'sc-clock',
   'sc-editor',
   'sc-code-example',
+  'sc-color-picker',
   'sc-select',
   'sc-dots',
   'sc-matrix',
@@ -23,14 +24,18 @@ export const components = [
   'sc-prev',
   'sc-next',
   'sc-loop',
+  'sc-separator',
   'sc-tab',
   'sc-transport',
   'sc-keyboard',
   'sc-dragndrop',
   'sc-filetree',
+  'sc-fullscreen',
   'sc-midi',
   'sc-status',
   'sc-filter',
+  'sc-waveform',
+  'sc-table',
 ].sort();
 
 export const pages = {

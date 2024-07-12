@@ -1,9 +1,10 @@
 import { html, css, svg, nothing } from 'lit';
 
 import ScElement from './ScElement.js';
+import midiControlled from './mixins/midi-controlled.js';
 import KeyboardController from './controllers/keyboard-controller.js';
 
-class ScTransport extends ScElement {
+class ScTransportBase extends ScElement {
   static properties = {
     buttons: {
       type: Array,
@@ -87,6 +88,36 @@ class ScTransport extends ScElement {
     }
   `;
 
+  // midi-learn interface
+  get midiType() {
+    return "control";
+  }
+
+  set midiValue(value) {
+    if (this.disabled) {
+      return;
+    }
+
+    if (value > 0) {
+      let index = this.buttons.indexOf(this.value);
+      index += 1;
+
+      if (index < 0) {
+        index = this.buttons.length - 1;
+      } else if (index >= this.buttons.length) {
+        index = 0;
+      }
+
+      this.value = this.buttons[index];
+      this._dispatchEvent();
+    } 
+  }
+
+  get midiValue() {
+    // @todo - define what we should do here
+    return null;
+  }
+
   constructor() {
     super();
 
@@ -106,12 +137,13 @@ class ScTransport extends ScElement {
       ${this.buttons.map(type => {
         switch (type) {
           case 'play':
+          case 'start': // allow start as an alias for play
             return html`
               <svg
-                class="play ${this.value === 'play' ? 'active' : ''}"
+                class="play ${this.value === type ? 'active' : ''}"
                 viewbox="0 0 20 20"
-                @mousedown=${e => this._onChange(e, 'play')}
-                @touchstart=${e => this._onChange(e, 'play')}
+                @mousedown=${e => this._onChange(e, type)}
+                @touchstart=${e => this._onChange(e, type)}
                 tabindex="-1"
               >
                 <polygon class="play-shape" points="6, 5, 15, 10, 6, 15"></polygon>
@@ -206,6 +238,8 @@ class ScTransport extends ScElement {
     this.dispatchEvent(changeEvent);
   }
 }
+
+const ScTransport = midiControlled('ScTransport', ScTransportBase);
 
 if (customElements.get('sc-transport') === undefined) {
   customElements.define('sc-transport', ScTransport);

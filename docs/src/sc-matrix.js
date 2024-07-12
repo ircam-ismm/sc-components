@@ -21,14 +21,24 @@ const template = html\`
 
 <sc-matrix
   id="test-matrix"
-  @change=${e => document.querySelector('#matrix-change').value = prettify(e.detail.value)}
+  @change=${e => {
+    document.querySelector('#matrix-change-value').value = prettify(e.detail.value);
+    document.querySelector('#matrix-change-update').value = JSON.stringify(e.detail.update, null, 2);
+  }}
 ></sc-matrix>
 
 <h3>Events</h3>
 
 <div>
   <sc-text>@change</sc-text>
-  <sc-text style="width: 300px; height: 150px;" id="matrix-change"></sc-text>
+  <div>
+    <sc-text>event.value</sc-text>
+    <sc-text style="width: 300px; height: 150px;" id="matrix-change-value"></sc-text>
+  </div>
+  <div>
+    <sc-text>event.update</sc-text>
+    <sc-text style="width: 300px; height: 150px;" id="matrix-change-update"></sc-text>
+  </div>
 </div>
 
 <h3>Attributes</h3>

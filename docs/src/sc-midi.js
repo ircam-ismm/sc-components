@@ -50,6 +50,8 @@ const template = html\`
   <sc-slider @input=${logEvent} @change=${logEvent}></sc-slider>
   <sc-bang @input=${logEvent}></sc-bang>
   <sc-toggle @change=${logEvent}></sc-toggle>
+  <sc-record @change=${logEvent}></sc-record>
+  <sc-transport @change=${logEvent}></sc-transport>
   <sc-button @press=${logEvent} @release=${logEvent}>my button</sc-button>
   <sc-dial @input=${logEvent} @change=${logEvent}></sc-dial>
   <sc-keyboard></sc-keyboard>

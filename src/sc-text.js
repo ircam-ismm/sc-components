@@ -1,5 +1,8 @@
-import { html, css, nothing } from 'lit';
-import { keyed } from 'lit/directives/keyed.js';
+import {
+  html,
+  css,
+  nothing,
+} from 'lit';
 
 import ScElement from './ScElement.js';
 
@@ -21,6 +24,10 @@ class ScText extends ScElement {
         type: Boolean,
         reflect: true,
       },
+      placeholder: {
+        type: String,
+        reflect: true,
+      },
     };
   }
 
@@ -38,16 +45,14 @@ class ScText extends ScElement {
         line-height: var(--sc-font-size);
         font-family: var(--sc-font-family);
         color: white;
-        line-height: 20px;
-        /* white-space: pre; is important to keep the new lines
-           cf. https://stackoverflow.com/a/33052216
-        */
-        white-space: pre;
-        background-color: var(--sc-color-primary-1);
+        line-height: 18px; /* 18 + 2 * 5 (padding) + 2 * 1 (border) === 30 */
         padding: 5px 6px;
+        background-color: var(--sc-color-primary-1);
         outline: none;
+        border: 1px dotted var(--sc-color-primary-1);
 
         overflow-y: auto;
+        position: relative;
       }
 
       :host([disabled]) {
@@ -63,38 +68,57 @@ class ScText extends ScElement {
       }
 
       :host([editable]) {
-        background-color: var(--sc-color-primary-3);
-        border: 1px dotted var(--sc-color-primary-5);
+        background-color: var(--sc-color-primary-2);
+        border: 1px dotted var(--sc-color-primary-4);
       }
 
       :host([editable]:focus),
       :host([editable]:focus-visible) {
-        border: 1px solid var(--sc-color-primary-5);
+        border: 1px solid var(--sc-color-primary-4);
       }
 
       :host([editable][dirty]:focus),
       :host([editable][dirty]:focus-visible) {
         border: 1px solid var(--sc-color-secondary-3);
       }
+
+      :host > div {
+        display: inline-block;
+        white-space: pre;
+      }
+
+      :host.editable {
+        padding:
+      }
+
+      :host input[type=text] {
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: transparent;
+        color: inherit;
+        border: none;
+        text-indent: 6px;
+        font-family: inherit;
+        font-size: inherit;
+        outline: none;
+        box-sizing: border-box;
+        padding: 0;
+      }
     `;
   }
 
   get value() {
-    return this.textContent;
+    return this._value;
   }
 
   set value(value) {
-    // content only updates if contenteditable is set to false
-    // note that `contenteditable` is an enumerated attribute
-    if (this._editable) {
-      this.setAttribute('contenteditable', 'false');
-    }
-
-    this.textContent = value;
-
-    if (this._editable) {
-      this.setAttribute('contenteditable', 'true');
-    }
+    this.textContent = value; // not editable
+    this._value = value; // editable
+    this.requestUpdate();
   }
 
   constructor() {
@@ -105,81 +129,86 @@ class ScText extends ScElement {
     this.dirty = false;
     this._value = null; // value on last change event
 
-    this._updateValue = this._updateValue.bind(this);
-    this._onKeyDown = this._onKeyDown.bind(this);
-    this._onKeyUp = this._onKeyUp.bind(this);
-    this._preventContextMenu = this._preventContextMenu.bind(this);
+    this._onSlotChange = this._onSlotChange.bind(this);
   }
 
   render() {
-    return html`<slot></slot>`;
+    if (this.editable) {
+      return html`
+        <input
+          type="text"
+          placeholder=${this.placeholder}
+          .value=${this._value}
+          ?disabled=${this.disabled}
+          @keydown=${this._onKeyDown}
+          @keyup=${this._onKeyUp}
+          @input=${this._triggerInput}
+          @change=${this._triggerChange}
+        />
+      `;
+      //
+    } else {
+      return html`<div><slot></slot></div>`
+    }
   }
 
   firstUpdated() {
     this._value = this.textContent;
-  }
-
-  updated() {
-    if (this.editable) {
-      // for some reason it does not reflect in the DOM
-      this.setAttribute('editable', true);
-
-      if (!this.disabled) {
-        this.setAttribute('tabindex', this._tabindex);
-        this.setAttribute('contenteditable', 'true');
-      } else {
-        this.setAttribute('tabindex', -1);
-        this.setAttribute('contenteditable', 'false');
-      }
-    } else {
-      this.setAttribute('tabindex', -1);
-      this.removeAttribute('editable');
-      this.removeAttribute('contenteditable');
-    }
+    this.requestUpdate();
   }
 
   connectedCallback() {
     super.connectedCallback();
 
-    // @note - this is important if the compoent is e.g. embedded in another component
+    this.shadowRoot.addEventListener('slotchange', this._onSlotChange);
+    // @note - this is important if the component is e.g. embedded in another component
     this._tabindex = this.getAttribute('tabindex') || 0;
-
-    this.addEventListener('blur', this._updateValue);
-    this.addEventListener('keydown', this._onKeyDown);
-    this.addEventListener('keyup', this._onKeyUp);
-    this.addEventListener('contextmenu', this._preventContextMenu);
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
 
-    this.removeEventListener('blur', this._updateValue);
-    this.removeEventListener('keydown', this._onKeyDown);
-    this.removeEventListener('keyup', this._onKeyUp);
-    this.removeEventListener('contextmenu', this._preventContextMenu);
+    this.shadowRoot.removeEventListener('slotchange', this._onSlotChange);
+  }
+
+  focus() {
+    if (this.editable) {
+      this.shadowRoot.querySelector('input')?.focus();
+    } else {
+      super.focus();
+    }
+  }
+
+  _onSlotChange(_) {
+    this._value = this.textContent;
+
+    if (this.editable) {
+      this.requestUpdate();
+    }
   }
 
   _onKeyDown(e) {
-    if (e.metaKey && e.key === 's') {
+    e.stopPropagation();
+    // we want to trigger change in key down
+    if ((e.metaKey && e.code === 'KeyS') || e.code === 'Enter') {
       e.preventDefault();
-      this._updateValue(e, true);
+      this._triggerChange(e, true);
     }
   }
 
   _onKeyUp(e) {
-    if (e.target.textContent !== this._value && this.dirty === false) {
+    if (e.target.value !== this._value && this.dirty === false) {
       this.dirty = true;
-    } else if (e.target.textContent === this._value && this.dirty === true) {
+    } else if (e.target.value === this._value && this.dirty === true) {
       this.dirty = false;
     }
   }
 
-  _updateValue(e, forceUpdate = false) {
+  _triggerChange(e, forceUpdate = false) {
     e.preventDefault();
-    e.stopPropagation();
 
     if (this.dirty || forceUpdate) {
-      this._value = e.target.textContent;
+      this._value = e.target.value.trim();
       this.dirty = false;
 
       const event = new CustomEvent('change', {
@@ -190,6 +219,18 @@ class ScText extends ScElement {
 
       this.dispatchEvent(event);
     }
+  }
+
+  _triggerInput(e) {
+    e.stopPropagation();
+
+    const event = new CustomEvent('input', {
+      bubbles: true,
+      composed: true,
+      detail: { value: e.target.value.trim() },
+    });
+
+    this.dispatchEvent(event);
   }
 }
 

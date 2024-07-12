@@ -284,7 +284,7 @@ class ScDialBase extends ScElement {
       case 'keydown': {
         // arbitrary MIDI like delta increment,
         const incr = Number.isFinite(this.min) && Number.isFinite(this.max)
-          ? (this.max - this.min) / 100 : 1;
+          ? ((this.max - this.min) / (e.shiftKey ? 10 : 100)) : 1;
 
         if (e.code === 'ArrowUp' || e.code === 'ArrowRight') {
           this.value += incr;

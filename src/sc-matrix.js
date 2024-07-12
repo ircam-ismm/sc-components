@@ -444,22 +444,25 @@ class ScMatrix extends ScElement {
     this._updateCell(rowIndex, columnIndex);
   }
 
-  _updateCell(rowIndex, columnIndex) {
-    const currentIndex = this._states.indexOf(this.value[rowIndex][columnIndex]);
-    // handle situations where _states as changed in between two interactions
+  _updateCell(row, column) {
+    const currentIndex = this._states.indexOf(this.value[row][column]);
+    // handle situations where _states has changed in between two interactions
     const nextIndex = currentIndex === -1 ? 0 : (currentIndex + 1) % this._states.length;
+    const value = this._states[nextIndex];
 
-    this.value[rowIndex][columnIndex] = this._states[nextIndex];
+    this.value[row][column] = value;
 
-    this._emitChange();
+    const update = { row, column, value };
+
+    this._emitChange(update);
     this.requestUpdate();
   }
 
-  _emitChange() {
+  _emitChange(update = null) {
     const event = new CustomEvent('change', {
       bubbles: true,
       composed: true,
-      detail: { value: this.value },
+      detail: { value: this.value, update },
     });
 
     this.dispatchEvent(event);

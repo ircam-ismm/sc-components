@@ -53,6 +53,7 @@ const template = html\`
   <sc-text>.value [=[]]</sc-text>
   <sc-text
     editable
+    multiline
     style="width: 300px;"
     @change=${e => document.querySelector('#test-dots').value = JSON5.parse(e.detail.value)}
   >[{ x: 0.5, y: 0.5 }]</sc-text>
@@ -61,6 +62,7 @@ const template = html\`
   <sc-text style="background-color: transparent"></sc-text>
   <sc-text
     editable
+    multiline
     style="width: 300px;"
     @change=${e => document.querySelector('#test-dots').value = JSON5.parse(e.detail.value)}
   >[{ x: 0.5, y: 0.5, color: 'red' }]</sc-text>

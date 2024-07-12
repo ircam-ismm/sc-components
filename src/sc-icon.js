@@ -1,4 +1,5 @@
 import { html, css } from 'lit';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 
 import ScElement from './ScElement.js';
 import KeyboardController from './controllers/keyboard-controller.js'
@@ -22,6 +23,10 @@ class ScIcon extends ScElement {
       type: Boolean,
       reflect: true,
     },
+    active: {
+      type: Boolean,
+      reflect: true,
+    },
   };
 
   static styles = css`
@@ -35,10 +40,17 @@ class ScIcon extends ScElement {
       border: 1px solid var(--sc-color-primary-3);
       background-color: var(--sc-color-primary-2);
       cursor: pointer;
+
+      --sc-icon-color: white;
+      --sc-icon-active: var(--sc-color-secondary-3);
     }
 
     :host([hidden]) {
       display: none;
+    }
+
+    :host([active]) {
+      background-color: var(--sc-icon-active);
     }
 
     :host([disabled]) {
@@ -77,6 +89,9 @@ class ScIcon extends ScElement {
       padding: 3px;
       width: 100%;
       height: 100%;
+
+      fill: var(--sc-icon-color);
+      stroke: var(--sc-icon-color);
     }
 
     :host([disabled]:hover) {
@@ -110,7 +125,9 @@ class ScIcon extends ScElement {
   render() {
     let include;
 
-    if (this.href !== null && this.href !== '' && !this.disabled) {
+    if (this.innerHTML) {
+      include = unsafeHTML(this.innerHTML);
+    } else if (this.href !== null && this.href !== '' && !this.disabled) {
       include = html`
         <a href="${this.href}" target="_blank">
           ${icons[this.type]}

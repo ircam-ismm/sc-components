@@ -110,6 +110,12 @@ render(html\`
   <p>The library has not been tested within other frameworks such as React or Vue yet.</p>
   <p>Any feedback is welcome!</p>
 
+  <h3>Credits</h3>
+
+  <p>
+    Vectors and icons by <a href="https://www.svgrepo.com" target="_blank">SVG Repo</a>
+  </p>
+
   <h2 style="margin-top: 60px;">License</h2>
 
   <a target="_blank" href="https://github.com/ircam-ismm/sc-components/blob/main/LICENSE">BSD-3-Clause</a>

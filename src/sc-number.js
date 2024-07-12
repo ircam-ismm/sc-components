@@ -7,6 +7,12 @@ import ScElement from './ScElement.js';
 import KeyboardController from './controllers/keyboard-controller.js';
 import './sc-speed-surface.js';
 
+function isTouchDevice() {
+  return (('ontouchstart' in window) ||
+     (navigator.maxTouchPoints > 0) ||
+     (navigator.msMaxTouchPoints > 0));
+}
+
 class ScNumber extends ScElement {
   static properties = {
     min: {
@@ -158,19 +164,20 @@ class ScNumber extends ScElement {
       height: 100%;
     }
 
-    input[type="number"] {
-      position: absolute;
-      top: 1px;
-      left: 1px;
-      width: 1px;
-      height: 1px;
-      padding: 0;
+    input {
+      box-sizing: border-box;
+      width: 100%;
+      height: 100%;
+      color: white;
+      width: 100%;
+      height: 100%;
       border: none;
-      background-color: var(--sc-color-primary-3);
-    }
-
-    input[type="number"]:focus {
+      background-color: transparent;
+      border-left: 15px solid var(--sc-color-primary-3);
+      text-indent: 4px;
+      font-family: var(--sc-font-family);
       outline: none;
+      border-radius: 0;
     }
   `;
 
@@ -226,6 +233,7 @@ class ScNumber extends ScElement {
     this.readonly = false;
 
     this._valueChanged = false;
+    this._isTouchDevice = isTouchDevice();
 
     this._updateValue1 = this._updateValueFromPointer(1);
     this._updateValue01 = this._updateValueFromPointer(0.1);
@@ -235,10 +243,11 @@ class ScNumber extends ScElement {
     this._updateValue000001 = this._updateValueFromPointer(0.00001);
     this._updateValue0000001 = this._updateValueFromPointer(0.000001);
 
-
     this._hasVirtualKeyboard = false;
     this._numKeyPressed = 0;
     this._onKeyDown = this._onKeyDown.bind(this);
+    this._onFocus = this._onFocus.bind(this);
+    this._onBlur = this._onBlur.bind(this);
 
     this.keyboard = new KeyboardController(this, {
       filterCodes: ['ArrowUp', 'ArrowRight', 'ArrowDown', 'ArrowLeft'],
@@ -262,55 +271,66 @@ class ScNumber extends ScElement {
 
     // @todo - would be probably more consistant and simple by just removing
     // this div and work on `this` directly
-    return html`
-      <div
-        tabindex="-1"
-        class="container"
-        @focus="${this._onFocus}"
-        @blur="${this._onBlur}"
-        @touchstart="${this._handleFocus}"
-        @touchend="${this._openVirtualKeyboard}"
-      >
-        <div class="info ${classMap(isEdited)}"></div>
+    if (this._isTouchDevice === true) {
+      return html`
+        <input
+          type="text"
+          inputmode="decimal"
+          value=${this._displayValue}
+          ?disabled=${this.disabled}
+          ?readonly=${this.readonly}
+          @change=${this._onTouchChange}
+          @input=${this._onTouchInput}
+        />`
+    } else {
+      return html`
+        <div
+          tabindex="-1"
+          class="container"
+          @focus=${this._onFocus}
+          @blur=${this._onBlur}
+        >
+          <div class="info ${classMap(isEdited)}"></div>
 
-        <div class="content">
-          <span class="z">
-            ${parts[0]}
-            <sc-speed-surface @input="${this._updateValue1}"></sc-speed-surface>
-          </span>
-          ${!this.integer
-            ? html`
-              <span class="z">
-                .
-              </span>
-              <span class="z">
-                ${parts[1][0] || emptySpace}
-                <sc-speed-surface @input="${this._updateValue01}"></sc-speed-surface>
-              </span>
-              <span class="z">
-                ${parts[1][1] || emptySpace}
-                <sc-speed-surface @input="${this._updateValue001}"></sc-speed-surface>
-              </span>
-              <span class="z">
-                ${parts[1][2] || emptySpace}
-                <sc-speed-surface @input="${this._updateValue0001}"></sc-speed-surface>
-              </span>
-              <span class="z">
-                ${parts[1][3] || emptySpace}
-                <sc-speed-surface @input="${this._updateValue00001}"></sc-speed-surface>
-              </span>
-              <span class="z">
-                ${parts[1][4] || emptySpace}
-                <sc-speed-surface @input="${this._updateValue000001}"></sc-speed-surface>
-              </span>
-              <span class="z">
-                ${parts[1][5] || emptySpace}
-                <sc-speed-surface @input="${this._updateValue0000001}"></sc-speed-surface>
-              </span>`
-            : nothing}
+          <div class="content">
+            <span class="z">
+              ${parts[0]}
+              <sc-speed-surface @input="${this._updateValue1}"></sc-speed-surface>
+            </span>
+            ${!this.integer
+              ? html`
+                <span class="z">
+                  .
+                </span>
+                <span class="z">
+                  ${parts[1][0] || emptySpace}
+                  <sc-speed-surface @input="${this._updateValue01}"></sc-speed-surface>
+                </span>
+                <span class="z">
+                  ${parts[1][1] || emptySpace}
+                  <sc-speed-surface @input="${this._updateValue001}"></sc-speed-surface>
+                </span>
+                <span class="z">
+                  ${parts[1][2] || emptySpace}
+                  <sc-speed-surface @input="${this._updateValue0001}"></sc-speed-surface>
+                </span>
+                <span class="z">
+                  ${parts[1][3] || emptySpace}
+                  <sc-speed-surface @input="${this._updateValue00001}"></sc-speed-surface>
+                </span>
+                <span class="z">
+                  ${parts[1][4] || emptySpace}
+                  <sc-speed-surface @input="${this._updateValue000001}"></sc-speed-surface>
+                </span>
+                <span class="z">
+                  ${parts[1][5] || emptySpace}
+                  <sc-speed-surface @input="${this._updateValue0000001}"></sc-speed-surface>
+                </span>`
+              : nothing}
+          </div>
         </div>
-      </div>
-    `;
+      `;
+    }
   }
 
   updated(changedProperties) {
@@ -328,77 +348,82 @@ class ScNumber extends ScElement {
     this._tabindex = this.getAttribute('tabindex') || 0;
   }
 
-  // prevent focus for touch interfaces, we want to have virtual keyboard here
-  _handleFocus(e) {
-    e.preventDefault();
-    e.stopPropagation();
-  }
-
-  // this only works on touchend
-  _openVirtualKeyboard(e) {
-    e.preventDefault(); // go to end of page
-    e.stopPropagation();
-
-    if (this._hasVirtualKeyboard) {
+  // TAB keyboard interactions
+  _onFocus() {
+    // doesn't seem to be called
+    if (this._isTouchDevice) {
       return;
     }
+
+    this._numKeyPressed = 0;
+    window.addEventListener('keydown', this._onKeyDown);
+    this.shadowRoot.querySelector('.container').focus(); // container holds the focus
+  }
+
+  // blur does not work perperly on `Shift+Tab`
+  // cf. https://javascript.info/focus-blur for possible fix?
+  _onBlur() {
+    if (this._isTouchDevice) {
+      console.log('blur');
+      return;
+    }
+
+    this._updateValueFromDisplayValue();
+    window.removeEventListener('keydown', this._onKeyDown);
+  }
+
+  // replace with simple input number for touch screens
+  async _onTouchStart(e) {
+    e.preventDefault();
+    e.stopPropagation();
 
     if (this.disabled || this.readonly) {
       return;
     }
 
-    // lock speed surface events
-    this._hasVirtualKeyboard = true;
-
-    const $number = document.createElement('input');
-    $number.type = 'number';
-
-    this.shadowRoot.appendChild($number);
-    $number.focus();
-    $number.click();
-
-    $number.addEventListener('input', e => {
-      e.preventDefault();
-      e.stopPropagation();
-      // when "." or "," is pressed e.target.value is empty in chrome
-      // @todo - check firefox and safari
-      if (e.target.value) {
-        this.value = parseFloat(e.target.value);
-        this._emitInput();
-      }
-    });
-
-    $number.addEventListener('change', e => {
-      e.preventDefault(); // go to end of page
-      e.stopPropagation();
-
-      // when "." or "," is pressed e.target.value is empty in chrome
-      // @todo - check firefox and safari
-      if (e.target.value) {
-        this.value = parseFloat(e.target.value);
-      }
-
-      // this prevents the focus to go to the next focusable element
-      this.focus();
-      // clean the box
-      $number.remove();
-      this._hasVirtualKeyboard = false;
-
-      this._emitInput();
-      this._emitChange();
-    });
+    this._isTouchDevice = true;
+    await this.requestUpdate();
+    // const $input = this.shadowRoot.querySelector('input');
+    this.focus();
   }
 
-  // keyboard interactions
-  // this
-  _onFocus() {
-    this._numKeyPressed = 0;
-    window.addEventListener('keydown', this._onKeyDown);
+  async _onMouseDown(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (this.disabled || this.readonly) {
+      return;
+    }
+
+    this._isTouchDevice = false;
+    await this.requestUpdate();
+    this.focus();
   }
 
-  _onBlur() {
-    this._updateValueFromDisplayValue();
-    window.removeEventListener('keydown', this._onKeyDown);
+  _onTouchInput(e) {
+    e.stopPropagation();
+
+    if (e.target.value === '') {
+      return;
+    }
+
+    // allow ',' and '.' as separator
+    const parsedValue = e.target.value.replace(',', '.');
+    this.value = parseFloat(parsedValue);
+    this._emitInput();
+  }
+
+  _onTouchChange(e) {
+    e.stopPropagation();
+
+    if (e.target.value === '') {
+      return;
+    }
+
+    // allow ',' and '.' as separator
+    const parsedValue = e.target.value.replace(',', '.');
+    this.value = parseFloat(parsedValue);
+    this._emitChange();
   }
 
   // Keyboard controller callback,
@@ -408,9 +433,9 @@ class ScNumber extends ScElement {
 
     if (e.type === 'keydown') {
       if (e.code === 'ArrowUp' || e.code === 'ArrowRight') {
-        this.value += 1;
+        this.value += e.shiftKey ? 10 : 1;
       } else {
-        this.value -= 1;
+        this.value -= e.shiftKey ? 10 : 1;
       }
 
       this._emitInput();

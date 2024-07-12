@@ -226,6 +226,37 @@ class ScSliderBase extends ScElement {
       filterCodes: ['ArrowUp', 'ArrowRight', 'ArrowDown', 'ArrowLeft'],
       callback: this._onKeyboardEvent.bind(this),
     });
+
+    this._updateScales();
+  }
+
+  // https://lit.dev/docs/v1/components/lifecycle/#update
+  // Property changes inside this method do not trigger an element update.
+  // we could probably get rid of this._min and this._max
+  update(changedProperties) {
+    if (changedProperties.has('min') || changedProperties.has('max')) {
+      if (this._min > this._max) {
+        console.warn('sc-slider - min > max, inverting values');
+
+        const tmp = this._max;
+        this._max = this._min;
+        this._min = tmp;
+      }
+
+      if (this._min === this._max) {
+        console.warn('sc-slider - min === max, incrementing max');
+        this._max += 1;
+      }
+    }
+
+    if (changedProperties.has('min')
+      || changedProperties.has('max')
+      || changedProperties.has('step')
+    ) {
+      this._updateScales();
+    }
+
+    super.update(changedProperties);
   }
 
   // https://lit.dev/docs/v1/components/lifecycle/#update

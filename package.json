@@ -1,6 +1,6 @@
 {
   "name": "@ircam/sc-components",
-  "version": "3.0.0-alpha.45",
+  "version": "3.0.0-alpha.67",
   "description": "Web Component library for audio applications",
   "authors": [
     "Benjamin Matuszewski",
@@ -8,19 +8,18 @@
     "Etienne Démoulin"
   ],
   "license": "BSD-3-Clause",
-  "main": "src/index.js",
-  "unpkg": "./build/bundle.js",
-  "exports": {
-    ".": "src/index.js",
-    "./": "src/"
-  },
   "type": "module",
+  "exports": {
+    ".": "./src/index.js",
+    "./": "./src/"
+  },
+  "unpkg": "./build/bundle.js",
   "publishConfig": {
     "access": "public"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ircam-ismm/sc-components"
+    "url": "git+https://github.com/ircam-ismm/sc-components.git"
   },
   "bugs": {
     "url": "https://github.com/ircam-ismm/sc-components/issues"

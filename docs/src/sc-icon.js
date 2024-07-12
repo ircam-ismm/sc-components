@@ -59,6 +59,10 @@ const template = html\`
   }}
 ></sc-icon>
 
+<p>
+  <i>Vectors and icons by <a href="https://www.svgrepo.com" target="_blank">SVG Repo</a></i>
+</p>
+
 <h3>Events</h3>
 <div>
   <sc-text>@input</sc-text>
@@ -91,6 +95,12 @@ const template = html\`
     value="${defaultIcon}"
     @change=${e => document.querySelector('#test-icon').type = e.detail.value}
   ></sc-radio>
+</div>
+<div>
+  <sc-text>?active [=false]</sc-text>
+  <sc-toggle
+    @change=${e =>  document.querySelector('#test-icon').active = e.detail.value}
+  ></sc-toggle>
 </div>
 <div>
   <p>Value propagated within the event</p>
@@ -127,10 +137,22 @@ const template = html\`
 #test-icon {
   width: 30px;
   height: 30px;
+  --sc-icon-color: white;
+  --sc-icon-active: var(--sc-color-secondary-3);
 }
   "
   @change=${e => applyStyle(e.detail.value)}
 ></sc-editor>
+
+<h3>With inner value</h3>
+<sc-icon
+  @input=${e => console.log('coucou asco')}
+>
+  <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1792 1792" xml:space="preserve">
+    <path d="M187.8,1659L896,200.9L1604.2,1659L896,1285.5L187.8,1659z"/>
+  </svg>
+</sc-icon>
+
 `;
 
 

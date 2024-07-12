@@ -1,9 +1,10 @@
 import { html, svg, css } from 'lit';
 
 import ScElement from './ScElement.js';
+import midiControlled from './mixins/midi-controlled.js';
 import KeyboardController from './controllers/keyboard-controller.js';
 
-class ScRecord extends ScElement {
+class ScRecordBase extends ScElement {
   static properties = {
     active: {
       type: Boolean,
@@ -63,6 +64,24 @@ class ScRecord extends ScElement {
 
   set value(active) {
     this.active = active;
+  }
+
+  // midi-learn interface
+  get midiType() {
+    return "control";
+  }
+
+  set midiValue(value) {
+    if (this.disabled) {
+      return;
+    }
+
+    this.active = value === 0 ? false : true;
+    this._dispatchEvent();
+  }
+
+  get midiValue() {
+    return this.active ? 127 : 0;
   }
 
   constructor() {
@@ -135,6 +154,9 @@ class ScRecord extends ScElement {
     this.requestUpdate();
   }
 }
+
+const ScRecord = midiControlled('ScRecord', ScRecordBase);
+
 
 if (customElements.get('sc-record') === undefined) {
   customElements.define('sc-record', ScRecord);

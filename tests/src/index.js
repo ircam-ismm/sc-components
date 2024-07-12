@@ -6,7 +6,7 @@ window.SC_DEBUG = window.location.hostname === 'localhost';
 
 // current page module
 // const DEFAULT_TEST = 'raw-style';
-const DEFAULT_TEST = 'sc-slider';
+const DEFAULT_TEST = 'sc-select';
 let current = null;
 
 async function setContent(page) {

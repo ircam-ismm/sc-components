@@ -85,6 +85,10 @@ class ScSelect extends ScElement {
   render() {
     const isObject = isPlainObject(this.options);
 
+    if (!isObject && !Array.isArray(this.options)) {
+      throw new Error(`Cannot render 'sc-select': Invalid 'options' attribute, must be an array or an object`);
+    }
+
     return html`
       <select
         ?disabled=${this.disabled}
