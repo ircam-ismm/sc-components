@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[245],{9245:(e,t,c)=>{c.r(t),c.d(t,{template:()=>d});var s=c(2182),n=c(1630),i=c(2247);const o=Object.keys(i.A),a="question";let l=null,u=null,r=null;const d=s.qy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[245],{9245:(e,t,c)=>{c.r(t),c.d(t,{template:()=>d});var s=c(2182),n=c(1630),i=c(2247);const o=Object.keys(i.A),l="question";let a=null,u=null,r=null;const d=s.qy`
 
 <h2>sc-icon</h2>
 
@@ -7,8 +7,8 @@
 <sc-icon
   id="test-icon"
   value="my-icon"
-  type="${a}"
-  @input=${e=>{document.querySelector("#icon-input").active=!0;const t=document.querySelector("#icon-value-input");t.value=e.detail.value,clearTimeout(l),l=setTimeout((()=>t.value=""),500)}}
+  type="${l}"
+  @input=${e=>{document.querySelector("#icon-input").active=!0;const t=document.querySelector("#icon-value-input");t.value=e.detail.value,clearTimeout(a),a=setTimeout((()=>t.value=""),500)}}
   @press=${e=>{document.querySelector("#icon-press").active=!0;const t=document.querySelector("#icon-value-press");t.value=e.detail.value,clearTimeout(u),u=setTimeout((()=>t.value=""),500)}}
   @release=${e=>{document.querySelector("#icon-release").active=!0;const t=document.querySelector("#icon-value-release");t.value=e.detail.value,clearTimeout(r),r=setTimeout((()=>t.value=""),500)}}
 ></sc-icon>
@@ -40,15 +40,9 @@
   <sc-text>type [="question"]</sc-text>
   <sc-radio
     options="${JSON.stringify(o)}"
-    value="${a}"
+    value="${l}"
     @change=${e=>document.querySelector("#test-icon").type=e.detail.value}
   ></sc-radio>
-</div>
-<div>
-  <sc-text>?active [=false]</sc-text>
-  <sc-toggle
-    @change=${e=>document.querySelector("#test-icon").active=e.detail.value}
-  ></sc-toggle>
 </div>
 <div>
   <p>Value propagated within the event</p>
@@ -86,7 +80,6 @@
   width: 30px;
   height: 30px;
   --sc-icon-color: white;
-  --sc-icon-active: var(--sc-color-secondary-3);
 }
   "
   @change=${e=>(0,n.default)(e.detail.value)}
