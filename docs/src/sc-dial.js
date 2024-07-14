@@ -34,21 +34,30 @@ const template = html\`
 <div>
   <sc-text>min [=0]</sc-text>
   <sc-number
+    value="0"
     @change=${e => document.querySelector('#test-dial').min = e.detail.value}
-  >0</sc-number>
+  ></sc-number>
 </div>
 <div>
   <sc-text>max [=1]</sc-text>
   <sc-number
     value="1"
     @change=${e => document.querySelector('#test-dial').max = e.detail.value}
-  >1</sc-number>
+  ></sc-number>
 </div>
 <div>
   <sc-text>value [=0]</sc-text>
   <sc-number
+    value="0"
     @input=${e => document.querySelector('#test-dial').value = e.detail.value}
-  >0</sc-number>
+  ></sc-number>
+</div>
+<div>
+  <sc-text>unit [='']</sc-text>
+  <sc-text
+    editable
+    @change=${e => document.querySelector('#test-dial').unit = e.detail.value}
+  ></sc-text>
 </div>
 <div>
   <sc-text>hide-value [=false]</sc-text>
@@ -57,10 +66,26 @@ const template = html\`
   >0</sc-toggle>
 </div>
 <div>
+  <sc-text>num-decimals [=2]</sc-text>
+  <sc-number
+    value="2"
+    @input=${e => document.querySelector('#test-dial').numDecimals = e.detail.value}
+  ></sc-number>
+  <sc-text style="font-style: italic">(of displayed value)</sc-text>
+</div>
+<div>
   <sc-text>?disabled [=false]</sc-text>
   <sc-toggle
     @change=${e => document.querySelector('#test-dial').disabled = e.detail.value}
   ></sc-toggle>
+</div>
+<div>
+  <sc-text>mode [='lin']</sc-text>
+  <sc-tab
+    value="lin"
+    .options=${['lin', 'exp', 'log']}
+    @change=${e => document.querySelector('#test-dial').mode = e.detail.value}
+  ></sc-tab>
 </div>
 
 <h3>Keyboard shortcuts</h3>

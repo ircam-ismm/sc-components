@@ -1,4 +1,5 @@
 import { html, css, svg, nothing } from 'lit';
+import { Scaler } from '@ircam/sc-signal';
 
 import ScElement from './ScElement.js';
 import KeyboardController from './controllers/keyboard-controller.js';
@@ -44,6 +45,15 @@ class ScDialBase extends ScElement {
     value: {
       type: Number,
     },
+    mode: {
+      type: String,
+      reflect: true,
+    },
+    modeBasis: {
+      type: Number,
+      reflect: true,
+      attribute: 'mode-basis',
+    },
     unit: {
       type: String,
       reflect: true,
@@ -52,6 +62,10 @@ class ScDialBase extends ScElement {
       type: Boolean,
       reflect: true,
       attribute: 'hide-value',
+    },
+    numDecimals: {
+      type: Number,
+      attribute: 'num-decimals',
     },
     disabled: {
       type: Boolean,
@@ -137,15 +151,15 @@ class ScDialBase extends ScElement {
   }
 
   set min(value) {
+    if (!Number.isFinite(value)) {
+      throw new TypeError(`Cannot set property 'min' on sc-dial: value (${value}) is not a finite value`);
+    }
     // workaround weird display issue when min and max are equal
     if (value === this.max) {
       value -= 1e-10;
     }
 
     this._min = value;
-    // clamp value
-    this.value = this.value;
-    // update scales
     this._updateScales();
     this.requestUpdate();
   }
@@ -155,25 +169,43 @@ class ScDialBase extends ScElement {
   }
 
   set max(value) {
+    if (!Number.isFinite(value)) {
+      throw new TypeError(`Cannot set property 'max' on sc-dial: value (${value}) is not a finite value`);
+    }
     // workaround weird display issue when min and max are equal
     if (value === this.min) {
       value += 1e-10;
     }
 
     this._max = value;
-    // clamp value
-    this.value = this.value;
-    // update scales
     this._updateScales();
     this.requestUpdate();
   }
 
   get value() {
-    return this._value;
+    return this._normToValue.process(this._normValue);
   }
 
   set value(value) {
-    this._value = Math.max(this.min, Math.min(this.max, value));
+    if (!Number.isFinite(value)) {
+      throw new TypeError(`Cannot set property 'value' on sc-dial: value (${value}) is not a finite value`);
+    }
+
+    this._normValue = this._valueToNorm.process(value);
+    this.requestUpdate();
+  }
+
+  get mode() {
+    return this._mode;
+  }
+
+  set mode(value) {
+    if (!['lin', 'exp', 'log', 'linear', 'exponential', 'logarithmic'].includes(value)) {
+      throw new TypeError(`Cannot set property 'value' on sc-dial: value (${value}) is not a valid enum value of ['lin', 'exp', 'log']`);
+    }
+
+    this._mode = value;
+    this._updateScales();
     this.requestUpdate();
   }
 
@@ -183,8 +215,9 @@ class ScDialBase extends ScElement {
   }
 
   set midiValue(value) {
-    this.value = (this.max - this.min) * value / 127. + this.min;
+    this._normValue = value / 127;
 
+    this.requestUpdate();
     this._dispatchInputEvent();
 
     clearTimeout(this._midiValueTimeout);
@@ -195,25 +228,33 @@ class ScDialBase extends ScElement {
   }
 
   get midiValue() {
-    return Math.round((this.value - this.min) / (this.max - this.min) * 127.);
+    return Math.round(this._normValue * 127);
   }
 
   constructor() {
     super();
 
     this._min = 0;
-    this._max = 0;
-    this._value = 0;
+    this._max = 1;
+    this._normValue = 0;
     this._minAngle = -140;
     this._maxAngle = 140;
+    this._mode = 'lin';
 
-    this.max = 1; // set max before min is important to avoid workaround in setters
     this.min = 0;
+    this.max = 1;
     this.value = 0;
+    this.modeBasis = 2;
+    this.mode = 'lin';
     this.hideValue = false;
     this.disabled = false;
+    this.numDecimals = 2;
 
     this._midiValueTimeout = null;
+
+    this._normValueToAngleScale = getScale([0, 1], [this._minAngle, this._maxAngle]);
+    this._pixelToDiffScale = getScale([0, 15], [0, 1]);
+    this._updateScales();
 
     this.keyboard = new KeyboardController(this, {
       filterCodes: ['ArrowUp', 'ArrowRight', 'ArrowDown', 'ArrowLeft'],
@@ -226,7 +267,7 @@ class ScDialBase extends ScElement {
     const cx = 50;
     const cy = this.hideValue ? 54 : 42;
 
-    const angle = this._valueToAngleScale(this.value); // computed from value
+    const angle = this._normValueToAngleScale(this._normValue); // computed from value
     const position = polarToCartesian(cx, cy, radius + 2, angle); // + 2  is half path stroke-width
 
     // prevent default to prevent focus when disabled
@@ -248,7 +289,7 @@ class ScDialBase extends ScElement {
         </svg>
 
         ${!this.hideValue
-          ? html`<p>${this.value.toFixed(2)}${this.unit ? ` ${this.unit}` : nothing}</p>`
+          ? html`<p>${this.value.toFixed(this.numDecimals)}${this.unit ? ` ${this.unit}` : nothing}</p>`
           : nothing
         }
 
@@ -273,8 +314,55 @@ class ScDialBase extends ScElement {
   }
 
   _updateScales() {
-    this._valueToAngleScale = getScale([this.min, this.max], [this._minAngle, this._maxAngle]);
-    this._pixelToDiffScale = getScale([0, 15], [0, this.max - this.min]);
+    // get current "real" value to recompute norm based on updated scales
+    const currentValue = this._normToValue ? this._normToValue.process(this._normValue) : 0;
+
+    let base;
+    let type;
+    let inverseType;
+
+    switch (this._mode) {
+      case 'lin':
+      case 'linear':
+        base = 1;
+        type = 'linear';
+        inverseType = 'linear';
+        break;
+      case 'exp':
+      case 'exponential':
+        base = this.modeBasis;
+        type = 'exponential';
+        inverseType = 'logarithmic';
+        break;
+      case 'log':
+      case 'logarithmic':
+        base = this.modeBasis;
+        type = 'logarithmic';
+        inverseType = 'exponential';
+        break;
+    }
+
+    this._normToValue = new Scaler({
+      inputStart: 0,
+      inputEnd: 1,
+      outputStart: this.min,
+      outputEnd: this.max,
+      clip: true,
+      base,
+      type,
+    });
+
+    this._valueToNorm = new Scaler({
+      inputStart: this.min,
+      inputEnd: this.max,
+      outputStart: 0,
+      outputEnd: 1,
+      clip: true,
+      base,
+      type: inverseType,
+    });
+
+    this._normValue = this._valueToNorm.process(currentValue);
   }
 
   _onKeyboardEvent(e) {
@@ -282,16 +370,15 @@ class ScDialBase extends ScElement {
 
     switch (e.type) {
       case 'keydown': {
-        // arbitrary MIDI like delta increment,
-        const incr = Number.isFinite(this.min) && Number.isFinite(this.max)
-          ? ((this.max - this.min) / (e.shiftKey ? 10 : 100)) : 1;
+        const incr = 1 / (e.shiftKey ? 10 : 100);
 
         if (e.code === 'ArrowUp' || e.code === 'ArrowRight') {
-          this.value += incr;
+          this._normValue = Math.min(1, Math.max(0, this._normValue + incr));
         } else if (e.code === 'ArrowDown' || e.code === 'ArrowLeft') {
-          this.value -= incr;
+          this._normValue = Math.min(1, Math.max(0, this._normValue - incr));
         }
 
+        this.requestUpdate();
         this._dispatchInputEvent();
         break;
       }
@@ -307,7 +394,9 @@ class ScDialBase extends ScElement {
     if (this.disabled) { return; }
 
     this.focus();
-    this.value = this.min;
+    this._normValue = 0;
+
+    this.requestUpdate();
     this._dispatchInputEvent();
     this._dispatchChangeEvent();
   }
@@ -325,13 +414,14 @@ class ScDialBase extends ScElement {
         return;
       }
 
-      const lastValue = this._value;
+      const lastValue = this._normValue;
 
       const sign = e.detail.dy < 0 ? -1 : 1;
       const diff = this._pixelToDiffScale(e.detail.dy);
-      // const diff = e.detail.dy * 10;
-      // console.log('updateValue', e.detail.dy, diff);
-      this.value += diff;
+
+      this._normValue = Math.min(1, Math.max(0, this._normValue + diff));
+
+      this.requestUpdate();
       this._dispatchInputEvent();
     } else {
       this._dispatchChangeEvent();
