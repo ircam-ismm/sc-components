@@ -1,5 +1,5 @@
 import { html, css, svg, nothing } from 'lit';
-import { getTime } from '@ircam/sc-gettime';
+import { getTime } from '@ircam/sc-utils';
 
 import ScElement from './ScElement.js';
 import KeyboardController from './controllers/keyboard-controller.js';
@@ -138,7 +138,7 @@ class ScTapTempo extends ScElement {
       this.requestUpdate();
     }, 100);
 
-    // calcaulte new bpm
+    // calculate new bpm
     const time = getTime();
 
     if (this._lastTime) {

@@ -10,6 +10,16 @@ import { atodb, linearScale } from '@ircam/sc-utils';
 // - compute display according to real width / height, so lines are not stretched
 // - define API for several
 
+
+// .value = BiquadFilterNode[] || BiquadFilterOptions[]
+// // cf. https://webaudio.github.io/web-audio-api/#BiquadFilterOptions
+
+// @input { index, [param]: value }
+
+// also triggered on `numFilters` change
+// @change { value: this.value }
+
+
 // rely on native `getFrequencyResponse`
 const defaultSampleRate = 48000;
 const audioContext = new OfflineAudioContext(1, 1, defaultSampleRate);

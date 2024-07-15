@@ -1,12 +1,14 @@
 import { html, css, svg, nothing } from 'lit';
-import { Scaler } from '@ircam/sc-signal';
+import { 
+  linearScale, 
+  exponentialScale, 
+  logarithmicScale 
+} from '@ircam/sc-utils';
 
 import ScElement from './ScElement.js';
 import KeyboardController from './controllers/keyboard-controller.js';
 import midiControlled from './mixins/midi-controlled.js';
-import getScale from './utils/get-scale.js';
 import './sc-speed-surface.js';
-
 
 // from https://stackoverflow.com/questions/5736398/how-to-calculate-the-svg-path-for-an-arc-of-a-circle/18473154#18473154
 function polarToCartesian(centerX, centerY, radius, angleInDegrees) {
@@ -183,7 +185,7 @@ class ScDialBase extends ScElement {
   }
 
   get value() {
-    return this._normToValue.process(this._normValue);
+    return this._normToValue(this._normValue);
   }
 
   set value(value) {
@@ -191,7 +193,7 @@ class ScDialBase extends ScElement {
       throw new TypeError(`Cannot set property 'value' on sc-dial: value (${value}) is not a finite value`);
     }
 
-    this._normValue = this._valueToNorm.process(value);
+    this._normValue = this._valueToNorm(value);
     this.requestUpdate();
   }
 
@@ -252,8 +254,8 @@ class ScDialBase extends ScElement {
 
     this._midiValueTimeout = null;
 
-    this._normValueToAngleScale = getScale([0, 1], [this._minAngle, this._maxAngle]);
-    this._pixelToDiffScale = getScale([0, 15], [0, 1]);
+    this._normValueToAngleScale = linearScale(0, 1, this._minAngle, this._maxAngle);
+    this._pixelToDiffScale = linearScale(0, 15, 0, 1);
     this._updateScales();
 
     this.keyboard = new KeyboardController(this, {
@@ -315,54 +317,27 @@ class ScDialBase extends ScElement {
 
   _updateScales() {
     // get current "real" value to recompute norm based on updated scales
-    const currentValue = this._normToValue ? this._normToValue.process(this._normValue) : 0;
-
-    let base;
-    let type;
-    let inverseType;
+    const currentValue = this._normToValue ? this._normToValue(this._normValue) : 0;
 
     switch (this._mode) {
       case 'lin':
       case 'linear':
-        base = 1;
-        type = 'linear';
-        inverseType = 'linear';
+        this._normToValue = linearScale(0, 1, this.min, this.max, true);
+        this._valueToNorm = linearScale(this.min, this.max, 0, 1, true);
         break;
       case 'exp':
       case 'exponential':
-        base = this.modeBasis;
-        type = 'exponential';
-        inverseType = 'logarithmic';
+        this._normToValue = exponentialScale(0, 1, this.min, this.max, this.modeBasis, true);
+        this._valueToNorm = logarithmicScale(this.min, this.max, 0, 1, this.modeBasis, true);
         break;
       case 'log':
       case 'logarithmic':
-        base = this.modeBasis;
-        type = 'logarithmic';
-        inverseType = 'exponential';
+        this._normToValue = logarithmicScale(0, 1, this.min, this.max, this.modeBasis, true);
+        this._valueToNorm = exponentialScale(this.min, this.max, 0, 1, this.modeBasis, true);
         break;
     }
 
-    this._normToValue = new Scaler({
-      inputStart: 0,
-      inputEnd: 1,
-      outputStart: this.min,
-      outputEnd: this.max,
-      clip: true,
-      base,
-      type,
-    });
-
-    this._valueToNorm = new Scaler({
-      inputStart: this.min,
-      inputEnd: this.max,
-      outputStart: 0,
-      outputEnd: 1,
-      clip: true,
-      base,
-      type: inverseType,
-    });
-
-    this._normValue = this._valueToNorm.process(currentValue);
+    this._normValue = this._valueToNorm(currentValue);
   }
 
   _onKeyboardEvent(e) {
