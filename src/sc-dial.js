@@ -266,6 +266,8 @@ class ScDialBase extends ScElement {
 
     this._normValueToAngleScale = linearScale(0, 1, this._minAngle, this._maxAngle);
     this._pixelToDiffScale = linearScale(0, 15, 0, 1);
+    this._normToValue = null;
+    this._valueToNorm = null;
     this._updateScales();
 
     this.keyboard = new KeyboardController(this, {

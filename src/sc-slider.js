@@ -296,6 +296,9 @@ class ScSliderBase extends ScElement {
     this._startSliderValue = null;
     this._midiValueTimeout = null;
 
+    this._normToValue = null;
+    this._valueToNorm = null;
+
     this._updateScales();
 
     this.keyboard = new KeyboardController(this, {

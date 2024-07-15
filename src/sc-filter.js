@@ -3,6 +3,12 @@ import { html, svg, css, nothing } from 'lit';
 import ScElement from './ScElement.js';
 import { atodb, linearScale } from '@ircam/sc-utils';
 
+
+import './sc-text.js';
+import './sc-number.js';
+import './sc-select.js';
+import './sc-dial.js';
+
 // @todo
 // - Q control
 //   + cf. http://www.sengpielaudio.com/calculator-bandwidth.htm for convertion formulas
@@ -268,28 +274,9 @@ class ScFilter extends ScElement {
 
     this._f1 = null;
     this._f2 = null;
-
-    // f0 (f0 + gain) | f1 (Q + gain) | f2 (Q + gain)
     this._editMode = null;
 
-    // @todo - this should be dynamic too
-
-    // for (let i = 0; i < this.numFilters; i++) {
-    //   this.#filterNodes[i] = audioContext.createBiquadFilter();;
-    // }
-
-    // this.#filterNodes[0].type = 'peaking';
-    // this.#filterNodes[0].frequency.value = 200;
-    // this.#filterNodes[0].gain.value = +6;
-    // this.#filterNodes[0].Q.value = 0.2;
-
-    // this.#filterNodes[1].type = 'highshelf';
-    // this.#filterNodes[1].frequency.value = 2000;
-    // this.#filterNodes[1].gain.value = -12;
-    // this.#filterNodes[1].Q.value = 0.3;
-    // // @todo - this should dynamic according to sample rate
-
-    // number of computed points to display the reponse curve
+    // number of computed points to display the response curve
     const numPoints = 256; // this is arbitrary
     const delta = 1 / (numPoints - 1);
 
