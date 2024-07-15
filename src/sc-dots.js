@@ -92,7 +92,7 @@ class ScDots extends ScElement {
       }
 
       circle {
-        pointer-event: none;
+        pointer-events: none;
         fill-opacity: var(--sc-dots-opacity);
         fill: var(--sc-dots-color);
       }

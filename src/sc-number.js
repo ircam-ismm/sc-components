@@ -215,16 +215,16 @@ class ScNumber extends ScElement {
     return this._max;
   }
 
-  set value(val) {
+  set value(value) {
     if (!Number.isFinite(value)) {
       throw new TypeError(`Cannot set property 'value' on sc-number: value (${value}) is not a finite number`);
     }
 
-    val = Math.min(this._max, Math.max(this._min, val));
+    value = Math.min(this._max, Math.max(this._min, value));
 
-    if (val !== this._value) {
-      this._value = val;
-      this._displayValue = val.toString();
+    if (value !== this._value) {
+      this._value = value;
+      this._displayValue = value.toString();
       this.requestUpdate();
     }
   }

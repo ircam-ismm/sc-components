@@ -146,6 +146,22 @@ class ScDialBase extends ScElement {
       webkit-user-select: none;
       webkit-touch-callout: none;
     }
+
+    p.edit:after {
+      content: "";
+      width: 2px;
+      height: 8px;
+      position: relative;
+      top: 1px;
+      left: 1px;
+      background: var(--sc-color-secondary-3);
+      display: inline-block;
+      animation: cursor-blink 1s steps(2) infinite;
+    }
+
+    @keyframes cursor-blink {
+      0% { opacity: 0; }
+    }
   `;
 
   get value() {
@@ -268,11 +284,24 @@ class ScDialBase extends ScElement {
     this._pixelToDiffScale = linearScale(0, 15, 0, 1);
     this._normToValue = null;
     this._valueToNorm = null;
+    this._editValue = null;
+
     this._updateScales();
 
-    this.keyboard = new KeyboardController(this, {
+    // not sensitive to keyboard layout and locale
+    new KeyboardController(this, {
       filterCodes: ['ArrowUp', 'ArrowRight', 'ArrowDown', 'ArrowLeft'],
-      callback: this._onKeyboardEvent.bind(this),
+      callback: this._onArrowKeyboardEvent.bind(this),
+    });
+
+    // sensitive to keyboard layout and locale
+    new KeyboardController(this, {
+      filterKeys: [
+        '1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
+        '.', ',', 'Enter', 'Backspace'],
+      callback: this._onNumberKeyboardEvent.bind(this),
+      deduplicateEvents: true,
+      debug: true,
     });
   }
 
@@ -287,7 +316,7 @@ class ScDialBase extends ScElement {
     // prevent default to prevent focus when disabled
     return html`
       <div
-        @mousedown=${e => e.preventDefault()}
+        @mousedown=${this._clearEditMode}
         @touchstart=${e => e.preventDefault()}
         @dblclick=${this._resetValue}>
         <svg viewbox="0 0 100 100">
@@ -302,9 +331,11 @@ class ScDialBase extends ScElement {
           <line x1=${cx} y1=${cy} x2=${position.x} y2=${position.y} />
         </svg>
 
-        ${!this.hideValue
-          ? html`<p>${this.value.toFixed(this.numDecimals)}${this.unit ? ` ${this.unit}` : nothing}</p>`
-          : nothing
+        ${this._editValue !== null
+          ? html`<p class="edit">${this._editValue}</p>`
+          : !this.hideValue
+            ? html`<p>${this.value.toFixed(this.numDecimals)}${this.unit ? ` ${this.unit}` : nothing}</p>`
+            : nothing
         }
 
         <sc-speed-surface @input=${this._updateValue}></sc-speed-surface>
@@ -352,7 +383,7 @@ class ScDialBase extends ScElement {
     this._normValue = this._valueToNorm(currentValue);
   }
 
-  _onKeyboardEvent(e) {
+  _onArrowKeyboardEvent(e) {
     if (this.disabled) { return; }
 
     switch (e.type) {
@@ -373,6 +404,41 @@ class ScDialBase extends ScElement {
         this._dispatchChangeEvent();
         break;
       }
+    }
+  }
+
+  _onNumberKeyboardEvent(e) {
+    if (this.disabled) { return; }
+
+    if (e.type === 'keydown') {
+      if (e.key === 'Enter') {
+        this._clearEditMode();
+      } else if (e.key === 'Backspace') {
+        this._editValue = this._editValue.substring(0, this._editValue.length - 1);
+      } else {
+        if (this._editValue === null) {
+          this._editValue = '';
+        }
+
+        this._editValue += e.key;
+        console.log(this._editValue);
+      }
+    }
+
+    this.requestUpdate();
+  }
+
+  _clearEditMode(e) {
+    if (e) {
+      e.preventDefault();
+    }
+
+    if (this._editValue !== null) {
+      const value = parseFloat(this._editValue);
+      this._normValue = this._valueToNorm(value);
+      this._editValue = null;
+      this.requestUpdate();
+      this._dispatchChangeEvent();
     }
   }
 
@@ -402,7 +468,6 @@ class ScDialBase extends ScElement {
       }
 
       const diff = this._pixelToDiffScale(e.detail.dy);
-
       this._normValue = Math.min(1, Math.max(0, this._normValue + diff));
 
       this.requestUpdate();

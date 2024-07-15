@@ -1,16 +1,18 @@
 
 class KeyboardController {
   constructor(host, options) {
-    if (!options.filterCodes) {
-      throw new Error(`keyboard-controller: filterCodes option is mandatory`);
-    }
-
     if (!options.callback) {
       throw new Error(`keyboard-controller: callback option is mandatory`);
     }
 
     this._host = host;
-    this._filterCodes = options.filterCodes;
+
+    // e.code is not altered by keyboard layout
+    // cf. https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code
+    this._filterCodes = options.filterCodes || [];
+    // e.key is relative to actuallocale and layout
+    // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
+    this._filterKeys = options.filterKeys || [];
     this._callback = options.callback;
     // trigger a new keypress only if keyup has been triggered
     this._deduplicateEvents = options.deduplicateEvents || false;
@@ -46,15 +48,11 @@ class KeyboardController {
   }
 
   _triggerEvent(e) {
-    // e.code is not altered by keyboard layout
-    // cf. https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code
-    const key = e.code;
-
     if (this._debug) {
-      console.log(key);
+      console.log('code:', e.code, '- key:', e.key);
     }
 
-    if (this._filterCodes.includes(key)) {
+    if (this._filterCodes.includes(e.code) || this._filterKeys.includes(e.key)) {
       // prevent default only if key is one of the requested ones
       e.preventDefault();
 
