@@ -1,10 +1,17 @@
 import { html, svg, css, nothing } from 'lit';
+import NP from 'number-precision';
+import {
+  linearScale,
+  exponentialScale,
+  logarithmicScale,
+  normalizedToTableScale,
+  tableToNormalizedScale,
+  isSequence,
+} from '@ircam/sc-utils';
 
 import ScElement from './ScElement.js';
 import KeyboardController from './controllers/keyboard-controller.js';
 import midiControlled from './mixins/midi-controlled.js';
-import getScale from './utils/get-scale.js';
-import getClipper from './utils/get-clipper.js';
 import './sc-position-surface.js';
 import './sc-number.js';
 
@@ -143,13 +150,33 @@ class ScSliderBase extends ScElement {
     }
   `;
 
+  get value() {
+    const value = this._normToValue(this._normValue);
+    return NP.times(Math.round(value / this.step), this.step);
+  }
+
+  set value(value) {
+    if (!Number.isFinite(value)) {
+      throw new TypeError(`Cannot set property 'value' on sc-slider: value (${value}) is not a finite value`);
+    }
+
+    this._normValue = this._valueToNorm(value);
+    this.requestUpdate();
+  }
+
+
   get min() {
     return this._min;
   }
 
   set min(value) {
+    if (!Number.isFinite(value)) {
+      throw new TypeError(`Cannot set property 'min' on sc-slider: value (${value}) is not a finite value`);
+    }
+
     const oldValue = this._min;
     this._min = value;
+    this._updateScales();
     this.requestUpdate('min', oldValue);
   }
 
@@ -158,8 +185,13 @@ class ScSliderBase extends ScElement {
   }
 
   set max(value) {
+    if (!Number.isFinite(value)) {
+      throw new TypeError(`Cannot set property 'max' on sc-slider: value (${value}) is not a finite value`);
+    }
+
     const oldValue = this._max;
     this._max = value;
+    this._updateScales();
     this.requestUpdate('max', oldValue);
   }
 
@@ -168,9 +200,56 @@ class ScSliderBase extends ScElement {
   }
 
   set step(value) {
+    if (!Number.isFinite(value) && value <= 0) {
+      throw new TypeError(`Cannot set property 'step' on sc-slider: value (${value}) is not a strictly positive number`);
+    }
+
     const oldValue = this._step;
     this._step = value;
+    this._updateScales();
     this.requestUpdate('step', oldValue);
+  }
+
+  get mode() {
+    return this._mode;
+  }
+
+  set mode(value) {
+    if (!['lin', 'exp', 'log', 'linear', 'exponential', 'logarithmic'].includes(value)) {
+      throw new TypeError(`Cannot set property 'mode' on sc-dial: value (${value}) is not a valid enum value of ['lin', 'exp', 'log']`);
+    }
+
+    this._mode = value;
+    this._updateScales();
+    this.requestUpdate();
+  }
+
+  get modeBase() {
+    return this._modeBase;
+  }
+
+  set modeBase(value) {
+    if (value <= 0) {
+      throw new TypeError(`Cannot set property 'modeBase' on sc-slider: value (${value}) is not a strictly positive number`);
+    }
+
+    this._modeBase = value;
+    this._updateScales();
+    this.requestUpdate();
+  }
+
+  get lookupTable() {
+    return this._lookupTable;
+  }
+
+  set lookupTable(value) {
+    if (!isSequence(value)) {
+      this._lookupTable = null;
+    }
+
+    this._lookupTable = value;
+    this._updateScales();
+    this.requestUpdate();
   }
 
   // midi-learn interface
@@ -179,10 +258,9 @@ class ScSliderBase extends ScElement {
   }
 
   set midiValue(value) {
-    const newValue = (this.max - this.min) * value / 127. + this.min;
+    this._normValue = Math.round(value / 127);
 
-    this.value = this._clipper(newValue);
-
+    this.requestUpdate();
     this._dispatchInputEvent();
 
     clearTimeout(this._midiValueTimeout);
@@ -193,24 +271,20 @@ class ScSliderBase extends ScElement {
   }
 
   get midiValue() {
-    return Math.round((this.value - this.min) / (this.max - this.min) * 127.);
+    return Math.round(this._normValue * 127);
   }
 
   constructor() {
     super();
 
-    this._scale = null;
-    this._clipper = null;
-
+    this._normValue = 0.5;
     this._min = 0;
     this._max = 1;
     this._step = 1e-3;
+    this._mode = 'lin';
+    this._modeBase = 2;
+    this._lookupTable = null;
 
-    // this.mode = 'jump'; // @todo: relative
-    this.min = 0;
-    this.max = 1;
-    this.step = 1e-3;
-    this.value = 0.5;
     this.orientation = 'horizontal';
     this.relative = false;
     this.numberBox = false;
@@ -222,6 +296,8 @@ class ScSliderBase extends ScElement {
     this._startSliderValue = null;
     this._midiValueTimeout = null;
 
+    this._updateScales();
+
     this.keyboard = new KeyboardController(this, {
       filterCodes: ['ArrowUp', 'ArrowRight', 'ArrowDown', 'ArrowLeft'],
       callback: this._onKeyboardEvent.bind(this),
@@ -230,62 +306,11 @@ class ScSliderBase extends ScElement {
     this._updateScales();
   }
 
-  // https://lit.dev/docs/v1/components/lifecycle/#update
-  // Property changes inside this method do not trigger an element update.
-  // we could probably get rid of this._min and this._max
-  update(changedProperties) {
-    if (changedProperties.has('min') || changedProperties.has('max')) {
-      if (this._min > this._max) {
-        console.warn('sc-slider - min > max, inverting values');
-
-        const tmp = this._max;
-        this._max = this._min;
-        this._min = tmp;
-      }
-
-      if (this._min === this._max) {
-        console.warn('sc-slider - min === max, incrementing max');
-        this._max += 1;
-      }
-    }
-
-    if (changedProperties.has('min')
-      || changedProperties.has('max')
-      || changedProperties.has('step')
-    ) {
-      this._updateScales();
-    }
-
-    super.update(changedProperties);
-  }
-
-  // https://lit.dev/docs/v1/components/lifecycle/#update
-  // Property changes inside this method do not trigger an element update.
-  // we could probably get rid of this._min and this._max
-  update(changedProperties) {
-    if (changedProperties.has('min') || changedProperties.has('max')) {
-      if (this.min > this.max) {
-        console.warn('sc-slider - min > max, inverting values');
-
-        const tmp = this._max;
-        this._max = this._min;
-        this._min = tmp;
-      }
-    }
-
-    if (changedProperties.has('min')
-      || changedProperties.has('max')
-      || changedProperties.has('step')
-    ) {
-      console.log('heiho');
-      this._updateScales();
-    }
-
-    super.update(changedProperties);
-  }
-
   render() {
-    const size = Math.max(0, this._scale(this.value));
+    const svgSize = 1000;
+    const sliderSize = this._normValue * svgSize;
+    const xRange = [0, 1];
+    const yRange = [1, 0];
 
     // prevent focus when disabled
     return html`
@@ -297,19 +322,18 @@ class ScSliderBase extends ScElement {
         <svg viewbox="0 0 1000 1000" preserveAspectRatio="none">
           ${this.orientation === 'horizontal'
             ? svg`
-                <rect class="background" width="1000" height="1000"></rect>
-                <rect class="foreground" width="${size}" height="1000"></rect>
+                <rect class="background" width=${svgSize} height=${svgSize}></rect>
+                <rect class="foreground" width="${sliderSize}" height=${svgSize}></rect>
               `
             : svg`
-                <rect class="foreground" width="1000" height="1000"></rect>
-                <rect class="background" width="1000" height="${1000 - size}"></rect>
+                <rect class="foreground" width=${svgSize} height=${svgSize}></rect>
+                <rect class="background" width=${svgSize} height="${svgSize - sliderSize}"></rect>
               `
           }
         </svg>
         <sc-position-surface
-          x-range=${JSON.stringify([this.min, this.max])}
-          y-range=${JSON.stringify([this.max, this.min])}
-          clamp
+          .xRange=${xRange}
+          .yRange=${yRange}
           @input=${this._onPositionInput}
           @pointerend=${this._onPositionChange}
         ></sc-position-surface>
@@ -345,11 +369,33 @@ class ScSliderBase extends ScElement {
   }
 
   _updateScales() {
-    // define transfert functions and scales
-    this._scale = getScale([this._min, this._max], [0, 1000]); // 0 1000 is the svg viewport
-    this._clipper = getClipper(this._min, this._max, this._step);
-    // clean current value
-    this.value = this._clipper(this.value);
+    // get current "real" value to recompute norm based on updated scales
+    const currentValue = this._normToValue ? this._normToValue(this._normValue) : this._normValue;
+
+    if (this._lookupTable !== null) {
+      this._normToValue = normalizedToTableScale(this._lookupTable);
+      this._valueToNorm = tableToNormalizedScale(this._lookupTable);
+    } else {
+      switch (this._mode) {
+        case 'lin':
+        case 'linear':
+          this._normToValue = linearScale(0, 1, this.min, this.max, true);
+          this._valueToNorm = linearScale(this.min, this.max, 0, 1, true);
+          break;
+        case 'exp':
+        case 'exponential':
+          this._normToValue = exponentialScale(0, 1, this.min, this.max, this._modeBase, true);
+          this._valueToNorm = logarithmicScale(this.min, this.max, 0, 1, this._modeBase, true);
+          break;
+        case 'log':
+        case 'logarithmic':
+          this._normToValue = logarithmicScale(0, 1, this.min, this.max, this._modeBase, true);
+          this._valueToNorm = exponentialScale(this.min, this.max, 0, 1, this._modeBase, true);
+          break;
+      }
+    }
+
+    this._normValue = this._valueToNorm(currentValue);
   }
 
   _onKeyboardEvent(e) {
@@ -357,16 +403,15 @@ class ScSliderBase extends ScElement {
 
     switch (e.type) {
       case 'keydown': {
-        // arbitrary MIDI like delta increment,
-        const incr = Number.isFinite(this.min) && Number.isFinite(this.max)
-          ? (this.max - this.min) / 100 : 1;
+        const incr = 1 / (e.shiftKey ? 10 : 100);
 
         if (e.code === 'ArrowUp' || e.code === 'ArrowRight') {
-          this.value = this._clipper(this.value + incr);
+          this._normValue = Math.min(1, Math.max(0, this._normValue + incr));
         } else if (e.code === 'ArrowDown' || e.code === 'ArrowLeft') {
-          this.value = this._clipper(this.value - incr);
+          this._normValue = Math.min(1, Math.max(0, this._normValue - incr));
         }
 
+        this.requestUpdate();
         this._dispatchInputEvent();
         break;
       }
@@ -378,80 +423,60 @@ class ScSliderBase extends ScElement {
   }
 
   _onNumberBoxInput(e) {
-    e.stopPropagation();
-
+    e.stopPropagation(); // stop event propagation from sc-number
     if (this.disabled) { return; }
 
-    this.value = this._clipper(e.detail.value);
+    this._normValue = this._valueToNorm(e.detail.value);
     this._dispatchInputEvent();
   }
 
   _onNumberBoxChange(e) {
-    e.stopPropagation();
-
+    e.stopPropagation(); // stop event propagation from sc-number
     if (this.disabled) { return; }
 
-    this.value = this._clipper(e.detail.value);
+    this._normValue = this._valueToNorm(e.detail.value);
     this._dispatchChangeEvent();
   }
 
-  _onPositionChange(e) {
-    // stop propagation of event from sc-position-surface
-    e.stopPropagation();
-    // e.preventDefault();
+  _onPositionInput(e) {
+    e.stopPropagation(); // stop event propagation from sc-position-surface
+    if (this.disabled) { return; }
 
+    this.focus();
+
+    if (
+      e.detail.value[0] &&
+      (this._pointerId === null || e.detail.value[0].pointerId === this._pointerId)
+    ) {
+      const { x, y, pointerId } = e.detail.value[0];
+      const normValue = this.orientation === 'horizontal' ? x : y;
+
+      if (this._pointerId === null) {
+        this._startPointerValue = normValue;
+        this._startSliderValue = this._normValue;
+      }
+
+      this._pointerId = pointerId;
+
+      if (this.relative) {
+        const diff = normValue - this._startPointerValue;
+        this._normValue = Math.min(1, Math.max(0, this._startSliderValue + diff));
+      } else {
+        this._normValue = Math.min(1, Math.max(0, normValue));
+      }
+
+      this.requestUpdate();
+      this._dispatchInputEvent();
+    }
+  }
+
+  _onPositionChange(e) {
+    e.stopPropagation(); // stop event propagation from sc-position-surface
     if (this.disabled) { return; }
 
     if (e.detail.pointerId === this._pointerId) {
       this._pointerId = null;
       this._dispatchChangeEvent();
-    }
-  }
-
-  _onPositionInput(e) {
-    // stop propagation of event from sc-position-surface
-    e.stopPropagation();
-    // e.preventDefault();
-
-    if (this.disabled) { return; }
-
-    this.focus();
-
-    if (this.relative) {
-      // consider only first pointer in list, we don't want a multitouch slider...
-      if (
-        e.detail.value[0] &&
-        (this._pointerId === null || e.detail.value[0].pointerId === this._pointerId)
-      ) {
-        const { x, y, pointerId } = e.detail.value[0];
-        const value = this.orientation === 'horizontal' ? x : y;
-
-        if (this._pointerId === null) {
-          this._startPointerValue = value;
-          this._startSliderValue = this.value;
-        }
-
-        this._pointerId = pointerId;
-
-        const diff = value - this._startPointerValue;
-
-        this.value = this._clipper(this._startSliderValue + diff);
-        this._dispatchInputEvent();
-      }
-    } else {
-      // consider only first pointer in list, we don't want a multitouch slider...
-      if (
-        e.detail.value[0] &&
-        (this._pointerId === null || e.detail.value[0].pointerId === this._pointerId)
-      ) {
-        const { x, y, pointerId } = e.detail.value[0];
-        const value = this.orientation === 'horizontal' ? x : y;
-
-        this._pointerId = pointerId;
-
-        this.value = this._clipper(value);
-        this._dispatchInputEvent();
-      }
     }
   }
 
