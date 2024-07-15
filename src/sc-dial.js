@@ -1,8 +1,8 @@
 import { html, css, svg, nothing } from 'lit';
-import { 
-  linearScale, 
-  exponentialScale, 
-  logarithmicScale 
+import {
+  linearScale,
+  exponentialScale,
+  logarithmicScale
 } from '@ircam/sc-utils';
 
 import ScElement from './ScElement.js';
@@ -148,6 +148,19 @@ class ScDialBase extends ScElement {
     }
   `;
 
+  get value() {
+    return this._normToValue(this._normValue);
+  }
+
+  set value(value) {
+    if (!Number.isFinite(value)) {
+      throw new TypeError(`Cannot set property 'value' on sc-dial: value (${value}) is not a finite value`);
+    }
+
+    this._normValue = this._valueToNorm(value);
+    this.requestUpdate();
+  }
+
   get min() {
     return this._min;
   }
@@ -184,29 +197,30 @@ class ScDialBase extends ScElement {
     this.requestUpdate();
   }
 
-  get value() {
-    return this._normToValue(this._normValue);
-  }
-
-  set value(value) {
-    if (!Number.isFinite(value)) {
-      throw new TypeError(`Cannot set property 'value' on sc-dial: value (${value}) is not a finite value`);
-    }
-
-    this._normValue = this._valueToNorm(value);
-    this.requestUpdate();
-  }
-
   get mode() {
     return this._mode;
   }
 
   set mode(value) {
     if (!['lin', 'exp', 'log', 'linear', 'exponential', 'logarithmic'].includes(value)) {
-      throw new TypeError(`Cannot set property 'value' on sc-dial: value (${value}) is not a valid enum value of ['lin', 'exp', 'log']`);
+      throw new TypeError(`Cannot set property 'mode' on sc-dial: value (${value}) is not a valid enum value of ['lin', 'exp', 'log']`);
     }
 
     this._mode = value;
+    this._updateScales();
+    this.requestUpdate();
+  }
+
+  get modeBase() {
+    return this._modeBase;
+  }
+
+  set modeBase(value) {
+    if (value <= 0) {
+      throw new TypeError(`Cannot set property 'modeBase' on sc-dial: value (${value}) is not a strictly positive number`);
+    }
+
+    this._modeBase = value;
     this._updateScales();
     this.requestUpdate();
   }
@@ -217,7 +231,7 @@ class ScDialBase extends ScElement {
   }
 
   set midiValue(value) {
-    this._normValue = value / 127;
+    this._normValue = Math.round(value / 127);
 
     this.requestUpdate();
     this._dispatchInputEvent();
@@ -242,12 +256,8 @@ class ScDialBase extends ScElement {
     this._minAngle = -140;
     this._maxAngle = 140;
     this._mode = 'lin';
+    this._modeBase = 2;
 
-    this.min = 0;
-    this.max = 1;
-    this.value = 0;
-    this.modeBasis = 2;
-    this.mode = 'lin';
     this.hideValue = false;
     this.disabled = false;
     this.numDecimals = 2;
@@ -327,13 +337,13 @@ class ScDialBase extends ScElement {
         break;
       case 'exp':
       case 'exponential':
-        this._normToValue = exponentialScale(0, 1, this.min, this.max, this.modeBasis, true);
-        this._valueToNorm = logarithmicScale(this.min, this.max, 0, 1, this.modeBasis, true);
+        this._normToValue = exponentialScale(0, 1, this.min, this.max, this._modeBase, true);
+        this._valueToNorm = logarithmicScale(this.min, this.max, 0, 1, this._modeBase, true);
         break;
       case 'log':
       case 'logarithmic':
-        this._normToValue = logarithmicScale(0, 1, this.min, this.max, this.modeBasis, true);
-        this._valueToNorm = exponentialScale(this.min, this.max, 0, 1, this.modeBasis, true);
+        this._normToValue = logarithmicScale(0, 1, this.min, this.max, this._modeBase, true);
+        this._valueToNorm = exponentialScale(this.min, this.max, 0, 1, this._modeBase, true);
         break;
     }
 
@@ -389,9 +399,6 @@ class ScDialBase extends ScElement {
         return;
       }
 
-      const lastValue = this._normValue;
-
-      const sign = e.detail.dy < 0 ? -1 : 1;
       const diff = this._pixelToDiffScale(e.detail.dy);
 
       this._normValue = Math.min(1, Math.max(0, this._normValue + diff));

@@ -87,6 +87,16 @@ const template = html\`
     @change=${e => document.querySelector('#test-dial').mode = e.detail.value}
   ></sc-tab>
 </div>
+<div>
+  <sc-text>modeBase [=2]</sc-text>
+  <sc-number
+    value="2"
+    min="0.01"
+    max="100"
+    @change=${e => document.querySelector('#test-dial').modeBase = e.detail.value}
+  ></sc-number>
+  <p style="font-style:italic;">Only applies if "mode" is "exp" or "log"</p>
+</div>
 
 <h3>Keyboard shortcuts</h3>
 <sc-text class="key large">←</sc-text>
