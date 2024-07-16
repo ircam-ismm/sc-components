@@ -67,6 +67,10 @@ class ScIcon extends ScElement {
       background-color: var(--sc-color-primary-3);
     }
 
+    :host([active]:hover) {
+      background-color: color-mix(in srgb, var(--sc-icon-active) 90%, black);
+    }
+
     div {
       width: 100%;
       height: 100%;
