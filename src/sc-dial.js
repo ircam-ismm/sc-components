@@ -51,10 +51,10 @@ class ScDialBase extends ScElement {
       type: String,
       reflect: true,
     },
-    modeBasis: {
+    modeBase: {
       type: Number,
       reflect: true,
-      attribute: 'mode-basis',
+      attribute: 'mode-base',
     },
     unit: {
       type: String,
@@ -301,7 +301,6 @@ class ScDialBase extends ScElement {
         '.', ',', '-', 'Enter', 'Backspace'],
       callback: this._onNumberKeyboardEvent.bind(this),
       deduplicateEvents: true,
-      debug: true,
     });
   }
 

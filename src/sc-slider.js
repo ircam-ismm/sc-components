@@ -32,6 +32,15 @@ class ScSliderBase extends ScElement {
     value: {
       type: Number,
     },
+    mode: {
+      type: String,
+      reflect: true,
+    },
+    modeBase: {
+      type: Number,
+      reflect: true,
+      attribute: 'mode-base',
+    },
     orientation: {
       type: String,
       reflect: true,
