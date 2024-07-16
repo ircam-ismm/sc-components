@@ -70,30 +70,28 @@ class ScFilter extends ScElement {
 
   static styles = css`
     :host {
-      display: block;
+      display: flex;
       box-sizing: border-box;
-      width: 300px;
+      width: 500px;
       height: 150px;
       background-color: var(--sc-color-primary-1);
       border: 1px solid var(--sc-color-primary-3);
       position: relative;
+
+      --sc-control-panel-width: 200px;
     }
 
     svg {
-      width: 100%;
+      width: calc(100% - var(--sc-control-panel-width));
       height: 100%;
       position: relative;
     }
 
     .control-panel {
       background-color: var(--sc-color-primary-2);
-/*      border: 1px solid var(--sc-color-primary-3);*/
-      position: absolute;
       box-sizing: border-box;
-      top: -1px;
-      left: calc(100% + 1px);
       padding: 4px;
-      height: calc(100% + 2px);
+      width: var(--sc-control-panel-width);
     }
 
     .control-panel div {
@@ -519,7 +517,7 @@ class ScFilter extends ScElement {
                   unit="Hz"
                   num-decimals="0"
                   mode="exp"
-                  mode-basis="200"
+                  mode-base="100"
                   @input=${e => {
                     filter.frequency.value = e.detail.value;
                     this.requestUpdate();
@@ -550,7 +548,7 @@ class ScFilter extends ScElement {
                       unit="Q"
                       num-decimals="1"
                       mode="exp"
-                      mode-basis="20"
+                      mode-base="20"
                       @input=${e => {
                         filter.Q.value = e.detail.value;
                         this.requestUpdate();
@@ -577,7 +575,10 @@ class ScFilter extends ScElement {
     this._resizeObserver = new ResizeObserver(entries => {
       const entry = entries[0];
       const { width, height } = entry.contentRect;
-      this._width = width;
+      const $controlPanel = this.shadowRoot.querySelector('.control-panel');
+      const controlPanelRect = $controlPanel.getBoundingClientRect();
+
+      this._width = width - controlPanelRect.width;
       this._height = height;
       this.requestUpdate();
     });
