@@ -36,6 +36,7 @@ export const components = [
   'sc-filter',
   'sc-waveform',
   'sc-table',
+  'sc-modal',
 ].sort();
 
 export const pages = {

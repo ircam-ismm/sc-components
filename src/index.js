@@ -21,6 +21,7 @@ import './sc-icon.js';
 import './sc-loop.js';
 import './sc-matrix.js';
 import './sc-midi.js';
+import './sc-modal.js';
 import './sc-next.js';
 import './sc-number.js';
 import './sc-position-surface.js';
