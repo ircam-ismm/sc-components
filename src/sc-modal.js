@@ -12,32 +12,67 @@ class ScModal extends ScElement {
       type: Boolean,
       reflect: true,
     },
+    icon: {
+      type: String,
+      reflect: true,
+    },
     title: {
       type: String,
       reflect: true,
     },
+    bindToElement: {
+      type: String,
+      reflect: true,
+      attribute: 'bind-to-element',
+    },
+    movable: {
+      type: Boolean,
+      reflect: true,
+    },
+    resizable: {
+      type: Boolean,
+      reflect: true,
+    },
+
   };
 
   static styles = css`
     :host {
       display: inline-block;
       box-sizing: border-box;
+      position: relative;
       width: 30px;
       height: 30px;
-      position: relative;
+
+      --sc-modal-width: auto;
+      --sc-modal-height: auto;
+      /* relative to host position */
+      --sc-modal-position-top: 0;
+      --sc-modal-position-bottom: auto;
+      --sc-modal-position-left: 100%;
+      --sc-modal-position-right: auto;
+    }
+
+    :host > sc-icon {
+      display: block;
+      width: 100%;
+      height: 100%;
     }
 
     .modal {
       position: absolute;
+      top: var(--sc-modal-position-top);
+      bottom: var(--sc-modal-position-bottom);
+      left: var(--sc-modal-position-left);
+      right: var(--sc-modal-position-right);
       z-index: 1000;
-      width: auto;
-      height: auto;
+      width: var(--sc-modal-width);
+      height: var(--sc-modal-height);
       box-sizing: border-box;
       border-radius: 4px;
       background-color: var(--sc-color-primary-1);
       border: 1px solid var(--sc-color-primary-3);
       box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
-      resize: both;
       overflow: scroll;
     }
 
@@ -57,8 +92,9 @@ class ScModal extends ScElement {
 
     .modal header sc-text {
       height: 24px;
-      padding: 2px 6px;
+      padding: 4px 6px;
       background-color: transparent;
+      border: none;
     }
 
     .modal header sc-icon {
@@ -72,14 +108,42 @@ class ScModal extends ScElement {
     }
   `;
 
+  get active() {
+    return this._active;
+  }
+
+  set active(value) {
+    if (this._active === value) {
+      return;
+    }
+
+    if (value === false) {
+      this._updateModalPosition();
+    }
+
+    const old = this._active;
+    this._active = value;
+    this.requestUpdate('active', old);
+  }
+
   constructor() {
     super();
 
-    this.active = false;
+    this._active = false;
 
-    this._initModalPosition = { left: 30, top: 0 };
+    this.icon = 'plus';
+    this.boundTo = 'body';
+    this.title = 'modal window';
+    this.resizable = false;
+    this.movable = false;
+
+    this._modalPosition = null;
+    this._initialPosition = null;
     this._startModalPosition = null;
     this._startMousePosition = null;
+    this._btnRect = null;
+    this._modalRect = null;
+    this._bindRect = null;
 
     this._onMouseMove = this._onMouseMove.bind(this);
     this._onMouseUp = this._onMouseUp.bind(this);
@@ -89,25 +153,30 @@ class ScModal extends ScElement {
   render() {
     return html`
       <sc-icon
-        title=${this.title}
+        type="info"
+        type=${this.icon}
+        title="${this.active ? 'close ' : 'open '} ${this.title}"
         ?active=${this.active}
-        @input=${e => this._setActive(!this.active)}
+        @input=${e => this.active = !this.active}
       ></sc-icon>
       ${this.active
         ? html`
           <div
             class="modal"
             style="
-              left: ${this._initModalPosition.left}px;
-              top: ${this._initModalPosition.top}px;
+              ${this._modalPosition ? `
+                left: ${this._modalPosition.left}px;
+                top: ${this._modalPosition.top}px;
+              ` : nothing}
+              resize: ${this.resizable ? 'both' : 'none'}
             "
           >
-            <header @mousedown=${this._onMouseDown}>
+            <header @mousedown=${this._onHeaderMouseDown}>
               <sc-text>${this.title}</sc-text>
               <sc-icon
                 class="close-btn"
                 type="close"
-                @input=${e => this._setActive(false)}
+                @input=${e => this.active = false}
               ></sc-icon>
             </header>
             <section>
@@ -130,16 +199,21 @@ class ScModal extends ScElement {
     window.removeEventListener('mousedown', this._onModalMouseDown);
   }
 
-  _setActive(value) {
-    if (value === false) {
-      const $modal = this.shadowRoot.querySelector('.modal');
-      const styles = window.getComputedStyle($modal);
-      const left = parseInt(styles.getPropertyValue('left'));
-      const top = parseInt(styles.getPropertyValue('top'));
-      this._initModalPosition = { left, top };
-    }
+  updated() {
+    super.updated();
 
-    this.active = value;
+    if (this.active && this._modalPosition === null) {
+      this._updateModalPosition();
+      this._initialPosition = Object.assign({}, this._modalPosition);
+    }
+  }
+
+  _updateModalPosition() {
+    const $modal = this.shadowRoot.querySelector('.modal');
+    const styles = window.getComputedStyle($modal);
+    const left = parseInt(styles.getPropertyValue('left'));
+    const top = parseInt(styles.getPropertyValue('top'));
+    this._modalPosition = { left, top };
   }
 
   _onModalMouseDown(e) {
@@ -154,12 +228,14 @@ class ScModal extends ScElement {
     }
   }
 
-  _onMouseDown(e) {
+  _onHeaderMouseDown(e) {
     if (e.target.classList.contains('close-btn')) {
       return;
     }
 
-    e.preventDefault();
+    if (!this.movable) {
+      return;
+    }
 
     const $modal = this.shadowRoot.querySelector('.modal');
     const styles = window.getComputedStyle($modal);
@@ -169,6 +245,18 @@ class ScModal extends ScElement {
     this._startModalPosition = { left, top };
     this._startMousePosition = { clientX: e.clientX, clientY: e.clientY };
 
+    if (this.bindToElement !== null) {
+      const $el = document.querySelector(this.bindToElement);
+
+      if (!$el) {
+        console.warn(`[sc-modal] Could not find selector "${this.bindToElement}" to bind the modal position`);
+      } else {
+        this._bindRect = $el.getBoundingClientRect();
+        this._btnRect = this.getBoundingClientRect();
+        this._modalRect = $modal.getBoundingClientRect();
+      }
+    }
+
     window.addEventListener('mousemove', this._onMouseMove);
     window.addEventListener('mouseup', this._onMouseUp);
   }
@@ -177,16 +265,42 @@ class ScModal extends ScElement {
     e.preventDefault();
 
     const $modal = this.shadowRoot.querySelector('.modal');
-    const { left, top } = this._startModalPosition;
+    let { left, top } = this._startModalPosition;
     let diffX = e.clientX - this._startMousePosition.clientX;
     let diffY = e.clientY - this._startMousePosition.clientY;
 
-    // sticky behavior
-    // if (Math.abs(diffX) < 6) { diffX = 0; }
-    // if (Math.abs(diffY) < 6) { diffY = 0; }
+    left += diffX;
+    top += diffY;
 
-    $modal.style.left = `${left + diffX}px`;
-    $modal.style.top = `${top + diffY}px`;
+    //
+    if (this._bindRect) {
+      // bind left
+      left = Math.max(this._bindRect.left - this._btnRect.left, left);
+      // bind right
+      left = Math.min(
+        this._bindRect.left + this._bindRect.width - this._modalRect.width - this._btnRect.left,
+        left
+      );
+      // bind top
+      top = Math.max(this._bindRect.top - this._btnRect.top, top);
+      // bind bottom
+      top = Math.min(
+        this._bindRect.top + this._bindRect.height - this._modalRect.height - this._btnRect.top,
+        top
+      );
+    }
+
+    // sticky to initial position
+    if (Math.abs(left - this._initialPosition.left) < 5) {
+      left = this._initialPosition.left;
+    }
+
+    if (Math.abs(top - this._initialPosition.top) < 5) {
+      top = this._initialPosition.top;
+    }
+
+    $modal.style.left = `${left}px`;
+    $modal.style.top = `${top}px`;
   }
 
   _onMouseUp(e) {
