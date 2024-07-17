@@ -2,7 +2,7 @@
 
 <h2>sc-icon</h2>
 
-<sc-code-example language="javascript">${"\nimport { html } from 'lit';\nimport '@ircam/sc-components/sc-icon.js';\n\nconst template = html`\n  <sc-icon\n    type=\"question\"\n    value=\"my-icon\"\n  ></sc-icon>\n`;\n"}</sc-code-example>
+<sc-code-example language="javascript">${"\nimport { html } from 'lit';\nimport '@ircam/sc-components/sc-icon.js';\n\nconst template = html`\n  <sc-icon\n    type=\"network\"\n    value=\"my-icon\"\n  ></sc-icon>\n`;\n"}</sc-code-example>
 
 <sc-icon
   id="test-icon"

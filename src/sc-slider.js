@@ -82,6 +82,38 @@ const template = html\`
     @change=${e => document.querySelector('#test-slider').disabled = e.detail.value}
   ></sc-toggle>
 </div>
+<div>
+  <sc-text>mode [='lin']</sc-text>
+  <sc-tab
+    value="lin"
+    .options=${['lin', 'exp', 'log']}
+    @change=${e => document.querySelector('#test-slider').mode = e.detail.value}
+  ></sc-tab>
+</div>
+<div>
+  <sc-text>modeBase [=2]</sc-text>
+  <sc-number
+    value="2"
+    min="0.01"
+    max="100"
+    @change=${e => document.querySelector('#test-slider').modeBase = e.detail.value}
+  ></sc-number>
+  <p style="font-style:italic;">Only applies if "mode" is "exp" or "log"</p>
+</div>
+
+<h3>Properties</h3>
+<div>
+  <sc-text>.lookupTable [=null] </sc-text>
+  <sc-text
+    editable
+    @change=${e => document.querySelector('#test-slider').lookupTable = JSON.parse(e.detail.value)}
+  >[0, 1, 4]</sc-text>
+  <p style="font-style:italic;">
+    Sequence of numbers to use as a transfert function for mapping between component and values.
+    <br />
+    If set, take precedence over "mode", "min" and "max" attributes
+  </p>
+</div>
 
 <h3>Keyboard shortcuts</h3>
 <sc-text class="key large">←</sc-text>

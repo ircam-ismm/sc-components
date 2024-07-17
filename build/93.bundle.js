@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[93],{3093:(e,t,s)=>{s.r(t),s.d(t,{template:()=>r});var c=s(2182),l=s(1630);const r=c.qy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[93],{3093:(e,t,s)=>{s.r(t),s.d(t,{template:()=>i});var c=s(2182),l=s(1630);const i=c.qy`
 
 <h2>sc-slider</h2>
 
@@ -71,6 +71,38 @@
   <sc-toggle
     @change=${e=>document.querySelector("#test-slider").disabled=e.detail.value}
   ></sc-toggle>
+</div>
+<div>
+  <sc-text>mode [='lin']</sc-text>
+  <sc-tab
+    value="lin"
+    .options=${["lin","exp","log"]}
+    @change=${e=>document.querySelector("#test-slider").mode=e.detail.value}
+  ></sc-tab>
+</div>
+<div>
+  <sc-text>modeBase [=2]</sc-text>
+  <sc-number
+    value="2"
+    min="0.01"
+    max="100"
+    @change=${e=>document.querySelector("#test-slider").modeBase=e.detail.value}
+  ></sc-number>
+  <p style="font-style:italic;">Only applies if "mode" is "exp" or "log"</p>
+</div>
+
+<h3>Properties</h3>
+<div>
+  <sc-text>.lookupTable [=null] </sc-text>
+  <sc-text
+    editable
+    @change=${e=>document.querySelector("#test-slider").lookupTable=JSON.parse(e.detail.value)}
+  >[0, 1, 4]</sc-text>
+  <p style="font-style:italic;">
+    Sequence of numbers to use as a transfert function for mapping between component and values.
+    <br />
+    If set, take precedence over "mode", "min" and "max" attributes
+  </p>
 </div>
 
 <h3>Keyboard shortcuts</h3>

@@ -99,7 +99,7 @@ const template = html\`
 <h3>Attributes</h3>
 <div>
   <p>
-    Add "create", "rename", "delete" interfaces on right-click.
+    Add context menu with "create", "rename" and "delete" interfaces on right-click.
     <br /><br />
     <i>Be aware that the filetree is not changed by the component itself, it only gives you the commands and informations to be forwarded to another abstraction which should do the real job</i>
   </p>

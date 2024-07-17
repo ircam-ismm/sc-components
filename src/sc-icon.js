@@ -20,7 +20,7 @@ import '@ircam/sc-components/sc-icon.js';
 
 const template = html\`
   <sc-icon
-    type="question"
+    type="network"
     value="my-icon"
   ></sc-icon>
 \`;
