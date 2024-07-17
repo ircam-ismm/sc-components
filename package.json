@@ -1,6 +1,6 @@
 {
   "name": "@ircam/sc-components",
-  "version": "3.0.0-alpha.67",
+  "version": "3.0.0-alpha.68",
   "description": "Web Component library for audio applications",
   "authors": [
     "Benjamin Matuszewski",
