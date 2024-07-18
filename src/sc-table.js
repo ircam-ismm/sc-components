@@ -91,12 +91,6 @@ class ScTable extends ScElement {
 
     this.#value = newValue;
     this.#requestCanvasUpdate();
-
-    if (oldValue !== null) {
-      this.#triggerChange();
-    }
-
-    this.requestUpdate('size', oldValue);
   }
 
   get range() {
@@ -140,7 +134,6 @@ class ScTable extends ScElement {
     }
 
     this.#requestCanvasUpdate();
-    this.requestUpdate('range', oldValue);
   }
 
   get mode() {
@@ -159,7 +152,6 @@ class ScTable extends ScElement {
     const oldValue = this.#mode;
     this.#mode = value;
     this.#requestCanvasUpdate();
-    this.requestUpdate('mode', oldValue);
   }
 
   get value() {
@@ -174,7 +166,6 @@ class ScTable extends ScElement {
     this.#value = Array.from(value); // accept typed arrays
     this.#size = value.length;
     this.#requestCanvasUpdate();
-    this.#triggerChange();
   }
 
   render() {
