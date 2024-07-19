@@ -18,6 +18,7 @@ import './sc-flash.js';
 import './sc-fullscreen.js';
 import './sc-keyboard.js';
 import './sc-icon.js';
+import './sc-io-zone.js';
 import './sc-loop.js';
 import './sc-matrix.js';
 import './sc-midi.js';
