@@ -7,6 +7,26 @@ let id = 0;
 
 const userSelectNoneOnBodyRegister = new Set();
 
+export function requestUserSelectNoneOnBody(id) {
+  if (userSelectNoneOnBodyRegister.size === 0) {
+    document.body.style.userSelect = 'none';
+    document.body.style.webkitUserSelect = 'none';
+    document.body.style.webkitTouchCallout = 'none';
+  }
+
+  userSelectNoneOnBodyRegister.add(id);
+}
+
+export function cancelUserSelectNoneOnBody(id) {
+  userSelectNoneOnBodyRegister.delete(id);
+
+  if (userSelectNoneOnBodyRegister.size === 0) {
+    document.body.style.userSelect = 'auto';
+    document.body.style.webkitUserSelect = 'auto';
+    document.body.style.webkitTouchCallout = 'auto';
+  }
+}
+
 /**
  * all element should extend this class to handle global things such as
  * userSelect, ids, etc.
@@ -40,24 +60,12 @@ class ScElement extends LitElement {
 
   /* protected method */
   _requestUserSelectNoneOnBody() {
-    if (userSelectNoneOnBodyRegister.size === 0) {
-      document.body.style.userSelect = 'none';
-      document.body.style.webkitUserSelect = 'none';
-      document.body.style.webkitTouchCallout = 'none';
-    }
-
-    userSelectNoneOnBodyRegister.add(this._scId);
+    requestUserSelectNoneOnBody(this._scId);
   }
 
   /* protected method */
   _cancelUserSelectNoneOnBody() {
-    userSelectNoneOnBodyRegister.delete(this._scId);
-
-    if (userSelectNoneOnBodyRegister.size === 0) {
-      document.body.style.userSelect = 'auto';
-      document.body.style.webkitUserSelect = 'auto';
-      document.body.style.webkitTouchCallout = 'auto';
-    }
+    cancelUserSelectNoneOnBody(this._scId);
   }
 }
 
