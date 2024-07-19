@@ -37,7 +37,7 @@ export const components = [
   'sc-waveform',
   'sc-table',
   'sc-modal',
-  'sc-io-zone',
+  'sc-io-surface',
 ].sort();
 
 export const pages = {
