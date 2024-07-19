@@ -32,7 +32,7 @@ class KeyboardController {
     this._host.addEventListener('blur', this._onBlur);
   }
 
-  hostDisconnect() {
+  hostDisconnected() {
     this._host.removeEventListener('focus', this._onFocus);
     this._host.removeEventListener('blur', this._onBlur);
   }
