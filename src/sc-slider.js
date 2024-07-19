@@ -67,6 +67,7 @@ class ScSliderBase extends ScElement {
       vertical-align: top;
       border: 1px solid var(--sc-color-primary-3);
       font-size: 0;
+      overflow: hidden;
 
       --sc-slider-background-color: var(--sc-color-primary-2);
       --sc-slider-foreground-color: var(--sc-color-primary-5);
@@ -320,7 +321,8 @@ class ScSliderBase extends ScElement {
 
   render() {
     const svgSize = 1000;
-    const sliderSize = this._normValue * svgSize;
+    // apply step for display
+    const sliderSize = this._valueToNorm(this.value) * svgSize;
     const xRange = [0, 1];
     const yRange = [1, 0];
 
@@ -470,6 +472,8 @@ class ScSliderBase extends ScElement {
 
       this._pointerId = pointerId;
 
+      const oldValue = this.value;
+
       if (this.relative) {
         const diff = normValue - this._startPointerValue;
         this._normValue = Math.min(1, Math.max(0, this._startSliderValue + diff));
@@ -477,8 +481,12 @@ class ScSliderBase extends ScElement {
         this._normValue = Math.min(1, Math.max(0, normValue));
       }
 
-      this.requestUpdate();
-      this._dispatchInputEvent();
+      const newValue = this.value;
+      // dipatch input event only if value changed with step applied
+      if (oldValue !== newValue) {
+        this.requestUpdate();
+        this._dispatchInputEvent();
+      }
     }
   }
 

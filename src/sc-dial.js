@@ -1,4 +1,5 @@
 import { html, css, svg, nothing } from 'lit';
+import NP from 'number-precision';
 import {
   linearScale,
   exponentialScale,
@@ -41,6 +42,10 @@ class ScDialBase extends ScElement {
       reflect: true,
     },
     max: {
+      type: Number,
+      reflect: true,
+    },
+    step: {
       type: Number,
       reflect: true,
     },
@@ -165,7 +170,8 @@ class ScDialBase extends ScElement {
   `;
 
   get value() {
-    return this._normToValue(this._normValue);
+    const value = this._normToValue(this._normValue);
+    return NP.times(Math.round(value / this.step), this.step);
   }
 
   set value(value) {
@@ -211,6 +217,22 @@ class ScDialBase extends ScElement {
     this._max = value;
     this._updateScales();
     this.requestUpdate();
+  }
+
+
+  get step() {
+    return this._step;
+  }
+
+  set step(value) {
+    if (!Number.isFinite(value) && value <= 0) {
+      throw new TypeError(`Cannot set property 'step' on sc-slider: value (${value}) is not a strictly positive number`);
+    }
+
+    const oldValue = this._step;
+    this._step = value;
+    this._updateScales();
+    this.requestUpdate('step', oldValue);
   }
 
   get mode() {
@@ -268,6 +290,7 @@ class ScDialBase extends ScElement {
 
     this._min = 0;
     this._max = 1;
+    this._step = 1e-3;
     this._normValue = 0;
     this._minAngle = -140;
     this._maxAngle = 140;
@@ -309,7 +332,8 @@ class ScDialBase extends ScElement {
     const cx = 50;
     const cy = this.hideValue ? 54 : 42;
 
-    const angle = this._normValueToAngleScale(this._normValue); // computed from value
+    const normValue = this._valueToNorm(this.value); // aply step for display
+    const angle = this._normValueToAngleScale(normValue); // computed from value
     const position = polarToCartesian(cx, cy, radius + 2, angle); // + 2  is half path stroke-width
 
     // prevent default to prevent focus when disabled
@@ -466,11 +490,17 @@ class ScDialBase extends ScElement {
         return;
       }
 
+      const oldValue = this.value;
+
       const diff = this._pixelToDiffScale(e.detail.dy);
       this._normValue = Math.min(1, Math.max(0, this._normValue + diff));
 
-      this.requestUpdate();
-      this._dispatchInputEvent();
+      const newValue = this.value;
+
+      if (oldValue !== newValue) {
+        this.requestUpdate();
+        this._dispatchInputEvent();
+      }
     } else {
       this._dispatchChangeEvent();
     }
