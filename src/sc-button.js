@@ -45,6 +45,7 @@ class ScButtonBase extends ScElement {
       font-size: var(--sc-font-size);
       color: #ffffff;
       border: 1px solid var(--sc-color-primary-3);
+      font-family: var(--sc-font-family);
 
       --sc-button-background-color: var(--sc-color-primary-2);
       --sc-button-background-color-hover: var(--sc-color-primary-3);
@@ -69,7 +70,7 @@ class ScButtonBase extends ScElement {
       width: 100%;
       height: 100%;
       box-sizing: border-box;
-      font-family: var(--sc-font-family);
+      font-family: inherit;
       background-color: var(--sc-button-background-color);
       border: none;
       font-size: inherit;
