@@ -4,17 +4,13 @@ import ScElement from './ScElement.js';
 /**
  * @todo
  * - share same handlers for all zones
- * -
  */
 
-class ScIOZone extends ScElement {
+class ScIOSurface extends ScElement {
   #touchId = null;
+  #active = false;
 
   static properties = {
-    active: {
-      type: Boolean,
-      reflect: true,
-    },
     value: {
       type: Object,
       reflect: true,
@@ -26,23 +22,12 @@ class ScIOZone extends ScElement {
       display: inline-block;
       width: 100px;
       height: 100px;
-      background-color: var(--sc-color-secondary-3);
-    }
-
-    :host([active]) {
-      background-color: var(--sc-color-secondary-4);
-    }
-
-    div {
-      width: 100%;
-      height: 100%;
     }
   `;
 
   constructor() {
     super();
 
-    this.active = false;
     this.value = 0;
 
     this._mountMouseEvents = this._mountMouseEvents.bind(this);
@@ -83,9 +68,9 @@ class ScIOZone extends ScElement {
   }
 
   _unmountMouseEvents(e) {
-    if (this.active) {
-      this.active = false;
-      this._triggerChange();
+    if (this.#active) {
+      this.#active = false;
+      this._triggerEvent();
     }
 
     document.body.removeEventListener('mousemove', this._checkMousePosition);
@@ -96,12 +81,12 @@ class ScIOZone extends ScElement {
     const els = document.elementsFromPoint(e.x, e.y);
     const inZone = els.includes(this);
 
-    if (inZone && !this.active) {
-      this.active = true;
-      this._triggerChange();
-    } else if (!inZone && this.active) {
-      this.active = false;
-      this._triggerChange();
+    if (inZone && !this.#active) {
+      this.#active = true;
+      this._triggerEvent();
+    } else if (!inZone && this.#active) {
+      this.#active = false;
+      this._triggerEvent();
     }
   }
 
@@ -113,12 +98,12 @@ class ScIOZone extends ScElement {
   }
 
   _unmountTouchEvent(e) {
-    if (this.active) {
+    if (this.#active) {
       for (let touch of e.changedTouches) {
         if (this.#touchId === touch.identifier) {
-          this.active = false;
+          this.#active = false;
           this.#touchId = null;
-          this._triggerChange();
+          this._triggerEvent();
         }
       }
     }
@@ -132,25 +117,34 @@ class ScIOZone extends ScElement {
       const els = document.elementsFromPoint(touch.clientX, touch.clientY);
       const inZone = els.includes(this);
 
-      if (inZone && !this.active) {
-        this.active = true;
+      if (inZone && !this.#active) {
+        this.#active = true;
         this.#touchId = touch.identifier;
-        this._triggerChange();
-      } else if (this.active && this.#touchId === touch.identifier && !inZone) {
-        this.active = false;
+        this._triggerEvent();
+      } else if (this.#active && this.#touchId === touch.identifier && !inZone) {
+        this.#active = false;
         this.#touchId = null;
-        this._triggerChange();
+        this._triggerEvent();
       }
     }
   }
 
-  _triggerChange() {
+  _triggerEvent() {
+    const eventName = this.#active ? 'enter' : 'exit';
+    const event = new CustomEvent(eventName, {
+      bubbles: true,
+      composed: true,
+      detail: { value: this.value },
+    });
+
+    this.dispatchEvent(event);
+
     const changeEvent = new CustomEvent('change', {
       bubbles: true,
       composed: true,
       detail: {
         value: this.value,
-        active: this.active,
+        active: this.#active,
       },
     });
 
@@ -158,6 +152,6 @@ class ScIOZone extends ScElement {
   }
 }
 
-if (customElements.get('sc-io-zone') === undefined) {
-  customElements.define('sc-io-zone', ScIOZone);
+if (customElements.get('sc-io-surface') === undefined) {
+  customElements.define('sc-io-surface', ScIOSurface);
 }
