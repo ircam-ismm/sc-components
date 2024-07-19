@@ -1,6 +1,6 @@
 "use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[834],{2834:(e,t,c)=>{c.r(t),c.d(t,{template:()=>a});var r=c(2182),o=c(1630);const a=r.qy`
 
-<h2>sc-io-surface <span style="color: var(--sc-color-secondary-3); font-style:italic;">- experimental</span></h2>
+<h2>sc-io-surface</h2>
 
 <sc-code-example language="javascript">${"import { html } from 'lit';\nimport '@ircam/sc-components/sc-io-surface.js';\n\nconst template = html`\n  <sc-io-surface></sc-io-surface>\n`;\n"}</sc-code-example>
 

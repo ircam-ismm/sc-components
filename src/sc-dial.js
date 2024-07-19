@@ -46,6 +46,13 @@ const template = html\`
   ></sc-number>
 </div>
 <div>
+  <sc-text>step [=0.001]</sc-text>
+  <sc-number
+    value="0.001"
+    @change=${e => document.querySelector('#test-dial').step = e.detail.value}
+  ></sc-number>
+</div>
+<div>
   <sc-text>value [=0]</sc-text>
   <sc-number
     value="0"

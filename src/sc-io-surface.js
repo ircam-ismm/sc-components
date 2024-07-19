@@ -3,7 +3,7 @@ import applyStyle from './utils/applyStyle.js';
 
 export const template = html`
 
-<h2>sc-io-surface <span style="color: var(--sc-color-secondary-3); font-style:italic;">- experimental</span></h2>
+<h2>sc-io-surface</h2>
 
 <sc-code-example language="javascript">${`\
 import { html } from 'lit';
