@@ -4,6 +4,7 @@ import { map } from 'lit/directives/map.js';
 
 import ScElement from './ScElement.js';
 import KeyboardController from './controllers/keyboard-controller.js';
+import './sc-io-surface.js';
 
 /**
  * Given data follows a row-first convention with the 0 index
@@ -52,6 +53,7 @@ class ScMatrix extends ScElement {
       display: inline-block;
       background-color: var(--sc-color-primary-2);
       border: 1px solid var(--sc-color-primary-3);
+      position: relative;
 
       --sc-matrix-cell-color: #ffffff;
       --sc-matrix-cell-border: var(--sc-color-primary-4);
@@ -70,15 +72,25 @@ class ScMatrix extends ScElement {
       border: 1px solid var(--sc-color-primary-4);
     }
 
+    div {
+      width: 100%;
+      height: 100%;
+      box-sizing: border-box;
+    }
+
+    sc-io-surface {
+      position: absolute;
+      background-color: var(--sc-matrix-cell-color);
+    }
+
     svg {
+      position: absolute;
+      top: 0;
+      left: 0;
       box-sizing: border-box;
       width: 100%;
       height: 100%;
-    }
-
-    rect {
-      fill: var(--sc-matrix-cell-color);
-      shape-rendering: crispedges;
+      pointer-events: none;
     }
 
     line {
@@ -233,34 +245,36 @@ class ScMatrix extends ScElement {
 
     // prevent default to prevent focus when disabled
     return html`
+      <div>
+        ${this.value.map((row, rowIndex) => {
+          const y = rowIndex * cellHeight;
+
+          return row.map((value, columnIndex) => {
+            const x = columnIndex * cellWidth;
+            const opacity = (value - minValue) / (maxValue - minValue);
+
+            return html`
+              <sc-io-surface
+                style="
+                  width: ${cellWidth}px;
+                  height: ${cellHeight}px;
+                  left: ${x}px;
+                  top: ${y}px;
+                  opacity: ${opacity}
+                "
+                .value=${{ rowIndex, columnIndex }}
+                @enter=${this._onCellEvent}
+                @change=${e => e.stopPropagation()}
+                @exit=${e => e.stopPropagation()}
+              ></sc-io-surface>
+            `;
+          });
+        })}
+      </div>
       <svg
         @mousedown=${e => e.preventDefault()}
         @touchstart=${e => e.preventDefault()}
       >
-        <g>
-          ${this.value.map((row, rowIndex) => {
-            const y = rowIndex * cellHeight;
-
-            return row.map((value, columnIndex) => {
-              const x = columnIndex * cellWidth;
-              const opacity = (value - minValue) / (maxValue - minValue);
-
-              return svg`
-                <rect
-                  width=${cellWidth}
-                  height=${cellHeight}
-                  x=${x}
-                  y=${y}
-                  style="fill-opacity: ${opacity}"
-                  data-row-index=${rowIndex}
-                  data-column-index=${columnIndex}
-                  @mousedown=${this._onCellEvent}
-                  @touchend=${this._onCellEvent}
-                ></rect>
-              `;
-            });
-          })}
-        </g>
         <!-- keyboard controlled highligth cell -->
         ${highligthCell
           ? svg`<g>${highligthCell}</g>`
@@ -440,7 +454,7 @@ class ScMatrix extends ScElement {
 
     this.focus();
 
-    const { rowIndex, columnIndex } = e.target.dataset;
+    const { rowIndex, columnIndex } = e.target.value;
     this._updateCell(rowIndex, columnIndex);
   }
 

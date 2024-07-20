@@ -11,6 +11,8 @@ class EnterExitControllerGlobalHandler {
     this.components = new Map(); // <component, options>
     this.id = '__enter-exit-controller__';
 
+    this.rootNode = null;
+
     this.mouseEventMounted = false;
     this.onMouseDown = this.onMouseDown.bind(this);
     this.onMouseMove = this.onMouseMove.bind(this);
@@ -42,6 +44,8 @@ class EnterExitControllerGlobalHandler {
       return;
     }
 
+    // support wrapping element within a web component
+    this.rootNode = e.currentTarget.getRootNode();
     this.mouseEventMounted = true;
     requestUserSelectNoneOnBody(this.id);
 
@@ -68,7 +72,7 @@ class EnterExitControllerGlobalHandler {
   }
 
   onMouseMove(e) {
-    const els = document.elementsFromPoint(e.x, e.y);
+    const els = this.rootNode.elementsFromPoint(e.x, e.y);
 
     for (let [component, options] of this.components.entries()) {
       const inZone = els.includes(component);
@@ -89,6 +93,9 @@ class EnterExitControllerGlobalHandler {
     }
 
     e.preventDefault();
+
+    // support wrapping element within a web component
+    this.rootNode = e.currentTarget.getRootNode();
     this.touchEventMounted = true;
     requestUserSelectNoneOnBody(this.id);
 
@@ -125,7 +132,7 @@ class EnterExitControllerGlobalHandler {
 
   onTouchMove(e) {
     for (let touch of e.changedTouches) {
-      const els = document.elementsFromPoint(touch.clientX, touch.clientY);
+      const els = this.rootNode.elementsFromPoint(touch.clientX, touch.clientY);
 
       for (let [component, options] of this.components.entries()) {
         const inZone = els.includes(component);
