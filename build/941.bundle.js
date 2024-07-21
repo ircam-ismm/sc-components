@@ -12,7 +12,7 @@
 <h3>Events</h3>
 <div>
   <sc-text>@input</sc-text>
-  <sc-text id="keyboard-input" style="width: 300px; height: 120px;"></sc-text>
+  <sc-text id="keyboard-input" style="width: 300px; height: 140px;"></sc-text>
 </div>
 
 <h3>Attributes</h3>
@@ -47,8 +47,8 @@
 <div>
   <sc-text>mode [="monophonic"]</sc-text>
   <sc-radio
-    options="${JSON.stringify(["monophonic","polyphonic"])}"
-    value="monophonic"
+    options="${JSON.stringify(["polyphonic","monophonic"])}"
+    value="polyphonic"
     @change=${e=>document.querySelector("#test-keyboard").mode=e.detail.value}
   ></sc-radio>
 </div>
