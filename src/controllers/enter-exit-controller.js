@@ -63,7 +63,7 @@ class EnterExitControllerGlobalHandler {
       if (options.active) {
         e.preventDefault();
         options.active = false;
-        options.onExit();
+        options.onExit(e.clientX, e.clientY);
       }
     }
 
@@ -72,17 +72,17 @@ class EnterExitControllerGlobalHandler {
   }
 
   onMouseMove(e) {
-    const els = this.rootNode.elementsFromPoint(e.x, e.y);
+    const el = this.rootNode.elementFromPoint(e.clientX, e.clientY);
 
     for (let [component, options] of this.components.entries()) {
-      const inZone = els.includes(component);
+      const inZone = (el === component);
 
       if (inZone && !options.active) {
         options.active = true;
-        options.onEnter();
+        options.onEnter(e.clientX, e.clientY);
       } else if (!inZone && options.active) {
         options.active = false;
-        options.onExit();
+        options.onExit(e.clientX, e.clientY);
       }
     }
   }
@@ -101,7 +101,7 @@ class EnterExitControllerGlobalHandler {
 
     window.addEventListener('touchmove', this.onTouchMove);
     window.addEventListener('touchend', this.onTouchEnd);
-    window.addEventListener('touchcancel', this._touchEnd);
+    window.addEventListener('touchcancel', this.onTouchEnd);
 
     this.onTouchMove(e);
   }
@@ -114,7 +114,7 @@ class EnterExitControllerGlobalHandler {
         if (options.active && options.touchId === touch.identifier) {
           options.active = false;
           options.touchId = null;
-          options.onExit();
+          options.onExit(touch.clientX, touch.clientY);
         }
       }
     }
@@ -126,25 +126,25 @@ class EnterExitControllerGlobalHandler {
 
       window.removeEventListener('touchmove', this.onTouchMove);
       window.removeEventListener('touchend', this.onTouchEnd);
-      window.removeEventListener('touchcancel', this._touchEnd);
+      window.removeEventListener('touchcancel', this.onTouchEnd);
     }
   }
 
   onTouchMove(e) {
     for (let touch of e.changedTouches) {
-      const els = this.rootNode.elementsFromPoint(touch.clientX, touch.clientY);
+      const el = this.rootNode.elementFromPoint(touch.clientX, touch.clientY);
 
       for (let [component, options] of this.components.entries()) {
-        const inZone = els.includes(component);
+        const inZone = (el === component);
 
         if (inZone && !options.active) {
           options.active = true;
           options.touchId = touch.identifier;
-          options.onEnter();
+          options.onEnter(touch.clientX, touch.clientY);
         } else if (options.active && options.touchId === touch.identifier && !inZone) {
           options.active = false;
           options.touchId = null;
-          options.onExit();
+          options.onExit(touch.clientX, touch.clientY);
         }
       }
     }

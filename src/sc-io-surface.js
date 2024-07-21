@@ -21,7 +21,7 @@ class ScIOSurface extends ScElement {
   constructor() {
     super();
 
-    this.value = 0;
+    this.value = null;
 
     new EnterExitController(this, {
       onEnter: this.#onEnter.bind(this),
@@ -29,11 +29,15 @@ class ScIOSurface extends ScElement {
     });
   }
 
-  #onEnter() {
+  #onEnter(clientX, clientY) {
     const event = new CustomEvent('enter', {
       bubbles: true,
       composed: true,
-      detail: { value: this.value },
+      detail: {
+        value: this.value,
+        clientX,
+        clientY,
+      },
     });
 
     this.dispatchEvent(event);
@@ -44,17 +48,23 @@ class ScIOSurface extends ScElement {
       detail: {
         value: this.value,
         active: true,
+        clientX,
+        clientY,
       },
     });
 
     this.dispatchEvent(changeEvent);
   }
 
-  #onExit() {
+  #onExit(clientX, clientY) {
     const event = new CustomEvent('exit', {
       bubbles: true,
       composed: true,
-      detail: { value: this.value },
+      detail: {
+        value: this.value,
+        clientX,
+        clientY,
+      },
     });
 
     this.dispatchEvent(event);
@@ -65,6 +75,8 @@ class ScIOSurface extends ScElement {
       detail: {
         value: this.value,
         active: false,
+        clientX,
+        clientY,
       },
     });
 

@@ -6,9 +6,9 @@ import { mtof } from '@ircam/sc-utils';
 import ScElement from './ScElement.js';
 import midiControlled from './mixins/midi-controlled.js';
 import KeyboardController from './controllers/keyboard-controller.js';
+import './sc-io-surface.js';
 
 const whiteKeys = [0, 2, 4, 5, 7, 9, 11];
-const blackKeys = [1, 3, 6, 8, 10];
 const noteNames = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 
 class ScKeyboardBase extends ScElement {
@@ -43,6 +43,7 @@ class ScKeyboardBase extends ScElement {
       height: 80px;
       background-color: white;
       border-top: 1px solid var(--sc-color-primary-3);
+      position: relative;
 
       --sc-keyboard-active-key: var(--sc-color-secondary-2);
     }
@@ -60,26 +61,28 @@ class ScKeyboardBase extends ScElement {
       border-top: 1px solid var(--sc-color-primary-4);
     }
 
-    svg {
+    div {
       width: 100%;
       height: 100%;
+      position: relative;
     }
 
-    rect {
-      stroke: black;
-      shape-rendering: crispedges;
+    sc-io-surface {
+      position: absolute;
+      top: 0;
+      outline: 1px solid black;
     }
 
-    rect.white {
-      fill: white;
+    sc-io-surface.white {
+      background-color: white;
     }
 
-    rect.black {
-      fill: black;
+    sc-io-surface.black {
+      background-color: black;
     }
 
-    rect.active {
-      fill: var(--sc-keyboard-active-key);
+    sc-io-surface.active {
+      background-color: var(--sc-keyboard-active-key);
     }
   `;
 
@@ -89,8 +92,7 @@ class ScKeyboardBase extends ScElement {
 
   set offset(value) {
     if (value < 0) {
-      console.warn('sc-keyboard: offset should be >= 0');
-      return;
+      throw new TypeError(`Cannot set property 'offset' on sc-keyboard: value ${value} must be greater than or equal to zero`);
     }
 
     this._offset = value;
@@ -103,8 +105,7 @@ class ScKeyboardBase extends ScElement {
 
   set range(value) {
     if (value <= 0) {
-      console.warn('sc-keyboard: range should be > 0');
-      return;
+      throw new TypeError(`Cannot set property 'range' on sc-keyboard: value ${value} must be strictly greater than to zero`);
     }
 
     this._range = value;
@@ -117,8 +118,7 @@ class ScKeyboardBase extends ScElement {
 
   set inputMode(value) {
     if (value !== 'reactive' && value !== 'stateful') {
-      console.warn('sc-keyboard: input-mode should be either "reactive" or "statefull"');
-      return;
+      throw new TypeError(`Cannot set property 'inputMode' on sc-keyboard: value ${value} must be either "reactive" or "statefull"`);
     }
 
     this._inputMode = value;
@@ -133,8 +133,7 @@ class ScKeyboardBase extends ScElement {
 
   set mode(value) {
     if (value !== 'monophonic' && value !== 'polyphonic') {
-      console.warn('sc-keyboard: input-mode should be either "monophonic" or "polyphonic"');
-      return;
+      throw new TypeError(`Cannot set property 'mode' on sc-keyboard: value ${value} must be either  "monophonic" or "polyphonic"`);
     }
 
     this._mode = value;
@@ -200,6 +199,7 @@ class ScKeyboardBase extends ScElement {
       'KeyJ', // B
       'KeyK', // C
     ];
+
     this._keyboard = new KeyboardController(this, {
       filterCodes: [
         ...this._keyboardKeys,
@@ -252,41 +252,40 @@ class ScKeyboardBase extends ScElement {
       prevIsWhiteKey = isWhiteKey;
 
       if (isWhiteKey) {
-        whiteKeyRects.push(svg`
-          <rect
-            data-midi-note=${i}
+        whiteKeyRects.push(html`
+          <sc-io-surface
+            style="
+              left: ${pos * keyWidth}px;
+              width: ${keyWidth}px;
+              height: ${height}px;
+            "
             class="white ${this._currentNotes.has(i) ? 'active' : ''}"
-            x=${pos * keyWidth}
-            y=0
-            width=${keyWidth}
-            height=${height}
-          ></rect>
+            .value=${i}
+            @enter=${this._onPointerDown}
+            @exit=${this._onPointerUp}
+          ></sc-io-surface>
 
         `);
       } else {
-        blackKeyRects.push(svg`
-          <rect
-            data-midi-note=${i}
+        blackKeyRects.push(html`
+          <sc-io-surface
+            style="
+              left: ${pos * keyWidth}px;
+              width: ${keyWidth * 0.7}px;
+              height: ${height * 0.65}px;
+              "
             class="black ${this._currentNotes.has(i) ? 'active' : ''}"
-            x=${(pos * keyWidth)}
-            y=0
-            width=${keyWidth * 0.7}
-            height=${height * 0.65}
-          ></rect>
+            .value=${i}
+            @enter=${this._onPointerDown}
+            @exit=${this._onPointerUp}
+          ></sc-io-surface>
         `);
       }
     }
 
     return html`
-      <svg
-        @mousedown=${this._onPointerDown}
-        @touchstart=${this._onPointerDown}
-        @mouseup=${this._onPointerUp}
-        @touchend=${this._onPointerUp}
-      >
-        ${whiteKeyRects}
-        ${blackKeyRects}
-      </svg>
+      ${whiteKeyRects}
+      ${blackKeyRects}
     `
   }
 
@@ -380,11 +379,11 @@ class ScKeyboardBase extends ScElement {
       return;
     }
 
-    const $key = e.target;
-    const midiNote = parseInt($key.dataset.midiNote);
+    const $key = e.currentTarget;
+    const midiNote = e.detail.value;
     // use y position as velocity
     const { top, height } = $key.getBoundingClientRect();
-    const normY = (height - (e.clientY - top)) / height;
+    const normY = (height - (e.detail.clientY - top)) / height;
     const velocity = Math.round(normY * 127);
 
     this._handleKeyPress(midiNote, velocity);
@@ -397,8 +396,7 @@ class ScKeyboardBase extends ScElement {
       return;
     }
 
-    const $key = e.target;
-    const midiNote = parseInt($key.dataset.midiNote);
+    const midiNote = e.detail.value;
 
     this._handleKeyRelease(midiNote, 0);
   }

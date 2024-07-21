@@ -56,10 +56,10 @@ const template = html\`
 
 <h3>Attributes</h3>
 <div>
-  <sc-text>value [=0]</sc-text>
+  <sc-text>value [=null]</sc-text>
   <sc-text
     editable
-    @change=${e => document.querySelector('#test-io-surface').value = e.detail.value}
+    @change=${e => document.querySelector('#test-io-surface').value = JSON.parse(e.detail.value)}
   >0</sc-text>
 </div>
 
