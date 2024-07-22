@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[285],{1285:(t,e,s)=>{s.r(e),s.d(e,{template:()=>o});var c=s(2182),a=s(1630);const l=["a","b","c","d"],o=c.qy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[285],{1285:(t,e,s)=>{s.r(e),s.d(e,{template:()=>o});var a=s(2182),c=s(1630);const l=["a","b","c","d"],o=a.qy`
 
 <h2>sc-tab</h2>
 
@@ -62,6 +62,7 @@
 <sc-editor
   style="width: 500px;"
   save-button
+  language="css"
   value="\
 #test-tab {
   width: 200px;
@@ -71,6 +72,6 @@
   --sc-tab-selected: var(--sc-color-secondary-1);
 }
   "
-  @change=${t=>(0,a.default)(t.detail.value)}
+  @change=${t=>(0,c.default)(t.detail.value)}
 ></sc-editor>
 `}}]);

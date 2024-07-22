@@ -57,6 +57,7 @@ export const template = html`
 <sc-editor
   style="width: 500px; height: 250px;"
   save-button
+  language="css"
   value="\
 :root {
   --sc-font-family: Consolas, monaco, monospace;
@@ -85,6 +86,7 @@ export const template = html`
 <sc-editor
   style="width: 500px; height: 140px;"
   save-button
+  language="css"
   value="\
 sc-toggle {
   width: 30px;
@@ -103,6 +105,7 @@ sc-toggle {
 <sc-editor
   style="width: 500px; height: 140px;"
   save-button
+  language="css"
   value="\
 #my-slider {
   width: 180px;

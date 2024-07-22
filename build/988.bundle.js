@@ -38,6 +38,7 @@
 <sc-editor
   style="width: 500px;"
   save-button
+  language="css"
   value="\
 #test-toggle {
   width: 30px;

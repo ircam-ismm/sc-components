@@ -133,6 +133,7 @@ const template = html\`
 <sc-editor
   style="width: 500px;"
   save-button
+  language="css"
   value="\
 #test-icon {
   width: 30px;

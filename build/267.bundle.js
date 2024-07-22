@@ -4,7 +4,7 @@
 
 <sc-code-example language="javascript">${"\nimport { html } from 'lit';\nimport '@ircam/sc-components/sc-waveform.js';\n\nconst template = html`\n  <sc-waveform></sc-waveform>\n`;\n"}</sc-code-example>
 
-<sc-waveform 
+<sc-waveform
   id="test-waveform"
   .buffer=${a}
   @input=${e=>document.querySelector("#waveform-input").value=JSON.stringify(e.detail.value)}
@@ -55,13 +55,14 @@
     "
     @change="${e=>{const t=Object.values(e.detail.value)[0];t instanceof AudioBuffer&&(a=t,document.querySelector("#test-waveform").buffer=t)}}"
   ></sc-dragndrop>
-</div>  
+</div>
 </div>
 
 <h3>Styling</h3>
 <sc-editor
   style="width: 500px;"
   save-button
+  language="css"
   value="\
 #test-waveform {
   width: 300px;

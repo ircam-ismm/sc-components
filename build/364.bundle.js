@@ -93,6 +93,7 @@
 <sc-editor
   style="width: 500px;"
   save-button
+  language="css"
   value="\
 #test-dots {
   width: 300px;

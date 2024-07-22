@@ -32,6 +32,7 @@
 <sc-editor
   style="width: 500px;"
   save-button
+  language="css"
   value="\
 #test-tap-tempo {
   width: 50px;

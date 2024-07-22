@@ -72,6 +72,7 @@ ${"<sc-text\n  @change=${e => console.log(e.detail.value)}\n  @input=${e => cons
 <sc-editor
   style="width: 500px;"
   save-button
+  language="css"
   value="\
 #test-text {
   width: 200px;

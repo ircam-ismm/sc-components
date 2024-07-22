@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[61],{7061:(e,t,c)=>{c.r(t),c.d(t,{template:()=>o});var s=c(2182),r=c(1630);const o=s.qy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[61],{7061:(e,t,c)=>{c.r(t),c.d(t,{template:()=>a});var s=c(2182),r=c(1630);const a=s.qy`
 
 <h2>sc-record</h2>
 
@@ -37,6 +37,7 @@
 <sc-editor
   style="width: 500px;"
   save-button
+  language="css"
   value="\
 #test-record {
   width: 30px;

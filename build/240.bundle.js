@@ -39,6 +39,7 @@
 <sc-editor
   style="width: 500px;"
   save-button
+  language="css"
   value="\
 #test-switch {
   width: 60px;

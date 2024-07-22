@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[717],{1717:(e,t,i)=>{i.r(t),i.d(t,{enter:()=>o,template:()=>a});var s=i(2182),n=i(1630);function c(e){const t=e.currentTarget.tagName.toLowerCase(),i=e.type,s=e.detail.value;document.querySelector("#log-events").value=`${t} - @${i}: ${s}`}function o(){}const a=s.qy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[717],{1717:(e,t,s)=>{s.r(t),s.d(t,{enter:()=>o,template:()=>a});var i=s(2182),n=s(1630);function c(e){const t=e.currentTarget.tagName.toLowerCase(),s=e.type,i=e.detail.value;document.querySelector("#log-events").value=`${t} - @${s}: ${i}`}function o(){}const a=i.qy`
 
 <h2>sc-midi</h2>
 
@@ -38,6 +38,7 @@
 <sc-editor
   style="width: 500px;"
   save-button
+  language="css"
   value="\
 #test-midi {
   width: 80px;

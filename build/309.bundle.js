@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[309],{6309:(e,c,s)=>{s.r(c),s.d(c,{template:()=>r});var t=s(2182),l=(s(1967),s(1630));const r=t.qy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[309],{6309:(e,s,c)=>{c.r(s),c.d(s,{template:()=>r});var t=c(2182),l=(c(1967),c(1630));const r=t.qy`
 
 <h2>sc-fullscreen</h2>
 
@@ -24,6 +24,7 @@
 <sc-editor
   style="width: 500px;"
   save-button
+  language="css"
   value="\
 #test-fullscreen {
   width: 30px;

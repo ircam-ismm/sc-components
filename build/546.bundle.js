@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[546],{8546:(e,t,c)=>{c.r(t),c.d(t,{template:()=>l});var a=c(2182),s=c(1630);const l=a.qy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[546],{8546:(e,t,a)=>{a.r(t),a.d(t,{template:()=>l});var c=a(2182),s=a(1630);const l=c.qy`
 
 <h2>sc-code-example</h2>
 
@@ -21,6 +21,7 @@
 <sc-editor
   style="width: 500px;"
   save-button
+  language="css"
   value="\
 #test-code-example {
   width: 100%;

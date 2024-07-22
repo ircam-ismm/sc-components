@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[262],{8262:(e,t,i)=>{i.r(t),i.d(t,{template:()=>s});var r=i(2182),c=i(1967),a=i(1630);const n={path:"docs",name:"docs",children:[{path:"docs/inner",name:"inner",children:[{path:"docs/inner/niap.md",name:"niap.md",size:1584,extension:".md",type:"file"},{path:"docs/inner/test.md",name:"test.md",size:1588,extension:".md",type:"file"}],size:3172,type:"directory"},{path:"docs/niap.md",name:"niap.md",size:1584,extension:".md",type:"file"},{path:"docs/test.md",name:"test.md",size:1588,extension:".md",type:"file"}],size:3172,type:"directory"},s=r.qy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[262],{8262:(e,t,i)=>{i.r(t),i.d(t,{template:()=>s});var r=i(2182),a=i(1967),c=i(1630);const n={path:"docs",name:"docs",children:[{path:"docs/inner",name:"inner",children:[{path:"docs/inner/niap.md",name:"niap.md",size:1584,extension:".md",type:"file"},{path:"docs/inner/test.md",name:"test.md",size:1588,extension:".md",type:"file"}],size:3172,type:"directory"},{path:"docs/niap.md",name:"niap.md",size:1584,extension:".md",type:"file"},{path:"docs/test.md",name:"test.md",size:1588,extension:".md",type:"file"}],size:3172,type:"directory"},s=r.qy`
 
 <h2>sc-filetree</h2>
 
@@ -33,8 +33,9 @@
   <sc-text>.value [={}]</sc-text>
   <sc-editor
     style="width: 500px; height: 500px;"
+    language="json"
     .value=${JSON.stringify(n,null,2)}
-    @change=${e=>document.querySelector("#test-filetree").value=c.parse(e.detail.value)}
+    @change=${e=>document.querySelector("#test-filetree").value=a.parse(e.detail.value)}
   ></sc-editor>
 </div>
 
@@ -55,6 +56,7 @@
 <sc-editor
   style="width: 500px;"
   save-button
+  language="css"
   value="\
 #test-filetree {
   color: #cccccc;
@@ -66,7 +68,7 @@
   --sc-filetree-active-background-color: var(--sc-color-primary-4);
 }
   "
-  @change=${e=>(0,a.default)(e.detail.value)}
+  @change=${e=>(0,c.default)(e.detail.value)}
 ></sc-editor>
 
 `}}]);

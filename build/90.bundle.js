@@ -105,6 +105,7 @@
 <sc-editor
   style="width: 500px;"
   save-button
+  language="css"
   value="\
 #test-dial {
   width: 50px;

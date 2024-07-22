@@ -33,6 +33,7 @@ const template = html\`
 <sc-editor
   style="width: 500px;"
   save-button
+  language="css"
   value="\
 #test-code-example {
   width: 100%;

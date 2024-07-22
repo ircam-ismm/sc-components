@@ -91,6 +91,7 @@ const template = html\`
   <sc-text>.value [={}]</sc-text>
   <sc-editor
     style="width: 500px; height: 500px;"
+    language="json"
     .value=${JSON.stringify(tree, null, 2)}
     @change=${e => document.querySelector('#test-filetree').value = JSON5.parse(e.detail.value)}
   ></sc-editor>
@@ -113,6 +114,7 @@ const template = html\`
 <sc-editor
   style="width: 500px;"
   save-button
+  language="css"
   value="\
 #test-filetree {
   color: #cccccc;
