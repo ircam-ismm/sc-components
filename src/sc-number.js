@@ -2,16 +2,11 @@ import { html, css, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import NP from 'number-precision';
+import { isTouchDevice } from '@ircam/sc-utils';
 
 import ScElement from './ScElement.js';
 import KeyboardController from './controllers/keyboard-controller.js';
 import './sc-speed-surface.js';
-
-function isTouchDevice() {
-  return (('ontouchstart' in window) ||
-     (navigator.maxTouchPoints > 0) ||
-     (navigator.msMaxTouchPoints > 0));
-}
 
 class ScNumber extends ScElement {
   static properties = {
@@ -178,6 +173,10 @@ class ScNumber extends ScElement {
       font-family: var(--sc-font-family);
       outline: none;
       border-radius: 0;
+    }
+
+    :host([readonly]) input {
+      border-left: 15px solid var(--sc-color-primary-2);
     }
   `;
 
