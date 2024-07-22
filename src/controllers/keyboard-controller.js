@@ -10,7 +10,7 @@ class KeyboardController {
     // e.code is not altered by keyboard layout
     // cf. https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code
     this._filterCodes = options.filterCodes || [];
-    // e.key is relative to actuallocale and layout
+    // e.key is relative to actual locale and layout
     // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
     this._filterKeys = options.filterKeys || [];
     this._callback = options.callback;

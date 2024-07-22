@@ -24,7 +24,7 @@ const template = html\`
 \`;
 `}</sc-code-example>
 
-<sc-waveform 
+<sc-waveform
   id="test-waveform"
   .buffer=${buffer}
   @input=${e => document.querySelector('#waveform-input').value = JSON.stringify(e.detail.value) }
@@ -81,13 +81,14 @@ const template = html\`
     }
   }}"
   ></sc-dragndrop>
-</div>  
+</div>
 </div>
 
 <h3>Styling</h3>
 <sc-editor
   style="width: 500px;"
   save-button
+  language="css"
   value="\
 #test-waveform {
   width: 300px;

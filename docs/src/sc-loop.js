@@ -47,6 +47,7 @@ const template = html\`
 <sc-editor
   style="width: 500px;"
   save-button
+  language="css"
   value="\
 #test-loop {
   width: 30px;

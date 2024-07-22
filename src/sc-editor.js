@@ -1,29 +1,30 @@
 import { html, css, nothing } from 'lit';
 
-import CodeMirror from 'codemirror';
-import 'codemirror/mode/javascript/javascript.js';
-import 'codemirror/keymap/sublime.js';
-import 'codemirror/addon/search/search.js';
-import 'codemirror/addon/search/searchcursor.js';
-import 'codemirror/addon/search/jump-to-line.js';
-import 'codemirror/addon/dialog/dialog.js';
-import 'codemirror/addon/comment/comment.js';
-// performatted css (cf. .bin/prepare-code-mirror)
-import cmStyles from '../vendors/codemirror-css.js';
-import monokaiTheme from '../vendors/theme-monokai-css.js';
-import addonDialog from '../vendors/addon-dialog-css.js';
+import { EditorView, keymap, lineNumbers, drawSelection } from '@codemirror/view';
+import { EditorState, Compartment } from '@codemirror/state';
+import { history, toggleComment, } from '@codemirror/commands';
+import { javascript as javascriptLang } from '@codemirror/lang-javascript';
+import { html as htmlLang } from '@codemirror/lang-html';
+import { css as cssLang } from '@codemirror/lang-css';
+import { json as jsonLang } from '@codemirror/lang-json';
+import { markdown as markdownLang} from '@codemirror/lang-markdown';
+import { yaml as yamlLang} from '@codemirror/lang-yaml';
+import { monokai } from '@uiw/codemirror-theme-monokai';
+import { vscodeKeymap } from "@replit/codemirror-vscode-keymap";
 
 import ScElement from './ScElement.js';
 import './sc-icon.js';
 
-CodeMirror.commands.save = function(cm) {
-  cm._scComponent.save();
-};
-
-
 class ScEditor extends ScElement {
+  #languageCompartment = null;
+  #editorState = null;
+  #editorView = null;
+
   static properties = {
     value: {
+      type: String,
+    },
+    language: {
       type: String,
     },
     saveButton: {
@@ -66,15 +67,12 @@ class ScEditor extends ScElement {
     .container {
       width: 100%;
       height: 100%;
+      background-color: var(--sc-color-primary-2);
+      overflow: scroll;
     }
 
-    /* highlight focused editor */
-    .CodeMirror { opacity: 0.9; }
-    .CodeMirror.CodeMirror-focused { opacity: 1; }
-    /* code mirror styles */
-    ${cmStyles}
-    ${monokaiTheme}
-    ${addonDialog}
+    .cm-editor { height: 100%; }
+    .cm-scroller { overflow: auto; }
 
     sc-icon {
       position: absolute;
@@ -84,41 +82,62 @@ class ScEditor extends ScElement {
   `;
 
   get value() {
-    return this._value;
+    // return last saved state
+    if (this.#editorState) {
+      return this.#editorState.doc.toString();
+    } else {
+      return this._initValue;
+    }
   }
 
   set value(value) {
-    this._value = value !== null ? value : '';
+    if (this.#editorView) {
+      const update = this.#editorView.state.update({
+        changes: {
+          from: 0,
+          to: this.#editorView.state.doc.length,
+          insert: value,
+        },
+      });
 
-    if (this._codeMirror) {
-      const pos = this._codeMirror.getCursor();
-      this._codeMirror.setValue(this._value);
-      this._codeMirror.setCursor(pos);
-      this._cleanDoc();
-      setTimeout(() => this._codeMirror.refresh(), 1);
+      this.#editorView.update([update]);
+      this.#markClean();
+    } else {
+      this._initValue = value !== null ? value.toString() : '';
+    }
+  }
+
+  get language() {
+    return this._language;
+  }
+
+  set language(value) {
+    if (!['javascript', 'html', 'css', 'json', 'markdown', 'yaml'].includes(value)) {
+      throw new TypeError(`Cannot set 'language' property of sc-editor: language must be either 'javascript', 'html', 'css', 'json', 'markdown' or 'yaml'`);
+    }
+
+    this._language = value;
+
+    if (this.#languageCompartment) {
+      this.#editorView.dispatch({
+        effects: this.#languageCompartment.reconfigure(this.#getLanguage()),
+      });
     }
   }
 
   constructor() {
     super();
 
-    this.value = ``;
+    this._initValue = ``;
+    this._language = 'javascript';
+
     this.saveButton = false;
     this.dirty = false;
-    // this.asModule = false;
   }
-
-  /**
-   * @note: Initialization order
-   * - connectedCallback()
-   * - render()
-   * - firstUpdated();
-   * -> ResizeObserver callback is called after `firstUpdated()`
-   */
 
   render() {
     return html`
-      <div @keydown="${this._onKeydown}" class="container"></div>
+      <div @keydown="${this.#onKeydown}" class="container"></div>
       ${this.dirty && this.saveButton
         ? html`<sc-icon type="save" @input=${this.save}></sc-icon>`
         : nothing
@@ -126,100 +145,94 @@ class ScEditor extends ScElement {
     `;
   }
 
-  connectedCallback() {
-    super.connectedCallback();
-
-    this._resizeObserver = new ResizeObserver(entries => {
-      const $container = this.shadowRoot.querySelector('.container');
-      const { width, height } = $container.getBoundingClientRect();
-
-      this._codeMirror.setSize(width, height);
-    });
-
-    // we observe th ewhole element as the shadowRoot does not exists yet
-    this._resizeObserver.observe(this);
-  }
-
-  disconnectedCallback() {
-    this._resizeObserver.disconnect();
-    super.disconnectedCallback();
-  }
-
   firstUpdated() {
     const $container = this.shadowRoot.querySelector('.container');
 
-    this._codeMirror = CodeMirror($container, {
-      value: this.value,
-      mode: 'javascript',
-      theme: 'monokai',
-      lineNumbers: true,
-      tabSize: 2,
-      keyMap: 'sublime',
-    });
+    this.#languageCompartment = new Compartment();
 
-    // monkey patch component in _codeMirror to propagate save from keyboard
-    this._codeMirror._scComponent = this;
-
-    // replace tabs with 2 spaces
-    this._codeMirror.setOption('extraKeys', {
-      Tab: function(cm) {
-        let spaces = '';
-        for (let i = 0; i < cm.getOption('indentUnit'); i++) {
-          spaces += ' ';
+    const extensions = [
+      this.#languageCompartment.of(this.#getLanguage()),
+      lineNumbers(),
+      history(),
+      drawSelection(),
+      monokai,
+      keymap.of([...vscodeKeymap]),
+      EditorState.allowMultipleSelections.of(true),
+      EditorView.updateListener.of(update => {
+        if (update.docChanged) {
+          this.dirty = true;
         }
+      }),
+    ];
 
-        cm.replaceSelection(spaces);
-      }
+    this.#editorState = EditorState.create({
+      doc: this._initValue,
+      extensions,
     });
 
-    // track if document is clean
-    this._codeMirror.on('change', () => {
-      if (!this._codeMirror.getDoc().isClean()) {
-        this.dirty = true;
-      }
+    this.#editorView = new EditorView({
+      parent: $container,
+      state: this.#editorState,
     });
   }
 
-  _onKeydown(e) {
-    e.stopPropagation();
-
-    // manually do comment because opens Help menu otherwise...
-    if (e.metaKey && e.shiftKey) {
-      e.preventDefault();
-
-      if (e.key === '/') {
-        this._codeMirror.toggleComment();
-      }
-      // can't do anything for zoom, too deep in the system
-    }
-  }
-
-  // make it publid
-  async save(e) {
-    this._value = this._codeMirror.getValue();
-    const detail = { value: this._value };
-
-    // was a bit premature
-    // if (this.asModule) {
-    //   const file = new File([this._value], 'editor.js', { type: 'text/javascript' });
-    //   const url = URL.createObjectURL(file);
-    //   // the webpack ignore comment is here for the build
-    //   detail.module = await import(/* webpackIgnore: true */url);
-    // }
+  save(e) {
+    this.#markClean();
 
     const event = new CustomEvent('change', {
       bubbles: true,
       composed: true,
-      detail: detail,
+      detail: { value: this.value },
     });
 
-    this._cleanDoc();
     this.dispatchEvent(event);
   }
 
+  #getLanguage() {
+    switch (this.language) {
+      case 'javascript':
+        return javascriptLang();
+        break;
+      case 'html':
+        return htmlLang();
+        break;
+      case 'css':
+        return cssLang();
+        break;
+      case 'json':
+        return jsonLang();
+        break;
+      case 'markdown':
+        return markdownLang();
+        break;
+      case 'yaml':
+        return yamlLang();
+        break;
+    }
+  }
 
-  _cleanDoc() {
-    this._codeMirror.getDoc().markClean();
+  #onKeydown(e) {
+    e.stopPropagation();
+
+    // manually do `toggleComment` because opens native Help menu, and doesn't
+    // when registered in keymap, maybe due to azerty keyboard weirdness
+    if (e.metaKey && e.shiftKey) {
+      e.preventDefault();
+
+      if (e.key === '/') {
+        toggleComment(this.#editorView);
+      }
+      // can't do anything for zoom, too deep in the system
+    }
+
+    if (e.metaKey && e.key === 's') {
+      e.preventDefault();
+      this.save();
+    }
+  }
+
+  #markClean() {
+    this.#editorState = this.#editorView.state;
     this.dirty = false;
   }
 }

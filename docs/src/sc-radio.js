@@ -81,6 +81,7 @@ const template = html\`
 <sc-editor
   style="width: 500px;"
   save-button
+  language="css"
   value="\
 #test-radio {
   width: 200px;
