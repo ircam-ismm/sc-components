@@ -60,7 +60,8 @@
     "@uiw/codemirror-theme-monokai": "^4.23.0",
     "highlight.js": "^11.9.0",
     "lit": "^3.0.2",
-    "number-precision": "^1.6.0"
+    "number-precision": "^1.6.0",
+    "qrcode": "^1.5.3"
   },
   "devDependencies": {
     "json5": "^2.2.3",

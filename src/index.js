@@ -27,6 +27,7 @@ import './sc-next.js';
 import './sc-number.js';
 import './sc-position-surface.js';
 import './sc-prev.js';
+import './sc-qrcode.js';
 import './sc-select.js';
 import './sc-separator.js';
 import './sc-slider.js';
