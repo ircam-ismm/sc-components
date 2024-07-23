@@ -43,6 +43,9 @@ const template = html\`
 
 <sc-dots
   id="test-dots"
+  capture-events
+  persist-events
+  disabled
   .value=${[{ x: 0.5, y: 0.5 }]}
   @input=${e => document.querySelector('#dots-input').value = JSON5.stringify(e.detail.value, null, 2)}
 ></sc-dots>
@@ -119,6 +122,13 @@ const template = html\`
   <sc-toggle
     @change=${e => document.querySelector('#test-dots').persistEvents = e.detail.value}
   ></sc-toggle>
+</div>
+<div>
+  <sc-text>?disabled [=false]</sc-text>
+  <sc-toggle
+    @change=${e => document.querySelector('#test-dots').disabled = e.detail.value}
+  ></sc-toggle>
+</div>
 
 <h3>Events</h3>
 
@@ -138,12 +148,11 @@ const template = html\`
 #test-dots {
   width: 300px;
   height: 300px;
+  background-image: url(./assets/seating-map.png);
   background-color: var(--sc-color-primary-1);
 
-  --sc-dots-opacity: 1;
   --sc-dots-color: var(--sc-color-secondary-2);
-  --sc-dots-background-image: url(./assets/seating-map.png);
-  --sc-dots-background-color: var(--sc-color-primary-1);
+  --sc-dots-opacity: 1;
 }
   "
   @change=${e => applyStyle(e.detail.value)}

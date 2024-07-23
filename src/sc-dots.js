@@ -35,12 +35,18 @@ class ScDots extends ScElement {
     captureEvents: {
       type: Boolean,
       attribute: 'capture-events',
+      reflect: true,
     },
     persistEvents: {
       type: Boolean,
       attribute: 'persist-events',
+      reflect: true,
     },
-  }
+    disabled: {
+      type: Boolean,
+      reflect: true,
+    },
+  };
 
   static get styles() {
     return css`
@@ -54,14 +60,22 @@ class ScDots extends ScElement {
         height: 300px;
         overflow: hidden;
 
-        --sc-dots-opacity: 1;
+        background-color: var(--sc-color-primary-2);
+        background-image: none;
+        background-size: contain;
+        background-position: 50% 50%;
+        background-repeat: no-repeat;
+
         --sc-dots-color: var(--sc-color-secondary-2);
-        --sc-dots-background-color: var(--sc-color-primary-1);
-        --sc-dots-background-image: none;
+        --sc-dots-opacity: 1;
       }
 
       :host([hidden]) {
         display: none
+      }
+
+      :host([disabled]) {
+        opacity: 0.7;
       }
 
       :host(.debug) {
@@ -85,11 +99,6 @@ class ScDots extends ScElement {
 
       svg {
         position: relative;
-        background-color: var(--sc-dots-background-color);
-        background-image: var(--sc-dots-background-image);
-        background-size: contain;
-        background-position: 50% 50%;
-        background-repeat: no-repeat;
       }
 
       circle {
@@ -112,6 +121,7 @@ class ScDots extends ScElement {
 
     this.captureEvents = false;
     this.persistEvents = false;
+    this.disabled = false;
 
     this._defaultRadius = 5;
     this._resizeObserver = null;
@@ -240,6 +250,10 @@ class ScDots extends ScElement {
 
   _updatePositions(e) {
     e.stopPropagation();
+
+    if (this.disabled) {
+      return;
+    }
 
     // ignore mouseup and touchend events
     if (this.persistEvents && e.detail.value.length === 0) {
