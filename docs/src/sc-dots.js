@@ -136,7 +136,6 @@ const template = html\`
   <p>If "capture-events" is true</p>
   <sc-text>@input</sc-text>
   <sc-text id="dots-input" style="height: 200px;"></sc-text>
-
 </div>
 
 <h3>Styling</h3>

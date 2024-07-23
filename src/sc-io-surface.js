@@ -8,6 +8,10 @@ class ScIOSurface extends ScElement {
       type: Object,
       reflect: true,
     },
+    disabled: {
+      type: Boolean,
+      reflect: true,
+    },
   };
 
   static styles = css`
@@ -16,12 +20,17 @@ class ScIOSurface extends ScElement {
       width: 100px;
       height: 100px;
     }
+
+    :host([disabled]) {
+      opacity: 0.7;
+    }
   `;
 
   constructor() {
     super();
 
     this.value = null;
+    this.disabled = false;
 
     new EnterExitController(this, {
       onEnter: this.#onEnter.bind(this),
@@ -30,6 +39,10 @@ class ScIOSurface extends ScElement {
   }
 
   #onEnter(clientX, clientY) {
+    if (this.disabled) {
+      return;
+    }
+
     const event = new CustomEvent('enter', {
       bubbles: true,
       composed: true,
@@ -57,6 +70,10 @@ class ScIOSurface extends ScElement {
   }
 
   #onExit(clientX, clientY) {
+    if (this.disabled) {
+      return;
+    }
+
     const event = new CustomEvent('exit', {
       bubbles: true,
       composed: true,
