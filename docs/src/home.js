@@ -90,7 +90,7 @@ import '@ircam/sc-components';
 
   <h4>In JS file</h4>
 
-  <sc-code-example language="html">${`
+  <sc-code-example language="javascript">${`
 import { html, render } from 'https://unpkg.com/lit-html?module';
 import 'https://unpkg.com/@ircam/sc-components@latest';
 
