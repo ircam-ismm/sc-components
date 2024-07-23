@@ -33,10 +33,9 @@ class ScTable extends ScElement {
 
   static styles = css`
     :host {
-      display: block;
+      display: inline-block;
       width: 300px;
       height: 150px;
-      background-color: white;
       position: relative;
       background-color: var(--sc-color-primary-3);
     }
