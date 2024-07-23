@@ -77,7 +77,7 @@ class ScRecordBase extends ScElement {
     }
 
     this.active = value === 0 ? false : true;
-    this._dispatchEvent();
+    this._dispatchChangeEvent();
   }
 
   get midiValue() {

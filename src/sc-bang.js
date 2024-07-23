@@ -67,8 +67,10 @@ class ScBangBase extends ScElement {
 
   set midiValue(value) {
     // dispatch on any incomming value
-    this.active = true;
-    this._dispatchInputEvent();
+    if (value !== 0) {
+      this.active = true;
+      this._dispatchInputEvent();
+    }
   }
 
   get midiValue() {

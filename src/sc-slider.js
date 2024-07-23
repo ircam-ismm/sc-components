@@ -268,7 +268,7 @@ class ScSliderBase extends ScElement {
   }
 
   set midiValue(value) {
-    this._normValue = Math.round(value / 127);
+    this._normValue = value / 127;
 
     this.requestUpdate();
     this._dispatchInputEvent();
