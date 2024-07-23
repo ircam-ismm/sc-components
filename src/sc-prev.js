@@ -1,4 +1,4 @@
-import { html, svg, css } from 'lit';
+import { html, css } from 'lit';
 
 import ScElement from './ScElement.js';
 import KeyboardController from './controllers/keyboard-controller.js';
