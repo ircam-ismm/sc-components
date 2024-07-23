@@ -4,7 +4,8 @@ import applyStyle from './utils/applyStyle.js';
 import iconsList from '../../src/utils/icons.js';
 
 const icons = Object.keys(iconsList);
-const defaultIcon = 'question';
+// const defaultIcon = 'question';
+const defaultIcon = 'qrcode';
 
 let timeoutIdInput = null;
 let timeoutIdPress = null;
