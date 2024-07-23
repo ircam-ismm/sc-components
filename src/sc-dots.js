@@ -52,6 +52,7 @@ class ScDots extends ScElement {
         vertical-align: top;
         width: 300px;
         height: 300px;
+        overflow: hidden;
 
         --sc-dots-opacity: 1;
         --sc-dots-color: var(--sc-color-secondary-2);
