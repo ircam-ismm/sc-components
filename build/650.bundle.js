@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[650],{8650:(e,t,o)=>{o.r(t),o.d(t,{template:()=>s});const s=o(2182).qy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[650],{8650:(e,t,s)=>{s.r(t),s.d(t,{template:()=>o});const o=s(2182).qy`
 <div id="homepage">
   <h1>@ircam/sc-components</h1>
 
@@ -61,7 +61,7 @@
 
   <h4>In JS file</h4>
 
-  <sc-code-example language="html">${"\nimport { html, render } from 'https://unpkg.com/lit-html?module';\nimport 'https://unpkg.com/@ircam/sc-components@latest';\n\nrender(html`\n  <sc-toggle\n    @change=${e => console.log('Hello toggle', e.detail.value)}\n  ></sc-toggle>\n`, document.body);\n  "}</sc-code-example>
+  <sc-code-example language="javascript">${"\nimport { html, render } from 'https://unpkg.com/lit-html?module';\nimport 'https://unpkg.com/@ircam/sc-components@latest';\n\nrender(html`\n  <sc-toggle\n    @change=${e => console.log('Hello toggle', e.detail.value)}\n  ></sc-toggle>\n`, document.body);\n  "}</sc-code-example>
 
   <p>
     Note that this method will import the whole bundled library which is quite large. You may not want to use this is production._
