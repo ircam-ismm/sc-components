@@ -90,6 +90,7 @@ class ScSeparator extends ScElement {
     this._mouseDown = false;
 
     this._ratio = null;
+    this._$host = null;
     this._$prev = null;
     this._$next = null;
     this._parentBoundingClientRect = null;
@@ -102,10 +103,11 @@ class ScSeparator extends ScElement {
 
   connectedCallback() {
     super.connectedCallback();
-
+    // handle case where component is at top level of web component content
+    this._$host = this.parentElement !== null ? this.parentElement : this.parentNode.host;
     this._$prev = this.previousElementSibling;
     this._$next = this.nextElementSibling;
-    this._parentBoundingClientRect = this.parentElement.getBoundingClientRect();
+    this._parentBoundingClientRect = this._$host.getBoundingClientRect();
     this._storageKey = `sc-separator:${this.id || this._scId}`;
 
     this._loadFromLocalStorage();
@@ -129,7 +131,7 @@ class ScSeparator extends ScElement {
     document.body.style.userSelect = 'none';
     document.body.style.cursor = this.direction === 'row' ? 'ew-resize' : 'ns-resize';
 
-    this._parentBoundingClientRect = this.parentElement.getBoundingClientRect();
+    this._parentBoundingClientRect = this._$host.getBoundingClientRect();
 
     window.addEventListener('mousemove', this._resize);
     window.addEventListener('mouseup', this._onMouseUp);
