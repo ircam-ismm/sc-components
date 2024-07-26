@@ -36,11 +36,6 @@ class ScEditor extends ScElement {
       type: Boolean,
       reflect: true,
     },
-    // asModule: {
-    //   type: Boolean,
-    //   reflect: true,
-    //   attribute: 'as-module',
-    // },
   };
 
   static styles = css`
@@ -73,6 +68,11 @@ class ScEditor extends ScElement {
 
     .cm-editor { height: 100%; }
     .cm-scroller { overflow: auto; }
+    .cm-gutter {
+      padding-right: 12px;
+      margin-right: 2px;
+      border-right: 1px dotted var(--sc-color-primary-3);
+    }
 
     sc-icon {
       position: absolute;
@@ -112,10 +112,6 @@ class ScEditor extends ScElement {
   }
 
   set language(value) {
-    if (!['javascript', 'html', 'css', 'json', 'markdown', 'yaml'].includes(value)) {
-      throw new TypeError(`Cannot set 'language' property of sc-editor: language must be either 'javascript', 'html', 'css', 'json', 'markdown' or 'yaml'`);
-    }
-
     this._language = value;
 
     if (this.#languageCompartment) {
@@ -191,6 +187,9 @@ class ScEditor extends ScElement {
   #getLanguage() {
     switch (this.language) {
       case 'javascript':
+      case 'typescript':
+      case 'js':
+      case 'ts':
         return javascriptLang();
         break;
       case 'html':
@@ -203,10 +202,17 @@ class ScEditor extends ScElement {
         return jsonLang();
         break;
       case 'markdown':
+      case 'md':
+      case 'text':
+      case 'txt':
         return markdownLang();
         break;
       case 'yaml':
+      case 'yml':
         return yamlLang();
+        break;
+      default:
+        return javascriptLang();
         break;
     }
   }
