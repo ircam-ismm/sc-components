@@ -7,40 +7,62 @@ const tree = {
   name: 'docs',
   children: [
     {
-      path: 'docs/inner',
-      name: 'inner',
+      path: 'docs/TODOS.md',
+      name: 'TODOS.md',
+      size: 1588,
+      extension: '.md',
+      type: 'file'
+    },
+    {
+      path: 'docs/src',
+      name: 'src',
       children: [
         {
-          path: 'docs/inner/niap.md',
-          name: 'niap.md',
+          path: 'docs/src/index.js',
+          name: 'index.js',
           size: 1584,
           extension: '.md',
           type: 'file'
         },
         {
-          path: 'docs/inner/test.md',
-          name: 'test.md',
+          path: 'docs/src/utils.js',
+          name: 'utils.js',
           size: 1588,
           extension: '.md',
           type: 'file'
-        }
+        },
       ],
       size: 3172,
       type: 'directory'
     },
     {
-      path: 'docs/niap.md',
-      name: 'niap.md',
+      path: 'docs/README.md',
+      name: 'README.md',
       size: 1584,
       extension: '.md',
       type: 'file'
     },
     {
-      path: 'docs/test.md',
-      name: 'test.md',
-      size: 1588,
-      extension: '.md',
-      type: 'file'
+      path: 'docs/www',
+      name: 'www',
+      children: [
+        {
+          path: 'docs/www/index.html',
+          name: 'index.html',
+          size: 1584,
+          extension: '.md',
+          type: 'file'
+        },
+        {
+          path: 'docs/www/styles.css',
+          name: 'styles.css',
+          size: 1588,
+          extension: '.md',
+          type: 'file'
+        },
+      ],
+      size: 3172,
+      type: 'directory'
     },
   ],
   size: 3172,
@@ -72,6 +94,8 @@ const template = html\`
 
 <p>
   The data format used by the component to render the file tree is based on the format proposed by the <a href="https://www.npmjs.com/package/directory-tree" target="_blank">directory-tree</a> library.
+  <br />
+  Note that for now only the fields: "name", "path", and "type" of the entries are actually used by the component.
 </p>
 
 <h3>Events</h3>
