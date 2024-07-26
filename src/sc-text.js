@@ -133,6 +133,11 @@ class ScText extends ScElement {
   }
 
   render() {
+    // kind of hacky firstUpdated but prevent warning about re-render
+    if (this._value === null) {
+      this._value = this.textContent;
+    }
+
     if (this.editable) {
       return html`
         <input
@@ -150,11 +155,6 @@ class ScText extends ScElement {
     } else {
       return html`<div><slot></slot></div>`
     }
-  }
-
-  firstUpdated() {
-    this._value = this.textContent;
-    this.requestUpdate();
   }
 
   connectedCallback() {

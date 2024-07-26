@@ -25,8 +25,8 @@ class ScContextMenu extends ScElement {
         width: 250px;
         display: block;
 /*        background-color: rgba(0, 0, 0, 0.8);*/
-        background-color: var(--sc-color-primary-1);
-        border-radius: 2px;
+        background-color: var(--sc-color-primary-2);
+        border-radius: 5px;
         border: 1px solid var(--sc-color-primary-4);
         box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.2);
         position: fixed;
