@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[262],{8262:(e,t,i)=>{i.r(t),i.d(t,{template:()=>s});var r=i(2182),a=i(1967),c=i(1630);const n={path:"docs",name:"docs",children:[{path:"docs/inner",name:"inner",children:[{path:"docs/inner/niap.md",name:"niap.md",size:1584,extension:".md",type:"file"},{path:"docs/inner/test.md",name:"test.md",size:1588,extension:".md",type:"file"}],size:3172,type:"directory"},{path:"docs/niap.md",name:"niap.md",size:1584,extension:".md",type:"file"},{path:"docs/test.md",name:"test.md",size:1588,extension:".md",type:"file"}],size:3172,type:"directory"},s=r.qy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[262],{8262:(e,t,i)=>{i.r(t),i.d(t,{template:()=>n});var s=i(2182),c=i(1967),a=i(1630);const r={path:"docs",name:"docs",children:[{path:"docs/TODOS.md",name:"TODOS.md",size:1588,extension:".md",type:"file"},{path:"docs/src",name:"src",children:[{path:"docs/src/index.js",name:"index.js",size:1584,extension:".md",type:"file"},{path:"docs/src/utils.js",name:"utils.js",size:1588,extension:".md",type:"file"}],size:3172,type:"directory"},{path:"docs/README.md",name:"README.md",size:1584,extension:".md",type:"file"},{path:"docs/www",name:"www",children:[{path:"docs/www/index.html",name:"index.html",size:1584,extension:".md",type:"file"},{path:"docs/www/styles.css",name:"styles.css",size:1588,extension:".md",type:"file"}],size:3172,type:"directory"}],size:3172,type:"directory"},n=s.qy`
 
 <h2>sc-filetree</h2>
 
@@ -6,7 +6,7 @@
 
 <sc-filetree
   id="test-filetree"
-  .value=${n}
+  .value=${r}
   editable
   @input=${e=>document.querySelector("#filetree-input").value=JSON.stringify(e.detail.value,null,2)}
   @change=${e=>document.querySelector("#filetree-change").value=JSON.stringify(e.detail.value,null,2)}
@@ -14,6 +14,8 @@
 
 <p>
   The data format used by the component to render the file tree is based on the format proposed by the <a href="https://www.npmjs.com/package/directory-tree" target="_blank">directory-tree</a> library.
+  <br />
+  Note that for now only the fields: "name", "path", and "type" of the entries are actually used by the component.
 </p>
 
 <h3>Events</h3>
@@ -34,8 +36,8 @@
   <sc-editor
     style="width: 500px; height: 500px;"
     language="json"
-    .value=${JSON.stringify(n,null,2)}
-    @change=${e=>document.querySelector("#test-filetree").value=a.parse(e.detail.value)}
+    .value=${JSON.stringify(r,null,2)}
+    @change=${e=>document.querySelector("#test-filetree").value=c.parse(e.detail.value)}
   ></sc-editor>
 </div>
 
@@ -68,7 +70,7 @@
   --sc-filetree-active-background-color: var(--sc-color-primary-4);
 }
   "
-  @change=${e=>(0,c.default)(e.detail.value)}
+  @change=${e=>(0,a.default)(e.detail.value)}
 ></sc-editor>
 
 `}}]);

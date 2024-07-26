@@ -43,6 +43,12 @@
     @change=${e=>document.querySelector("#test-io-surface").value=JSON.parse(e.detail.value)}
   >0</sc-text>
 </div>
+<div>
+  <sc-text>?disabled [=false]</sc-text>
+  <sc-toggle
+    @change=${e=>Array.from(document.querySelectorAll("sc-io-surface")).forEach((t=>t.disabled=e.detail.value))}
+  ></sc-toggle>
+</div>
 
 <h3>Styling</h3>
 <sc-editor
