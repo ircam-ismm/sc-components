@@ -1,6 +1,6 @@
 import { html, css, nothing } from 'lit';
 
-import { EditorView, keymap, lineNumbers, drawSelection } from '@codemirror/view';
+import { EditorView, keymap, lineNumbers, drawSelection, highlightActiveLine } from '@codemirror/view';
 import { EditorState, Compartment } from '@codemirror/state';
 import { history, toggleComment, } from '@codemirror/commands';
 import { javascript as javascriptLang } from '@codemirror/lang-javascript';
@@ -70,7 +70,8 @@ class ScEditor extends ScElement {
     .cm-scroller { overflow: auto; }
     .cm-gutter {
       padding-right: 12px;
-      margin-right: 2px;
+      font-size: calc(var(--sc-font-size) - 1px);
+      color: var(--sc-color-primary-4);
       border-right: 1px dotted var(--sc-color-primary-3);
     }
 
@@ -151,6 +152,7 @@ class ScEditor extends ScElement {
       lineNumbers(),
       history(),
       drawSelection(),
+      highlightActiveLine(),
       monokai,
       keymap.of([...vscodeKeymap]),
       EditorState.allowMultipleSelections.of(true),
