@@ -19,6 +19,8 @@ class ScEditor extends ScElement {
   #languageCompartment = null;
   #editorState = null;
   #editorView = null;
+  #initValue = ``;
+  #language = 'javascript';
 
   static properties = {
     value: {
@@ -87,7 +89,7 @@ class ScEditor extends ScElement {
     if (this.#editorState) {
       return this.#editorState.doc.toString();
     } else {
-      return this._initValue;
+      return this.#initValue;
     }
   }
 
@@ -104,16 +106,16 @@ class ScEditor extends ScElement {
       this.#editorView.update([update]);
       this.#markClean();
     } else {
-      this._initValue = value !== null ? value.toString() : '';
+      this.#initValue = value !== null ? value.toString() : '';
     }
   }
 
   get language() {
-    return this._language;
+    return this.#language;
   }
 
   set language(value) {
-    this._language = value;
+    this.#language = value;
 
     if (this.#languageCompartment) {
       this.#editorView.dispatch({
@@ -124,9 +126,6 @@ class ScEditor extends ScElement {
 
   constructor() {
     super();
-
-    this._initValue = ``;
-    this._language = 'javascript';
 
     this.saveButton = false;
     this.dirty = false;
@@ -147,6 +146,24 @@ class ScEditor extends ScElement {
 
     this.#languageCompartment = new Compartment();
 
+    const theme = EditorView.theme({
+      "&": {
+        fontSize: 'var(--sc-editor-font-size)',
+        // border: "1px solid #c0c0c0"
+      },
+      ".cm-content": {
+        // fontFamily: "Menlo, Monaco, Lucida Console, monospace",
+        // minHeight: "200px"
+      },
+      ".cm-gutters": {
+        minHeight: "200px"
+      },
+      ".cm-scroller": {
+        overflow: "auto",
+        maxHeight: "600px"
+      }
+    });
+
     const extensions = [
       this.#languageCompartment.of(this.#getLanguage()),
       lineNumbers(),
@@ -164,7 +181,7 @@ class ScEditor extends ScElement {
     ];
 
     this.#editorState = EditorState.create({
-      doc: this._initValue,
+      doc: this.#initValue,
       extensions,
     });
 
@@ -237,6 +254,33 @@ class ScEditor extends ScElement {
       e.preventDefault();
       this.save();
     }
+
+    // @fixme - issue with line number that don't have their line height updated
+    // cf. https://discuss.codemirror.net/t/editor-font-size-change-dynamically/5704/12
+    // if (e.metaKey && e.key === '-') {
+    //   e.preventDefault();
+    //   const styles = window.getComputedStyle(this);
+    //   let fontSize = parseInt(styles.getPropertyValue('--sc-editor-font-size'));
+    //   this.style.setProperty('--sc-editor-font-size', `${fontSize - 1}px`);
+    //   // this.requestUpdate();
+    //   setTimeout(() => {
+    //     console.log('ok');
+    //     this.#editorView.requestMeasure()
+    //   }, 1000);
+    // }
+
+    // // Cmd + Shift + '+' is swallowed by browser, use = instead
+    // if (e.metaKey && e.key === '=') {
+    //   e.preventDefault();
+    //   const styles = window.getComputedStyle(this);
+    //   let fontSize = parseInt(styles.getPropertyValue('--sc-editor-font-size'));
+    //   this.style.setProperty('--sc-editor-font-size', `${fontSize + 1}px`);
+    //   // this.requestUpdate();
+    //   setTimeout(() => {
+    //     console.log('ok');
+    //     this.#editorView.requestMeasure()
+    //   }, 1000);
+    // }
   }
 
   #markClean() {
