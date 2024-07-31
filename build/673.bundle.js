@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[673],{7673:(e,t,s)=>{s.r(t),s.d(t,{template:()=>a});var o=s(2182),c=s(1630);const a=o.qy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[673],{7673:(e,t,s)=>{s.r(t),s.d(t,{template:()=>i});var o=s(2182),c=s(1630);const i=o.qy`
 
 <h2>sc-editor</h2>
 
@@ -14,6 +14,10 @@ function test() {
   @change=${e=>{document.querySelector("#editor-change").value=e.detail.value,e.detail.module&&console.log(e.detail.module)}}
 ></sc-editor>
 
+<p>
+  This components is built on top of <a href="https://codemirror.net/">CodeMirror 6</a>
+</p>
+</p>
 <p>
 The red line on the left shows if the editor is in dirty state.
 <br />

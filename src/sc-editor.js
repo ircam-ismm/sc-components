@@ -30,6 +30,10 @@ function test() {
 ></sc-editor>
 
 <p>
+  This components is built on top of <a href="https://codemirror.net/">CodeMirror 6</a>
+</p>
+</p>
+<p>
 The red line on the left shows if the editor is in dirty state.
 <br />
 The "change" event is triggered when:<br />
