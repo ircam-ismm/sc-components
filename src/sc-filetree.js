@@ -103,6 +103,7 @@ class ScFileTree extends ScElement {
     li .content {
       position: relative;
       z-index: 1;
+      white-space: nowrap;
     }
 
     li .hover {
