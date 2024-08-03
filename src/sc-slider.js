@@ -441,6 +441,7 @@ class ScSliderBase extends ScElement {
     if (this.disabled) { return; }
 
     this._normValue = this._valueToNorm(e.detail.value);
+    this.requestUpdate();
     this._dispatchInputEvent();
   }
 
@@ -449,6 +450,7 @@ class ScSliderBase extends ScElement {
     if (this.disabled) { return; }
 
     this._normValue = this._valueToNorm(e.detail.value);
+    this.requestUpdate();
     this._dispatchChangeEvent();
   }
 
