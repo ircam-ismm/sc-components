@@ -36,7 +36,7 @@
     "creative coding"
   ],
   "scripts": {
-    "build": "webpack --config webpack.config.js",
+    "build": "esbuild src/index.js --bundle --minify --outfile=build/bundle.js",
     "preversion": "npm run build",
     "dev": "npm run doc",
     "doc": "cd docs && npm run dev",
@@ -65,10 +65,9 @@
     "qrcode": "^1.5.4"
   },
   "devDependencies": {
+    "esbuild": "^0.23.1",
     "json5": "^2.2.3",
     "npm-run-all": "^4.1.5",
-    "serve": "^14.2.0",
-    "webpack": "^5.94.0",
-    "webpack-cli": "^5.1.4"
+    "serve": "^14.2.0"
   }
 }
