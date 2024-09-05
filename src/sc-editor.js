@@ -8,6 +8,7 @@ import { html as htmlLang } from '@codemirror/lang-html';
 import { css as cssLang } from '@codemirror/lang-css';
 import { json as jsonLang } from '@codemirror/lang-json';
 import { markdown as markdownLang} from '@codemirror/lang-markdown';
+import { rust as rustLang} from '@codemirror/lang-rust';
 import { yaml as yamlLang} from '@codemirror/lang-yaml';
 import { monokai } from '@uiw/codemirror-theme-monokai';
 import { vscodeKeymap } from "@replit/codemirror-vscode-keymap";
@@ -225,6 +226,10 @@ class ScEditor extends ScElement {
       case 'text':
       case 'txt':
         return markdownLang();
+        break;
+      case 'rust':
+      case 'rs':
+        return rustLang();
         break;
       case 'yaml':
       case 'yml':

@@ -1,6 +1,36 @@
 import { html, css, svg, nothing } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
-import hljs from 'highlight.js';
+
+import hljs from 'highlight.js/lib/core';
+import javascriptLang from 'highlight.js/lib/languages/javascript';
+import typescriptLang from 'highlight.js/lib/languages/typescript';
+import htmlLang from 'highlight.js/lib/languages/xml';
+import cssLang from 'highlight.js/lib/languages/css';
+import jsonLang from 'highlight.js/lib/languages/json';
+import markdownLang from 'highlight.js/lib/languages/markdown';
+import yamlLang from 'highlight.js/lib/languages/yaml';
+import rustLang from 'highlight.js/lib/languages/rust';
+import shellLang from 'highlight.js/lib/languages/shell';
+import bashLang from 'highlight.js/lib/languages/bash';
+
+hljs.registerLanguage('javascript', javascriptLang);
+hljs.registerLanguage('js', javascriptLang);
+hljs.registerLanguage('typescript', typescriptLang);
+hljs.registerLanguage('ts', typescriptLang);
+hljs.registerLanguage('rust', rustLang);
+hljs.registerLanguage('rs', rustLang);
+hljs.registerLanguage('html', htmlLang);
+hljs.registerLanguage('css', cssLang);
+hljs.registerLanguage('json', jsonLang);
+hljs.registerLanguage('markdown', markdownLang);
+hljs.registerLanguage('md', markdownLang);
+hljs.registerLanguage('text', markdownLang);
+hljs.registerLanguage('txt', markdownLang);
+hljs.registerLanguage('yaml', yamlLang);
+hljs.registerLanguage('yml', yamlLang);
+hljs.registerLanguage('shell', shellLang);
+hljs.registerLanguage('sh', shellLang);
+hljs.registerLanguage('bash', bashLang);
 
 import ScElement from './ScElement.js';
 
