@@ -99,6 +99,7 @@ async function setContent(pages, page) {
 
           const url = key === 'home' ? `${prefix}/` : `${prefix}/${key}`;
           history.pushState({ page: key }, '', url);
+          _paq.push(['trackPageView']);
           setContent(pages, key);
         }}
       >${value}</a>`;
