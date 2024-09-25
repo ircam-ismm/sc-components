@@ -110,7 +110,7 @@ class ScTransportBase extends ScElement {
 
       this.value = this.buttons[index];
       this._dispatchEvent();
-    } 
+    }
   }
 
   get midiValue() {
@@ -142,8 +142,7 @@ class ScTransportBase extends ScElement {
               <svg
                 class="play ${this.value === type ? 'active' : ''}"
                 viewbox="0 0 20 20"
-                @mousedown=${e => this._onChange(e, type)}
-                @touchstart=${e => this._onChange(e, type)}
+                @click=${e => this._onChange(e, type)}
                 tabindex="-1"
               >
                 <polygon class="play-shape" points="6, 5, 15, 10, 6, 15"></polygon>
@@ -154,8 +153,7 @@ class ScTransportBase extends ScElement {
               <svg
                 class="pause ${this.value === 'pause' ? 'active' : ''}"
                 viewbox="0 0 20 20"
-                @mousedown=${e => this._onChange(e, 'pause')}
-                @touchstart=${e => this._onChange(e, 'pause')}
+                @click=${e => this._onChange(e, 'pause')}
                 tabindex="-1"
               >
                 <rect class="left" x="5" y="5" width="3" height="10"></rect>
@@ -167,8 +165,7 @@ class ScTransportBase extends ScElement {
               <svg
                 class="stop ${this.value === 'stop' ? 'active' : ''}"
                 viewbox="0 0 20 20"
-                @mousedown=${e => this._onChange(e, 'stop')}
-                @touchstart=${e => this._onChange(e, 'stop')}
+                @click=${e => this._onChange(e, 'stop')}
                 tabindex="-1"
               >
                 <rect class="stop-shape" x="6" y="6" width="8" height="8"></rect>
