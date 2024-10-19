@@ -43,6 +43,12 @@
     @change=${t=>document.querySelector("#test-tab").orientation=t.detail.value}
   ></sc-tab>
 </div>
+<div>
+  <sc-text>draggable [=false]</sc-text>
+  <sc-toggle
+    @change=${t=>document.querySelector("#test-tab").draggable=t.detail.value}
+  ></sc-toggle>
+</div>
 <!-- <div>
   <sc-text>[?disabled=false]</sc-text>
   <sc-toggle

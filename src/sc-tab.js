@@ -63,6 +63,12 @@ const template = html\`
     @change=${e => document.querySelector('#test-tab').orientation = e.detail.value}
   ></sc-tab>
 </div>
+<div>
+  <sc-text>draggable [=false]</sc-text>
+  <sc-toggle
+    @change=${e => document.querySelector('#test-tab').draggable = e.detail.value}
+  ></sc-toggle>
+</div>
 <!-- <div>
   <sc-text>[?disabled=false]</sc-text>
   <sc-toggle
