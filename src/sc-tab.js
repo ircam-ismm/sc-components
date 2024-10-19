@@ -20,6 +20,10 @@ class ScTab extends ScElement {
       type: String,
       reflect: true,
     },
+    draggable: {
+      type: Boolean,
+      reflect: true,
+    },
   }
 
   static styles = css`
@@ -33,6 +37,7 @@ class ScTab extends ScElement {
       color: #ffffff;
       overflow: auto;
       border: 1px dotted var(--sc-color-primary-3);
+      position: relative;
 
       --sc-tab-selected: var(--sc-color-secondary-1);
     }
@@ -79,13 +84,34 @@ class ScTab extends ScElement {
     }
   `;
 
+  #draggedElement = null;
+  #clonedElement = null;
+  #marker = null;
+  #buttons = null;
+  #storageKey = null;
+
+  get options() {
+    return this._options;
+  }
+
+  set options(value) {
+    this._options = value;
+
+    localStorage.removeItem(this.#storageKey); // invalidate storage
+    this.requestUpdate();
+  }
+
   constructor() {
     super();
 
-    this.options = [];
+    this._options = [];
     this.value = null;
     // this.disabled = false;
     this.orientation = 'horizontal';
+    this.draggable = false;
+
+    this._onMouseMove = this._onMouseMove.bind(this);
+    this._onMouseUp = this._onMouseUp.bind(this);
 
     this._keyboard = new KeyboardController(this, {
       filterCodes: ['ArrowUp', 'ArrowRight', 'ArrowDown', 'ArrowLeft', 'Space', 'Enter'],
@@ -104,6 +130,8 @@ class ScTab extends ScElement {
           @input="${this._onInput}"
           @focus=${e => e.preventDefault()}
           tabindex="-1"
+
+          @mousedown=${this._onMouseDown}
         >${value}</sc-button>
       `;
     });
@@ -114,6 +142,19 @@ class ScTab extends ScElement {
 
     if (!this.hasAttribute('tabindex')) {
       this.setAttribute('tabindex', 0);
+    }
+
+    // check local storage
+    this.#storageKey = `sc-separator:${this.id || this._scId}`;
+    const stored = JSON.parse(localStorage.getItem(this.#storageKey));
+    // check if we have the same item in this.options and inside store
+    if (stored !== null) {
+      if (stored.slice(0).sort().join(',') === this.options.slice(0).sort().join(',')) {
+        this.options = stored;
+        this.requestUpdate();
+      } else {
+        localStorage.removeItem(this.#storageKey); // store is invalid, delete it
+      }
     }
   }
 
@@ -143,12 +184,120 @@ class ScTab extends ScElement {
   }
 
   _onInput(e) {
-    // do not propagate button input
-    e.stopPropagation();
+    e.stopPropagation(); // do not propagate button input event
 
     this.value = e.detail.value;
-
     this._dispatchEvent();
+
+    if (!this.draggable) {
+      return;
+    }
+
+    this.#draggedElement = e.currentTarget;
+
+    const { left, top, width, height } = this.getBoundingClientRect();
+    const buttons = Array.from(this.shadowRoot.querySelectorAll('sc-button'));
+    this.#buttons = buttons.map(el => {
+      const pos = el.getBoundingClientRect();
+      const rel = {
+        left: pos.left - left,
+        top: pos.top - top,
+      }
+      return { pos, rel };
+    });
+
+    if (this.orientation === 'horizontal') {
+      this.#buttons.push({
+        pos: { left: left + width, top },
+        rel: { left: width - 2, top: 0 },
+      });
+    } else {
+      this.#buttons.push({
+        pos: { left, top: top + height },
+        rel: { left: 0, top: height - 2 },
+      });
+    }
+
+    window.addEventListener('mousemove', this._onMouseMove);
+    window.addEventListener('mouseup', this._onMouseUp);
+  }
+
+  _onMouseDown(e) {
+    e.preventDefault();
+  }
+
+  _onMouseMove(e) {
+    e.preventDefault();
+
+    if (this.#clonedElement === null) {
+      this.#clonedElement = this.#draggedElement.cloneNode();
+      this.#clonedElement.style.position = 'absolute';
+      this.#clonedElement.style.opacity = 0.7;
+      this.#clonedElement.selected = false;
+      document.body.appendChild(this.#clonedElement);
+
+      // create marker
+      const { height, width } = this.getBoundingClientRect();
+      this.#marker = document.createElement('div');
+      this.#marker.style.position = 'absolute';
+      this.#marker.style.width = this.orientation === 'horizontal' ? `1px` : `${width}px`;
+      this.#marker.style.height = this.orientation === 'horizontal' ? `${height}px` : `1px`;
+      this.#marker.style.backgroundColor = 'white';
+      this.shadowRoot.appendChild(this.#marker);
+    };
+
+    this.#clonedElement.style.top = `${e.clientY - 4}px`;
+    this.#clonedElement.style.left = `${e.clientX - 4}px`;
+
+    let distance = +Infinity;
+    let closest = null;
+
+    this.#buttons.forEach((infos) => {
+      const dist = Math.sqrt((e.clientX - infos.pos.left) ** 2 + (e.clientY - infos.pos.top) ** 2);
+      if (dist < distance) {
+        distance = dist;
+        closest = infos;
+      }
+    });
+
+    this.#marker.style.top = `${closest.rel.top - 1}px`;
+    this.#marker.style.left = `${closest.rel.left - 1}px`;
+    this.#marker.infos = closest;
+  }
+
+  _onMouseUp(e) {
+    e.preventDefault();
+
+    if (this.#clonedElement) {
+      // update inner list
+      const buttons = Array.from(this.shadowRoot.querySelectorAll('sc-button'));
+      const currentIndex = buttons.findIndex(b => b.value === this.#draggedElement.value);
+      let targetIndex = this.#buttons.indexOf(this.#marker.infos);
+      // before and after current position is same position target position
+      if (currentIndex < targetIndex) {
+        targetIndex = targetIndex - 1;
+      }
+
+      this.options.splice(currentIndex, 1);
+      this.options.splice(targetIndex, 0, this.#draggedElement.value);
+
+      this.#clonedElement.remove();
+      this.#clonedElement = null;
+
+      this.#marker.remove();
+      this.#marker = null;
+
+      localStorage.setItem(this.#storageKey, JSON.stringify(this.options));
+      this.requestUpdate();
+    }
+
+    this.#draggedElement = null;
+
+    window.removeEventListener('mousemove', this._onMouseMove);
+    window.removeEventListener('mouseup', this._onMouseUp);
+
+    // find all siblings
+    // const $el = this.shad
   }
 
   _dispatchEvent() {
