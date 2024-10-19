@@ -48,6 +48,7 @@ class ScTransportBase extends ScElement {
 
     :host(:focus), :host(:focus-visible) {
       outline: none;
+      -webkit-tap-highlight-color: transparent;
     }
 
     svg {
@@ -219,6 +220,7 @@ class ScTransportBase extends ScElement {
     if (this.disabled) { return; }
 
     this.focus();
+
     if (this.value !== value) {
       this.value = value;
       this._dispatchEvent();
