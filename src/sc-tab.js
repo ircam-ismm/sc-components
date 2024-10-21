@@ -1,5 +1,7 @@
 import { html, css } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
+import { isPlainObject } from '@ircam/sc-utils';
+import deepEqual from 'deep-equal';
 
 import ScElement from './ScElement.js';
 import KeyboardController from './controllers/keyboard-controller.js';
@@ -95,6 +97,16 @@ class ScTab extends ScElement {
   }
 
   set options(value) {
+    // @todo - Define if we really want this...
+    // Note that it breaks some draggable re-ordering, which could be aesily fixed
+    // by setting `this._options` directly
+    // if (
+    //   (isPlainObject(value) && deepEqual(value, this.options))
+    //   || (Array.isArray(value) && value.slice(0).sort().join(',') === this.options.slice(0).sort().join(','))
+    // ) {
+    //   return;
+    // }
+
     this._options = value;
 
     localStorage.removeItem(this.#storageKey); // invalidate storage
@@ -121,9 +133,16 @@ class ScTab extends ScElement {
   }
 
   render() {
-    return repeat(this.options, () => `sc-tab-${itemId++}`, value => {
+    const isObject = isPlainObject(this.options);
+
+    if (!isObject && !Array.isArray(this.options)) {
+      throw new Error(`Cannot render 'sc-select': Invalid 'options' attribute, must be an array or an object`);
+    }
+
+    return repeat(Object.entries(this.options), () => `sc-tab-${itemId++}`, ([key, value]) => {
       return html`
         <sc-button
+          .key=${key}
           .value=${value}
           disable-keyboard
           ?selected=${value === this.value}
@@ -132,7 +151,7 @@ class ScTab extends ScElement {
           tabindex="-1"
 
           @mousedown=${this._onMouseDown}
-        >${value}</sc-button>
+        >${isObject ? key : value}</sc-button>
       `;
     });
   }
@@ -146,15 +165,16 @@ class ScTab extends ScElement {
 
     // check local storage
     this.#storageKey = `sc-separator:${this.id || this._scId}`;
-    const stored = JSON.parse(localStorage.getItem(this.#storageKey));
+    let stored = JSON.parse(localStorage.getItem(this.#storageKey));
     // check if we have the same item in this.options and inside store
-    if (stored !== null) {
-      if (stored.slice(0).sort().join(',') === this.options.slice(0).sort().join(',')) {
-        this.options = stored;
-        this.requestUpdate();
-      } else {
-        localStorage.removeItem(this.#storageKey); // store is invalid, delete it
-      }
+    if (
+      (isPlainObject(stored) && deepEqual(stored, this.options))
+      || (Array.isArray(stored) && stored.slice(0).sort().join(',') === this.options.slice(0).sort().join(','))
+    ) {
+      this.options = stored;
+      this.requestUpdate();
+    } else {
+      localStorage.removeItem(this.#storageKey); // store is invalid, delete it
     }
   }
 
@@ -278,8 +298,18 @@ class ScTab extends ScElement {
         targetIndex = targetIndex - 1;
       }
 
-      this.options.splice(currentIndex, 1);
-      this.options.splice(targetIndex, 0, this.#draggedElement.value);
+      if (isPlainObject(this.options)) {
+        // recreate the options object with keys in the right order
+        const result = {};
+        const keys = Object.keys(this.options);
+        keys.splice(currentIndex, 1);
+        keys.splice(targetIndex, 0, this.#draggedElement.key);
+        keys.forEach(key => result[key] = this.options[key]);
+        this.options = result;
+      } else {
+        this.options.splice(currentIndex, 1);
+        this.options.splice(targetIndex, 0, this.#draggedElement.value);
+      }
 
       this.#clonedElement.remove();
       this.#clonedElement = null;
@@ -295,9 +325,6 @@ class ScTab extends ScElement {
 
     window.removeEventListener('mousemove', this._onMouseMove);
     window.removeEventListener('mouseup', this._onMouseUp);
-
-    // find all siblings
-    // const $el = this.shad
   }
 
   _dispatchEvent() {
