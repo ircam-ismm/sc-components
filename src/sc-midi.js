@@ -392,7 +392,6 @@ class ScMidi extends ScElement {
     // observe mutation in the DOM to have live list the midi learnable nodes
     this._mutationObserver = new MutationObserver(this._updateNodeList);
     this._mutationObserver.observe(document.body, { subtree: true, childList: true });
-
     this._updateNodeList();
 
     if (!this.hasAttribute('tabindex')) {
@@ -412,6 +411,11 @@ class ScMidi extends ScElement {
 
   _updateNodeList() {
     const learnableTags = Array.from(globalThis[midiLearnSymbol]);
+    console.log('updateNodeList');
+    if (learnableTags.length === 0) {
+      return;
+    }
+
     const $learnable = document.querySelectorAll(learnableTags.join(','));
 
     this._$nodes.clear();
