@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[285],{1285:(t,e,s)=>{s.r(e),s.d(e,{template:()=>o});var a=s(2182),c=s(1630);const l=["a","b","c","d"],o=a.qy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[285],{1285:(e,t,s)=>{s.r(t),s.d(t,{template:()=>o});var a=s(2182),c=s(1630);const l=["a","b","c","d"],o=a.qy`
 
 <h2>sc-tab</h2>
 
@@ -7,7 +7,7 @@
 <sc-tab
   id="test-tab"
   options="${JSON.stringify(l)}"
-  @change=${t=>document.querySelector("#options-value").value=t.detail.value}
+  @change=${e=>document.querySelector("#options-value").value=e.detail.value}
 ></sc-tab>
 
 <h3>Events</h3>
@@ -24,15 +24,16 @@
   <sc-tab
     id="tab-change"
     options="${JSON.stringify(l)}"
-    @change=${t=>document.querySelector("#test-tab").value=t.detail.value}
+    @change=${e=>document.querySelector("#test-tab").value=e.detail.value}
   ></sc-tab>
 </div>
 <div>
-  <sc-text>options [=[]]</sc-text>
+  <p>Values of the different options. If an object is given, the key is used as option's text and the value as the option's value</p>
+  <sc-text>options [=[]|{}]</sc-text>
   <sc-editor
     save-button
-    value="${JSON.stringify(l)}"
-    @change=${t=>{document.querySelector("#test-tab").options=JSON.parse(t.detail.value),document.querySelector("#tab-change").options=JSON.parse(t.detail.value)}}
+    value="${JSON.stringify({a:!0,b:42},null,2)}"
+    @change=${e=>{document.querySelector("#test-tab").options=JSON.parse(e.detail.value),document.querySelector("#tab-change").options=JSON.parse(e.detail.value)}}
   ></sc-editor>
 </div>
 <div>
@@ -40,19 +41,20 @@
   <sc-tab
     options="${JSON.stringify(["vertical","horizontal"])}"
     value="horizontal"
-    @change=${t=>document.querySelector("#test-tab").orientation=t.detail.value}
+    @change=${e=>document.querySelector("#test-tab").orientation=e.detail.value}
   ></sc-tab>
 </div>
 <div>
+  <p><i>Applies for mouse interaction only</i></p>
   <sc-text>draggable [=false]</sc-text>
   <sc-toggle
-    @change=${t=>document.querySelector("#test-tab").draggable=t.detail.value}
+    @change=${e=>document.querySelector("#test-tab").draggable=e.detail.value}
   ></sc-toggle>
 </div>
 <!-- <div>
   <sc-text>[?disabled=false]</sc-text>
   <sc-toggle
-    @change=${t=>document.querySelector("#test-tab").disabled=t.detail.value}
+    @change=${e=>document.querySelector("#test-tab").disabled=e.detail.value}
   ></sc-toggle>
 </div> -->
 
@@ -78,6 +80,6 @@
   --sc-tab-selected: var(--sc-color-secondary-1);
 }
   "
-  @change=${t=>(0,c.default)(t.detail.value)}
+  @change=${e=>(0,c.default)(e.detail.value)}
 ></sc-editor>
 `}}]);

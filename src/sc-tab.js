@@ -2,6 +2,7 @@ import { html } from 'lit';
 import applyStyle from './utils/applyStyle.js';
 
 const testArray = ['a', 'b', 'c', 'd'];
+const testObject = { a: true, b: 42 };
 
 export const template = html`
 
@@ -45,10 +46,11 @@ const template = html\`
   ></sc-tab>
 </div>
 <div>
-  <sc-text>options [=[]]</sc-text>
+  <p>Values of the different options. If an object is given, the key is used as option's text and the value as the option's value</p>
+  <sc-text>options [=[]|{}]</sc-text>
   <sc-editor
     save-button
-    value="${JSON.stringify(testArray)}"
+    value="${JSON.stringify(testObject, null, 2)}"
     @change=${e => {
       document.querySelector('#test-tab').options = JSON.parse(e.detail.value);
       document.querySelector('#tab-change').options = JSON.parse(e.detail.value);
@@ -64,6 +66,7 @@ const template = html\`
   ></sc-tab>
 </div>
 <div>
+  <p><i>Applies for mouse interaction only</i></p>
   <sc-text>draggable [=false]</sc-text>
   <sc-toggle
     @change=${e => document.querySelector('#test-tab').draggable = e.detail.value}
