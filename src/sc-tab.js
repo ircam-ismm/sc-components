@@ -9,6 +9,21 @@ import './sc-button.js';
 
 let itemId = 0;
 
+/**
+ * If object check that we have the same key value pairs even in different order
+ * If Array check that we have the same values even in different order
+ */
+function isSameOptions(oldOptions, newOptions) {
+  if (
+    (isPlainObject(newOptions) && deepEqual(newOptions, oldOptions))
+    || (Array.isArray(newOptions) && newOptions.slice(0).sort().join(',') === oldOptions.slice(0).sort().join(','))
+  ) {
+    return true;
+  }
+
+  return false;
+}
+
 class ScTab extends ScElement {
   static properties = {
     options: {
@@ -22,7 +37,7 @@ class ScTab extends ScElement {
       type: String,
       reflect: true,
     },
-    draggable: {
+    sortable: {
       type: Boolean,
       reflect: true,
     },
@@ -97,15 +112,13 @@ class ScTab extends ScElement {
   }
 
   set options(value) {
-    // @todo - Define if we really want this...
-    // Note that it breaks some draggable re-ordering, which could be aesily fixed
-    // by setting `this._options` directly
-    // if (
-    //   (isPlainObject(value) && deepEqual(value, this.options))
-    //   || (Array.isArray(value) && value.slice(0).sort().join(',') === this.options.slice(0).sort().join(','))
-    // ) {
-    //   return;
-    // }
+    if (!Array.isArray(value) && !isPlainObject(value)) {
+      throw new TypeError(`Cannot set 'options' on 'sc-tab': options should be either an array or an object`);
+    }
+
+    if (isSameOptions(this._options, value)) {
+      return;
+    }
 
     this._options = value;
 
@@ -120,7 +133,7 @@ class ScTab extends ScElement {
     this.value = null;
     // this.disabled = false;
     this.orientation = 'horizontal';
-    this.draggable = false;
+    this.sortable = false;
 
     this._onMouseMove = this._onMouseMove.bind(this);
     this._onMouseUp = this._onMouseUp.bind(this);
@@ -167,11 +180,8 @@ class ScTab extends ScElement {
     this.#storageKey = `sc-separator:${this.id || this._scId}`;
     let stored = JSON.parse(localStorage.getItem(this.#storageKey));
     // check if we have the same item in this.options and inside store
-    if (
-      (isPlainObject(stored) && deepEqual(stored, this.options))
-      || (Array.isArray(stored) && stored.slice(0).sort().join(',') === this.options.slice(0).sort().join(','))
-    ) {
-      this.options = stored;
+    if (isSameOptions(this.options, stored)) {
+      this._options = stored;
       this.requestUpdate();
     } else {
       localStorage.removeItem(this.#storageKey); // store is invalid, delete it
@@ -209,7 +219,7 @@ class ScTab extends ScElement {
     this.value = e.detail.value;
     this._dispatchEvent();
 
-    if (!this.draggable) {
+    if (!this.sortable) {
       return;
     }
 
@@ -240,10 +250,6 @@ class ScTab extends ScElement {
 
     window.addEventListener('mousemove', this._onMouseMove);
     window.addEventListener('mouseup', this._onMouseUp);
-  }
-
-  _onMouseDown(e) {
-    e.preventDefault();
   }
 
   _onMouseMove(e) {
@@ -305,7 +311,8 @@ class ScTab extends ScElement {
         keys.splice(currentIndex, 1);
         keys.splice(targetIndex, 0, this.#draggedElement.key);
         keys.forEach(key => result[key] = this.options[key]);
-        this.options = result;
+        // assign to inner options, so that the change is not ignored in setter
+        this._options = result;
       } else {
         this.options.splice(currentIndex, 1);
         this.options.splice(targetIndex, 0, this.#draggedElement.value);
