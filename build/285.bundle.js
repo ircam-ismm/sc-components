@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[285],{1285:(e,t,s)=>{s.r(t),s.d(t,{template:()=>o});var a=s(2182),c=s(1630);const l=["a","b","c","d"],o=a.qy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[285],{1285:(e,t,s)=>{s.r(t),s.d(t,{template:()=>i});var a=s(2182),c=s(1630);const o=["a","b","c","d"],i=a.qy`
 
 <h2>sc-tab</h2>
 
@@ -6,7 +6,7 @@
 
 <sc-tab
   id="test-tab"
-  options="${JSON.stringify(l)}"
+  options="${JSON.stringify(o)}"
   @change=${e=>document.querySelector("#options-value").value=e.detail.value}
 ></sc-tab>
 
@@ -23,7 +23,7 @@
   <sc-text>value [=null]</sc-text>
   <sc-tab
     id="tab-change"
-    options="${JSON.stringify(l)}"
+    options="${JSON.stringify(o)}"
     @change=${e=>document.querySelector("#test-tab").value=e.detail.value}
   ></sc-tab>
 </div>
@@ -45,10 +45,14 @@
   ></sc-tab>
 </div>
 <div>
-  <p><i>Applies for mouse interaction only</i></p>
-  <sc-text>draggable [=false]</sc-text>
+  <p><i>
+    Applies for mouse interaction only. The re-ordered values are stored in local storage and retreived
+    on page load, if your page is highly dynamic it is best to defined an <code>id</code> on your component
+    to ensure this feature remains stable.
+  </i></p>
+  <sc-text>sortable [=false]</sc-text>
   <sc-toggle
-    @change=${e=>document.querySelector("#test-tab").draggable=e.detail.value}
+    @change=${e=>document.querySelector("#test-tab").sortable=e.detail.value}
   ></sc-toggle>
 </div>
 <!-- <div>

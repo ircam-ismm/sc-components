@@ -66,10 +66,14 @@ const template = html\`
   ></sc-tab>
 </div>
 <div>
-  <p><i>Applies for mouse interaction only</i></p>
-  <sc-text>draggable [=false]</sc-text>
+  <p><i>
+    Applies for mouse interaction only. The re-ordered values are stored in local storage and retreived
+    on page load, if your page is highly dynamic it is best to defined an <code>id</code> on your component
+    to ensure this feature remains stable.
+  </i></p>
+  <sc-text>sortable [=false]</sc-text>
   <sc-toggle
-    @change=${e => document.querySelector('#test-tab').draggable = e.detail.value}
+    @change=${e => document.querySelector('#test-tab').sortable = e.detail.value}
   ></sc-toggle>
 </div>
 <!-- <div>
