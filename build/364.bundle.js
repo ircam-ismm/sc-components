@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[364],{7364:(e,t,s)=>{s.r(t),s.d(t,{template:()=>d});var c=s(2182),a=s(1967),o=s(1630);const d=c.qy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[364],{7364:(e,t,s)=>{s.r(t),s.d(t,{template:()=>l});var c=s(2182),a=s(1967),o=s(1630);const l=c.qy`
 
 <h2>sc-dots</h2>
 
@@ -6,9 +6,6 @@
 
 <sc-dots
   id="test-dots"
-  capture-events
-  persist-events
-  disabled
   .value=${[{x:.5,y:.5}]}
   @input=${e=>document.querySelector("#dots-input").value=a.stringify(e.detail.value,null,2)}
 ></sc-dots>
@@ -34,7 +31,23 @@
   >[{ x: 0.5, y: 0.5, color: 'red' }]</sc-text>
 </div>
 
+<h3>Events</h3>
+
+<div>
+  <p>If "capture-events" is true, see below</p>
+  <sc-text>@input</sc-text>
+  <sc-text id="dots-input" style="height: 200px;"></sc-text>
+</div>
+
 <h3>Attributes</h3>
+
+<div style="margin-top: 30px;">
+  <p>Use the component as a multitouch input interface</p>
+  <sc-text>?capture-events [=false]</sc-text>
+  <sc-toggle
+    @change=${e=>document.querySelector("#test-dots").captureEvents=e.detail.value}
+  ></sc-toggle>
+</div>
 
 <div>
   <sc-text>x-range [=[0, 1]]</sc-text>
@@ -43,7 +56,6 @@
     @change=${e=>document.querySelector("#test-dots").xRange=a.parse(e.detail.value)}
   >[0, 1]</sc-text>
 </div>
-
 <div>
   <sc-text>y-range [=[0, 1]]</sc-text>
   <sc-text
@@ -68,14 +80,6 @@
     @input=${e=>{document.querySelector("#test-dots").radius=null,document.querySelector("#test-dots").radiusRelative=e.detail.value}}
   ></sc-slider>
 </div>
-
-<div style="margin-top: 30px;">
-  <p>Use the component as a multitouch input interface</p>
-  <sc-text>?capture-events [=false]</sc-text>
-  <sc-toggle
-    @change=${e=>document.querySelector("#test-dots").captureEvents=e.detail.value}
-  ></sc-toggle>
-</div>
 <div>
   <p>If "capture-events" is true, persist the last position(s) on the component</p>
   <sc-text>?persist-events [=false]</sc-text>
@@ -88,14 +92,6 @@
   <sc-toggle
     @change=${e=>document.querySelector("#test-dots").disabled=e.detail.value}
   ></sc-toggle>
-</div>
-
-<h3>Events</h3>
-
-<div>
-  <p>If "capture-events" is true</p>
-  <sc-text>@input</sc-text>
-  <sc-text id="dots-input" style="height: 200px;"></sc-text>
 </div>
 
 <h3>Styling</h3>
