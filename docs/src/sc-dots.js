@@ -43,9 +43,6 @@ const template = html\`
 
 <sc-dots
   id="test-dots"
-  capture-events
-  persist-events
-  disabled
   .value=${[{ x: 0.5, y: 0.5 }]}
   @input=${e => document.querySelector('#dots-input').value = JSON5.stringify(e.detail.value, null, 2)}
 ></sc-dots>
@@ -71,7 +68,23 @@ const template = html\`
   >[{ x: 0.5, y: 0.5, color: 'red' }]</sc-text>
 </div>
 
+<h3>Events</h3>
+
+<div>
+  <p>If "capture-events" is true, see below</p>
+  <sc-text>@input</sc-text>
+  <sc-text id="dots-input" style="height: 200px;"></sc-text>
+</div>
+
 <h3>Attributes</h3>
+
+<div style="margin-top: 30px;">
+  <p>Use the component as a multitouch input interface</p>
+  <sc-text>?capture-events [=false]</sc-text>
+  <sc-toggle
+    @change=${e => document.querySelector('#test-dots').captureEvents = e.detail.value}
+  ></sc-toggle>
+</div>
 
 <div>
   <sc-text>x-range [=[0, 1]]</sc-text>
@@ -80,7 +93,6 @@ const template = html\`
     @change=${e => document.querySelector('#test-dots').xRange = JSON5.parse(e.detail.value)}
   >[0, 1]</sc-text>
 </div>
-
 <div>
   <sc-text>y-range [=[0, 1]]</sc-text>
   <sc-text
@@ -108,14 +120,6 @@ const template = html\`
     }}
   ></sc-slider>
 </div>
-
-<div style="margin-top: 30px;">
-  <p>Use the component as a multitouch input interface</p>
-  <sc-text>?capture-events [=false]</sc-text>
-  <sc-toggle
-    @change=${e => document.querySelector('#test-dots').captureEvents = e.detail.value}
-  ></sc-toggle>
-</div>
 <div>
   <p>If "capture-events" is true, persist the last position(s) on the component</p>
   <sc-text>?persist-events [=false]</sc-text>
@@ -128,14 +132,6 @@ const template = html\`
   <sc-toggle
     @change=${e => document.querySelector('#test-dots').disabled = e.detail.value}
   ></sc-toggle>
-</div>
-
-<h3>Events</h3>
-
-<div>
-  <p>If "capture-events" is true</p>
-  <sc-text>@input</sc-text>
-  <sc-text id="dots-input" style="height: 200px;"></sc-text>
 </div>
 
 <h3>Styling</h3>

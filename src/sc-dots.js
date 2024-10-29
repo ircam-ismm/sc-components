@@ -257,7 +257,7 @@ class ScDots extends ScElement {
 
     // ignore mouseup and touchend events
     if (this.persistEvents && e.detail.value.length === 0) {
-        return;
+      return;
     }
 
     // remove the pointerId from origin event
