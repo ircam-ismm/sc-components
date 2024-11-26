@@ -1,4 +1,4 @@
-import { css } from 'lit';
+import { css, html } from 'lit';
 import ScElement from './ScElement.js';
 import EnterExitController from './controllers/enter-exit-controller.js';
 
@@ -24,6 +24,12 @@ class ScIOSurface extends ScElement {
     :host([disabled]) {
       opacity: 0.7;
     }
+
+    :host > * {
+      pointer-events: none;
+      user-select: none;
+      -webkit-user-select: none;
+    }
   `;
 
   constructor() {
@@ -36,6 +42,10 @@ class ScIOSurface extends ScElement {
       onEnter: this.#onEnter.bind(this),
       onExit: this.#onExit.bind(this),
     });
+  }
+
+  render() {
+    return html`<slot></slot>`;
   }
 
   #onEnter(clientX, clientY) {
