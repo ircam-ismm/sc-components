@@ -297,7 +297,7 @@ class ScMidi extends ScElement {
                 class="close"
                 type="close"
                 @input=${this._toggleActive}
-              >close</sc-icon>
+              ></sc-icon>
             </div>
 
             <div class="select-interface">
