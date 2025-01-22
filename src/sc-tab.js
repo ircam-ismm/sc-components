@@ -1,28 +1,13 @@
 import { html, css } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { isPlainObject } from '@ircam/sc-utils';
-import deepEqual from 'deep-equal';
 
 import ScElement from './ScElement.js';
 import KeyboardController from './controllers/keyboard-controller.js';
+import isSameOptions from './utils/is-same-options.js';
 import './sc-button.js';
 
 let itemId = 0;
-
-/**
- * If object check that we have the same key value pairs even in different order
- * If Array check that we have the same values even in different order
- */
-function isSameOptions(oldOptions, newOptions) {
-  if (
-    (isPlainObject(newOptions) && deepEqual(newOptions, oldOptions))
-    || (Array.isArray(newOptions) && newOptions.slice(0).sort().join(',') === oldOptions.slice(0).sort().join(','))
-  ) {
-    return true;
-  }
-
-  return false;
-}
 
 class ScTab extends ScElement {
   static properties = {
@@ -113,7 +98,7 @@ class ScTab extends ScElement {
 
   set options(value) {
     if (!Array.isArray(value) && !isPlainObject(value)) {
-      throw new TypeError(`Cannot set 'options' on 'sc-tab': options should be either an array or an object`);
+      throw new Error(`Cannot render 'sc-tab': Invalid 'options' attribute, must be an array or an object`);
     }
 
     if (isSameOptions(this._options, value)) {
@@ -149,7 +134,7 @@ class ScTab extends ScElement {
     const isObject = isPlainObject(this.options);
 
     if (!isObject && !Array.isArray(this.options)) {
-      throw new Error(`Cannot render 'sc-select': Invalid 'options' attribute, must be an array or an object`);
+      throw new Error(`Cannot render 'sc-tab': Invalid 'options' attribute, must be an array or an object`);
     }
 
     return repeat(Object.entries(this.options), () => `sc-tab-${itemId++}`, ([key, value]) => {
@@ -204,8 +189,8 @@ class ScTab extends ScElement {
         index = 0;
       }
 
-      // @important: do not remove, otherwize we loose the focus somehow
-      // the prevent default on input is not enought
+      // @important: do not remove, otherwise we loose the focus somehow
+      // the prevent default on input is not enough
       this.focus();
 
       this.value = this.options[index];

@@ -3,6 +3,7 @@ import { repeat } from 'lit/directives/repeat.js';
 import { isPlainObject } from '@ircam/sc-utils';
 
 import ScElement from './ScElement.js';
+import isSameOptions from './utils/is-same-options.js';
 
 let itemId = 0;
 
@@ -73,10 +74,27 @@ class ScSelect extends ScElement {
     }
   `;
 
+  get options() {
+    return this._options;
+  }
+
+  set options(value) {
+    if (!Array.isArray(value) && !isPlainObject(value)) {
+      throw new TypeError(`Cannot render 'sc-select': Invalid 'options' attribute, must be an array or an object`);
+    }
+
+    if (isSameOptions(this._options, value)) {
+      return;
+    }
+
+    this._options = value;
+    this.requestUpdate();
+  }
+
   constructor() {
     super();
 
-    this.options = [];
+    this._options = [];
     this.value = null;
     this.disabled = false;
     this.placeholder = '';
@@ -86,7 +104,7 @@ class ScSelect extends ScElement {
     const isObject = isPlainObject(this.options);
 
     if (!isObject && !Array.isArray(this.options)) {
-      throw new Error(`Cannot render 'sc-select': Invalid 'options' attribute, must be an array or an object`);
+      throw new TypeError(`Cannot render 'sc-select': Invalid 'options' attribute, must be an array or an object`);
     }
 
     return html`
@@ -123,7 +141,7 @@ class ScSelect extends ScElement {
 
   connectedCallback() {
     super.connectedCallback();
-    // @note - this is important if the compoent is e.g. embedded in another component
+    // @note - this is important if the component is e.g. embedded in another component
     this._tabindex = this.getAttribute('tabindex') || 0;
   }
 
@@ -138,7 +156,7 @@ class ScSelect extends ScElement {
       const key = e.target.value;
       this.value = this.options[key];
     } else {
-      // for Arrays, we need to find the index because option.value stringifies eveything
+      // for Arrays, we need to find the index because option.value stringifies everything
       const index = this.placeholder ? e.target.selectedIndex - 1 : e.target.selectedIndex;
       this.value = this.options[index];
     }

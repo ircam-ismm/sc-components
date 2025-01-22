@@ -94,7 +94,7 @@ class ScRadio extends ScElement {
     }
   `;
 
-  // see  `_dispatchEvent` for the explaination of the getter / setter
+  // see  `_dispatchEvent` for explanation on the getter / setter
   get value() {
     return this._value;
   }
