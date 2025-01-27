@@ -11,7 +11,7 @@
   "type": "module",
   "exports": {
     ".": "./src/index.js",
-    "./": "./src/"
+    "./*": "./src/*"
   },
   "unpkg": "./build/bundle.js",
   "publishConfig": {
