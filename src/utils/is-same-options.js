@@ -1,5 +1,4 @@
-
-import deepEqual from 'deep-equal';
+import equal from 'fast-deep-equal';
 import { isPlainObject } from '@ircam/sc-utils';
 
 /**
@@ -8,7 +7,7 @@ import { isPlainObject } from '@ircam/sc-utils';
  */
 export default function isSameOptions(oldOptions, newOptions) {
   if (
-    (isPlainObject(newOptions) && deepEqual(newOptions, oldOptions))
+    (isPlainObject(newOptions) && equal(newOptions, oldOptions))
     || (Array.isArray(newOptions) && newOptions.slice(0).sort().join(',') === oldOptions.slice(0).sort().join(','))
   ) {
     return true;
