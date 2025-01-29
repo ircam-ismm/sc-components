@@ -88,20 +88,18 @@ class EnterExitControllerGlobalHandler {
   }
 
   onTouchStart(e) {
-    if (this.touchEventMounted) {
-      return;
-    }
-
     e.preventDefault();
 
-    // support wrapping element within a web component
-    this.rootNode = e.currentTarget.getRootNode();
-    this.touchEventMounted = true;
-    requestUserSelectNoneOnBody(this.id);
+    if (!this.touchEventMounted) {
+      // support wrapping element within a web component
+      this.rootNode = e.currentTarget.getRootNode();
+      requestUserSelectNoneOnBody(this.id);
+      window.addEventListener('touchmove', this.onTouchMove);
+      window.addEventListener('touchend', this.onTouchEnd);
+      window.addEventListener('touchcancel', this.onTouchEnd);
 
-    window.addEventListener('touchmove', this.onTouchMove);
-    window.addEventListener('touchend', this.onTouchEnd);
-    window.addEventListener('touchcancel', this.onTouchEnd);
+      this.touchEventMounted = true;
+    }
 
     this.onTouchMove(e);
   }
