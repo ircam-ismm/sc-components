@@ -25,15 +25,15 @@ class EnterExitControllerGlobalHandler {
   }
 
   addComponent(component, options) {
-    options = { active: false, touchId: null, ...options };
+    options = { active: false, touchId: null, clientX: null, clientY: null, ...options };
     this.components.set(component, options);
 
     component.addEventListener('mousedown', this.onMouseDown);
     component.addEventListener('touchstart', this.onTouchStart);
   }
 
-  removeComponent(component, options) {
-    this.components.delete(component, options);
+  removeComponent(component) {
+    this.components.delete(component);
 
     component.removeEventListener('mousedown', this.onMouseDown);
     component.removeEventListener('touchstart', this.onTouchStart);
@@ -107,13 +107,27 @@ class EnterExitControllerGlobalHandler {
   onTouchEnd(e) {
     e.preventDefault();
 
-    for (let touch of e.changedTouches) {
-      for (let [_component, options] of this.components.entries()) {
+    // @note - we don't use `e.changedTouches` here because Safari tends to swallow
+    // some touch end events, if two of them appear at the same time
+    // cf. https://github.com/ircam-ismm/sc-components/issues/60
+    for (let [_component, options] of this.components.entries()) {
+      let isPressed = false;
+
+      // `e.touches` is a list of information for every finger currently touching the screen.
+      for (let touch of e.touches) {
         if (options.active && options.touchId === touch.identifier) {
-          options.active = false;
-          options.touchId = null;
-          options.onExit(touch.clientX, touch.clientY);
+          isPressed = true;
         }
+      }
+
+      if (!isPressed && options.active) {
+        const { clientX, clientY } = options;
+        options.active = false;
+        options.touchId = null;
+        options.clientX = null;
+        options.clientY = null;
+
+        options.onExit(clientX, clientY);
       }
     }
 
@@ -138,10 +152,16 @@ class EnterExitControllerGlobalHandler {
         if (inZone && !options.active) {
           options.active = true;
           options.touchId = touch.identifier;
+          // store clientX and clientY so we can use them in touchend workaround
+          options.clientX = touch.clientX;
+          options.clientY = touch.clientY;
+
           options.onEnter(touch.clientX, touch.clientY);
         } else if (options.active && options.touchId === touch.identifier && !inZone) {
           options.active = false;
           options.touchId = null;
+          options.clientX = null;
+          options.clientY = null;
           options.onExit(touch.clientX, touch.clientY);
         }
       }
@@ -172,6 +192,6 @@ export default class EnterExitController {
   }
 
   hostDisconnected() {
-    enterExitControllerGlobalHandler.removeComponent(this.host, this.options);
+    enterExitControllerGlobalHandler.removeComponent(this.host);
   }
 }
