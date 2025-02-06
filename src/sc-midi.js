@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { html, css, LitElement } from 'lit';
 import applyStyle from './utils/applyStyle.js';
 
 function logEvent(e) {
@@ -11,16 +11,26 @@ function logEvent(e) {
   $logEvents.value = `${tagName} - @${type}: ${value}`;
 }
 
-export function enter() {
-  // setTimeout(() => {
-  //   const $el = document.querySelectorAll('sc-slider');
-  //   $el.forEach($el => console.log($el.id));
-  // }, 500);
+class SomeWrapper extends LitElement {
+  static styles = css`
+    div {
+      padding: 10px;
+      display: inline-block;
+      background-color: var(--sc-color-secondary-3);
+    }
+  `;
 
-  // setTimeout(() => {
-  //   console.log('test');
-  //   document.querySelector('#test').remove();
-  // }, 1000);
+  render() {
+    return html`
+      <div>
+        <sc-slider></sc-slider>
+      </div>
+    `;
+  }
+}
+
+if (customElements.get('some-wrapper') === undefined) {
+  customElements.define('some-wrapper', SomeWrapper);
 }
 
 export const template = html`
@@ -61,6 +71,10 @@ const template = html\`
   <sc-text>Events from binded elements</sc-text>
   <sc-text id="log-events"></sc-text>
 </div>
+
+<h3>Bind into ShadowDOM</h3>
+
+<some-wrapper></some-wrapper>
 
 <h3>Keyboard shortcuts</h3>
 <sc-text class="key">Space</sc-text>

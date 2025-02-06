@@ -1,4 +1,14 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[717],{1717:(e,t,s)=>{s.r(t),s.d(t,{enter:()=>o,template:()=>a});var i=s(2182),n=s(1630);function c(e){const t=e.currentTarget.tagName.toLowerCase(),s=e.type,i=e.detail.value;document.querySelector("#log-events").value=`${t} - @${s}: ${i}`}function o(){}const a=i.qy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[717],{1717:(e,t,s)=>{s.r(t),s.d(t,{template:()=>a});var i=s(2182),n=s(1630);function c(e){const t=e.currentTarget.tagName.toLowerCase(),s=e.type,i=e.detail.value;document.querySelector("#log-events").value=`${t} - @${s}: ${i}`}class o extends i.WF{static styles=i.AH`
+    div {
+      padding: 10px;
+      display: inline-block;
+      background-color: var(--sc-color-secondary-3);
+    }
+  `;render(){return i.qy`
+      <div>
+        <sc-slider></sc-slider>
+      </div>
+    `}}void 0===customElements.get("some-wrapper")&&customElements.define("some-wrapper",o);const a=i.qy`
 
 <h2>sc-midi</h2>
 
@@ -29,6 +39,10 @@
   <sc-text>Events from binded elements</sc-text>
   <sc-text id="log-events"></sc-text>
 </div>
+
+<h3>Bind into ShadowDOM</h3>
+
+<some-wrapper></some-wrapper>
 
 <h3>Keyboard shortcuts</h3>
 <sc-text class="key">Space</sc-text>

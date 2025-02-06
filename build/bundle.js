@@ -2050,7 +2050,7 @@
       box-sizing: border-box;
       background-color: var(--sc-color-primary-2);
       border: 1px solid var(--sc-color-primary-3);
-      z-index: 50;
+      z-index: 10000;
       overflow-y: auto;
     }
 
@@ -3001,7 +3001,7 @@
         .yRange=${[1,0]}
         @input=${this.#X}
       ></sc-position-surface>
-    `}firstUpdated(){super.firstUpdated(),this.#u=this.shadowRoot.querySelector("canvas"),this.#$=this.#u.getContext("2d"),this.#u.width=this.#S,this.#u.height=this.#P}connectedCallback(){super.connectedCallback(),this.#p=new ResizeObserver((e=>{const t=e[0],{width:i,height:s}=t.contentRect;this.#S=i*window.devicePixelRatio,this.#P=s*window.devicePixelRatio,this.#$&&(this.#u.width=this.#S,this.#u.height=this.#P,this.#_())})),this.#p.observe(this)}disconnectedCallback(){this.#p.disconnect(),super.disconnectedCallback()}#X(e){if(e.stopPropagation(),0===e.detail.value.length)return this.#T(),void this.#_();const{x:t,y:i}=e.detail.value[0],s=Math.max(0,Math.min(this.size-1,Math.floor(t*this.size))),n=Math.max(0,Math.min(1,i)),[r,o]=this.range,a=r+(o-r)*n;this.#d[s]=a,this.#Z(s,a),this.#_(s)}#_(e){null!==this.#$&&(cancelAnimationFrame(this.#k),this.#k=requestAnimationFrame((()=>this.#g(e))))}#g(e=null){const t=this.#S/this.size,[i,s]=this.range;if(this.#$.clearRect(0,0,this.#S,this.#P),null!==e){const i=e*t;this.#$.fillStyle="rgba(255, 255, 255, 0.05)",this.#$.fillRect(i,0,t,this.#P)}switch(this.mode){case"cursor":this.#$.fillStyle="white",this.#d.forEach(((e,n)=>{const r=n*t,o=(e-i)/(s-i),a=this.#P-o*this.#P;this.#$.fillRect(r,a,t,1)}));break;case"slider":{const[e,i]=this.range,s=Math.max(0,Math.min(1,(0-e)/(i-e))),n=this.#P-s*this.#P;this.#d.forEach(((s,r)=>{const o=r*t,a=(s-e)/(i-e),l=this.#P-a*this.#P;this.#$.fillStyle="rgba(244, 180, 62, 0.6)",this.#$.fillRect(o+1,l,t-1,n-l),this.#$.fillStyle="white",this.#$.fillRect(o+1,l,t-1,1)}));break}}}#T(){const e=new CustomEvent("change",{bubbles:!0,composed:!0,detail:{value:this.#d}});this.dispatchEvent(e)}#Z(e,t){const i=new CustomEvent("input",{bubbles:!0,composed:!0,detail:{index:e,value:t}});this.dispatchEvent(i)}}void 0===customElements.get("sc-table")&&customElements.define("sc-table",xQ);class $Q extends z{static properties={buttons:{type:Array},value:{type:String,reflect:!0},disabled:{type:Boolean,reflect:!0}};static styles=T.AH`
+    `}firstUpdated(){super.firstUpdated(),this.#u=this.shadowRoot.querySelector("canvas"),this.#$=this.#u.getContext("2d"),this.#u.width=this.#S,this.#u.height=this.#P}connectedCallback(){super.connectedCallback(),this.#p=new ResizeObserver((e=>{const t=e[0],{width:i,height:s}=t.contentRect;this.#S=i*window.devicePixelRatio,this.#P=s*window.devicePixelRatio,this.#$&&(this.#u.width=this.#S,this.#u.height=this.#P,this.#_())})),this.#p.observe(this)}disconnectedCallback(){this.#p.disconnect(),super.disconnectedCallback()}#X(e){if(e.stopPropagation(),0===e.detail.value.length)return this.#T(),void this.#_();const{x:t,y:i}=e.detail.value[0],s=Math.max(0,Math.min(this.size-1,Math.floor(t*this.size))),n=Math.max(0,Math.min(1,i)),[r,o]=this.range,a=r+(o-r)*n;this.#d[s]=a,this.#Z(s,a),this.#_(s)}#_(e){null!==this.#$&&(cancelAnimationFrame(this.#k),this.#k=requestAnimationFrame((()=>this.#g(e))))}#g(e=null){const t=this.#S/this.size,[i,s]=this.range;if(this.#$.clearRect(0,0,this.#S,this.#P),null!==e){const i=e*t;this.#$.fillStyle="rgba(255, 255, 255, 0.05)",this.#$.fillRect(i,0,t,this.#P)}switch(this.mode){case"cursor":this.#$.fillStyle="white",this.#d.forEach(((e,n)=>{const r=n*t,o=(e-i)/(s-i),a=this.#P-o*this.#P;this.#$.fillRect(r,a,t,1)}));break;case"slider":{const[e,i]=this.range,s=Math.max(0,Math.min(1,(0-e)/(i-e))),n=this.#P-s*this.#P;this.#d.forEach(((s,r)=>{const o=r*t,a=(s-e)/(i-e),l=this.#P-a*this.#P;this.#$.fillStyle="rgba(244, 180, 62, 0.6)",this.#$.fillRect(o+1,l,t-1,n-l),this.#$.fillStyle="white",this.#$.fillRect(o+1,l,t-1,1)}));break}}}#T(){const e=new CustomEvent("change",{bubbles:!0,composed:!0,detail:{value:this.#d}});this.dispatchEvent(e)}#Z(e,t){const i=new CustomEvent("input",{bubbles:!0,composed:!0,detail:{index:e,value:t}});this.dispatchEvent(i)}}void 0===customElements.get("sc-table")&&customElements.define("sc-table",xQ);class $Q extends z{#E=0;static properties={buttons:{type:Array},value:{type:String,reflect:!0},disabled:{type:Boolean,reflect:!0}};static styles=T.AH`
     :host {
       box-sizing: border-box;
       vertical-align: top;
@@ -3069,12 +3069,12 @@
     svg.stop.active {
       fill: var(--sc-transport-active-stop-fill);
     }
-  `;get midiType(){return"control"}set midiValue(e){if(!this.disabled&&e>0){let e=this.buttons.indexOf(this.value);e+=1,e<0?e=this.buttons.length-1:e>=this.buttons.length&&(e=0),this.value=this.buttons[e],this._dispatchEvent()}}get midiValue(){return null}constructor(){super(),this.buttons=["play","pause","stop"],this.value=null,this.disabled=!1,this._keyboard=new D(this,{filterCodes:["ArrowUp","ArrowRight","ArrowDown","ArrowLeft","Space"],callback:this._onKeyboardEvent.bind(this),deduplicateEvents:!0})}render(){return T.qy`
+  `;get midiType(){return"control"}set midiValue(e){if(!this.disabled&&e>0){let e=this.buttons.indexOf(this.value);e+=1,e<0?e=this.buttons.length-1:e>=this.buttons.length&&(e=0),this.value=this.buttons[e],this.#R()}}get midiValue(){return null}constructor(){super(),this.buttons=["play","pause","stop"],this.value=null,this.disabled=!1,new D(this,{filterCodes:["ArrowUp","ArrowRight","ArrowDown","ArrowLeft","Space"],callback:this.#C.bind(this),deduplicateEvents:!0})}render(){return T.qy`
       ${this.buttons.map((e=>{switch(e){case"play":case"start":return T.qy`
               <svg
                 class="play ${this.value===e?"active":""}"
                 viewbox="0 0 20 20"
-                @click=${t=>this._onChange(t,e)}
+                @click=${t=>this.#A(t,e)}
                 tabindex="-1"
               >
                 <polygon class="play-shape" points="6, 5, 15, 10, 6, 15"></polygon>
@@ -3083,7 +3083,7 @@
               <svg
                 class="pause ${"pause"===this.value?"active":""}"
                 viewbox="0 0 20 20"
-                @click=${e=>this._onChange(e,"pause")}
+                @click=${e=>this.#A(e,"pause")}
                 tabindex="-1"
               >
                 <rect class="left" x="5" y="5" width="3" height="10"></rect>
@@ -3093,13 +3093,13 @@
               <svg
                 class="stop ${"stop"===this.value?"active":""}"
                 viewbox="0 0 20 20"
-                @click=${e=>this._onChange(e,"stop")}
+                @click=${e=>this.#A(e,"stop")}
                 tabindex="-1"
               >
                 <rect class="stop-shape" x="6" y="6" width="8" height="8"></rect>
               </svg>
             `}}))}
-    `}updated(e){if(e.has("disabled")){const e=this.disabled?-1:this._tabindex;this.setAttribute("tabindex",e),this.disabled&&this.blur()}}connectedCallback(){super.connectedCallback(),this._tabindex=this.getAttribute("tabindex")||0}_onKeyboardEvent(e){if("keydown"===e.type){let t=this.buttons.indexOf(this.value);"ArrowUp"===e.code||"ArrowRight"===e.code||"Space"===e.code?t+=1:"ArrowDown"!==e.code&&"ArrowLeft"!==e.code||(t-=1),t<0?t=this.buttons.length-1:t>=this.buttons.length&&(t=0),this.value=this.buttons[t],this._dispatchEvent()}}_onChange(e,t){e.preventDefault(),e.stopPropagation(),this.disabled||(this.focus(),this.value!==t&&(this.value=t,this._dispatchEvent()))}_dispatchEvent(){const e=new CustomEvent("change",{bubbles:!0,composed:!0,detail:{value:this.value}});this.dispatchEvent(e)}}const SQ=j("ScTransport",$Q);void 0===customElements.get("sc-transport")&&customElements.define("sc-transport",SQ);class PQ extends z{static properties={value:{type:Number,reflect:!0},disabled:{type:Boolean,reflect:!0}};static styles=T.AH`
+    `}updated(e){if(e.has("disabled")){const e=this.disabled?-1:this.#E;this.setAttribute("tabindex",e),this.disabled&&this.blur()}}connectedCallback(){super.connectedCallback(),this.#E=this.getAttribute("tabindex")||0}#C(e){if("keydown"===e.type){let t=this.buttons.indexOf(this.value);"ArrowUp"===e.code||"ArrowRight"===e.code||"Space"===e.code?t+=1:"ArrowDown"!==e.code&&"ArrowLeft"!==e.code||(t-=1),t<0?t=this.buttons.length-1:t>=this.buttons.length&&(t=0),this.value=this.buttons[t],this.#R("input",this.value),this.#R("change",this.value)}}#A(e,t){e.preventDefault(),e.stopPropagation(),this.disabled||(this.focus(),this.#R("input",t),this.value!==t&&(this.value=t,this.#R("change",this.value)))}#R(e,t){const i=new CustomEvent(e,{bubbles:!0,composed:!0,detail:{value:t}});this.dispatchEvent(i)}}const SQ=j("ScTransport",$Q);void 0===customElements.get("sc-transport")&&customElements.define("sc-transport",SQ);class PQ extends z{static properties={value:{type:Number,reflect:!0},disabled:{type:Boolean,reflect:!0}};static styles=T.AH`
     :host {
       display: inline-block;
       box-sizing: border-box;

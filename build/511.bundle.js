@@ -1,17 +1,24 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[511],{3511:(t,e,s)=>{s.r(e),s.d(e,{template:()=>o});var c=s(2182),a=s(1967),r=s(1630);const o=c.qy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[511],{3511:(t,e,s)=>{s.r(e),s.d(e,{template:()=>o});var a=s(2182),c=s(1967),r=s(1630);const o=a.qy`
 <h2>sc-transport</h2>
 
 <sc-code-example language="javascript">${"import { html } from 'lit';\nimport '@ircam/sc-components/sc-transport.js';\n\nconst template = html`\n  <sc-transport></sc-transport>\n`;\n"}</sc-code-example>
 
 <sc-transport
   id="test-transport"
-  @change=${t=>document.querySelector("#transport-input").value=t.detail.value}
+  @change=${t=>{document.querySelector("#transport-change").value=t.detail.value,document.querySelector("#transport-change-bang").active=!0}}
+  @input=${t=>{document.querySelector("#transport-input").value=t.detail.value,document.querySelector("#transport-input-bang").active=!0}}
 ></sc-transport>
 
 <h3>Events</h3>
 <p>
   <sc-text>@change</sc-text>
+  <sc-text id="transport-change"></sc-text>
+  <sc-bang id="transport-change-bang"></sc-bang>
+</p>
+<p>
+  <sc-text>@input</sc-text>
   <sc-text id="transport-input"></sc-text>
+  <sc-bang id="transport-input-bang"></sc-bang>
 </p>
 
 <h3>Properties</h3>
@@ -20,7 +27,7 @@
   <sc-text style="width: 260px;">.buttons [=["play", "pause", "stop"]]</sc-text>
   <sc-text
     editable
-    @change=${t=>document.querySelector("#test-transport").buttons=a.parse(t.detail.value)}
+    @change=${t=>document.querySelector("#test-transport").buttons=c.parse(t.detail.value)}
   >["play", "pause", "stop"]</sc-text>
 </div>
 
