@@ -164,7 +164,7 @@ class ScMidi extends ScElement {
       box-sizing: border-box;
       background-color: var(--sc-color-primary-2);
       border: 1px solid var(--sc-color-primary-3);
-      z-index: 50;
+      z-index: 10000;
       overflow-y: auto;
     }
 
