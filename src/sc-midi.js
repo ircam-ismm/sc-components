@@ -16,9 +16,9 @@ if (!globalThis[midiLearnSymbol]) {
 /**
  * Just use a concatenation of "name" and "manufacturer" as device id
  *
- * We can't rely on the one given by the brwoser, e.g. we have a new id each
+ * We can't rely on the one given by the browser, e.g. we have a new id each
  * time we restart Max on Chrome... This is de facto more susceptible of collisions,
- * but people genrally don't have dozens of MIDI control interface. At contrary
+ * but people generally don't have dozens of MIDI control interface. At contrary
  * this will break if we connect twice the same interface.
  *
  * @todo - find if there is a way to mitigate these two issues.
@@ -64,7 +64,6 @@ function getNodeId(node) {
 // - [x] use concatenation of name and manufacturer has deviceId
 // - [x] disallow multiple bindings on a single element
 // - [x] highlight element on panel hover
-
 // - [ ] import / export config - trigger @change event
 
 class ScMidi extends ScElement {
@@ -235,7 +234,7 @@ class ScMidi extends ScElement {
     // list of connected devices
     // Map<deviceId, MidiInputDevice>
     this._devices = new Map(); // <
-    // list of lightweigth devices that have been seen
+    // list of lightweight devices that have been seen
     // Map<deviceId, Object<deviceId, name, manufacturer>>
     this._knownDevices = new Map();
     // list of elements that are midi learnable
@@ -411,7 +410,7 @@ class ScMidi extends ScElement {
 
   _updateNodeList() {
     const learnableTags = Array.from(globalThis[midiLearnSymbol]);
-    console.log('updateNodeList');
+
     if (learnableTags.length === 0) {
       return;
     }
@@ -462,7 +461,7 @@ class ScMidi extends ScElement {
       const deviceId = getDeviceId(device);
 
       // do not check device.connection here, `connection="open"` is only
-      // trigerred when the listener is registered
+      // triggered when the listener is registered
       if (!this._devices.has(deviceId)) {
         device.addEventListener('midimessage', this._processMidiMessage);
 
@@ -516,7 +515,7 @@ class ScMidi extends ScElement {
     }
   }
 
-  // highlight element on mouseover in panel, note that elemnt might not be in the DOM
+  // highlight element on mouseover in panel, note that element might not be in the DOM
   _highlightElement(nodeId) {
     if (this._$nodes.has(nodeId)) {
       const $el = this._$nodes.get(nodeId);
@@ -569,15 +568,15 @@ class ScMidi extends ScElement {
 
     if (statusByte >= 128 && statusByte < 144) {
       messageType = 'note-off';
-      // channel = statusByte - 128 + 1; // we dont use that for now
+      // channel = statusByte - 128 + 1; // we don't use that for now
     } else if (statusByte >= 144 && statusByte < 160) {
       messageType = 'note-on';
-      // channel = statusByte - 144 + 1; // we dont use that for now
+      // channel = statusByte - 144 + 1; // we don't use that for now
     } else if (statusByte >= 176 && statusByte < 192) {
       messageType = 'control';
-      // channel = statusByte - 176 + 1; // we dont use that for now
+      // channel = statusByte - 176 + 1; // we don't use that for now
     } else {
-      // do not polute the console with this warning
+      // do not pollute the console with this warning
       // console.warn(`sc-midi: unknown message statusByte ${statusByte}, discard`)
       return;
     }
