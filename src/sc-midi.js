@@ -4,6 +4,7 @@ import { classMap } from 'lit/directives/class-map.js';
 
 import ScElement from './ScElement.js';
 import KeyboardController from './controllers/keyboard-controller.js';
+import deepQuerySelectorAll from './utils/deep-query-selector-all.js';
 import './sc-icon.js';
 import './sc-text.js';
 
@@ -415,7 +416,7 @@ class ScMidi extends ScElement {
       return;
     }
 
-    const $learnable = document.querySelectorAll(learnableTags.join(','));
+    const $learnable = deepQuerySelectorAll(learnableTags.join(','));
 
     this._$nodes.clear();
 
