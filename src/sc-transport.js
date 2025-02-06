@@ -5,6 +5,8 @@ import midiControlled from './mixins/midi-controlled.js';
 import KeyboardController from './controllers/keyboard-controller.js';
 
 class ScTransportBase extends ScElement {
+  #tabindex = 0;
+
   static properties = {
     buttons: {
       type: Array,
@@ -110,7 +112,7 @@ class ScTransportBase extends ScElement {
       }
 
       this.value = this.buttons[index];
-      this._dispatchEvent();
+      this.#dispatchEvent();
     }
   }
 
@@ -126,9 +128,9 @@ class ScTransportBase extends ScElement {
     this.value = null;
     this.disabled = false;
 
-    this._keyboard = new KeyboardController(this, {
+    new KeyboardController(this, {
       filterCodes: ['ArrowUp', 'ArrowRight', 'ArrowDown', 'ArrowLeft', 'Space'],
-      callback: this._onKeyboardEvent.bind(this),
+      callback: this.#onKeyboardEvent.bind(this),
       deduplicateEvents: true,
     });
   }
@@ -143,7 +145,7 @@ class ScTransportBase extends ScElement {
               <svg
                 class="play ${this.value === type ? 'active' : ''}"
                 viewbox="0 0 20 20"
-                @click=${e => this._onChange(e, type)}
+                @click=${e => this.#onClick(e, type)}
                 tabindex="-1"
               >
                 <polygon class="play-shape" points="6, 5, 15, 10, 6, 15"></polygon>
@@ -154,7 +156,7 @@ class ScTransportBase extends ScElement {
               <svg
                 class="pause ${this.value === 'pause' ? 'active' : ''}"
                 viewbox="0 0 20 20"
-                @click=${e => this._onChange(e, 'pause')}
+                @click=${e => this.#onClick(e, 'pause')}
                 tabindex="-1"
               >
                 <rect class="left" x="5" y="5" width="3" height="10"></rect>
@@ -166,7 +168,7 @@ class ScTransportBase extends ScElement {
               <svg
                 class="stop ${this.value === 'stop' ? 'active' : ''}"
                 viewbox="0 0 20 20"
-                @click=${e => this._onChange(e, 'stop')}
+                @click=${e => this.#onClick(e, 'stop')}
                 tabindex="-1"
               >
                 <rect class="stop-shape" x="6" y="6" width="8" height="8"></rect>
@@ -179,7 +181,7 @@ class ScTransportBase extends ScElement {
 
   updated(changedProperties) {
     if (changedProperties.has('disabled')) {
-      const tabindex = this.disabled ? -1 : this._tabindex;
+      const tabindex = this.disabled ? -1 : this.#tabindex;
       this.setAttribute('tabindex', tabindex);
 
       if (this.disabled) { this.blur(); }
@@ -188,11 +190,11 @@ class ScTransportBase extends ScElement {
 
   connectedCallback() {
     super.connectedCallback();
-    // @note - this is important if the compoent is e.g. embedded in another component
-    this._tabindex = this.getAttribute('tabindex') || 0;
+    // @note - this is important if the component is e.g. embedded in another component
+    this.#tabindex = this.getAttribute('tabindex') || 0;
   }
 
-  _onKeyboardEvent(e) {
+  #onKeyboardEvent(e) {
     if (e.type === 'keydown') {
       let index = this.buttons.indexOf(this.value);
 
@@ -209,11 +211,12 @@ class ScTransportBase extends ScElement {
       }
 
       this.value = this.buttons[index];
-      this._dispatchEvent();
+      this.#dispatchEvent('input', this.value);
+      this.#dispatchEvent('change', this.value);
     }
   }
 
-  _onChange(e, value) {
+  #onClick(e, value) {
     e.preventDefault();
     e.stopPropagation();
 
@@ -221,17 +224,19 @@ class ScTransportBase extends ScElement {
 
     this.focus();
 
+    this.#dispatchEvent('input', value);
+
     if (this.value !== value) {
       this.value = value;
-      this._dispatchEvent();
+      this.#dispatchEvent('change', this.value);
     }
   }
 
-  _dispatchEvent() {
-    const changeEvent = new CustomEvent('change', {
+  #dispatchEvent(type, value) {
+    const changeEvent = new CustomEvent(type, {
       bubbles: true,
       composed: true,
-      detail: { value: this.value },
+      detail: { value },
     });
 
     this.dispatchEvent(changeEvent);

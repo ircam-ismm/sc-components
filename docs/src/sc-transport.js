@@ -17,13 +17,26 @@ const template = html\`
 
 <sc-transport
   id="test-transport"
-  @change=${e => document.querySelector('#transport-input').value = e.detail.value}
+  @change=${e => {
+    document.querySelector('#transport-change').value = e.detail.value;
+    document.querySelector('#transport-change-bang').active = true;
+  }}
+  @input=${e => {
+    document.querySelector('#transport-input').value = e.detail.value;
+    document.querySelector('#transport-input-bang').active = true;
+  }}
 ></sc-transport>
 
 <h3>Events</h3>
 <p>
   <sc-text>@change</sc-text>
+  <sc-text id="transport-change"></sc-text>
+  <sc-bang id="transport-change-bang"></sc-bang>
+</p>
+<p>
+  <sc-text>@input</sc-text>
   <sc-text id="transport-input"></sc-text>
+  <sc-bang id="transport-input-bang"></sc-bang>
 </p>
 
 <h3>Properties</h3>
