@@ -5,7 +5,7 @@ import iconsList from '../../src/utils/icons.js';
 
 const icons = Object.keys(iconsList);
 const defaultIcon = 'question';
-// const defaultIcon = 'upgrade';
+// const defaultIcon = 'slider';
 
 let timeoutIdInput = null;
 let timeoutIdPress = null;
