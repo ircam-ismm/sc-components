@@ -3069,7 +3069,7 @@
     svg.stop.active {
       fill: var(--sc-transport-active-stop-fill);
     }
-  `;get midiType(){return"control"}set midiValue(e){if(!this.disabled&&e>0){let e=this.buttons.indexOf(this.value);e+=1,e<0?e=this.buttons.length-1:e>=this.buttons.length&&(e=0),this.value=this.buttons[e],this.#R()}}get midiValue(){return null}constructor(){super(),this.buttons=["play","pause","stop"],this.value=null,this.disabled=!1,new D(this,{filterCodes:["ArrowUp","ArrowRight","ArrowDown","ArrowLeft","Space"],callback:this.#C.bind(this),deduplicateEvents:!0})}render(){return T.qy`
+  `;get midiType(){return"control"}set midiValue(e){if(!this.disabled&&e>0){let e=this.buttons.indexOf(this.value);e+=1,e<0?e=this.buttons.length-1:e>=this.buttons.length&&(e=0),this.value=this.buttons[e],this.#R("input",this.value),this.#R("change",this.value)}}get midiValue(){return null}constructor(){super(),this.buttons=["play","pause","stop"],this.value=null,this.disabled=!1,new D(this,{filterCodes:["ArrowUp","ArrowRight","ArrowDown","ArrowLeft","Space"],callback:this.#C.bind(this),deduplicateEvents:!0})}render(){return T.qy`
       ${this.buttons.map((e=>{switch(e){case"play":case"start":return T.qy`
               <svg
                 class="play ${this.value===e?"active":""}"
