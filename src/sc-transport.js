@@ -112,7 +112,8 @@ class ScTransportBase extends ScElement {
       }
 
       this.value = this.buttons[index];
-      this.#dispatchEvent();
+      this.#dispatchEvent('input', this.value);
+      this.#dispatchEvent('change', this.value);
     }
   }
 
