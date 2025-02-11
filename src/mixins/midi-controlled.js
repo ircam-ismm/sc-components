@@ -101,7 +101,7 @@ export default (className, parent) => {
     }
 
     render() {
-      const template = super.render();
+      const inner = super.render();
 
       if (this.midiLearnActive) {
         let stateClass = 'idle';
@@ -128,11 +128,11 @@ export default (className, parent) => {
               : nothing
             }
           </div>
-          ${template}
+          ${inner}
         `
       } else {
         this.midiControlHighlight = false;
-        return template;
+        return inner;
       }
     }
   }

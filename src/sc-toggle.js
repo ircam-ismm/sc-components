@@ -17,6 +17,11 @@ class ScToggleBase extends ScElement {
       type: Boolean,
       reflect: true,
     },
+    midiMode: {
+      type: 'string', // latch / momentary
+      reflect: true,
+      attribute: 'midi-mode'
+    },
   };
 
   static styles = css`
@@ -64,7 +69,7 @@ class ScToggleBase extends ScElement {
     }
   `;
 
-  // alias active for consistency and genericity with other components
+  // alias active for consistency and generality with other components
   get value() {
     return this.active;
   }
@@ -83,12 +88,35 @@ class ScToggleBase extends ScElement {
       return;
     }
 
-    this.active = value === 0 ? false : true;
-    this._dispatchEvent();
+    switch (this._midiMode) {
+      case 'momentary': {
+        this.active = value === 0 ? false : true;
+        this._dispatchEvent();
+        break;
+      }
+      case 'latch': {
+        if (value !== 0) {
+          this.active = !this.active;
+          this._dispatchEvent();
+        }
+      }
+    }
   }
 
   get midiValue() {
     return this.active ? 127 : 0;
+  }
+
+  set midiMode(value) {
+    if (!['latch', 'momentary'].includes(value)) {
+      throw new Error(`Cannot set midiMode on ScToggle: midiMode must be either 'latch' or 'momentary`);
+    }
+
+    this._midiMode = value;
+  }
+
+  get midiMode() {
+    return this._midiMode;
   }
 
   constructor() {
@@ -96,6 +124,8 @@ class ScToggleBase extends ScElement {
 
     this.active = false;
     this.disabled = false;
+
+    this._midiMode = 'momentary';
 
     this._keyboard = new KeyboardController(this, {
       filterCodes: ['Enter', 'Space'],
@@ -135,7 +165,7 @@ class ScToggleBase extends ScElement {
 
   connectedCallback() {
     super.connectedCallback();
-    // @note - this is important if the compoent is e.g. embedded in another component
+    // @note - this is important if the component is e.g. embedded in another component
     this._tabindex = this.getAttribute('tabindex') || 0;
   }
 
