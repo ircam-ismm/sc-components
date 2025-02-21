@@ -1,6 +1,4 @@
-import { html, svg, css } from 'lit';
-import { range } from 'lit/directives/range.js';
-import { map } from 'lit/directives/map.js';
+import { html, css } from 'lit';
 import { mtof } from '@ircam/sc-utils';
 
 import ScElement from './ScElement.js';
@@ -118,7 +116,7 @@ class ScKeyboardBase extends ScElement {
 
   set inputMode(value) {
     if (value !== 'reactive' && value !== 'stateful') {
-      throw new TypeError(`Cannot set property 'inputMode' on sc-keyboard: value ${value} must be either "reactive" or "statefull"`);
+      throw new TypeError(`Cannot set property 'inputMode' on sc-keyboard: value ${value} must be either "reactive" or "stateful"`);
     }
 
     this._inputMode = value;
@@ -300,7 +298,7 @@ class ScKeyboardBase extends ScElement {
 
   connectedCallback() {
     super.connectedCallback();
-    // @note - this is important if the compoent is e.g. embedded in another component
+    // @note - this is important if the component is e.g. embedded in another component
     this._tabindex = this.getAttribute('tabindex') || 0;
 
     this._resizeObserver = new ResizeObserver(entries => {
@@ -426,7 +424,7 @@ class ScKeyboardBase extends ScElement {
           case 'monophonic': {
             // we activate the key only if the key was inactive
             const triggerNoteOn = !this._currentNotes.has(midiNote);
-            // deactive all active keys
+            // deactivate all active keys
             this._clear();
 
             if (triggerNoteOn) {

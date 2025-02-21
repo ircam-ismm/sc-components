@@ -87,10 +87,6 @@ class ScText extends ScElement {
         white-space: pre;
       }
 
-      :host.editable {
-        padding:
-      }
-
       :host input[type=text] {
         display: block;
         position: absolute;
