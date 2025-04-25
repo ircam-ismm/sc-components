@@ -89,7 +89,20 @@ class ScCodeExample extends ScElement {
   }
 
   render() {
-    const value = this.textContent.trim() || this.value;
+    let value;
+
+    if (this.textContent.trim()) {
+      // only trim first line
+      const lines = this.textContent.split(/\r?\n/);
+      lines[0] = lines[0].trim();
+      if (lines[0] === '') {
+        lines.shift();
+      }
+      value = lines.join('\n');
+    } else {
+      value = this.value;
+    }
+    // const value = this.textContent.trim() || this.value;
     let content = ``;
 
     try {
