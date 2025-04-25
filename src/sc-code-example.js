@@ -19,6 +19,17 @@ const template = html\`
 \`;
 `}</sc-code-example>
 
+<!--
+<sc-code-example language="plaintext">
+ [input]
+    │
+┌───┴───┐
+│       │
+0       1
+</sc-code-example>
+-->
+
+
 <h3>Attributes</h3>
 
 <div>

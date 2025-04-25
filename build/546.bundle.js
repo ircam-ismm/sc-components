@@ -7,6 +7,17 @@
   id="test-code-example"
 >${"\nimport { html } from 'lit';\nimport '@ircam/sc-components/sc-code-example.js';\n\nconst template = html`\n  <sc-code-example language=\"javascript\">\n    const a = 42;\n  </sc-code-example>\n`;\n"}</sc-code-example>
 
+<!--
+<sc-code-example language="plaintext">
+ [input]
+    │
+┌───┴───┐
+│       │
+0       1
+</sc-code-example>
+-->
+
+
 <h3>Attributes</h3>
 
 <div>
