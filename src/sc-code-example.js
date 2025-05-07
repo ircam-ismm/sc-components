@@ -64,10 +64,6 @@ class ScCodeExample extends ScElement {
       margin: 0;
     }
 
-    pre {
-      margin: 0;
-    }
-
     pre, code {
       border-radius: inherit;
     }
@@ -112,7 +108,7 @@ class ScCodeExample extends ScElement {
     }
 
     return html`
-      <pre><code class="hljs ${this.language ? `language-${this.language}` : ''}">${unsafeHTML(content)}</pre></code>
+      <pre><code class="hljs ${this.language ? `language-${this.language}` : ''}">${unsafeHTML(content)}</code></pre>
     `;
   }
 }

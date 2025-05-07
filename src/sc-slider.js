@@ -160,9 +160,26 @@ class ScSliderBase extends ScElement {
     }
   `;
 
+  #normValue = 0.5;
+  #min = 0;
+  #max = 1;
+  #step = 1e-3;
+  #mode = 'lin';
+  #modeBase = 2;
+  #curve = null;
+  #pointerId = null;
+  #normToValue = null;
+  #valueToNorm = null;
+  #tabindex = 0;
+  // for relative interaction
+  #startPointerValue = null;
+  #startSliderValue = null;
+  #midiValueTimeout = null;
+
+
   get value() {
-    const value = this._normToValue(this._normValue);
-    return NP.times(Math.round(value / this.step), this.step);
+    const value = this.#normToValue(this.#normValue);
+    return NP.times(Math.round(value / this.#step), this.#step);
   }
 
   set value(value) {
@@ -170,13 +187,13 @@ class ScSliderBase extends ScElement {
       throw new TypeError(`Cannot set property 'value' on sc-slider: value (${value}) is not a finite value`);
     }
 
-    this._normValue = this._valueToNorm(value);
+    this.#normValue = this.#valueToNorm(value);
     this.requestUpdate();
   }
 
 
   get min() {
-    return this._min;
+    return this.#min;
   }
 
   set min(value) {
@@ -184,14 +201,14 @@ class ScSliderBase extends ScElement {
       throw new TypeError(`Cannot set property 'min' on sc-slider: value (${value}) is not a finite value`);
     }
 
-    const oldValue = this._min;
-    this._min = value;
-    this._updateScales();
+    const oldValue = this.#min;
+    this.#min = value;
+    this.#updateScales();
     this.requestUpdate('min', oldValue);
   }
 
   get max() {
-    return this._max;
+    return this.#max;
   }
 
   set max(value) {
@@ -199,14 +216,14 @@ class ScSliderBase extends ScElement {
       throw new TypeError(`Cannot set property 'max' on sc-slider: value (${value}) is not a finite value`);
     }
 
-    const oldValue = this._max;
-    this._max = value;
-    this._updateScales();
+    const oldValue = this.#max;
+    this.#max = value;
+    this.#updateScales();
     this.requestUpdate('max', oldValue);
   }
 
   get step() {
-    return this._step;
+    return this.#step;
   }
 
   set step(value) {
@@ -214,14 +231,14 @@ class ScSliderBase extends ScElement {
       throw new TypeError(`Cannot set property 'step' on sc-slider: value (${value}) is not a strictly positive number`);
     }
 
-    const oldValue = this._step;
-    this._step = value;
-    this._updateScales();
+    const oldValue = this.#step;
+    this.#step = value;
+    this.#updateScales();
     this.requestUpdate('step', oldValue);
   }
 
   get mode() {
-    return this._mode;
+    return this.#mode;
   }
 
   set mode(value) {
@@ -229,13 +246,13 @@ class ScSliderBase extends ScElement {
       throw new TypeError(`Cannot set property 'mode' on sc-dial: value (${value}) is not a valid enum value of ['lin', 'exp', 'log']`);
     }
 
-    this._mode = value;
-    this._updateScales();
+    this.#mode = value;
+    this.#updateScales();
     this.requestUpdate();
   }
 
   get modeBase() {
-    return this._modeBase;
+    return this.#modeBase;
   }
 
   set modeBase(value) {
@@ -243,22 +260,24 @@ class ScSliderBase extends ScElement {
       throw new TypeError(`Cannot set property 'modeBase' on sc-slider: value (${value}) is not a strictly positive number`);
     }
 
-    this._modeBase = value;
-    this._updateScales();
+    this.#modeBase = value;
+    this.#updateScales();
     this.requestUpdate();
   }
 
-  get lookupTable() {
-    return this._lookupTable;
+  get curve() {
+    return this.#curve;
   }
 
-  set lookupTable(value) {
+  set curve(value) {
     if (!isSequence(value)) {
-      this._lookupTable = null;
+      this.#curve = null;
     }
 
-    this._lookupTable = value;
-    this._updateScales();
+    this.#curve = value;
+    this.#min = this.#curve[0];
+    this.#max = this.#curve[this.#curve.length - 1];
+    this.#updateScales();
     this.requestUpdate();
   }
 
@@ -268,61 +287,44 @@ class ScSliderBase extends ScElement {
   }
 
   set midiValue(value) {
-    this._normValue = value / 127;
+    this.#normValue = value / 127;
 
     this.requestUpdate();
-    this._dispatchInputEvent();
+    this.#dispatchInputEvent();
 
-    clearTimeout(this._midiValueTimeout);
-    // triger change after some timeout
-    this._midiValueTimeout = setTimeout(() => {
-      this._dispatchChangeEvent();
+    clearTimeout(this.#midiValueTimeout);
+    // trigger change after some timeout
+    this.#midiValueTimeout = setTimeout(() => {
+      this.#dispatchChangeEvent();
     }, 500);
   }
 
   get midiValue() {
-    return Math.round(this._normValue * 127);
+    return Math.round(this.#normValue * 127);
   }
 
   constructor() {
     super();
-
-    this._normValue = 0.5;
-    this._min = 0;
-    this._max = 1;
-    this._step = 1e-3;
-    this._mode = 'lin';
-    this._modeBase = 2;
-    this._lookupTable = null;
 
     this.orientation = 'horizontal';
     this.relative = false;
     this.numberBox = false;
     this.disabled = false;
 
-    this._pointerId = null;
-    // for relative interaction
-    this._startPointerValue = null;
-    this._startSliderValue = null;
-    this._midiValueTimeout = null;
-
-    this._normToValue = null;
-    this._valueToNorm = null;
-
-    this._updateScales();
+    this.#updateScales();
 
     this.keyboard = new KeyboardController(this, {
       filterCodes: ['ArrowUp', 'ArrowRight', 'ArrowDown', 'ArrowLeft'],
-      callback: this._onKeyboardEvent.bind(this),
+      callback: this.#onKeyboardEvent.bind(this),
     });
 
-    this._updateScales();
+    this.#updateScales();
   }
 
   render() {
     const svgSize = 1000;
     // apply step for display
-    const sliderSize = this._valueToNorm(this.value) * svgSize;
+    const sliderSize = this.#valueToNorm(this.value) * svgSize;
     const xRange = [0, 1];
     const yRange = [1, 0];
 
@@ -348,8 +350,8 @@ class ScSliderBase extends ScElement {
         <sc-position-surface
           .xRange=${xRange}
           .yRange=${yRange}
-          @input=${this._onPositionInput}
-          @pointerend=${this._onPositionChange}
+          @input=${this.#onPositionInput}
+          @pointerend=${this.#onPositionChange}
         ></sc-position-surface>
       </div>
       ${this.numberBox
@@ -358,8 +360,8 @@ class ScSliderBase extends ScElement {
             min=${this.min}
             max=${this.max}
             value=${this.value}
-            @input=${this._onNumberBoxInput}
-            @change=${this._onNumberBoxChange}
+            @input=${this.#onNumberBoxInput}
+            @change=${this.#onNumberBoxChange}
           ></sc-number>
         `
         : nothing
@@ -369,7 +371,7 @@ class ScSliderBase extends ScElement {
 
   updated(changedProperties) {
     if (changedProperties.has('disabled')) {
-      const tabindex = this.disabled ? -1 : this._tabindex;
+      const tabindex = this.disabled ? -1 : this.#tabindex;
       this.setAttribute('tabindex', tabindex);
 
       if (this.disabled) { this.blur(); }
@@ -378,41 +380,41 @@ class ScSliderBase extends ScElement {
 
   connectedCallback() {
     super.connectedCallback();
-    // @note - this is important if the compoent is e.g. embedded in another component
-    this._tabindex = this.getAttribute('tabindex') || 0;
+    // @note - this is important if the component is e.g. embedded in another component
+    this.#tabindex = this.getAttribute('tabindex') || 0;
   }
 
-  _updateScales() {
+  #updateScales() {
     // get current "real" value to recompute norm based on updated scales
-    const currentValue = this._normToValue ? this._normToValue(this._normValue) : this._normValue;
+    const currentValue = this.#normToValue ? this.#normToValue(this.#normValue) : this.#normValue;
 
-    if (this._lookupTable !== null) {
-      this._normToValue = normalizedToTableScale(this._lookupTable);
-      this._valueToNorm = tableToNormalizedScale(this._lookupTable);
+    if (this.#curve !== null) {
+      this.#normToValue = normalizedToTableScale(this.#curve);
+      this.#valueToNorm = tableToNormalizedScale(this.#curve);
     } else {
-      switch (this._mode) {
+      switch (this.#mode) {
         case 'lin':
         case 'linear':
-          this._normToValue = linearScale(0, 1, this.min, this.max, true);
-          this._valueToNorm = linearScale(this.min, this.max, 0, 1, true);
+          this.#normToValue = linearScale(0, 1, this.min, this.max, true);
+          this.#valueToNorm = linearScale(this.min, this.max, 0, 1, true);
           break;
         case 'exp':
         case 'exponential':
-          this._normToValue = exponentialScale(0, 1, this.min, this.max, this._modeBase, true);
-          this._valueToNorm = logarithmicScale(this.min, this.max, 0, 1, this._modeBase, true);
+          this.#normToValue = exponentialScale(0, 1, this.min, this.max, this.#modeBase, true);
+          this.#valueToNorm = logarithmicScale(this.min, this.max, 0, 1, this.#modeBase, true);
           break;
         case 'log':
         case 'logarithmic':
-          this._normToValue = logarithmicScale(0, 1, this.min, this.max, this._modeBase, true);
-          this._valueToNorm = exponentialScale(this.min, this.max, 0, 1, this._modeBase, true);
+          this.#normToValue = logarithmicScale(0, 1, this.min, this.max, this.#modeBase, true);
+          this.#valueToNorm = exponentialScale(this.min, this.max, 0, 1, this.#modeBase, true);
           break;
       }
     }
 
-    this._normValue = this._valueToNorm(currentValue);
+    this.#normValue = this.#valueToNorm(currentValue);
   }
 
-  _onKeyboardEvent(e) {
+  #onKeyboardEvent(e) {
     if (this.disabled) { return; }
 
     switch (e.type) {
@@ -420,41 +422,41 @@ class ScSliderBase extends ScElement {
         const incr = 1 / (e.shiftKey ? 10 : 100);
 
         if (e.code === 'ArrowUp' || e.code === 'ArrowRight') {
-          this._normValue = Math.min(1, Math.max(0, this._normValue + incr));
+          this.#normValue = Math.min(1, Math.max(0, this.#normValue + incr));
         } else if (e.code === 'ArrowDown' || e.code === 'ArrowLeft') {
-          this._normValue = Math.min(1, Math.max(0, this._normValue - incr));
+          this.#normValue = Math.min(1, Math.max(0, this.#normValue - incr));
         }
 
         this.requestUpdate();
-        this._dispatchInputEvent();
+        this.#dispatchInputEvent();
         break;
       }
       case 'keyup': {
-        this._dispatchChangeEvent();
+        this.#dispatchChangeEvent();
         break;
       }
     }
   }
 
-  _onNumberBoxInput(e) {
+  #onNumberBoxInput(e) {
     e.stopPropagation(); // stop event propagation from sc-number
     if (this.disabled) { return; }
 
-    this._normValue = this._valueToNorm(e.detail.value);
+    this.#normValue = this.#valueToNorm(e.detail.value);
     this.requestUpdate();
-    this._dispatchInputEvent();
+    this.#dispatchInputEvent();
   }
 
-  _onNumberBoxChange(e) {
+  #onNumberBoxChange(e) {
     e.stopPropagation(); // stop event propagation from sc-number
     if (this.disabled) { return; }
 
-    this._normValue = this._valueToNorm(e.detail.value);
+    this.#normValue = this.#valueToNorm(e.detail.value);
     this.requestUpdate();
-    this._dispatchChangeEvent();
+    this.#dispatchChangeEvent();
   }
 
-  _onPositionInput(e) {
+  #onPositionInput(e) {
     e.stopPropagation(); // stop event propagation from sc-position-surface
     if (this.disabled) { return; }
 
@@ -462,47 +464,47 @@ class ScSliderBase extends ScElement {
 
     if (
       e.detail.value[0] &&
-      (this._pointerId === null || e.detail.value[0].pointerId === this._pointerId)
+      (this.#pointerId === null || e.detail.value[0].pointerId === this.#pointerId)
     ) {
       const { x, y, pointerId } = e.detail.value[0];
       const normValue = this.orientation === 'horizontal' ? x : y;
 
-      if (this._pointerId === null) {
-        this._startPointerValue = normValue;
-        this._startSliderValue = this._normValue;
+      if (this.#pointerId === null) {
+        this.#startPointerValue = normValue;
+        this.#startSliderValue = this.#normValue;
       }
 
-      this._pointerId = pointerId;
+      this.#pointerId = pointerId;
 
       const oldValue = this.value;
 
       if (this.relative) {
-        const diff = normValue - this._startPointerValue;
-        this._normValue = Math.min(1, Math.max(0, this._startSliderValue + diff));
+        const diff = normValue - this.#startPointerValue;
+        this.#normValue = Math.min(1, Math.max(0, this.#startSliderValue + diff));
       } else {
-        this._normValue = Math.min(1, Math.max(0, normValue));
+        this.#normValue = Math.min(1, Math.max(0, normValue));
       }
 
       const newValue = this.value;
-      // dipatch input event only if value changed with step applied
+      // dispatch input event only if value changed with step applied
       if (oldValue !== newValue) {
         this.requestUpdate();
-        this._dispatchInputEvent();
+        this.#dispatchInputEvent();
       }
     }
   }
 
-  _onPositionChange(e) {
+  #onPositionChange(e) {
     e.stopPropagation(); // stop event propagation from sc-position-surface
     if (this.disabled) { return; }
 
-    if (e.detail.pointerId === this._pointerId) {
-      this._pointerId = null;
-      this._dispatchChangeEvent();
+    if (e.detail.pointerId === this.#pointerId) {
+      this.#pointerId = null;
+      this.#dispatchChangeEvent();
     }
   }
 
-  _dispatchInputEvent() {
+  #dispatchInputEvent() {
     const event = new CustomEvent('input', {
       bubbles: true,
       composed: true,
@@ -512,7 +514,7 @@ class ScSliderBase extends ScElement {
     this.dispatchEvent(event);
   }
 
-  _dispatchChangeEvent() {
+  #dispatchChangeEvent() {
     const event = new CustomEvent('change', {
       bubbles: true,
       composed: true,
