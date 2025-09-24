@@ -585,6 +585,7 @@ class ScFileTree extends ScElement {
         const absPath = this._contextMenuInfos.node.path;
         const relPath = this._contextMenuInfos.node.relPath;
         const value = { command, absPath, relPath };
+
         const event = new CustomEvent('change', {
           bubbles: true,
           composed: true,
@@ -680,23 +681,21 @@ class ScFileTree extends ScElement {
       return;
     }
 
-    const rootDirname = this._value.name;
-    const re = new RegExp(`^${rootDirname}/`);
     const value = { command };
 
     switch (command) {
       case 'mkdir':
       case 'touch': {
         value.absPath = `${node.path}/${filename}`;
-        value.relPath = value.absPath.replace(re, '');
+        value.relPath = `${node.relPath}/${filename}`;
         break;
       }
       case 'rename': {
         value.oldAbsPath = node.path;
-        value.oldRelPath = value.oldAbsPath.replace(re, '');
+        value.oldRelPath = node.relPath;
 
         value.newAbsPath = node.path.replace(node.name, filename);
-        value.newRelPath = value.newAbsPath.replace(re, '');
+        value.newRelPath = node.relPath.replace(node.name, filename);
         break;
       }
     }
