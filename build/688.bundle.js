@@ -7,9 +7,9 @@
 <sc-button
   id="test-button"
   value="my-value"
-  @input=${t=>{document.querySelector("#button-input").active=!0;const e=document.querySelector("#button-value-input");e.value=t.detail.value,clearTimeout(u),u=setTimeout((()=>e.value=""),500)}}
-  @press=${t=>{document.querySelector("#button-press").active=!0;const e=document.querySelector("#button-value-press");e.value=t.detail.value,clearTimeout(a),a=setTimeout((()=>e.value=""),500)}}
-  @release=${t=>{document.querySelector("#button-release").active=!0;const e=document.querySelector("#button-value-release");e.value=t.detail.value,clearTimeout(l),l=setTimeout((()=>e.value=""),500)}}
+  @input=${t=>{document.querySelector("#button-input").active=!0;const e=document.querySelector("#button-value-input");e.value=t.detail.value,clearTimeout(u),u=setTimeout(()=>e.value="",500)}}
+  @press=${t=>{document.querySelector("#button-press").active=!0;const e=document.querySelector("#button-value-press");e.value=t.detail.value,clearTimeout(a),a=setTimeout(()=>e.value="",500)}}
+  @release=${t=>{document.querySelector("#button-release").active=!0;const e=document.querySelector("#button-value-release");e.value=t.detail.value,clearTimeout(l),l=setTimeout(()=>e.value="",500)}}
 >My text</sc-button>
 
 <h3>Events</h3>

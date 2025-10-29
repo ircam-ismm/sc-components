@@ -46,7 +46,7 @@
 <div>
   <sc-text>?disabled [=false]</sc-text>
   <sc-toggle
-    @change=${e=>Array.from(document.querySelectorAll("sc-io-surface")).forEach((t=>t.disabled=e.detail.value))}
+    @change=${e=>Array.from(document.querySelectorAll("sc-io-surface")).forEach(t=>t.disabled=e.detail.value)}
   ></sc-toggle>
 </div>
 

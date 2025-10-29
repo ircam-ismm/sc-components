@@ -6,7 +6,7 @@
 
 <sc-matrix
   id="test-matrix"
-  @change=${e=>{document.querySelector("#matrix-change-value").value=`[\n${e.detail.value.map((e=>`  [${e.join(", ")}],`)).join("\n")}\n]`,document.querySelector("#matrix-change-update").value=JSON.stringify(e.detail.update,null,2)}}
+  @change=${e=>{document.querySelector("#matrix-change-value").value=`[\n${e.detail.value.map(e=>`  [${e.join(", ")}],`).join("\n")}\n]`,document.querySelector("#matrix-change-update").value=JSON.stringify(e.detail.update,null,2)}}
 ></sc-matrix>
 
 <h3>Events</h3>

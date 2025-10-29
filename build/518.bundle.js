@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[289,518],{3518:(e,t,a)=>{a.r(t),a.d(t,{template:()=>n});var c=a(2182),l=a(1630);const s=(0,a(5289).default)(2,100,12,((e,t)=>{const a=document.querySelector("#test-table"),[c,l]=a.range;for(let e=0;e<t.length;e++)t[e]=c+(t[e]+1)/2*(l-c);document.querySelector("#test-table").value=t})),n=c.qy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[289,518],{3518:(e,t,a)=>{a.r(t),a.d(t,{template:()=>n});var c=a(2182),l=a(1630);const s=(0,a(5289).default)(2,100,12,(e,t)=>{const a=document.querySelector("#test-table"),[c,l]=a.range;for(let e=0;e<t.length;e++)t[e]=c+(t[e]+1)/2*(l-c);document.querySelector("#test-table").value=t}),n=c.qy`
 
 <h2>sc-table</h2>
 

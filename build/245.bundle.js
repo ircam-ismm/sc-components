@@ -8,9 +8,9 @@
   id="test-icon"
   value="my-icon"
   type="${a}"
-  @input=${e=>{document.querySelector("#icon-input").active=!0;const t=document.querySelector("#icon-value-input");t.value=e.detail.value,clearTimeout(l),l=setTimeout((()=>t.value=""),500)}}
-  @press=${e=>{document.querySelector("#icon-press").active=!0;const t=document.querySelector("#icon-value-press");t.value=e.detail.value,clearTimeout(u),u=setTimeout((()=>t.value=""),500)}}
-  @release=${e=>{document.querySelector("#icon-release").active=!0;const t=document.querySelector("#icon-value-release");t.value=e.detail.value,clearTimeout(r),r=setTimeout((()=>t.value=""),500)}}
+  @input=${e=>{document.querySelector("#icon-input").active=!0;const t=document.querySelector("#icon-value-input");t.value=e.detail.value,clearTimeout(l),l=setTimeout(()=>t.value="",500)}}
+  @press=${e=>{document.querySelector("#icon-press").active=!0;const t=document.querySelector("#icon-value-press");t.value=e.detail.value,clearTimeout(u),u=setTimeout(()=>t.value="",500)}}
+  @release=${e=>{document.querySelector("#icon-release").active=!0;const t=document.querySelector("#icon-value-release");t.value=e.detail.value,clearTimeout(r),r=setTimeout(()=>t.value="",500)}}
 ></sc-icon>
 
 <p>
