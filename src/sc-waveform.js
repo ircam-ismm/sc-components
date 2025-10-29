@@ -3,13 +3,17 @@ import ScElement from './ScElement.js';
 
 
 class ScWaveform extends ScElement {
+  #width = null;
+  #height = null;
+  #resizeObserver = null;
+
   static properties = {
     selection: {
       type: Boolean,
       reflect: true,
     },
     cursor: {
-      type: Boolean, 
+      type: Boolean,
       reflect: true,
     },
     buffer: {
@@ -42,7 +46,7 @@ class ScWaveform extends ScElement {
         margin: 0;
         width: 100%;
         height: 100%;
-        backgroundColor: var(--sc-color-primary-1);
+        background-color: var(--sc-color-primary-1);
       }
 
       path {
@@ -89,56 +93,29 @@ class ScWaveform extends ScElement {
     this.selectionStartOffset = 0;
     this.selectionEndOffset = 0;
 
-    this._width = null;
-    this._height = null;
-    this._resizeObserver = null;
-
-    this._mouseDown = this._mouseDown.bind(this);
-    this._mouseMove = this._mouseMove.bind(this);
-    this._mouseUp = this._mouseUp.bind(this);
-
-    this._leftHandleMouseDown = this._leftHandleMouseDown.bind(this);
-    this._leftHandleMouseMove = this._leftHandleMouseMove.bind(this);
-    this._leftHandleMouseUp = this._leftHandleMouseUp.bind(this);
-    this._rightHandleMouseDown = this._rightHandleMouseDown.bind(this);
-    this._rightHandleMouseMove = this._rightHandleMouseMove.bind(this);
-    this._rightHandleMouseUp = this._rightHandleMouseUp.bind(this);
-
     this.activePointers = new Map();
-    this.pointerIds = []; // we want to keep the order of appearance consistant
-
-    this._touchStart = this._touchStart.bind(this);
-    this._touchMove = this._touchMove.bind(this);
-    this._touchEnd = this._touchEnd.bind(this);
-
-    this._leftHandleTouchStart = this._leftHandleTouchStart.bind(this);
-    this._leftHandleTouchMove = this._leftHandleTouchMove.bind(this);
-    this._leftHandleTouchEnd = this._leftHandleTouchEnd.bind(this);
-    this._rightHandleTouchStart = this._rightHandleTouchStart.bind(this);
-    this._rightHandleTouchMove = this._rightHandleTouchMove.bind(this);
-    this._rightHandleTouchEnd = this._rightHandleTouchEnd.bind(this);
-
+    this.pointerIds = []; // we want to keep the order of appearance consistent
   }
 
   connectedCallback() {
     super.connectedCallback();
 
-    this._resizeObserver = new ResizeObserver(entries => {
+    this.#resizeObserver = new ResizeObserver(entries => {
       const entry = entries[0];
       const { width, height } = entry.contentRect;
 
-      this._width = width;
-      this._height = height;
-      this._updateWaveform();
-      this._updateCursor();
+      this.#width = width;
+      this.#height = height;
+      this.#updateWaveform();
+      this.#updateCursor();
       this.requestUpdate();
     });
 
-    this._resizeObserver.observe(this);
+    this.#resizeObserver.observe(this);
   }
 
   disconnectedCallback() {
-    this._resizeObserver.disconnect();
+    this.#resizeObserver.disconnect();
     super.disconnectedCallback();
   }
 
@@ -179,12 +156,12 @@ class ScWaveform extends ScElement {
         }
       });
 
-      this._updateWaveform();
-      this._updateCursor();
+      this.#updateWaveform();
+      this.#updateCursor();
     }
-    
+
     if (changedProperties.has('cursorPosition')) {
-      this._updateCursor();
+      this.#updateCursor();
     }
 
     super.update(changedProperties);
@@ -192,16 +169,16 @@ class ScWaveform extends ScElement {
 
   render() {
     // wait for first ResizeObserver call
-    if (this._width === null) {
+    if (this.#width === null) {
       return nothing;
     }
 
     return html`
       <svg
-        viewBox="0 -1 ${this._width} 2"
+        viewBox="0 -1 ${this.#width} 2"
         preserveAspectRatio="none"
-        @mousedown="${this.selection ? this._mouseDown : null}"
-        @touchstart="${this.selection ? this._touchStart : null}"
+        @mousedown="${this.selection ? this.#mouseDown : null}"
+        @touchstart="${this.selection ? this.#touchStart : null}"
       >
         <path
           class="waveform"
@@ -209,7 +186,7 @@ class ScWaveform extends ScElement {
           vector-effect="non-scaling-stroke"
           d="${this.waveformPath}"
         />
-        ${this.cursor 
+        ${this.cursor
         ? svg`
           <path
             class="cursor"
@@ -235,8 +212,8 @@ class ScWaveform extends ScElement {
               y1="-1"
               x2="${this.selectionStart}"
               y2="1"
-              @mousedown="${this._leftHandleMouseDown}"
-              @touchstart="${this._leftHandleTouchStart}"
+              @mousedown="${this.#leftHandleMouseDown}"
+              @touchstart="${this.#leftHandleTouchStart}"
             ></line>
             <line
               class="handle"
@@ -244,110 +221,111 @@ class ScWaveform extends ScElement {
               y1="-1"
               x2="${this.selectionEnd}"
               y2="1"
-              @mousedown="${this._rightHandleMouseDown}"
-              @touchstart="${this._rightHandleTouchStart}"
+              @mousedown="${this.#rightHandleMouseDown}"
+              @touchstart="${this.#rightHandleTouchStart}"
             ></line>
           `
-          : nothing 
+          : nothing
         }
-      <svg>
-    `
+      </svg>
+    `;
   }
 
-  _mouseDown(e) {
+  #mouseDown = e => {
     this.rect = this.getBoundingClientRect();
     this.mouseDownX = e.clientX - this.rect.left;
     this.clickedSelection = (this.mouseDownX < this.selectionEnd) && (this.mouseDownX > this.selectionStart);
-    window.addEventListener('mousemove', this._mouseMove);
-    window.addEventListener('mouseup', this._mouseUp);
+    window.addEventListener('mousemove', this.#mouseMove);
+    window.addEventListener('mouseup', this.#mouseUp);
   }
 
-  _mouseMove(e) {
+  #mouseMove = e => {
     e.preventDefault(); // Prevent selection
     if (!this.clickedSelection) {
-      const mouseMoveX = Math.max(0, Math.min(e.clientX - this.rect.left, this._width));
+      const mouseMoveX = Math.max(0, Math.min(e.clientX - this.rect.left, this.#width));
       this.selectionStart = Math.min(this.mouseDownX, mouseMoveX);
       this.selectionEnd = Math.max(this.mouseDownX, mouseMoveX);
       this.selectionWidth = this.selectionEnd - this.selectionStart;
     } else {
       const mouseDisplacement = (e.clientX - this.rect.left) - this.mouseDownX;
       this.selectionStart = this.selectionStartOffset + mouseDisplacement;
-      this.selectionStart = Math.min(Math.max(0, this.selectionStart), this._width - this.selectionWidth);
+      this.selectionStart = Math.min(Math.max(0, this.selectionStart), this.#width - this.selectionWidth);
       this.selectionEnd = this.selectionStart + this.selectionWidth;
     }
-  
-    this._dispatchInputEvent();
+
+    this.#dispatchInputEvent();
     this.requestUpdate();
   }
 
-  _mouseUp(e) {
+  #mouseUp = e => {
     this.selectionStartOffset = this.selectionStart;
     this.selectionEndOffset = this.selectionEnd;
-    window.removeEventListener('mousemove', this._mouseMove);
-    window.removeEventListener('mouseup', this._mouseUp);
+    window.removeEventListener('mousemove', this.#mouseMove);
+    window.removeEventListener('mouseup', this.#mouseUp);
 
-    this._dispatchChangeEvent();
+    this.#dispatchChangeEvent();
   }
 
-  _leftHandleMouseDown(e) {
+  #leftHandleMouseDown = e => {
     e.stopPropagation();
+
     this.rect = this.getBoundingClientRect();
     this.mouseDownX = e.clientX - this.rect.left;
-    window.addEventListener('mousemove', this._leftHandleMouseMove);
-    window.addEventListener('mouseup', this._leftHandleMouseUp);
+    window.addEventListener('mousemove', this.#leftHandleMouseMove);
+    window.addEventListener('mouseup', this.#leftHandleMouseUp);
   }
 
-  _leftHandleMouseMove(e) {
+  #leftHandleMouseMove = e => {
     const mouseDisplacement = (e.clientX - this.rect.left) - this.mouseDownX;
     this.selectionStart = this.selectionStartOffset + mouseDisplacement;
     this.selectionStart = Math.min(this.selectionEnd, Math.max(this.selectionStart, 0));
     this.selectionWidth = this.selectionEnd - this.selectionStart;
 
-    this._dispatchInputEvent();
+    this.#dispatchInputEvent();
     this.requestUpdate();
   }
 
-  _leftHandleMouseUp(e) {
+  #leftHandleMouseUp = e => {
     this.selectionStartOffset = this.selectionStart;
-    window.removeEventListener('mousemove', this._leftHandleMouseMove);
-    window.removeEventListener('mouseup', this._leftHandleMouseUp);
+    window.removeEventListener('mousemove', this.#leftHandleMouseMove);
+    window.removeEventListener('mouseup', this.#leftHandleMouseUp);
 
-    this._dispatchChangeEvent();
+    this.#dispatchChangeEvent();
   }
 
-  _rightHandleMouseDown(e) {
+  #rightHandleMouseDown = e => {
     e.stopPropagation();
     this.rect = this.getBoundingClientRect();
     this.mouseDownX = e.clientX - this.rect.left;
-    window.addEventListener('mousemove', this._rightHandleMouseMove);
-    window.addEventListener('mouseup', this._rightHandleMouseUp);
+    window.addEventListener('mousemove', this.#rightHandleMouseMove);
+    window.addEventListener('mouseup', this.#rightHandleMouseUp);
   }
 
-  _rightHandleMouseMove(e) {
+  #rightHandleMouseMove = e => {
     const mouseDisplacement = (e.clientX - this.rect.left) - this.mouseDownX;
     this.selectionEnd = this.selectionEndOffset + mouseDisplacement;
-    this.selectionEnd = Math.max(this.selectionStart, Math.min(this.selectionEnd, this._width));
+    this.selectionEnd = Math.max(this.selectionStart, Math.min(this.selectionEnd, this.#width));
     this.selectionWidth = this.selectionEnd - this.selectionStart;
 
-    this._dispatchInputEvent();
+    this.#dispatchInputEvent();
     this.requestUpdate();
   }
 
-  _rightHandleMouseUp(e) {
+  #rightHandleMouseUp = e => {
     this.selectionEndOffset = this.selectionEnd;
-    window.removeEventListener('mousemove', this._rightHandleMouseMove);
-    window.removeEventListener('mouseup', this._rightHandleMouseUp);
+    window.removeEventListener('mousemove', this.#rightHandleMouseMove);
+    window.removeEventListener('mouseup', this.#rightHandleMouseUp);
 
-    this._dispatchChangeEvent();
+    this.#dispatchChangeEvent();
   }
 
-  _touchStart(e) {
+  #touchStart = e => {
     e.preventDefault();
 
     if (this.pointerIds.length === 0) {
-      window.addEventListener('touchmove', this._touchMove, { passive: false });
-      window.addEventListener('touchend', this._touchEnd);
-      window.addEventListener('touchcancel', this._touchEnd);
+      window.addEventListener('touchmove', this.#touchMove, { passive: false });
+      window.addEventListener('touchend', this.#touchEnd);
+      window.addEventListener('touchcancel', this.#touchEnd);
     }
 
     this.rect = this.getBoundingClientRect();
@@ -360,31 +338,31 @@ class ScWaveform extends ScElement {
     }
   }
 
-  _touchMove(e) {
+  #touchMove = e => {
     e.preventDefault();
 
     for (let touch of e.changedTouches) {
       const id = touch.identifier;
       if (this.pointerIds.indexOf(id) !== -1) {
         if (!this.touchedSelection) {
-          const touchMoveX = Math.max(0, Math.min(touch.clientX - this.rect.left, this._width));
+          const touchMoveX = Math.max(0, Math.min(touch.clientX - this.rect.left, this.#width));
           this.selectionStart = Math.min(this.touchDownX, touchMoveX);
           this.selectionEnd = Math.max(this.touchDownX, touchMoveX);
           this.selectionWidth = this.selectionEnd - this.selectionStart;
         } else {
           const touchDisplacement = (touch.clientX - this.rect.left) - this.touchDownX;
           this.selectionStart = this.selectionStartOffset + touchDisplacement;
-          this.selectionStart = Math.min(Math.max(0, this.selectionStart), this._width - this.selectionWidth);
+          this.selectionStart = Math.min(Math.max(0, this.selectionStart), this.#width - this.selectionWidth);
           this.selectionEnd = this.selectionStart + this.selectionWidth;
         }
 
-        this._dispatchInputEvent();
+        this.#dispatchInputEvent();
         this.requestUpdate();
       }
     }
   }
 
-  _touchEnd(e) {
+  #touchEnd = e => {
     for (let touch of e.changedTouches) {
       const pointerId = touch.identifier;
       const index = this.pointerIds.indexOf(pointerId);
@@ -399,21 +377,21 @@ class ScWaveform extends ScElement {
       this.selectionStartOffset = this.selectionStart;
       this.selectionEndOffset = this.selectionEnd;
 
-      window.removeEventListener('touchmove', this._touchMove);
-      window.removeEventListener('touchend', this._touchEnd);
-      window.removeEventListener('touchcancel', this._touchEnd);
+      window.removeEventListener('touchmove', this.#touchMove);
+      window.removeEventListener('touchend', this.#touchEnd);
+      window.removeEventListener('touchcancel', this.#touchEnd);
     }
 
-    this._dispatchChangeEvent();
+    this.#dispatchChangeEvent();
   }
 
-  _leftHandleTouchStart(e) {
+  #leftHandleTouchStart = e => {
     e.stopPropagation();
 
     if (this.pointerIds.length === 0) {
-      window.addEventListener('touchmove', this._leftHandleTouchMove, { passive: false });
-      window.addEventListener('touchend', this._leftHandleTouchEnd);
-      window.addEventListener('touchcancel', this._leftHandleTouchEnd);
+      window.addEventListener('touchmove', this.#leftHandleTouchMove, { passive: false });
+      window.addEventListener('touchend', this.#leftHandleTouchEnd);
+      window.addEventListener('touchcancel', this.#leftHandleTouchEnd);
     }
 
     this.rect = this.getBoundingClientRect();
@@ -425,8 +403,8 @@ class ScWaveform extends ScElement {
     }
   }
 
-  _leftHandleTouchMove(e) {
-    e.preventDefault(); 
+  #leftHandleTouchMove = e => {
+    e.preventDefault();
 
     for (let touch of e.changedTouches) {
       const id = touch.identifier;
@@ -436,13 +414,13 @@ class ScWaveform extends ScElement {
         this.selectionStart = Math.min(this.selectionEnd, Math.max(this.selectionStart, 0));
         this.selectionWidth = this.selectionEnd - this.selectionStart;
 
-        this._dispatchInputEvent();
+        this.#dispatchInputEvent();
         this.requestUpdate();
       }
     }
   }
 
-  _leftHandleTouchEnd(e) {
+  #leftHandleTouchEnd = e => {
     for (let touch of e.changedTouches) {
       const pointerId = touch.identifier;
       const index = this.pointerIds.indexOf(pointerId);
@@ -456,19 +434,19 @@ class ScWaveform extends ScElement {
       this.selectionStartOffset = this.selectionStart;
       this.selectionEndOffset = this.selectionEnd;
 
-      window.removeEventListener('touchmove', this._leftHandleTouchMove);
-      window.removeEventListener('touchend', this._leftHandleTouchEnd);
-      window.removeEventListener('touchcancel', this._leftHandleTouchEnd);
+      window.removeEventListener('touchmove', this.#leftHandleTouchMove);
+      window.removeEventListener('touchend', this.#leftHandleTouchEnd);
+      window.removeEventListener('touchcancel', this.#leftHandleTouchEnd);
     }
   }
 
-  _rightHandleTouchStart(e) {
+  #rightHandleTouchStart = e => {
     e.stopPropagation();
 
     if (this.pointerIds.length === 0) {
-      window.addEventListener('touchmove', this._rightHandleTouchMove, { passive: false });
-      window.addEventListener('touchend', this._rightHandleTouchEnd);
-      window.addEventListener('touchcancel', this._rightHandleTouchEnd);
+      window.addEventListener('touchmove', this.#rightHandleTouchMove, { passive: false });
+      window.addEventListener('touchend', this.#rightHandleTouchEnd);
+      window.addEventListener('touchcancel', this.#rightHandleTouchEnd);
     }
 
     this.rect = this.getBoundingClientRect();
@@ -480,7 +458,7 @@ class ScWaveform extends ScElement {
     }
   }
 
-  _rightHandleTouchMove(e) {
+  #rightHandleTouchMove = e => {
     e.preventDefault();
 
     for (let touch of e.changedTouches) {
@@ -488,16 +466,16 @@ class ScWaveform extends ScElement {
       if (this.pointerIds.indexOf(id) !== -1) {
         const touchDisplacement = (touch.clientX - this.rect.left) - this.touchDownX;
         this.selectionEnd = this.selectionEndOffset + touchDisplacement;
-        this.selectionEnd = Math.max(this.selectionStart, Math.min(this.selectionEnd, this._width));
+        this.selectionEnd = Math.max(this.selectionStart, Math.min(this.selectionEnd, this.#width));
         this.selectionWidth = this.selectionEnd - this.selectionStart;
 
-        this._dispatchInputEvent();
+        this.#dispatchInputEvent();
         this.requestUpdate();
       }
     }
   }
 
-  _rightHandleTouchEnd(e) {
+  #rightHandleTouchEnd = e => {
     for (let touch of e.changedTouches) {
       const pointerId = touch.identifier;
       const index = this.pointerIds.indexOf(pointerId);
@@ -511,15 +489,15 @@ class ScWaveform extends ScElement {
       this.selectionStartOffset = this.selectionStart;
       this.selectionEndOffset = this.selectionEnd;
 
-      window.removeEventListener('touchmove', this._rightHandleTouchMove);
-      window.removeEventListener('touchend', this._rightHandleTouchEnd);
-      window.removeEventListener('touchcancel', this._rightHandleTouchEnd);
+      window.removeEventListener('touchmove', this.#rightHandleTouchMove);
+      window.removeEventListener('touchend', this.#rightHandleTouchEnd);
+      window.removeEventListener('touchcancel', this.#rightHandleTouchEnd);
     }
   }
 
-  _dispatchInputEvent() {
-    const selectionStart = this.buffer.duration * this.selectionStart / this._width;
-    const selectionEnd = this.buffer.duration * this.selectionEnd / this._width;
+  #dispatchInputEvent() {
+    const selectionStart = this.buffer.duration * this.selectionStart / this.#width;
+    const selectionEnd = this.buffer.duration * this.selectionEnd / this.#width;
 
     const event = new CustomEvent('input', {
       bubbles: true,
@@ -530,9 +508,9 @@ class ScWaveform extends ScElement {
     this.dispatchEvent(event);
   }
 
-  _dispatchChangeEvent() {
-    const selectionStart = this.buffer.duration * this.selectionStart / this._width;
-    const selectionEnd = this.buffer.duration * this.selectionEnd / this._width;
+  #dispatchChangeEvent() {
+    const selectionStart = this.buffer.duration * this.selectionStart / this.#width;
+    const selectionEnd = this.buffer.duration * this.selectionEnd / this.#width;
 
     const event = new CustomEvent('change', {
       bubbles: true,
@@ -543,13 +521,13 @@ class ScWaveform extends ScElement {
     this.dispatchEvent(event);
   }
 
-  _updateWaveform() {
+  #updateWaveform() {
     if (!(this.buffer instanceof AudioBuffer)) {
       this.waveformPath = '';
       return;
     }
 
-    const idxStep = this.buffer.length / this._width;
+    const idxStep = this.buffer.length / this.#width;
     const waveformLimits = [];
 
     for (let i = 0; i < this.buffer.length; i += idxStep) {
@@ -559,12 +537,14 @@ class ScWaveform extends ScElement {
       let min = 1;
       let max = -1;
 
-      //get min/max of average
+      // get min/max of average
       for (let j = 0; j < sliceData.length; j++) {
         const val = sliceData[j];
+
         if (val < min) {
           min = val;
         }
+
         if (val > max) {
           max = val;
         }
@@ -575,9 +555,10 @@ class ScWaveform extends ScElement {
 
     let path = waveformLimits.map((data, index) => {
       const x = index;
-      let y1 = data[0];
-      let y2 = data[1];
-      // return `${x},${ZERO}L${x},${y1}L${x},${y2}L${x},${ZERO}`;
+      // adapt to svg coordinates system
+      let y1 = data[0] * -1;
+      let y2 = data[1] * -1;
+
       return `${x},${y1}L${x},${y2}`;
     });
 
@@ -585,13 +566,13 @@ class ScWaveform extends ScElement {
     this.waveformPath = path;
   }
 
-  _updateCursor() {
+  #updateCursor() {
     if (!(this.buffer instanceof AudioBuffer)) {
       this.waveformPath = '';
       return;
     }
-    
-    const cursorIdx = Math.floor(this.cursorPosition/this.buffer.duration * this._width);
+
+    const cursorIdx = Math.floor(this.cursorPosition/this.buffer.duration * this.#width);
     this.cursorPath = `M ${cursorIdx}, -1 L ${cursorIdx}, ${1}`;
   }
 }
