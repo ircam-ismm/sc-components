@@ -76,6 +76,9 @@ class ScButtonBase extends ScElement {
       font-size: inherit;
       color: inherit;
       cursor: pointer;
+      user-select: none;
+      webkit-user-select: none;
+      webkit-touch-callout: none;
     }
 
     /* remove default button focus */
