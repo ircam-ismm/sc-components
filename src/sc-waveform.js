@@ -1,14 +1,16 @@
 import { html } from 'lit';
 import applyStyle from './utils/applyStyle.js';
 
+// do not change to `const`, can be changed by drag-n-drop
 let buffer = new AudioBuffer({
-  length: 44100,
+  length: 1 * 44100,
   numberOfChannels: 1,
   sampleRate: 44100,
 });
-const testData = buffer.getChannelData(0);
-for (let i = 0; i < testData.length; i++) {
-  testData[i] = Math.sin(2 * Math.PI * 10 * i / testData.length);
+const channel = buffer.getChannelData(0);
+
+for (let i = 0; i < channel.length; i++) {
+  channel[i] = Math.sin(2 * Math.PI * 10 * i / channel.length);
 }
 
 export const template = html`
