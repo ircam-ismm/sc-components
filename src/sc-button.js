@@ -130,7 +130,7 @@ class ScButtonBase extends ScElement {
     }
 
     const eventName = value === 0 ? 'release' : 'press';
-    this._dispatchEvent(eventName);
+    this.#dispatchEvent(eventName);
   }
 
   get midiValue() {
@@ -144,12 +144,9 @@ class ScButtonBase extends ScElement {
     this.selected = false;
     this.disabled = false;
 
-    this._pressed = false;
-    // @note: passive: false in event listener declaration lose the binding
-
     this._keyboard = new KeyboardController(this, {
       filterCodes: ['Enter', 'Space'],
-      callback: this._onKeyboardEvent.bind(this),
+      callback: this.#onKeyboardEvent,
       deduplicateEvents: true,
     });
   }
@@ -164,13 +161,11 @@ class ScButtonBase extends ScElement {
       <button
         tabindex="-1"
         class="${classMap(classes)}"
-        @mousedown="${this._onEvent}"
-        @mouseup="${this._onEvent}"
+        @mousedown="${this.#onPress}"
         @touchstart="${{
-          handleEvent: this._onEvent.bind(this),
+          handleEvent: this.#onPress,
           passive: false,
         }}"
-        @touchend="${this._onEvent}"
       >
         <slot>${this.value}</slot>
       </button>
@@ -182,33 +177,55 @@ class ScButtonBase extends ScElement {
       const tabindex = this.disabled ? -1 : this._tabindex;
       this.setAttribute('tabindex', tabindex);
 
-      if (this.disabled) { this.blur(); }
+      if (this.disabled) {
+        this.blur();
+      }
     }
   }
 
   connectedCallback() {
     super.connectedCallback();
-    // @note - this is important if the compoent is e.g. embedded in another component
+    // @note - this is important if the component is e.g. embedded in another component
     this._tabindex = this.getAttribute('tabindex') || 0;
   }
 
-  _onKeyboardEvent(e) {
-    if (this.disabled || this.disableKeyboard) { return; }
+  #onKeyboardEvent = e => {
+    if (this.disabled || this.disableKeyboard) {
+      return;
+    }
 
     const eventName = e.type === 'keydown' ? 'press' : 'release';
-    this._dispatchEvent(eventName);
+    this.#dispatchEvent(eventName);
   }
 
-  _onEvent(e) {
+  #onPress = e => {
     e.preventDefault(); // important to prevent focus when disabled
-    if (this.disabled) { return; }
+
+    if (this.disabled) {
+      return;
+    }
 
     this.focus();
-    const eventName = (e.type === 'touchend' || e.type === 'mouseup') ? 'release' : 'press';
-    this._dispatchEvent(eventName);
+
+    window.addEventListener('mouseup', this.#onRelease);
+    window.addEventListener('touchend', this.#onRelease);
+    this.#dispatchEvent('press');
   }
 
-  _dispatchEvent(eventName) {
+  #onRelease = e => {
+    // prevent focus when disabled
+    e.preventDefault();
+
+    if (this.disabled) {
+      return;
+    }
+
+    window.addEventListener('mouseup', this.#onRelease);
+    window.addEventListener('touchend', this.#onRelease);
+    this.#dispatchEvent('release');
+  }
+
+  #dispatchEvent(eventName) {
     // we don't want to trigger a release if no pressed has been recorded
     if (eventName === 'release' && this._pressed === false) {
       return;
@@ -217,14 +234,7 @@ class ScButtonBase extends ScElement {
     const value = this.value === null ? this.textContent : this.value;
     this._pressed = (eventName === 'press');
 
-    const event = new CustomEvent(eventName, {
-      bubbles: true,
-      composed: true,
-      detail: { value: value },
-    });
-
-    this.dispatchEvent(event);
-
+    // trigger `input` event first
     if (eventName === 'press') {
       const inputEvent = new CustomEvent('input', {
         bubbles: true,
@@ -234,6 +244,14 @@ class ScButtonBase extends ScElement {
 
       this.dispatchEvent(inputEvent);
     }
+
+    const event = new CustomEvent(eventName, {
+      bubbles: true,
+      composed: true,
+      detail: { value: value },
+    });
+
+    this.dispatchEvent(event);
   }
 }
 
