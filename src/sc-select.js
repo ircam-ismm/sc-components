@@ -110,10 +110,10 @@ class ScSelect extends ScElement {
     return html`
       <select
         ?disabled=${this.disabled}
-        @change=${this._dispatchEvent}
+        @change=${this.#dispatchEvent}
       >
         ${this.placeholder
-          ? html`<option value="">${this.placeholder}</option`
+          ? html`<option value="">${this.placeholder}</option>`
           : nothing
         }
         ${repeat(Object.entries(this.options), () => `sc-select-${itemId++}`, ([key, value]) => {
@@ -135,7 +135,9 @@ class ScSelect extends ScElement {
       const $select = this.shadowRoot.querySelector('select');
       $select.setAttribute('tabindex', tabindex);
 
-      if (this.disabled) { this.blur(); }
+      if (this.disabled) {
+        this.blur();
+      }
     }
   }
 
@@ -145,8 +147,10 @@ class ScSelect extends ScElement {
     this._tabindex = this.getAttribute('tabindex') || 0;
   }
 
-  _dispatchEvent(e) {
-    if (this.disabled) { return; }
+  #dispatchEvent = e => {
+    if (this.disabled) {
+      return;
+    }
 
     const isObject = isPlainObject(this.options);
 
