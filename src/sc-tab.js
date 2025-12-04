@@ -123,11 +123,11 @@ class ScTab extends ScElement {
     this._onMouseMove = this._onMouseMove.bind(this);
     this._onMouseUp = this._onMouseUp.bind(this);
 
-    this._keyboard = new KeyboardController(this, {
-      filterCodes: ['ArrowUp', 'ArrowRight', 'ArrowDown', 'ArrowLeft', 'Space', 'Enter'],
-      callback: this._onKeyboardEvent.bind(this),
-      deduplicateEvents: true,
-    });
+    // this._keyboard = new KeyboardController(this, {
+    //   filterCodes: ['ArrowUp', 'ArrowRight', 'ArrowDown', 'ArrowLeft', 'Space', 'Enter'],
+    //   callback: this._onKeyboardEvent.bind(this),
+    //   deduplicateEvents: true,
+    // });
   }
 
   render() {
