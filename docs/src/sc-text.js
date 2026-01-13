@@ -45,7 +45,7 @@ const template = html\`
   <sc-toggle
     @change=${e => document.querySelector('#test-text').editable = e.detail.value}
   ></sc-toggle>
-  <p>If editable, the "change" event is trigerred on Cmd+S, Enter and on blur, the red outline indicates dirty state.</p>
+  <p>If editable, the "change" event is triggered on Cmd+S, Enter and on blur, the red outline indicates dirty state.</p>
 </div>
 <!-- <div>
   <sc-text>?multiline [=false]</sc-text>
