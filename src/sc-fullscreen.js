@@ -1,7 +1,7 @@
-import { html, css, svg, nothing } from 'lit';
+import { html, css } from 'lit';
+import { isString } from '@ircam/sc-utils';
 
 import ScElement from './ScElement.js';
-import KeyboardController from './controllers/keyboard-controller.js';
 import './sc-icon.js';
 
 class ScFullscreen extends ScElement {
@@ -44,8 +44,8 @@ class ScFullscreen extends ScElement {
   constructor() {
     super();
 
-    this.disabled = false;
     this.element = document.documentElement;
+    this.disabled = false;
   }
 
   render() {
@@ -59,9 +59,21 @@ class ScFullscreen extends ScElement {
   }
 
   _toggleFullScreen() {
-    console.log(this.element);
     if (!document.fullscreenElement) {
-      this.element.requestFullscreen();
+      let el;
+
+      if (this.element instanceof Element) {
+        el = this.element;
+      } else if (isString(this.element)) {
+        el = document.querySelector(this.element);
+      }
+
+      // fallback to fullscreen
+      if (!el) {
+        el = document.documentElement;
+      }
+
+      el.requestFullscreen();
     } else if (document.exitFullscreen) {
       document.exitFullscreen();
     }
