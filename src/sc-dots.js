@@ -66,6 +66,7 @@ class ScDots extends ScElement {
         background-position: 50% 50%;
         background-repeat: no-repeat;
 
+        --sc-dots-area-background-color: none;
         --sc-dots-color: var(--sc-color-secondary-2);
         --sc-dots-opacity: 1;
       }
@@ -99,6 +100,7 @@ class ScDots extends ScElement {
 
       svg {
         position: relative;
+        background-color: var(--sc-dots-area-background-color);
       }
 
       circle {
