@@ -45,6 +45,7 @@ class ScFullscreen extends ScElement {
     super();
 
     this.disabled = false;
+    this.element = document.documentElement;
   }
 
   render() {
@@ -58,8 +59,9 @@ class ScFullscreen extends ScElement {
   }
 
   _toggleFullScreen() {
+    console.log(this.element);
     if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen();
+      this.element.requestFullscreen();
     } else if (document.exitFullscreen) {
       document.exitFullscreen();
     }
