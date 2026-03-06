@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[914],{4914:(e,t,c)=>{c.r(t),c.d(t,{template:()=>a});var s=c(2182),o=c(1630);const a=s.qy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[914],{4914(e,t,c){c.r(t),c.d(t,{template:()=>a});var s=c(2182),o=c(1630);const a=s.qy`
 
 <h2>sc-qrcode</h2>
 

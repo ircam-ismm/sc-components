@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[606],{1606:(e,t,c)=>{c.r(t),c.d(t,{template:()=>r});var s=c(2182);c(1630);const r=s.qy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[606],{1606(e,t,c){c.r(t),c.d(t,{template:()=>r});var s=c(2182);c(1630);const r=s.qy`
 
 <h2>sc-filter <span style="color: var(--sc-color-secondary-3); font-style:italic;">- experimental</span></h2>
 

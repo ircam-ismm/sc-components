@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[401],{8401:(e,t,a)=>{a.r(t),a.d(t,{template:()=>o});var s=a(2182),c=a(1630);const i=["a","b","c","d"],o=s.qy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[401],{8401(e,t,a){a.r(t),a.d(t,{template:()=>o});var s=a(2182),c=a(1630);const i=["a","b","c","d"],o=s.qy`
 
 <h2>sc-radio</h2>
 

@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[395],{5395:(e,t,o)=>{o.r(t),o.d(t,{template:()=>s});var r=o(2182),a=o(1630);const s=r.qy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[395],{5395(e,t,o){o.r(t),o.d(t,{template:()=>s});var r=o(2182),a=o(1630);const s=r.qy`
 
 <h2>sc-dragndrop</h2>
 

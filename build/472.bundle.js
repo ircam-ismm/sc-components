@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[472],{3472:(e,t,s)=>{s.r(t),s.d(t,{template:()=>o});var c=s(2182),l=s(1630);const a=["a",!0,43,"g"],o=c.qy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[472],{3472(e,t,s){s.r(t),s.d(t,{template:()=>o});var c=s(2182),l=s(1630);const a=["a",!0,43,"g"],o=c.qy`
 
 <h2>sc-select</h2>
 

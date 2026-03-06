@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[790],{6790:(t,s,c)=>{c.r(s),c.d(s,{template:()=>o});var e=c(2182),a=c(1630);const o=e.qy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[790],{6790(t,s,c){c.r(s),c.d(s,{template:()=>o});var e=c(2182),a=c(1630);const o=e.qy`
 
 <h2>sc-status</h2>
 

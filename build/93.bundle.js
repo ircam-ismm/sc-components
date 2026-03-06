@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[93],{3093:(e,t,s)=>{s.r(t),s.d(t,{template:()=>i});var c=s(2182),l=s(1630);const i=c.qy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[93],{3093(e,t,s){s.r(t),s.d(t,{template:()=>i});var c=s(2182),l=s(1630);const i=c.qy`
 
 <h2>sc-slider</h2>
 

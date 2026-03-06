@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[164],{6164:(e,c,t)=>{t.r(c),t.d(c,{template:()=>s});var l=t(2182),o=t(1630);const s=l.qy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[164],{6164(e,c,t){t.r(c),t.d(c,{template:()=>s});var l=t(2182),o=t(1630);const s=l.qy`
 
 <h2>sc-color-picker</h2>
 

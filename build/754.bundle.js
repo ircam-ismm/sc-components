@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[754],{9373:(e,t,s)=>{s.r(t),s.d(t,{template:()=>a});var c=s(2182),n=s(1630);const a=c.qy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[754],{9373(e,t,s){s.r(t),s.d(t,{template:()=>a});var c=s(2182),n=s(1630);const a=c.qy`
 
 <h2>sc-next</h2>
 

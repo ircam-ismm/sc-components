@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[643],{3643:(e,t,c)=>{c.r(t),c.d(t,{template:()=>a});var s=c(2182),l=c(1630);const a=s.qy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[643],{3643(e,t,c){c.r(t),c.d(t,{template:()=>a});var s=c(2182),l=c(1630);const a=s.qy`
 
 <h2>sc-text</h2>
 
@@ -33,7 +33,7 @@
   <sc-toggle
     @change=${e=>document.querySelector("#test-text").editable=e.detail.value}
   ></sc-toggle>
-  <p>If editable, the "change" event is trigerred on Cmd+S, Enter and on blur, the red outline indicates dirty state.</p>
+  <p>If editable, the "change" event is triggered on Cmd+S, Enter and on blur, the red outline indicates dirty state.</p>
 </div>
 <!-- <div>
   <sc-text>?multiline [=false]</sc-text>

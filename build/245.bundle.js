@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[245],{9245:(e,t,c)=>{c.r(t),c.d(t,{template:()=>d});var s=c(2182),n=c(1630),i=c(2247);const o=Object.keys(i.A),a="question";let l=null,u=null,r=null;const d=s.qy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[245],{9245(e,t,c){c.r(t),c.d(t,{template:()=>d});var s=c(2182),n=c(1630),i=c(2247);const o=Object.keys(i.A),a="question";let l=null,u=null,r=null;const d=s.qy`
 
 <h2>sc-icon</h2>
 

@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[834],{2834:(e,t,c)=>{c.r(t),c.d(t,{template:()=>a});var r=c(2182),o=c(1630);const a=r.qy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[834],{2834(e,t,c){c.r(t),c.d(t,{template:()=>a});var r=c(2182),o=c(1630);const a=r.qy`
 
 <h2>sc-io-surface</h2>
 

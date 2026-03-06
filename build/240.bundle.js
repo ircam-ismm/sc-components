@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[240],{6240:(t,c,e)=>{e.r(c),e.d(c,{template:()=>a});var s=e(2182),i=e(1630);const a=s.qy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[240],{6240(t,c,e){e.r(c),e.d(c,{template:()=>a});var s=e(2182),i=e(1630);const a=s.qy`
 
 <h2>sc-switch</h2>
 

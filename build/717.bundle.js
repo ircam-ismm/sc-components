@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[717],{1717:(e,t,s)=>{s.r(t),s.d(t,{template:()=>a});var i=s(2182),n=s(1630);function c(e){const t=e.currentTarget.tagName.toLowerCase(),s=e.type,i=e.detail.value;document.querySelector("#log-events").value=`${t} - @${s}: ${i}`}class o extends i.WF{static styles=i.AH`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[717],{1717(e,t,s){s.r(t),s.d(t,{template:()=>a});var i=s(2182),n=s(1630);function c(e){const t=e.currentTarget.tagName.toLowerCase(),s=e.type,i=e.detail.value;document.querySelector("#log-events").value=`${t} - @${s}: ${i}`}class o extends i.WF{static styles=i.AH`
     div {
       padding: 10px;
       display: inline-block;

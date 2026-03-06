@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[267],{5267:(e,t,c)=>{c.r(t),c.d(t,{template:()=>i});var s=c(2182),o=c(1630);let a=new AudioBuffer({length:44100,numberOfChannels:1,sampleRate:44100});const r=a.getChannelData(0);for(let e=0;e<r.length;e++)r[e]=Math.sin(2*Math.PI*10*e/r.length);const i=s.qy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[267],{5267(e,t,c){c.r(t),c.d(t,{template:()=>i});var s=c(2182),o=c(1630);let a=new AudioBuffer({length:44100,numberOfChannels:1,sampleRate:44100});const r=a.getChannelData(0);for(let e=0;e<r.length;e++)r[e]=Math.sin(2*Math.PI*10*e/r.length);const i=s.qy`
 
 <h2>sc-waveform</h2>
 

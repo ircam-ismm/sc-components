@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[865],{4865:(t,e,c)=>{c.r(e),c.d(e,{template:()=>o});var a=c(2182),s=c(1630);const o=a.qy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[865],{4865(t,e,c){c.r(e),c.d(e,{template:()=>o});var a=c(2182),s=c(1630);const o=a.qy`
 
 <h2>sc-tap-tempo</h2>
 

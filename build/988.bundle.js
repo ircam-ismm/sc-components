@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[988],{6988:(e,t,c)=>{c.r(t),c.d(t,{template:()=>o});var s=c(2182),l=c(1630);const o=s.qy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[988],{6988(e,t,c){c.r(t),c.d(t,{template:()=>o});var s=c(2182),l=c(1630);const o=s.qy`
 
 <h2>sc-toggle</h2>
 

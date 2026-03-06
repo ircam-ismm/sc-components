@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[446],{1446:(o,r,c)=>{c.r(r),c.d(r,{template:()=>s});var i=c(2182),e=c(1630);const s=i.qy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[446],{1446(o,r,c){c.r(r),c.d(r,{template:()=>s});var i=c(2182),e=c(1630);const s=i.qy`
 
 <h2>Styling</h2>
 

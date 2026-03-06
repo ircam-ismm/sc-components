@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[90],{90:(e,t,c)=>{c.r(t),c.d(t,{template:()=>a});var s=c(2182),l=c(1630);const a=s.qy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[90],{90(e,t,c){c.r(t),c.d(t,{template:()=>a});var s=c(2182),l=c(1630);const a=s.qy`
 
 <h2>sc-dial</h2>
 

@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[300],{3300:(__unused_webpack___webpack_module__,__webpack_exports__,__webpack_require__)=>{__webpack_require__.r(__webpack_exports__),__webpack_require__.d(__webpack_exports__,{template:()=>template});var lit__WEBPACK_IMPORTED_MODULE_0__=__webpack_require__(2182),_utils_applyStyle_js__WEBPACK_IMPORTED_MODULE_1__=__webpack_require__(1630);const template=lit__WEBPACK_IMPORTED_MODULE_0__.qy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[300],{3300(__unused_webpack___webpack_module__,__webpack_exports__,__webpack_require__){__webpack_require__.r(__webpack_exports__),__webpack_require__.d(__webpack_exports__,{template:()=>template});var lit__WEBPACK_IMPORTED_MODULE_0__=__webpack_require__(2182),_utils_applyStyle_js__WEBPACK_IMPORTED_MODULE_1__=__webpack_require__(1630);const template=lit__WEBPACK_IMPORTED_MODULE_0__.qy`
 
 <h2>sc-clock</h2>
 

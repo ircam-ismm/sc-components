@@ -141,13 +141,14 @@ const template = html\`
   language="css"
   value="\
 #test-dots {
-  width: 300px;
+  width: 400px;
   height: 300px;
-  background-image: url(./assets/seating-map.png);
   background-color: var(--sc-color-primary-1);
+  /* background-image: url(./assets/seating-map.png); */
 
-  --sc-dots-color: var(--sc-color-secondary-2);
-  --sc-dots-opacity: 1;
+  --sc-dots-area-background-color: var(--sc-color-secondary-1);
+  --sc-dots-color: var(--sc-color-secondary-3);
+  --sc-dots-opacity: 0.6;
 }
   "
   @change=${e => applyStyle(e.detail.value)}

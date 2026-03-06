@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[633],{3633:(e,o,n)=>{n.r(o),n.d(o,{template:()=>t});var r=n(2182);n(1630);const t=r.qy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[633],{3633(e,o,n){n.r(o),n.d(o,{template:()=>t});var r=n(2182);n(1630);const t=r.qy`
 
 <h2>sc-separator</h2>
 

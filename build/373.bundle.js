@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[373],{5373:(e,t,c)=>{c.r(t),c.d(t,{template:()=>u});var s=c(2182),n=c(1630);const u=s.qy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[373],{5373(e,t,c){c.r(t),c.d(t,{template:()=>u});var s=c(2182),n=c(1630);const u=s.qy`
 
 <h2>sc-number</h2>
 

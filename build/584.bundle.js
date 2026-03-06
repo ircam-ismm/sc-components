@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[289,584],{584:(e,t,n)=>{n.r(t),n.d(t,{enter:()=>u,exit:()=>d,template:()=>m});var a=n(2182),s=n(1630),c=n(5289),l=n(1967);let i=null,r=null,o=null;function u(){const e=document.querySelector("#test-signal");i=(0,c.default)(1,60,1,(e,t)=>{o={time:e,data:Array.from(t)}}),r=(0,c.default)(2,60,1,(t,n)=>{o.data[1]=.5*n[0],e.value=o}),i.start(),r.start()}function d(){i.stop(),r.stop()}const m=a.qy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[289,584],{584(e,t,n){n.r(t),n.d(t,{enter:()=>u,exit:()=>d,template:()=>m});var a=n(2182),s=n(1630),c=n(5289),l=n(1967);let i=null,r=null,o=null;function u(){const e=document.querySelector("#test-signal");i=(0,c.default)(1,60,1,(e,t)=>{o={time:e,data:Array.from(t)}}),r=(0,c.default)(2,60,1,(t,n)=>{o.data[1]=.5*n[0],e.value=o}),i.start(),r.start()}function d(){i.stop(),r.stop()}const m=a.qy`
 
 <h2>sc-signal</h2>
 
@@ -78,4 +78,4 @@
   "
   @change=${e=>(0,s.default)(e.detail.value)}
 ></sc-editor>
-`},5289:(e,t,n)=>{function a(e,t,n,a,s=1/0){const c={},l=new Float32Array(n),i=n/t;Math.PI;let r=e/t,o=0,u=null,d=0,m=0;return c.frequency=e=>{r=e/t},c.start=()=>{!function e(){for(let e=0;e<n;e++){const t=Math.sin(2*o*Math.PI);l[e]=t,o=(o+r)%1}a(d,l),d+=i,m+=1,m<s&&(u=setTimeout(e,1e3*i))}()},c.stop=()=>{clearTimeout(u)},c}n.r(t),n.d(t,{default:()=>a})}}]);
+`},5289(e,t,n){function a(e,t,n,a,s=1/0){const c={},l=new Float32Array(n),i=n/t;Math.PI;let r=e/t,o=0,u=null,d=0,m=0;return c.frequency=e=>{r=e/t},c.start=()=>{!function e(){for(let e=0;e<n;e++){const t=Math.sin(2*o*Math.PI);l[e]=t,o=(o+r)%1}a(d,l),d+=i,m+=1,m<s&&(u=setTimeout(e,1e3*i))}()},c.stop=()=>{clearTimeout(u)},c}n.r(t),n.d(t,{default:()=>a})}}]);

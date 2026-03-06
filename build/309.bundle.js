@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[309],{6309:(e,s,c)=>{c.r(s),c.d(s,{template:()=>r});var t=c(2182),l=(c(1967),c(1630));const r=t.qy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[309],{6309(e,t,c){c.r(t),c.d(t,{template:()=>r});var s=c(2182),l=c(1630);const r=s.qy`
 
 <h2>sc-fullscreen</h2>
 
@@ -16,9 +16,14 @@
   ></sc-toggle>
 </div>
 
-<h3>Keyboard shortcuts</h3>
-<sc-text class="key">Space</sc-text>
-<sc-text class="key">Enter</sc-text>
+<h3>Properties</h3>
+<div>
+  <sc-text>.element [=Element|CSSSelector]</sc-text>
+  <sc-text
+    editable
+    @change=${e=>document.querySelector("#test-fullscreen").element=e.detail.value}
+  >sc-code-example</sc-text>
+</div>
 
 <h3>Styling</h3>
 <sc-editor

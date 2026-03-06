@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[364],{7364:(e,t,s)=>{s.r(t),s.d(t,{template:()=>l});var c=s(2182),a=s(1967),o=s(1630);const l=c.qy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[364],{7364(e,t,s){s.r(t),s.d(t,{template:()=>d});var c=s(2182),a=s(1967),o=s(1630);const d=c.qy`
 
 <h2>sc-dots</h2>
 
@@ -101,13 +101,14 @@
   language="css"
   value="\
 #test-dots {
-  width: 300px;
+  width: 400px;
   height: 300px;
-  background-image: url(./assets/seating-map.png);
   background-color: var(--sc-color-primary-1);
+  /* background-image: url(./assets/seating-map.png); */
 
-  --sc-dots-color: var(--sc-color-secondary-2);
-  --sc-dots-opacity: 1;
+  --sc-dots-area-background-color: var(--sc-color-secondary-1);
+  --sc-dots-color: var(--sc-color-secondary-3);
+  --sc-dots-opacity: 0.6;
 }
   "
   @change=${e=>(0,o.default)(e.detail.value)}

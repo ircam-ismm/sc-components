@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[511],{3511:(t,e,s)=>{s.r(e),s.d(e,{template:()=>o});var a=s(2182),c=s(1967),r=s(1630);const o=a.qy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[511],{3511(t,e,s){s.r(e),s.d(e,{template:()=>o});var a=s(2182),c=s(1967),r=s(1630);const o=a.qy`
 <h2>sc-transport</h2>
 
 <sc-code-example language="javascript">${"import { html } from 'lit';\nimport '@ircam/sc-components/sc-transport.js';\n\nconst template = html`\n  <sc-transport></sc-transport>\n`;\n"}</sc-code-example>

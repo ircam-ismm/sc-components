@@ -1,5 +1,4 @@
 import { html } from 'lit';
-import JSON5 from 'json5';
 import applyStyle from './utils/applyStyle.js';
 
 
@@ -28,9 +27,14 @@ const template = html\`
   ></sc-toggle>
 </div>
 
-<h3>Keyboard shortcuts</h3>
-<sc-text class="key">Space</sc-text>
-<sc-text class="key">Enter</sc-text>
+<h3>Properties</h3>
+<div>
+  <sc-text>.element [=Element|CSSSelector]</sc-text>
+  <sc-text
+    editable
+    @change=${e => document.querySelector('#test-fullscreen').element = e.detail.value}
+  >sc-code-example</sc-text>
+</div>
 
 <h3>Styling</h3>
 <sc-editor

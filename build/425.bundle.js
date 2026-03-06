@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[425],{6425:(e,t,s)=>{s.r(t),s.d(t,{template:()=>r});var c=s(2182),a=s(1967),i=s(1630);const r=c.qy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[425],{6425(e,t,s){s.r(t),s.d(t,{template:()=>r});var c=s(2182),a=s(1967),i=s(1630);const r=c.qy`
 
 <h2>sc-matrix</h2>
 
