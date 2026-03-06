@@ -1,7 +1,6 @@
 import {
   html,
   css,
-  nothing,
 } from 'lit';
 
 import ScElement from './ScElement.js';

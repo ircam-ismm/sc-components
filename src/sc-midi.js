@@ -565,7 +565,7 @@ class ScMidi extends ScElement {
     // control  ∈ [176, 191]
 
     let messageType;
-    let channel;
+    // let channel;
 
     if (statusByte >= 128 && statusByte < 144) {
       messageType = 'note-off';
