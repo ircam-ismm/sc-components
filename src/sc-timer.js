@@ -26,10 +26,10 @@ class ScTimer extends ScElement {
       border: 1px solid var(--sc-color-primary-3);
       padding: 4px;
 
-      --sc-slider-background-fill-color: var(--sc-color-primary-2);
-      --sc-slider-background-stroke-color: transparent;
-      --sc-slider-foreground-fill-color: var(--sc-color-secondary-1);
-      --sc-slider-foreground-stroke-color: transparent;
+      --sc-timer-background-fill-color: var(--sc-color-primary-2);
+      --sc-timer-background-stroke-color: transparent;
+      --sc-timer-foreground-fill-color: var(--sc-color-secondary-1);
+      --sc-timer-foreground-stroke-color: transparent;
     }
 
     canvas {
@@ -116,10 +116,10 @@ class ScTimer extends ScElement {
     }
 
     // DOM rendered but no styles yet
-    const bgFillColor = this.#computedStyles.getPropertyValue('--sc-slider-background-fill-color');
-    const bgStrokeColor = this.#computedStyles.getPropertyValue('--sc-slider-background-stroke-color');
-    const fgFillColor = this.#computedStyles.getPropertyValue('--sc-slider-foreground-fill-color');
-    const fgStrokeColor = this.#computedStyles.getPropertyValue('--sc-slider-foreground-stroke-color');
+    const bgFillColor = this.#computedStyles.getPropertyValue('--sc-timer-background-fill-color');
+    const bgStrokeColor = this.#computedStyles.getPropertyValue('--sc-timer-background-stroke-color');
+    const fgFillColor = this.#computedStyles.getPropertyValue('--sc-timer-foreground-fill-color');
+    const fgStrokeColor = this.#computedStyles.getPropertyValue('--sc-timer-foreground-stroke-color');
 
     const radius = this.#width / 2;
     const now = getTime();
