@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[855],{7855(e,t,c){c.r(t),c.d(t,{template:()=>i});var r=c(2182),s=c(1630);const i=r.qy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[855],{7855(e,t,c){c.r(t),c.d(t,{template:()=>s});var r=c(2182),i=c(1630);const s=r.qy`
 
 <h2>sc-text</h2>
 
@@ -41,10 +41,10 @@
   border: 1px solid var(--sc-color-primary-3);
   padding: 4px;
 
-  --sc-slider-background-fill-color: var(--sc-color-primary-2);
-  --sc-slider-foreground-fill-color: var(--sc-color-secondary-1);
+  --sc-timer-background-fill-color: var(--sc-color-primary-2);
+  --sc-timer-foreground-fill-color: var(--sc-color-secondary-1);
 }
   "
-  @change=${e=>(0,s.default)(e.detail.value)}
+  @change=${e=>(0,i.default)(e.detail.value)}
 ></sc-editor>
 `}}]);

@@ -52,8 +52,8 @@ const template = html\`
   border: 1px solid var(--sc-color-primary-3);
   padding: 4px;
 
-  --sc-slider-background-fill-color: var(--sc-color-primary-2);
-  --sc-slider-foreground-fill-color: var(--sc-color-secondary-1);
+  --sc-timer-background-fill-color: var(--sc-color-primary-2);
+  --sc-timer-foreground-fill-color: var(--sc-color-secondary-1);
 }
   "
   @change=${e => applyStyle(e.detail.value)}
