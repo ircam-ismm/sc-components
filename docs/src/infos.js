@@ -39,6 +39,7 @@ export const components = [
   'sc-modal',
   'sc-io-surface',
   'sc-qrcode',
+  'sc-timer',
 ].sort();
 
 export const pages = {
