@@ -14,6 +14,7 @@ import { monokai } from '@uiw/codemirror-theme-monokai';
 import { vscodeKeymap } from "@replit/codemirror-vscode-keymap";
 
 import ScElement from './ScElement.js';
+import isMac from './utils/is-mac.js';
 import './sc-icon.js';
 
 class ScEditor extends ScElement {
@@ -246,7 +247,7 @@ class ScEditor extends ScElement {
 
     // manually do `toggleComment` because opens native Help menu, and doesn't
     // when registered in keymap, maybe due to azerty keyboard weirdness
-    if (e.metaKey && e.shiftKey) {
+    if ((isMac ? e.metaKey : e.ctrlKey) && e.shiftKey) {
       e.preventDefault();
 
       if (e.key === '/') {
@@ -255,7 +256,7 @@ class ScEditor extends ScElement {
       // can't do anything for zoom, too deep in the system
     }
 
-    if (e.metaKey && e.key === 's') {
+    if ((isMac ? e.metaKey : e.ctrlKey) && e.key === 's') {
       e.preventDefault();
       this.save();
     }

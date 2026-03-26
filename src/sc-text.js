@@ -4,6 +4,7 @@ import {
 } from 'lit';
 
 import ScElement from './ScElement.js';
+import isMac from './utils/is-mac.js';
 
 class ScText extends ScElement {
   static get properties() {
@@ -185,7 +186,7 @@ class ScText extends ScElement {
   _onKeyDown(e) {
     e.stopPropagation();
     // we want to trigger change in key down
-    if ((e.metaKey && e.code === 'KeyS') || e.code === 'Enter') {
+    if (((isMac ? e.metaKey : e.ctrlKey) && e.code === 'KeyS') || e.code === 'Enter') {
       e.preventDefault();
       this._triggerChange(e, true);
     }
