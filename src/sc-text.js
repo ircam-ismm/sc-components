@@ -52,6 +52,7 @@ class ScText extends ScElement {
         border: 1px dotted var(--sc-color-primary-1);
 
         overflow-y: auto;
+        scrollbar-width: none;
         position: relative;
       }
 
