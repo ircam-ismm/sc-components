@@ -70,6 +70,12 @@ html\`
 #test-bang {
   width: 30px;
   height: 30px;
+  background-color: var(--sc-color-primary-2);
+  border: 1px solid var(--sc-color-primary-3);
+
+  --sc-bang-circle-border: var(--sc-color-primary-4);
+  --sc-bang-circle-bg: var(--sc-color-primary-2);
+  --sc-bang-circle-active: var(--sc-color-primary-5);
 }
   "
   @change=${e => applyStyle(e.detail.value)}

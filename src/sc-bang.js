@@ -27,6 +27,10 @@ class ScBangBase extends ScElement {
       border: 1px solid var(--sc-color-primary-3);
       font-size: 0;
       line-height: 0;
+
+      --sc-bang-circle-border: var(--sc-color-primary-4);
+      --sc-bang-circle-bg: var(--sc-color-primary-2);
+      --sc-bang-circle-active: var(--sc-color-primary-5);
     }
 
     :host([hidden]) {
@@ -50,12 +54,12 @@ class ScBangBase extends ScElement {
 
     circle {
       stroke-width: 8px;
-      stroke: var(--sc-color-primary-4);
-      fill: var(--sc-color-primary-2);
+      stroke: var(--sc-bang-circle-border);
+      fill: var(--sc-bang-circle-bg);
     }
 
     circle.active {
-      fill: var(--sc-color-primary-5);
+      fill: var(--sc-bang-circle-active);
       stroke: none;
     }
   `;
