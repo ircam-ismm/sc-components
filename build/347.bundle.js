@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[347],{8347(e,t,c){c.r(t),c.d(t,{template:()=>s});var o=c(2182),l=c(1630);const s=o.qy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[347],{8347(e,t,c){c.r(t);var o=c(2182),l=c(1630);const s=o.qy`
 
 <h2>sc-modal</h2>
 
@@ -77,4 +77,4 @@
   "
   @change=${e=>(0,l.default)(e.detail.value)}
 ></sc-editor>
-`}}]);
+`;c.d(t,["template",0,s])}}]);

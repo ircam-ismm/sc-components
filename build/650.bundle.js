@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[650],{8650(e,t,s){s.r(t),s.d(t,{template:()=>o});const o=s(2182).qy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[650],{8650(e,t,s){s.r(t);const o=s(2182).qy`
 <div id="homepage">
   <h1>@ircam/sc-components</h1>
 
@@ -83,4 +83,4 @@
   <a target="_blank" href="https://github.com/ircam-ismm/sc-components/blob/main/LICENSE">BSD-3-Clause</a>
 
   <div style="height: 120px;"></div>
-`}}]);
+`;s.d(t,["template",0,o])}}]);

@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[429],{4429(e,t,i){i.r(t),i.d(t,{template:()=>n});var s=i(2182);class c extends s.WF{static properties={channel:{type:Number},name:{type:String},volume:{type:Number},mute:{type:Boolean}};static styles=s.AH`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[429],{4429(e,t,i){i.r(t);var s=i(2182);class c extends s.WF{static properties={channel:{type:Number},name:{type:String},volume:{type:Number},mute:{type:Boolean}};static styles=s.AH`
     :host {
       display: block;
       height: 100%;
@@ -82,4 +82,4 @@
       ?mute=${!1}
     ></mixer-track>
   </div>
-`}}]);
+`;i.d(t,["template",0,n])}}]);

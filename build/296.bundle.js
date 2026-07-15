@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[296],{9296(e,t,s){s.r(t),s.d(t,{template:()=>l});var c=s(2182),a=s(1630);const l=c.qy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[296],{9296(e,t,s){s.r(t);var c=s(2182),a=s(1630);const l=c.qy`
 
 <h2>sc-flash</h2>
 
@@ -48,4 +48,4 @@
   "
   @change=${e=>(0,a.default)(e.detail.value)}
 ></sc-editor>
-`}}]);
+`;s.d(t,["template",0,l])}}]);

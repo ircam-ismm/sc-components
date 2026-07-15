@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[713],{7713(e,t,s){s.r(t),s.d(t,{template:()=>p});var c=s(2182),a=s(1630);const p=c.qy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[713],{7713(e,t,s){s.r(t);var c=s(2182),a=s(1630);const p=c.qy`
 
 <h2>sc-prev</h2>
 
@@ -46,4 +46,4 @@
   <sc-prev></sc-prev>
   <sc-next></sc-next>
 </div>
-`}}]);
+`;s.d(t,["template",0,p])}}]);

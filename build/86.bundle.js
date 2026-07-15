@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[86],{8086(e,t,c){c.r(t),c.d(t,{template:()=>a});var s=c(2182),n=c(1630);const a=s.qy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[86],{8086(e,c,t){t.r(c);var a=t(2182),s=t(1630);const n=a.qy`
 
 <h2>sc-bang</h2>
 
@@ -46,8 +46,14 @@
 #test-bang {
   width: 30px;
   height: 30px;
+  background-color: var(--sc-color-primary-2);
+  border: 1px solid var(--sc-color-primary-3);
+
+  --sc-bang-circle-border: var(--sc-color-primary-4);
+  --sc-bang-circle-bg: var(--sc-color-primary-2);
+  --sc-bang-circle-active: var(--sc-color-primary-5);
 }
   "
-  @change=${e=>(0,n.default)(e.detail.value)}
+  @change=${e=>(0,s.default)(e.detail.value)}
 ></sc-editor>
-`}}]);
+`;t.d(c,["template",0,n])}}]);

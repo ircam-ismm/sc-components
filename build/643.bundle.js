@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[643],{3643(e,t,c){c.r(t),c.d(t,{template:()=>a});var s=c(2182),l=c(1630);const a=s.qy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[643],{3643(e,t,c){c.r(t);var s=c(2182),l=c(1630);const a=s.qy`
 
 <h2>sc-text</h2>
 
@@ -89,4 +89,4 @@ ${"<sc-text\n  @change=${e => console.log(e.detail.value)}\n  @input=${e => cons
 
 <!-- testing -->
 <!-- <sc-text>${"coucou"}</sc-text> -->
-`}}]);
+`;c.d(t,["template",0,a])}}]);

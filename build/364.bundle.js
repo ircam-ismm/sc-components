@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[364],{7364(e,t,s){s.r(t),s.d(t,{template:()=>d});var c=s(2182),a=s(1967),o=s(1630);const d=c.qy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[364],{7364(e,t,s){s.r(t);var c=s(2182),a=s(1967),o=s(1630);const d=c.qy`
 
 <h2>sc-dots</h2>
 
@@ -119,4 +119,4 @@
   <sc-toggle @change=${e=>document.querySelector("#test-dots").classList.toggle("debug")}></sc-toggle>
 </div>
 
-`}}]);
+`;s.d(t,["template",0,d])}}]);
