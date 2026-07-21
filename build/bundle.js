@@ -1061,7 +1061,7 @@
         box-sizing: border-box;
         padding: 0;
       }
-    `}get value(){return this._value}set value(e){this.textContent=e,this._value=e,this.requestUpdate()}constructor(){super(),this.disabled=!1,this.editable=!1,this.dirty=!1,this._value=null,this._onSlotChange=this._onSlotChange.bind(this)}render(){return null===this._value&&(this._value=this.textContent),this.editable?R.qy`
+    `}get value(){return this.dirty&&(this._value=this.shadowRoot.querySelector("input").value.trim(),this.dirty=!1),this._value}set value(e){this.textContent=e,this._value=e,this.requestUpdate()}constructor(){super(),this.disabled=!1,this.editable=!1,this.dirty=!1,this._value=null,this._onSlotChange=this._onSlotChange.bind(this)}render(){return null===this._value&&(this._value=this.textContent),this.editable?R.qy`
         <input
           type="text"
           placeholder=${this.placeholder}
