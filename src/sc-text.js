@@ -109,6 +109,12 @@ class ScText extends ScElement {
   }
 
   get value() {
+    // commit dirty state if value is requested from outside
+    if (this.dirty) {
+      this._value = this.shadowRoot.querySelector('input').value.trim();
+      this.dirty = false;
+    }
+
     return this._value;
   }
 
