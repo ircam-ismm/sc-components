@@ -3,7 +3,7 @@ import applyStyle from './utils/applyStyle.js';
 
 export const template = html`
 
-<h2>sc-text</h2>
+<h2>sc-timer</h2>
 
 <sc-code-example language="javascript">${`
 import { html } from 'lit';

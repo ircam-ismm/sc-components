@@ -1,6 +1,6 @@
 "use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[855],{7855(e,t,c){c.r(t);var r=c(2182),i=c(1630);const s=r.qy`
 
-<h2>sc-text</h2>
+<h2>sc-timer</h2>
 
 <sc-code-example language="javascript">${"\nimport { html } from 'lit';\nimport { live } from 'lit/directives/live.js';\nimport '@ircam/sc-components/sc-timer.js';\n\nconst template = html`\n  <sc-timer duration=\"5\" ?active=${live(flag)}></sc-timer>\n`;\n"}</sc-code-example>
 
