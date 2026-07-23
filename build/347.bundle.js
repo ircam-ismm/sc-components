@@ -1,17 +1,25 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[347],{8347(e,t,c){c.r(t);var o=c(2182),l=c(1630);const s=o.qy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[347],{8347(e,t,o){o.r(t);var c=o(2182),s=o(7048),l=o(1630);const a=c.qy`
 
 <h2>sc-modal</h2>
 
-<sc-code-example language="javascript">${"import { html } from 'lit';\nimport '@ircam/sc-components/sc-modal.js';\n\nconst template = html`\n  <sc-modal>\n    <sc-filter></sc-filter>\n  </sc-modal>\n`;\n"}</sc-code-example>
+<sc-code-example language="javascript">${"import { html } from 'lit';\nimport '@ircam/sc-components/sc-modal.js';\n\nconst template = html`\n  <sc-modal>\n    <sc-filter></sc-filter>\n  </sc-modal>\n`\n\n// for more complex usage\nconst template = html`\n  <sc-modal\n    .open=${async () => html`<my-component></component>`}\n  ></sc-modal>\n`;\n"}</sc-code-example>
+
+<!-- API with slot for testing backward compatibility -->
+<!-- <sc-modal
+  title="my test modal"
+  icon="filter"
+>
+  <sc-filter></sc-filter>
+</sc-modal> -->
 
 <sc-modal
   id="test-modal"
-  title="my modal 1"
+  title="my modal"
   icon="filter"
   bind-to-element="#main > section"
->
-  <sc-filter></sc-filter>
-</sc-modal>
+  .open=${async()=>(console.log("await modal open"),await(0,s.yy)(.2),c.qy`<sc-filter></sc-filter>`)}
+  .close=${async()=>{await(0,s.yy)(.1),console.log("modal closed")}}
+></sc-modal>
 
 <h3>Attributes</h3>
 <div>
@@ -56,6 +64,16 @@
   <p>CSS selector of a DOM element that defines the boundaries in which the modal can be moved</p>
 </div>
 
+<h3>Properties</h3>
+<div>
+  <sc-text>.open {Function} [=null]</sc-text>
+  <p>If defined, asynchronously execute the function and render the returned result when the component is set to "active"</p>
+</div>
+<div>
+  <sc-text>.close {Function} [=null]</sc-text>
+  <p>If defined, execute the function when the component is set to not "active"</p>
+</div>
+
 <h3>Styling</h3>
 <sc-editor
   style="width: 500px;"
@@ -77,4 +95,4 @@
   "
   @change=${e=>(0,l.default)(e.detail.value)}
 ></sc-editor>
-`;c.d(t,["template",0,s])}}]);
+`;o.d(t,["template",0,a])}}]);
