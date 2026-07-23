@@ -569,7 +569,7 @@ class ScFilter extends ScElement {
   connectedCallback() {
     super.connectedCallback();
 
-    // @note - this is important if the compoent is e.g. embedded in another component
+    // @note - this is important if the component is e.g. embedded in another component
     // this._tabindex = this.getAttribute('tabindex') || 0;
 
     this._resizeObserver = new ResizeObserver(entries => {

@@ -57,6 +57,7 @@
     "@codemirror/state": "^6.4.1",
     "@codemirror/view": "^6.33.0",
     "@ircam/sc-utils": "^1.8.0",
+    "@lit/task": "^1.0.3",
     "@replit/codemirror-vscode-keymap": "^6.0.2",
     "@uiw/codemirror-theme-monokai": "^4.23.0",
     "fast-deep-equal": "^3.1.3",

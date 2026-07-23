@@ -1,10 +1,12 @@
 import { html, css, nothing } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
+import { until } from 'lit/directives/until.js';
+import { isFunction } from '@ircam/sc-utils';
 
 import ScElement from './ScElement.js';
-import KeyboardController from './controllers/keyboard-controller.js';
 
 import './sc-icon.js';
+import './sc-text.js';
 
 class ScModal extends ScElement {
   static properties = {
@@ -117,7 +119,9 @@ class ScModal extends ScElement {
       return;
     }
 
-    if (value === false) {
+    if (value) {
+      this._hasOpened = true;
+    } else {
       this._updateModalPosition();
     }
 
@@ -130,12 +134,15 @@ class ScModal extends ScElement {
     super();
 
     this._active = false;
+    this._hasOpened = false;
 
     this.icon = 'plus';
     this.boundTo = 'body';
     this.title = 'modal window';
     this.resizable = false;
     this.movable = false;
+    this.open = null;
+    this.close = null;
 
     this._modalPosition = null;
     this._initialPosition = null;
@@ -180,7 +187,10 @@ class ScModal extends ScElement {
               ></sc-icon>
             </header>
             <section>
-              <slot></slot>
+              ${isFunction(this.open)
+                ? until(this.open(), html`<sc-text>loading</sc-text>`)
+                : html`<slot></slot>`
+              }
             </section>
           </div>
         `
@@ -205,6 +215,10 @@ class ScModal extends ScElement {
     if (this.active && this._modalPosition === null) {
       this._updateModalPosition();
       this._initialPosition = Object.assign({}, this._modalPosition);
+    }
+
+    if (!this.active && this._hasOpened && isFunction(this.close)) {
+      this.close();
     }
   }
 
@@ -257,6 +271,7 @@ class ScModal extends ScElement {
       }
     }
 
+    document.body.style.userSelect = 'none';
     window.addEventListener('mousemove', this._onMouseMove);
     window.addEventListener('mouseup', this._onMouseUp);
   }
@@ -304,6 +319,7 @@ class ScModal extends ScElement {
   }
 
   _onMouseUp(e) {
+    document.body.style.userSelect = 'auto';
     window.removeEventListener('mousemove', this._onMouseMove);
     window.removeEventListener('mouseup', this._onMouseUp);
   }
