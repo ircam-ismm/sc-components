@@ -25,20 +25,22 @@ const template = html\`
 \`;
 `}</sc-code-example>
 
-<sc-modal
-  title="my modal 1"
+<!-- API with slot for testing backward compatibility -->
+<!-- <sc-modal
+  title="my test modal"
   icon="filter"
 >
   <sc-filter></sc-filter>
-</sc-modal>
+</sc-modal> -->
 
 <sc-modal
   id="test-modal"
-  title="my modal 2"
+  title="my modal"
+  icon="filter"
   bind-to-element="#main > section"
   .open=${async () => {
-    await sleep(1);
-    console.log('modal open');
+    console.log('await modal open');
+    await sleep(0.2);
     return html`<sc-filter></sc-filter>`;
   }}
   .close=${async () => {

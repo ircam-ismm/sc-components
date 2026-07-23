@@ -19,6 +19,7 @@ import './sc-fullscreen.js';
 import './sc-keyboard.js';
 import './sc-icon.js';
 import './sc-io-surface.js';
+import './sc-loading.js';
 import './sc-loop.js';
 import './sc-matrix.js';
 import './sc-midi.js';

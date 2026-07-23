@@ -14,6 +14,7 @@ html, body {
 html {
   font-size: 62.5%;
   line-height: 1.4rem;
+  background-color: #000000;
 }
 
 body {

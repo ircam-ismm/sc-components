@@ -6,6 +6,7 @@ import { isFunction } from '@ircam/sc-utils';
 import ScElement from './ScElement.js';
 
 import './sc-icon.js';
+import './sc-loading.js';
 import './sc-text.js';
 
 class ScModal extends ScElement {
@@ -108,6 +109,12 @@ class ScModal extends ScElement {
       display: block;
       padding: 4px;
     }
+
+    .modal sc-loading {
+      width: 100%;
+      height: 8px;
+      --sc-loading-duration: 2s;
+    }
   `;
 
   get active() {
@@ -188,7 +195,7 @@ class ScModal extends ScElement {
             </header>
             <section>
               ${isFunction(this.open)
-                ? until(this.open(), html`<sc-text>loading</sc-text>`)
+                ? until(this.open(), html`<sc-loading type="horizontal"></sc-loading>`)
                 : html`<slot></slot>`
               }
             </section>
