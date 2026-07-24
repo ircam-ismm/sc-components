@@ -98,6 +98,15 @@ class ScPositionSurface extends ScElement {
   }
 
   disconnectedCallback() {
+    // remove all listeners
+    window.removeEventListener('touchmove', this._touchMove);
+    window.removeEventListener('touchend', this._touchEnd);
+    window.removeEventListener('touchcancel', this._touchEnd);
+
+    window.removeEventListener('mousemove', this._mouseMove);
+    window.removeEventListener('mouseup', this._mouseUp);
+
+
     this._resizeObserver.disconnect();
     super.disconnectedCallback();
   }
