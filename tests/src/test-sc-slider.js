@@ -1,6 +1,7 @@
 import { html } from 'lit';
 
 import '../../src/sc-slider.js';
+import '../../src/sc-number.js';
 
 setTimeout(() => {
   document.body.querySelector('#remove').remove();
@@ -38,4 +39,9 @@ export const template = html`
     value="100"
     number-box
   ></sc-slider>
+  <sc-number
+    min="50"
+    max="50"
+    value="100"
+  ></sc-number>
 `;

@@ -201,6 +201,10 @@ class ScSliderBase extends ScElement {
       throw new TypeError(`Cannot set property 'min' on sc-slider: value (${value}) is not a finite value`);
     }
 
+    if (value === this.max) {
+      throw new TypeError(`Cannot set property 'min' on sc-slider: min and max values (${value}) cannot be equal`);
+    }
+
     const oldValue = this.#min;
     this.#min = value;
     this.#updateScales();
@@ -214,6 +218,10 @@ class ScSliderBase extends ScElement {
   set max(value) {
     if (!Number.isFinite(value)) {
       throw new TypeError(`Cannot set property 'max' on sc-slider: value (${value}) is not a finite value`);
+    }
+
+    if (value === this.min) {
+      throw new TypeError(`Cannot set property 'max' on sc-slider: min and max values (${value}) cannot be equal`);
     }
 
     const oldValue = this.#max;

@@ -185,6 +185,10 @@ class ScNumber extends ScElement {
       throw new TypeError(`Cannot set property 'min' on sc-number: value (${value}) is not a finite number`);
     }
 
+    if (value === this.max) {
+      throw new TypeError(`Cannot set property 'min' on sc-number: min and max values (${value}) cannot be equal`);
+    }
+
     this._min = Math.min(value, this._max);
 
     if (this._value < this._min) {
@@ -200,6 +204,10 @@ class ScNumber extends ScElement {
   set max(value) {
     if (!Number.isFinite(value)) {
       throw new TypeError(`Cannot set property 'max' on sc-number: value (${value}) is not a finite number`);
+    }
+
+    if (value === this.min) {
+      throw new TypeError(`Cannot set property 'max' on sc-number: min and max values (${value}) cannot be equal`);
     }
 
     this._max = Math.max(value, this._min);
