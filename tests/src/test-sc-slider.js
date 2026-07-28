@@ -3,9 +3,9 @@ import { html } from 'lit';
 import '../../src/sc-slider.js';
 import '../../src/sc-number.js';
 
-setTimeout(() => {
-  document.body.querySelector('#remove').remove();
-}, 2000);
+// setTimeout(() => {
+//   document.body.querySelector('#remove').remove();
+// }, 2000);
 
 export const template = html`
   <p>
@@ -28,14 +28,25 @@ export const template = html`
     number-box
   ></sc-slider>
   <sc-slider
-    max="50"
-    min="1000"
+    max="100"
+    min="10"
+    value="100"
+    number-box
+  ></sc-slider>
+  <!-- throw min >= max -->
+  <sc-slider
+    max="0"
     value="100"
     number-box
   ></sc-slider>
   <sc-slider
-    max="50"
-    min="50"
+    max="0"
+    value="100"
+    number-box
+  ></sc-slider>
+  <!-- step >= (max - min) -->
+  <sc-slider
+    step="1.1"
     value="100"
     number-box
   ></sc-slider>
