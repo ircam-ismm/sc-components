@@ -203,7 +203,6 @@ class ScSliderBase extends ScElement {
 
     const oldValue = this.#min;
     this.#min = value;
-    this.#updateScales();
     this.requestUpdate('min', oldValue);
   }
 
@@ -218,7 +217,6 @@ class ScSliderBase extends ScElement {
 
     const oldValue = this.#max;
     this.#max = value;
-    this.#updateScales();
     this.requestUpdate('max', oldValue);
   }
 
@@ -233,7 +231,6 @@ class ScSliderBase extends ScElement {
 
     const oldValue = this.#step;
     this.#step = value;
-    this.#updateScales();
     this.requestUpdate('step', oldValue);
   }
 
@@ -246,9 +243,9 @@ class ScSliderBase extends ScElement {
       throw new TypeError(`Cannot set property 'mode' on sc-dial: value (${value}) is not a valid enum value of ['lin', 'exp', 'log']`);
     }
 
+    const oldValue = this.#mode;
     this.#mode = value;
-    this.#updateScales();
-    this.requestUpdate();
+    this.requestUpdate('mode', oldValue);
   }
 
   get modeBase() {
@@ -260,9 +257,9 @@ class ScSliderBase extends ScElement {
       throw new TypeError(`Cannot set property 'modeBase' on sc-slider: value (${value}) is not a strictly positive number`);
     }
 
+    const oldValue = this.#modeBase;
     this.#modeBase = value;
-    this.#updateScales();
-    this.requestUpdate();
+    this.requestUpdate('modeBase', oldValue);
   }
 
   get curve() {
@@ -274,11 +271,12 @@ class ScSliderBase extends ScElement {
       this.#curve = null;
     }
 
+    const oldValue = this.#curve;
     this.#curve = value;
-    this.#min = this.#curve[0];
-    this.#max = this.#curve[this.#curve.length - 1];
-    this.#updateScales();
-    this.requestUpdate();
+    this.min = this.#curve[0];
+    this.max = this.#curve[this.#curve.length - 1];
+
+    this.requestUpdate('curve', oldValue);
   }
 
   // midi-learn interface
@@ -311,14 +309,37 @@ class ScSliderBase extends ScElement {
     this.numberBox = false;
     this.disabled = false;
 
-    this.#updateScales();
-
     this.keyboard = new KeyboardController(this, {
       filterCodes: ['ArrowUp', 'ArrowRight', 'ArrowDown', 'ArrowLeft'],
       callback: this.#onKeyboardEvent.bind(this),
     });
 
     this.#updateScales();
+  }
+
+  willUpdate(changedProperties) {
+    if (changedProperties.has('min') || changedProperties.has('max')) {
+      if (this.max <= this.min) {
+        throw new Error('Cannot update sc-slider: min should be strictly lower than max');
+      }
+    }
+
+    if (changedProperties.has('step')) {
+      if (this.step > (this.max - this.min)) {
+        throw new Error('Cannot update sc-slider: step is greater than range');
+      }
+    }
+
+    if (
+      changedProperties.has('min') ||
+      changedProperties.has('max') ||
+      changedProperties.has('step') ||
+      changedProperties.has('mode') ||
+      changedProperties.has('modeBase') ||
+      changedProperties.has('curve')
+    ) {
+      this.#updateScales();
+    }
   }
 
   render() {
@@ -343,7 +364,7 @@ class ScSliderBase extends ScElement {
               `
             : svg`
                 <rect class="foreground" width=${svgSize} height=${svgSize}></rect>
-                <rect class="background" width=${svgSize} height="${svgSize - sliderSize}"></rect>
+                <rect class="background" width=${svgSize} height="${Math.max(0, svgSize - sliderSize)}"></rect>
               `
           }
         </svg>
