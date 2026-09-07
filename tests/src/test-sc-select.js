@@ -20,7 +20,7 @@ function renderComponent() {
     <sc-select></sc-select>
     <sc-select options="coucou"></sc-select>
 
-    <p>should not rendered</p>
+    <p>should not re-render</p>
     <sc-select
       .options=${options}
     ></sc-select>

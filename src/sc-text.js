@@ -142,6 +142,12 @@ class ScText extends ScElement {
     }
 
     if (this.editable) {
+      /**
+       * !!! Important !!!
+       * the `@touchend=${e => e.stopPropagation()}` look silly but allows to fix
+       * a bug on touch screen where (in some cases...) the component do not respond to
+       * user interaction anymore when rendered dynamically
+       */
       return html`
         <input
           type="text"
@@ -152,6 +158,7 @@ class ScText extends ScElement {
           @keyup=${this._onKeyUp}
           @input=${this._triggerInput}
           @change=${this._triggerChange}
+          @touchend=${e => e.stopPropagation()}
         />
       `;
       //

@@ -107,10 +107,17 @@ class ScSelect extends ScElement {
       throw new TypeError(`Cannot render 'sc-select': Invalid 'options' attribute, must be an array or an object`);
     }
 
+    /**
+     * !!! Important !!!
+     * the `@touchend=${e => e.stopPropagation()}` look silly but allows to fix
+     * a bug on touch screen where (in some cases...) the component do not respond to
+     * user interaction anymore when rendered dynamically
+     */
     return html`
       <select
         ?disabled=${this.disabled}
         @change=${this.#dispatchEvent}
+        @touchend=${e => e.stopPropagation()}
       >
         ${this.placeholder
           ? html`<option value="">${this.placeholder}</option>`
