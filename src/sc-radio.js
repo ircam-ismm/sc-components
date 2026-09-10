@@ -126,7 +126,7 @@ class ScRadio extends ScElement {
             @change=${this._dispatchEvent}
             @input=${this._bypassEvent}
             ?checked=${value == this.value}
-            ?disabled=${this.disabled && !(value == this.value)}
+            ?disabled=${this.disabled && !(value === this.value)}
           />
           ${value}
         </label>

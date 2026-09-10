@@ -1,5 +1,6 @@
 import { html, css, nothing } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
+import { dequal } from 'dequal';
 import { isPlainObject } from '@ircam/sc-utils';
 
 import ScElement from './ScElement.js';
@@ -128,7 +129,7 @@ class ScSelect extends ScElement {
           return html`
             <option
               value=${key}
-              ?selected=${value === this.value}
+              ?selected=${dequal(value, this.value)}
             >${isObject ? key : value}</option>
           `;
         })}
