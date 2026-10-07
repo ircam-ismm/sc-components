@@ -18,7 +18,11 @@ class ScTransportBase extends ScElement {
     disabled: {
       type: Boolean,
       reflect: true,
-    }
+    },
+    compact: {
+      type: Boolean,
+      reflect: true,
+    },
   };
 
   static styles = css`
@@ -128,6 +132,7 @@ class ScTransportBase extends ScElement {
     this.buttons = ['play', 'pause', 'stop'];
     this.value = null;
     this.disabled = false;
+    this.compact = false;
 
     new KeyboardController(this, {
       filterCodes: ['ArrowUp', 'ArrowRight', 'ArrowDown', 'ArrowLeft', 'Space'],
@@ -137,6 +142,32 @@ class ScTransportBase extends ScElement {
   }
 
   render() {
+    if (this.compact) {
+      if (this.value === 'play') {
+        return html`
+          <svg
+            class="stop active"
+            viewbox="0 0 20 20"
+            @click=${e => this.#onClick(e, 'stop')}
+            tabindex="-1"
+          >
+            <rect class="stop-shape" x="6" y="6" width="8" height="8"></rect>
+          </svg>
+        `;
+      } else {
+        return html`
+          <svg
+            class="play active"
+            viewbox="0 0 20 20"
+            @click=${e => this.#onClick(e, 'play')}
+            tabindex="-1"
+          >
+            <polygon class="play-shape" points="6, 5, 15, 10, 6, 15"></polygon>
+          </svg>
+        `;
+      }
+    }
+
     return html`
       ${this.buttons.map(type => {
         switch (type) {

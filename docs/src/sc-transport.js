@@ -59,6 +59,13 @@ const template = html\`
   ></sc-text>
 </div>
 <div>
+  <sc-text>?compact [=false]</sc-text>
+  <sc-toggle
+    @change=${e => document.querySelector('#test-transport').compact = e.detail.value}
+  ></sc-toggle>
+  <p>Compact mode the <code>buttons</code> value to display to <code>['play', 'stop']</code> in a single button</p>
+</div>
+<div>
   <sc-text>?disabled [=false]</sc-text>
   <sc-toggle
     @change=${e => document.querySelector('#test-transport').disabled = e.detail.value}
