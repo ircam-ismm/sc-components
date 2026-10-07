@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[511],{3511(t,e,s){s.r(e);var a=s(2182),c=s(1967),r=s(1630);const o=a.qy`
+"use strict";(self.webpackChunk_ircam_sc_components_doc=self.webpackChunk_ircam_sc_components_doc||[]).push([[511],{3511(t,e,s){s.r(e);var c=s(2182),a=s(1967),o=s(1630);const r=c.qy`
 <h2>sc-transport</h2>
 
 <sc-code-example language="javascript">${"import { html } from 'lit';\nimport '@ircam/sc-components/sc-transport.js';\n\nconst template = html`\n  <sc-transport></sc-transport>\n`;\n"}</sc-code-example>
@@ -27,7 +27,7 @@
   <sc-text style="width: 260px;">.buttons [=["play", "pause", "stop"]]</sc-text>
   <sc-text
     editable
-    @change=${t=>document.querySelector("#test-transport").buttons=c.parse(t.detail.value)}
+    @change=${t=>document.querySelector("#test-transport").buttons=a.parse(t.detail.value)}
   >["play", "pause", "stop"]</sc-text>
 </div>
 
@@ -39,6 +39,13 @@
     editable
     @change=${t=>document.querySelector("#test-transport").value=t.detail.value}
   ></sc-text>
+</div>
+<div>
+  <sc-text>?compact [=false]</sc-text>
+  <sc-toggle
+    @change=${t=>document.querySelector("#test-transport").compact=t.detail.value}
+  ></sc-toggle>
+  <p>Compact mode the <code>buttons</code> value to display to <code>['play', 'stop']</code> in a single button</p>
 </div>
 <div>
   <sc-text>?disabled [=false]</sc-text>
@@ -71,6 +78,6 @@
   --sc-transport-active-stop-fill: var(--sc-color-secondary-3);
 }
   "
-  @change=${t=>(0,r.default)(t.detail.value)}
+  @change=${t=>(0,o.default)(t.detail.value)}
 ></sc-editor>
-`;s.d(e,["template",0,o])}}]);
+`;s.d(e,["template",0,r])}}]);
