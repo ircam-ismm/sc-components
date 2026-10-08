@@ -176,6 +176,10 @@ class ScSliderBase extends ScElement {
   #startSliderValue = null;
   #midiValueTimeout = null;
 
+  // scales are computed on the first willUpdate call, but if `.value` is set
+  // at construction, it is normalized against the wrong default scale
+  #firstWillUpdateCalled = false;
+  #initValue = null;
 
   get value() {
     const value = this.#normToValue(this.#normValue);
@@ -187,8 +191,13 @@ class ScSliderBase extends ScElement {
       throw new TypeError(`Cannot set property 'value' on sc-slider: value (${value}) is not a finite value`);
     }
 
-    this.#normValue = this.#valueToNorm(value);
-    this.requestUpdate();
+    // store initialization values until the scales are computed in `willUpdate`
+    if (!this.#firstWillUpdateCalled) {
+      this.#initValue = value;
+    } else {
+      this.#normValue = this.#valueToNorm(value);
+      this.requestUpdate();
+    }
   }
 
 
@@ -199,10 +208,6 @@ class ScSliderBase extends ScElement {
   set min(value) {
     if (!Number.isFinite(value)) {
       throw new TypeError(`Cannot set property 'min' on sc-slider: value (${value}) is not a finite value`);
-    }
-
-    if (value === this.max) {
-      throw new TypeError(`Cannot set property 'min' on sc-slider: min and max values (${value}) cannot be equal`);
     }
 
     const oldValue = this.#min;
@@ -217,10 +222,6 @@ class ScSliderBase extends ScElement {
   set max(value) {
     if (!Number.isFinite(value)) {
       throw new TypeError(`Cannot set property 'max' on sc-slider: value (${value}) is not a finite value`);
-    }
-
-    if (value === this.min) {
-      throw new TypeError(`Cannot set property 'max' on sc-slider: min and max values (${value}) cannot be equal`);
     }
 
     const oldValue = this.#max;
@@ -347,6 +348,14 @@ class ScSliderBase extends ScElement {
       changedProperties.has('curve')
     ) {
       this.#updateScales();
+    }
+
+    if (!this.#firstWillUpdateCalled) {
+      this.#firstWillUpdateCalled = true;
+      // recompute norm values against updated scales
+      if (this.#initValue !== null) {
+        this.value = this.#initValue;
+      }
     }
   }
 

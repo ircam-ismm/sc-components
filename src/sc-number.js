@@ -39,7 +39,7 @@ class ScNumber extends ScElement {
     :host {
       vertical-align: top;
       display: inline-block;
-      width: 100px;
+      width: 80px;
       height: 30px;
       box-sizing: border-box;
       font-family: var(--sc-font-family);
@@ -48,6 +48,8 @@ class ScNumber extends ScElement {
       position: relative;
       background-color: var(--sc-color-primary-2);
       border: 1px solid var(--sc-color-primary-3);
+
+      --sc-number-left-block-width: 6px;
     }
 
     :host([disabled]) {
@@ -86,7 +88,7 @@ class ScNumber extends ScElement {
     }
 
     .info {
-      width: 15px;
+      width: var(--sc-number-left-block-width);
       height: 100%;
       display: inline-block;
       background-color: var(--sc-color-primary-3);
@@ -112,7 +114,7 @@ class ScNumber extends ScElement {
       box-sizing: border-box;
       position: absolute;
       top: 0;
-      left: 15px;
+      left: var(--sc-number-left-block-width);
       padding-left: 12px;
       height: 100%;
       width: calc(100% - 15px);
@@ -189,10 +191,6 @@ class ScNumber extends ScElement {
       throw new TypeError(`Cannot set property 'min' on sc-number: value (${value}) is not a finite number`);
     }
 
-    if (value === this.max) {
-      throw new TypeError(`Cannot set property 'min' on sc-number: min and max values (${value}) cannot be equal`);
-    }
-
     this._min = Math.min(value, this._max);
 
     if (this._value < this._min) {
@@ -208,10 +206,6 @@ class ScNumber extends ScElement {
   set max(value) {
     if (!Number.isFinite(value)) {
       throw new TypeError(`Cannot set property 'max' on sc-number: value (${value}) is not a finite number`);
-    }
-
-    if (value === this.min) {
-      throw new TypeError(`Cannot set property 'max' on sc-number: min and max values (${value}) cannot be equal`);
     }
 
     this._max = Math.max(value, this._min);
@@ -272,6 +266,14 @@ class ScNumber extends ScElement {
       filterCodes: ['ArrowUp', 'ArrowRight', 'ArrowDown', 'ArrowLeft'],
       callback: this._onKeyboardEvent.bind(this),
     });
+  }
+
+  willUpdate(changedProperties) {
+    if (changedProperties.has('min') || changedProperties.has('max')) {
+      if (this.max <= this.min) {
+        throw new Error('Cannot update sc-number: min should be strictly lower than max');
+      }
+    }
   }
 
   render() {

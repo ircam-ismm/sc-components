@@ -1,6 +1,6 @@
 import { html } from 'lit';
 
-import '../../src/sc-slider.js';
+import '../../src/sc-number.js';
 
 // setTimeout(() => {
 //   document.body.querySelector('#remove').remove();
@@ -14,51 +14,41 @@ export const template = html`
   </p>
   <div>
     <p>min: 50, max: 1000, value: 100</p>
-    <sc-slider
+    <sc-number
       id="remove"
       min="50"
       max="1000"
       value="100"
       number-box
       @input=${e => console.log(e.detail.value)}
-    ></sc-slider>
+    ></sc-number>
   </div>
   <div>
     <p>min: -200, max: 500, value: 250</p>
-    <sc-slider
+    <sc-number
       value="250"
       max="500"
       min="-200"
       number-box
-    ></sc-slider>
+    ></sc-number>
   </div>
   <div>
     <p>min: 10, max: 100, value: 100</p>
-    <sc-slider
+    <sc-number
       max="100"
       min="10"
       value="100"
       number-box
-    ></sc-slider>
+    ></sc-number>
   </div>
 
   <div>
     <p>throw min >= max</p>
-    <sc-slider
+    <sc-number
       min="2"
-      value="100"
-      number-box
-    ></sc-slider>
-    <sc-slider
       max="0"
       value="100"
       number-box
-    ></sc-slider>
-    <p>step >= (max - min)</p>
-    <sc-slider
-      step="1.1"
-      value="100"
-      number-box
-    ></sc-slider>
+    ></sc-number>
   </div>
 `;
