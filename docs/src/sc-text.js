@@ -47,6 +47,13 @@ const template = html\`
   ></sc-toggle>
   <p>If editable, the "change" event is triggered on Cmd+S, Enter and on blur, the red outline indicates dirty state.</p>
 </div>
+<div>
+  <sc-text>?save-button [=false]</sc-text>
+  <sc-toggle
+    @change=${e => document.querySelector('#test-text').saveButton = e.detail.value}
+  ></sc-toggle>
+  <p>Only applies if editable.</p>
+</div>
 <!-- <div>
   <sc-text>?multiline [=false]</sc-text>
   <sc-toggle

@@ -5,6 +5,7 @@ import {
 
 import ScElement from './ScElement.js';
 import isMac from './utils/is-mac.js';
+import './sc-icon.js';
 
 class ScText extends ScElement {
   static get properties() {
@@ -28,6 +29,11 @@ class ScText extends ScElement {
         type: String,
         reflect: true,
       },
+      saveButton: {
+        type: Boolean,
+        reflect: true,
+        attribute: 'save-button'
+      }
     };
   }
 
@@ -105,6 +111,13 @@ class ScText extends ScElement {
         box-sizing: border-box;
         padding: 0;
       }
+
+      :host sc-icon {
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: 1;
+      }
     `;
   }
 
@@ -148,20 +161,32 @@ class ScText extends ScElement {
        * a bug on touch screen where (in some cases...) the component do not respond to
        * user interaction anymore when rendered dynamically
        */
-      return html`
-        <input
-          type="text"
-          placeholder=${this.placeholder}
-          .value=${this._value}
-          ?disabled=${this.disabled}
-          @keydown=${this._onKeyDown}
-          @keyup=${this._onKeyUp}
-          @input=${this._triggerInput}
-          @change=${this._triggerChange}
-          @touchend=${e => e.stopPropagation()}
-        />
-      `;
-      //
+      const $els = [
+        html`
+          <input
+            type="text"
+            placeholder=${this.placeholder}
+            .value=${this._value}
+            ?disabled=${this.disabled}
+            @keydown=${this._onKeyDown}
+            @keyup=${this._onKeyUp}
+            @input=${this._triggerInput}
+            @change=${this._triggerChange}
+            @touchend=${e => e.stopPropagation()}
+          />
+        `
+      ];
+
+      if (this.saveButton) {
+        $els.push(html`
+          <sc-icon
+            type="save"
+            @input=${this._triggerChange}
+          ></sc-icon>
+        `);
+      }
+
+      return $els;
     } else {
       return html`<div><slot></slot></div>`
     }
@@ -218,7 +243,8 @@ class ScText extends ScElement {
     e.preventDefault();
 
     if (this.dirty || forceUpdate) {
-      this._value = e.target.value.trim();
+      const $input = this.shadowRoot.querySelector('input[type=text]');
+      this._value = $input.value;
       this.dirty = false;
 
       const event = new CustomEvent('change', {
