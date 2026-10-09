@@ -988,7 +988,7 @@
         <li @click="${t=>this._triggerEvent(t,e.action)}">${e.label}</li>
       `)}
       </ul>
-    `}connectedCallback(){super.connectedCallback(),document.addEventListener("click",this._triggerClose),document.addEventListener("contextmenu",this._triggerClose),this.style.left=`${this.event.clientX}px`,this.style.top=`${this.event.clientY}px`}disconnectedCallback(){super.disconnectedCallback(),document.removeEventListener("click",this._triggerClose),document.removeEventListener("contextmenu",this._triggerClose)}_triggerEvent(e,t){const i=new CustomEvent("input",{bubbles:!0,composed:!0,detail:{value:t}});this.dispatchEvent(i),this._triggerClose(e)}_triggerClose(e){e.preventDefault();const t=new CustomEvent("close",{bubbles:!0,composed:!0,detail:null});this.dispatchEvent(t)}});void 0===customElements.get("sc-text")&&customElements.define("sc-text",class extends g{static get properties(){return{value:{type:String},editable:{type:Boolean,reflect:!0},dirty:{type:Boolean,reflect:!0},disabled:{type:Boolean,reflect:!0},placeholder:{type:String,reflect:!0}}}static get styles(){return l.AH`
+    `}connectedCallback(){super.connectedCallback(),document.addEventListener("click",this._triggerClose),document.addEventListener("contextmenu",this._triggerClose),this.style.left=`${this.event.clientX}px`,this.style.top=`${this.event.clientY}px`}disconnectedCallback(){super.disconnectedCallback(),document.removeEventListener("click",this._triggerClose),document.removeEventListener("contextmenu",this._triggerClose)}_triggerEvent(e,t){const i=new CustomEvent("input",{bubbles:!0,composed:!0,detail:{value:t}});this.dispatchEvent(i),this._triggerClose(e)}_triggerClose(e){e.preventDefault();const t=new CustomEvent("close",{bubbles:!0,composed:!0,detail:null});this.dispatchEvent(t)}});void 0===customElements.get("sc-text")&&customElements.define("sc-text",class extends g{static get properties(){return{value:{type:String},editable:{type:Boolean,reflect:!0},dirty:{type:Boolean,reflect:!0},disabled:{type:Boolean,reflect:!0},placeholder:{type:String,reflect:!0},saveButton:{type:Boolean,reflect:!0,attribute:"save-button"}}}static get styles(){return l.AH`
       :host {
         vertical-align: top;
         display: inline-block;
@@ -1061,19 +1061,31 @@
         box-sizing: border-box;
         padding: 0;
       }
-    `}get value(){return this.dirty&&(this._value=this.shadowRoot.querySelector("input").value.trim(),this.dirty=!1),this._value}set value(e){this.textContent=e,this._value=e,this.requestUpdate()}constructor(){super(),this.disabled=!1,this.editable=!1,this.dirty=!1,this._value=null,this._onSlotChange=this._onSlotChange.bind(this)}render(){return null===this._value&&(this._value=this.textContent),this.editable?l.qy`
-        <input
-          type="text"
-          placeholder=${this.placeholder}
-          .value=${this._value}
-          ?disabled=${this.disabled}
-          @keydown=${this._onKeyDown}
-          @keyup=${this._onKeyUp}
-          @input=${this._triggerInput}
-          @change=${this._triggerChange}
-          @touchend=${e=>e.stopPropagation()}
-        />
-      `:l.qy`<div><slot></slot></div>`}connectedCallback(){super.connectedCallback(),this.shadowRoot.addEventListener("slotchange",this._onSlotChange),this._tabindex=this.getAttribute("tabindex")||0}disconnectedCallback(){super.disconnectedCallback(),this.shadowRoot.removeEventListener("slotchange",this._onSlotChange)}focus(){this.editable?this.shadowRoot.querySelector("input")?.focus():super.focus()}_onSlotChange(e){this._value=this.textContent,this.editable&&this.requestUpdate()}_onKeyDown(e){e.stopPropagation(),((qQ?e.metaKey:e.ctrlKey)&&"KeyS"===e.code||"Enter"===e.code)&&(e.preventDefault(),this._triggerChange(e,!0))}_onKeyUp(e){e.target.value!==this._value&&!1===this.dirty?this.dirty=!0:e.target.value===this._value&&!0===this.dirty&&(this.dirty=!1)}_triggerChange(e,t=!1){if(e.preventDefault(),this.dirty||t){this._value=e.target.value.trim(),this.dirty=!1;const t=new CustomEvent("change",{bubbles:!0,composed:!0,detail:{value:this._value}});this.dispatchEvent(t)}}_triggerInput(e){e.stopPropagation();const t=new CustomEvent("input",{bubbles:!0,composed:!0,detail:{value:e.target.value.trim()}});this.dispatchEvent(t)}});class VQ extends g{static properties={value:{type:Object},editable:{type:Boolean,reflect:!0},_contextMenuInfos:{type:Object,state:!0},_contextMenuCommand:{type:Object,state:!0}};static styles=l.AH`
+
+      :host sc-icon {
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: 1;
+      }
+    `}get value(){return this.dirty&&(this._value=this.shadowRoot.querySelector("input").value.trim(),this.dirty=!1),this._value}set value(e){this.textContent=e,this._value=e,this.requestUpdate()}constructor(){super(),this.disabled=!1,this.editable=!1,this.dirty=!1,this._value=null,this._onSlotChange=this._onSlotChange.bind(this)}render(){if(null===this._value&&(this._value=this.textContent),this.editable){const e=[l.qy`
+          <input
+            type="text"
+            placeholder=${this.placeholder}
+            .value=${this._value}
+            ?disabled=${this.disabled}
+            @keydown=${this._onKeyDown}
+            @keyup=${this._onKeyUp}
+            @input=${this._triggerInput}
+            @change=${this._triggerChange}
+            @touchend=${e=>e.stopPropagation()}
+          />
+        `];return this.saveButton&&e.push(l.qy`
+          <sc-icon
+            type="save"
+            @input=${this._triggerChange}
+          ></sc-icon>
+        `),e}return l.qy`<div><slot></slot></div>`}connectedCallback(){super.connectedCallback(),this.shadowRoot.addEventListener("slotchange",this._onSlotChange),this._tabindex=this.getAttribute("tabindex")||0}disconnectedCallback(){super.disconnectedCallback(),this.shadowRoot.removeEventListener("slotchange",this._onSlotChange)}focus(){this.editable?this.shadowRoot.querySelector("input")?.focus():super.focus()}_onSlotChange(e){this._value=this.textContent,this.editable&&this.requestUpdate()}_onKeyDown(e){e.stopPropagation(),((qQ?e.metaKey:e.ctrlKey)&&"KeyS"===e.code||"Enter"===e.code)&&(e.preventDefault(),this._triggerChange(e,!0))}_onKeyUp(e){e.target.value!==this._value&&!1===this.dirty?this.dirty=!0:e.target.value===this._value&&!0===this.dirty&&(this.dirty=!1)}_triggerChange(e,t=!1){if(e.preventDefault(),this.dirty||t){const e=this.shadowRoot.querySelector("input[type=text]");this._value=e.value,this.dirty=!1;const t=new CustomEvent("change",{bubbles:!0,composed:!0,detail:{value:this._value}});this.dispatchEvent(t)}}_triggerInput(e){e.stopPropagation();const t=new CustomEvent("input",{bubbles:!0,composed:!0,detail:{value:e.target.value.trim()}});this.dispatchEvent(t)}});class VQ extends g{static properties={value:{type:Object},editable:{type:Boolean,reflect:!0},_contextMenuInfos:{type:Object,state:!0},_contextMenuCommand:{type:Object,state:!0}};static styles=l.AH`
     :host {
       display: flex;
       box-sizing: border-box;
