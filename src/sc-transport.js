@@ -149,6 +149,7 @@ class ScTransportBase extends ScElement {
             class="stop active"
             viewbox="0 0 20 20"
             @click=${e => this.#onClick(e, 'stop')}
+            @touchend=${e => e.stopPropagation()}
             tabindex="-1"
           >
             <rect class="stop-shape" x="6" y="6" width="8" height="8"></rect>
@@ -160,6 +161,7 @@ class ScTransportBase extends ScElement {
             class="play active"
             viewbox="0 0 20 20"
             @click=${e => this.#onClick(e, 'play')}
+            @touchend=${e => e.stopPropagation()}
             tabindex="-1"
           >
             <polygon class="play-shape" points="6, 5, 15, 10, 6, 15"></polygon>
@@ -178,6 +180,7 @@ class ScTransportBase extends ScElement {
                 class="play ${this.value === type ? 'active' : ''}"
                 viewbox="0 0 20 20"
                 @click=${e => this.#onClick(e, type)}
+                @touchend=${e => e.stopPropagation()}
                 tabindex="-1"
               >
                 <polygon class="play-shape" points="6, 5, 15, 10, 6, 15"></polygon>
@@ -189,6 +192,7 @@ class ScTransportBase extends ScElement {
                 class="pause ${this.value === 'pause' ? 'active' : ''}"
                 viewbox="0 0 20 20"
                 @click=${e => this.#onClick(e, 'pause')}
+                @touchend=${e => e.stopPropagation()}
                 tabindex="-1"
               >
                 <rect class="left" x="5" y="5" width="3" height="10"></rect>
@@ -201,6 +205,7 @@ class ScTransportBase extends ScElement {
                 class="stop ${this.value === 'stop' ? 'active' : ''}"
                 viewbox="0 0 20 20"
                 @click=${e => this.#onClick(e, 'stop')}
+                @touchend=${e => e.stopPropagation()}
                 tabindex="-1"
               >
                 <rect class="stop-shape" x="6" y="6" width="8" height="8"></rect>
